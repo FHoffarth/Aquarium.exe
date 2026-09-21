@@ -1,0 +1,514 @@
+19:59:46.763 Aquarium.exe WebView2 composition wallpaper spike starting
+19:59:46.763 OS version=10.0 build=26200
+19:59:46.763 STARTUP ATTEMPT 1
+19:59:46.763 Progman hwnd=0x31063E class=Progman parent=0x0 style=0x96000000 ex=0x200080 rect=[0,0,1920,1080] visible=1
+19:59:46.763 desktopMode=raised (WS_EX_NOREDIRECTIONBITMAP)
+19:59:46.764 SHELLDLL_DefView hwnd=0x1101B2 class=SHELLDLL_DefView parent=0x31063E style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+19:59:46.764 Explorer SysListView32 hwnd=0x1F0914 class=SysListView32 parent=0x1101B2 style=0x56003A40 ex=0x0 rect=[0,0,1920,1080] visible=1
+19:59:46.764 Progman children before WorkerW request (top-to-bottom Z order):
+19:59:46.764   z=0 hwnd=0x1101B2 class=SHELLDLL_DefView parent=0x31063E style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+19:59:46.764   z=1 hwnd=0x230780 class=WorkerW parent=0x31063E style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+19:59:46.764 A suitable wallpaper WorkerW already existed; spawn message was not sent.
+19:59:46.764 Progman children after WorkerW request (top-to-bottom Z order):
+19:59:46.764   z=0 hwnd=0x1101B2 class=SHELLDLL_DefView parent=0x31063E style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+19:59:46.764   z=1 hwnd=0x230780 class=WorkerW parent=0x31063E style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+19:59:46.764 selected WorkerW hwnd=0x230780 class=WorkerW parent=0x31063E style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+19:59:46.764 ATTACH ASSUMPTION VERIFIED: selected WorkerW is a direct Progman child below SHELLDLL_DefView in child Z order.
+19:59:46.770 Stable hidden owner hwnd=0x4106E6 class=AquariumSpike.HiddenOwner.v1 parent=0x0 style=0x4C00000 ex=0x180 rect=[-32000,-32000,-31980,-31961] visible=0
+19:59:46.943 WEBVIEW generation=1 event=info detail=DirectComposition target and WebView visual created on renderer child HWND.
+19:59:47.043 WEBVIEW generation=1 event=info detail=WebView2 environment creation started.
+19:59:48.411 WEBVIEW generation=1 event=info detail=CompositionController bound; navigating to local aquarium habitat.
+19:59:51.445 WEBVIEW generation=1 event=ready detail=habitat-ready:three-webgl2
+19:59:51.501 WebView2 top-level host before desktop attachment hwnd=0xC0534 class=AquariumSpike.RenderWindow.v1 parent=0x4106E6 style=0x96000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+19:59:51.501 WebView2 renderer child before desktop attachment hwnd=0x60256 class=AquariumSpike.RendererChild.v1 parent=0xC0534 style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+19:59:51.501 WEBVIEW TOP-LEVEL PRESENT OK: local habitat reported ready before desktop attachment.
+19:59:53.004 desktop host after extended-style setup hwnd=0xC0534 class=AquariumSpike.RenderWindow.v1 parent=0x4106E6 style=0x96000000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+19:59:53.006 desktop host after WS_CHILD conversion hwnd=0xC0534 class=AquariumSpike.RenderWindow.v1 parent=0x1000C style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+19:59:53.012 desktop host after SetParent hwnd=0xC0534 class=AquariumSpike.RenderWindow.v1 parent=0x31063E style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+19:59:53.014 WebView2 host after desktop attachment hwnd=0xC0534 class=AquariumSpike.RenderWindow.v1 parent=0x31063E style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+19:59:53.015 WebView2 host owner after desktop attachment=0x4106E6
+19:59:53.020 WebView2 renderer child after desktop attachment hwnd=0x60256 class=AquariumSpike.RendererChild.v1 parent=0xC0534 style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+19:59:53.021 Progman children after render-window attachment (top-to-bottom Z order):
+19:59:53.021   z=0 hwnd=0x1101B2 class=SHELLDLL_DefView parent=0x31063E style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+19:59:53.022   z=1 hwnd=0xC0534 class=AquariumSpike.RenderWindow.v1 parent=0x31063E style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+19:59:53.022   z=2 hwnd=0x230780 class=WorkerW parent=0x31063E style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+19:59:53.022 ATTACH STRUCTURE OK: layered host is parented to Progman, immediately below SHELLDLL_DefView and above WorkerW.
+19:59:53.022 No normal always-on-bottom fallback exists in this spike.
+19:59:53.022 SESSION RUNNING generation=1
+19:59:53.022 STARTUP SUCCESS processId=33496
+19:59:53.023 PROBE state=running bridgeUpdates=0 webviewReady=1 cursorScreen=(918,1060) WindowFromPoint=0x9013A/Shell_TrayWnd hostHitTest=-1 rendererHitTest=-1
+19:59:53.070 PERF intervalSeconds=6.30 cursorBridgeHz=0.16 hostProcessCpuPercentNormalized=0.68 totalBridgeUpdates=1
+19:59:55.768 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=35.6;frameTimeMs=17.18;fishCount=10;drawCalls=9;triangles=4024;pointerCount=66;reactions=0;paused=false;targetFps=60
+19:59:58.102 PERF intervalSeconds=5.03 cursorBridgeHz=24.63 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=125
+20:00:00.769 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.2;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=189;reactions=0;paused=false;targetFps=60
+20:00:03.104 PERF intervalSeconds=5.00 cursorBridgeHz=24.58 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=248
+20:00:05.769 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.8;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=311;reactions=0;paused=false;targetFps=60
+20:00:08.138 PERF intervalSeconds=5.03 cursorBridgeHz=23.84 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=368
+20:00:10.784 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.9;frameTimeMs=16.72;fishCount=10;drawCalls=9;triangles=4024;pointerCount=431;reactions=0;paused=false;targetFps=60
+20:00:13.170 PERF intervalSeconds=5.03 cursorBridgeHz=23.85 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=488
+20:00:15.801 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.9;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=550;reactions=0;paused=false;targetFps=60
+20:00:18.204 PERF intervalSeconds=5.03 cursorBridgeHz=24.43 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=611
+20:00:20.818 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=43.1;frameTimeMs=16.72;fishCount=10;drawCalls=9;triangles=4024;pointerCount=673;reactions=0;paused=false;targetFps=60
+20:00:23.248 PERF intervalSeconds=5.04 cursorBridgeHz=24.19 hostProcessCpuPercentNormalized=0.15 totalBridgeUpdates=733
+20:00:25.818 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=795;reactions=0;paused=false;targetFps=60
+20:00:28.255 PERF intervalSeconds=5.01 cursorBridgeHz=24.57 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=856
+20:00:30.818 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=39.8;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=919;reactions=1;paused=false;targetFps=60
+20:00:33.258 PERF intervalSeconds=5.00 cursorBridgeHz=24.79 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=980
+20:00:35.819 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=40.4;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1039;reactions=1;paused=false;targetFps=60
+20:00:38.285 PERF intervalSeconds=5.03 cursorBridgeHz=22.08 hostProcessCpuPercentNormalized=0.62 totalBridgeUpdates=1091
+20:00:40.833 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=40.1;frameTimeMs=16.76;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1151;reactions=1;paused=false;targetFps=60
+20:00:43.301 PERF intervalSeconds=5.02 cursorBridgeHz=24.52 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=1214
+20:00:45.850 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.5;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1276;reactions=2;paused=false;targetFps=60
+20:00:48.318 PERF intervalSeconds=5.02 cursorBridgeHz=25.12 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=1340
+20:00:50.849 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.0;frameTimeMs=16.86;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1402;reactions=2;paused=false;targetFps=60
+20:00:53.332 PERF intervalSeconds=5.01 cursorBridgeHz=25.12 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=1466
+20:00:55.867 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.5;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1529;reactions=2;paused=false;targetFps=60
+20:00:58.367 PERF intervalSeconds=5.03 cursorBridgeHz=25.43 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=1594
+20:01:00.883 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.5;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1656;reactions=2;paused=false;targetFps=60
+20:01:03.399 PERF intervalSeconds=5.03 cursorBridgeHz=25.24 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=1721
+20:01:05.883 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=43.2;frameTimeMs=16.69;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1784;reactions=2;paused=false;targetFps=60
+20:01:08.432 PERF intervalSeconds=5.03 cursorBridgeHz=25.23 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=1848
+20:01:10.900 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.7;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1909;reactions=2;paused=false;targetFps=60
+20:01:13.447 PERF intervalSeconds=5.02 cursorBridgeHz=25.12 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=1974
+20:01:15.933 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.5;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2037;reactions=2;paused=false;targetFps=60
+20:01:18.483 PERF intervalSeconds=5.04 cursorBridgeHz=25.42 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=2102
+20:01:20.933 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=44.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2163;reactions=2;paused=false;targetFps=60
+20:01:23.502 PERF intervalSeconds=5.02 cursorBridgeHz=25.31 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=2229
+20:01:25.949 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.1;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2290;reactions=2;paused=false;targetFps=60
+20:01:28.517 PERF intervalSeconds=5.02 cursorBridgeHz=25.32 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=2356
+20:01:30.950 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2418;reactions=2;paused=false;targetFps=60
+20:01:33.532 PERF intervalSeconds=5.02 cursorBridgeHz=25.32 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=2483
+20:01:35.967 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.9;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2544;reactions=7;paused=false;targetFps=60
+20:01:38.532 PERF intervalSeconds=5.00 cursorBridgeHz=25.40 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=2610
+20:01:40.986 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.3;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2670;reactions=8;paused=false;targetFps=60
+20:01:43.568 PERF intervalSeconds=5.04 cursorBridgeHz=25.02 hostProcessCpuPercentNormalized=0.39 totalBridgeUpdates=2736
+20:01:45.983 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.2;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2796;reactions=8;paused=false;targetFps=60
+20:01:48.569 PERF intervalSeconds=5.00 cursorBridgeHz=25.00 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=2861
+20:01:50.999 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.1;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2913;reactions=8;paused=false;targetFps=60
+20:01:53.584 PERF intervalSeconds=5.02 cursorBridgeHz=23.13 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=2977
+20:01:56.016 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=39.7;frameTimeMs=16.79;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3036;reactions=9;paused=false;targetFps=60
+20:01:58.598 PERF intervalSeconds=5.01 cursorBridgeHz=24.13 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=3098
+20:02:01.016 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.6;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3157;reactions=10;paused=false;targetFps=60
+20:02:03.619 PERF intervalSeconds=5.02 cursorBridgeHz=24.10 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=3219
+20:02:06.033 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.7;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3278;reactions=11;paused=false;targetFps=60
+20:02:08.649 PERF intervalSeconds=5.03 cursorBridgeHz=24.65 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=3343
+20:02:11.049 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.3;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3402;reactions=15;paused=false;targetFps=60
+20:02:13.651 PERF intervalSeconds=5.00 cursorBridgeHz=24.99 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=3468
+20:02:16.050 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=43.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3528;reactions=22;paused=false;targetFps=60
+20:02:18.666 PERF intervalSeconds=5.01 cursorBridgeHz=25.13 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=3594
+20:02:21.049 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=35.4;frameTimeMs=17.55;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3649;reactions=24;paused=false;targetFps=60
+20:02:22.933 PROBE state=running bridgeUpdates=3693 webviewReady=1 cursorScreen=(1000,400) WindowFromPoint=0x1F0914/SysListView32 hostHitTest=-1 rendererHitTest=-1
+20:02:22.936 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=35.4;frameTimeMs=17.55;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3693;reactions=24;paused=false;targetFps=60
+20:02:22.936 WEBVIEW generation=1 event=info detail=Habitat: probe:fps=35.4;frameTimeMs=17.55;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3693;reactions=24;paused=false;targetFps=60
+20:02:23.700 PERF intervalSeconds=5.03 cursorBridgeHz=23.45 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=3712
+20:02:26.052 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.8;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3768;reactions=24;paused=false;targetFps=60
+20:02:28.734 PERF intervalSeconds=5.03 cursorBridgeHz=24.63 hostProcessCpuPercentNormalized=0.47 totalBridgeUpdates=3836
+20:02:31.067 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=39.3;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3893;reactions=24;paused=false;targetFps=60
+20:02:33.766 PERF intervalSeconds=5.03 cursorBridgeHz=24.84 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=3961
+20:02:36.067 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=40.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4019;reactions=25;paused=false;targetFps=60
+20:02:38.767 PERF intervalSeconds=5.00 cursorBridgeHz=25.79 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=4090
+20:02:41.082 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.7;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4149;reactions=25;paused=false;targetFps=60
+20:02:43.767 PERF intervalSeconds=5.00 cursorBridgeHz=25.40 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=4217
+20:02:46.083 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.2;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4276;reactions=25;paused=false;targetFps=60
+20:02:48.785 PERF intervalSeconds=5.02 cursorBridgeHz=25.32 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=4344
+20:02:51.083 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4401;reactions=25;paused=false;targetFps=60
+20:02:53.803 PERF intervalSeconds=5.02 cursorBridgeHz=24.70 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=4468
+20:02:56.099 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.1;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4523;reactions=30;paused=false;targetFps=60
+20:02:58.814 PERF intervalSeconds=5.01 cursorBridgeHz=24.35 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=4590
+20:03:01.101 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4646;reactions=33;paused=false;targetFps=60
+20:03:03.819 PERF intervalSeconds=5.01 cursorBridgeHz=24.97 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=4715
+20:03:06.100 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.6;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4771;reactions=34;paused=false;targetFps=60
+20:03:08.834 PERF intervalSeconds=5.01 cursorBridgeHz=24.93 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=4840
+20:03:11.117 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.3;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4895;reactions=36;paused=false;targetFps=60
+20:03:13.853 PERF intervalSeconds=5.02 cursorBridgeHz=24.91 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=4965
+20:03:16.133 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=40.9;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=5023;reactions=41;paused=false;targetFps=60
+20:03:18.882 PERF intervalSeconds=5.03 cursorBridgeHz=24.85 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=5090
+20:03:21.158 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=27.7;frameTimeMs=17.06;fishCount=10;drawCalls=9;triangles=4024;pointerCount=5106;reactions=45;paused=false;targetFps=60
+20:03:23.884 PERF intervalSeconds=5.00 cursorBridgeHz=23.99 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=5210
+20:03:26.150 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.2;frameTimeMs=16.82;fishCount=10;drawCalls=9;triangles=4024;pointerCount=5266;reactions=47;paused=false;targetFps=60
+20:03:28.917 PERF intervalSeconds=5.03 cursorBridgeHz=25.23 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=5337
+20:03:31.166 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.9;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=5394;reactions=55;paused=false;targetFps=60
+20:03:33.935 PERF intervalSeconds=5.02 cursorBridgeHz=25.71 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=5466
+20:03:36.166 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.4;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=5522;reactions=55;paused=false;targetFps=60
+20:03:38.950 PERF intervalSeconds=5.02 cursorBridgeHz=25.32 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=5593
+20:03:41.183 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.3;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=5648;reactions=55;paused=false;targetFps=60
+20:03:43.963 PERF intervalSeconds=5.01 cursorBridgeHz=24.94 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=5718
+20:03:46.183 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.2;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=5774;reactions=55;paused=false;targetFps=60
+20:03:48.966 PERF intervalSeconds=5.00 cursorBridgeHz=25.38 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=5845
+20:03:51.183 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.8;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=5900;reactions=55;paused=false;targetFps=60
+20:03:53.967 PERF intervalSeconds=5.00 cursorBridgeHz=25.40 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=5972
+20:03:56.183 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.6;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=6026;reactions=55;paused=false;targetFps=60
+20:03:58.983 PERF intervalSeconds=5.02 cursorBridgeHz=24.92 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=6097
+20:04:01.200 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.7;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=6150;reactions=55;paused=false;targetFps=60
+20:04:04.020 PERF intervalSeconds=5.04 cursorBridgeHz=24.43 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=6220
+20:04:06.216 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.9;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=6273;reactions=55;paused=false;targetFps=60
+20:04:09.067 PERF intervalSeconds=5.05 cursorBridgeHz=24.96 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=6346
+20:04:11.220 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=43.4;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=6398;reactions=55;paused=false;targetFps=60
+20:04:14.084 PERF intervalSeconds=5.02 cursorBridgeHz=24.91 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=6471
+20:04:16.232 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.7;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=6525;reactions=55;paused=false;targetFps=60
+20:04:19.100 PERF intervalSeconds=5.02 cursorBridgeHz=25.52 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=6599
+20:04:21.232 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=6651;reactions=55;paused=false;targetFps=60
+20:04:24.116 PERF intervalSeconds=5.02 cursorBridgeHz=24.92 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=6724
+20:04:26.249 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.9;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=6778;reactions=55;paused=false;targetFps=60
+20:04:29.152 PERF intervalSeconds=5.04 cursorBridgeHz=25.42 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=6852
+20:04:31.249 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.6;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=6904;reactions=55;paused=false;targetFps=60
+20:04:34.153 PERF intervalSeconds=5.00 cursorBridgeHz=24.79 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=6976
+20:04:34.483 CONTROL pause
+20:04:38.123 PROBE state=paused bridgeUpdates=7061 webviewReady=1 cursorScreen=(1000,400) WindowFromPoint=0x1F0914/SysListView32 hostHitTest=-1 rendererHitTest=-1
+20:04:38.126 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.6;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=7061;reactions=55;paused=true;targetFps=60
+20:04:38.126 WEBVIEW generation=1 event=info detail=Habitat: probe:fps=42.6;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=7061;reactions=55;paused=true;targetFps=60
+20:04:39.172 PERF intervalSeconds=5.02 cursorBridgeHz=21.52 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=7084
+20:04:44.206 PERF intervalSeconds=5.03 cursorBridgeHz=21.25 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=7191
+20:04:49.238 PERF intervalSeconds=5.03 cursorBridgeHz=21.26 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=7298
+20:04:54.241 PERF intervalSeconds=5.00 cursorBridgeHz=21.19 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=7404
+20:04:59.314 PERF intervalSeconds=5.07 cursorBridgeHz=21.88 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=7515
+20:05:04.202 CONTROL resume
+20:05:04.335 PERF intervalSeconds=5.02 cursorBridgeHz=18.13 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=7606
+20:05:08.353 PROBE state=running bridgeUpdates=7696 webviewReady=1 cursorScreen=(924,1055) WindowFromPoint=0x9013A/Shell_TrayWnd hostHitTest=-1 rendererHitTest=-1
+20:05:08.355 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.6;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=7696;reactions=64;paused=false;targetFps=60
+20:05:08.355 WEBVIEW generation=1 event=info detail=Habitat: probe:fps=42.6;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=7696;reactions=64;paused=false;targetFps=60
+20:05:09.216 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=39.9;frameTimeMs=16.65;fishCount=10;drawCalls=9;triangles=4024;pointerCount=7717;reactions=64;paused=false;targetFps=60
+20:05:09.349 PERF intervalSeconds=5.01 cursorBridgeHz=22.93 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=7721
+20:05:14.217 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=7841;reactions=64;paused=false;targetFps=60
+20:05:14.367 PERF intervalSeconds=5.02 cursorBridgeHz=24.91 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=7846
+20:05:19.233 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.7;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=7969;reactions=64;paused=false;targetFps=60
+20:05:19.414 PERF intervalSeconds=5.05 cursorBridgeHz=25.36 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=7974
+20:05:24.234 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=43.4;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=8094;reactions=64;paused=false;targetFps=60
+20:05:24.449 PERF intervalSeconds=5.04 cursorBridgeHz=25.02 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=8100
+20:05:29.234 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.4;frameTimeMs=16.73;fishCount=10;drawCalls=9;triangles=4024;pointerCount=8213;reactions=66;paused=false;targetFps=60
+20:05:29.460 PERF intervalSeconds=5.01 cursorBridgeHz=23.75 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=8219
+20:05:34.238 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=39.8;frameTimeMs=16.72;fishCount=10;drawCalls=9;triangles=4024;pointerCount=8330;reactions=79;paused=false;targetFps=60
+20:05:34.473 PERF intervalSeconds=5.01 cursorBridgeHz=23.35 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=8336
+20:05:39.232 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=39.4;frameTimeMs=17.12;fishCount=10;drawCalls=9;triangles=4024;pointerCount=8442;reactions=86;paused=false;targetFps=60
+20:05:39.502 PERF intervalSeconds=5.03 cursorBridgeHz=22.46 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=8449
+20:05:44.250 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=39.7;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=8562;reactions=86;paused=false;targetFps=60
+20:05:44.518 PERF intervalSeconds=5.02 cursorBridgeHz=23.92 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=8569
+20:05:49.250 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=40.2;frameTimeMs=16.91;fishCount=10;drawCalls=9;triangles=4024;pointerCount=8682;reactions=86;paused=false;targetFps=60
+20:05:49.534 PERF intervalSeconds=5.02 cursorBridgeHz=23.92 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=8689
+20:05:54.249 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=40.8;frameTimeMs=16.73;fishCount=10;drawCalls=9;triangles=4024;pointerCount=8800;reactions=86;paused=false;targetFps=60
+20:05:54.565 PERF intervalSeconds=5.03 cursorBridgeHz=23.66 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=8808
+20:05:59.266 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.9;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=8924;reactions=90;paused=false;targetFps=60
+20:05:59.566 PERF intervalSeconds=5.00 cursorBridgeHz=24.80 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=8932
+20:06:04.282 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.7;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=9049;reactions=91;paused=false;targetFps=60
+20:06:04.598 PERF intervalSeconds=5.03 cursorBridgeHz=24.84 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=9057
+20:06:09.299 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.5;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=9178;reactions=91;paused=false;targetFps=60
+20:06:09.616 PERF intervalSeconds=5.02 cursorBridgeHz=25.71 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=9186
+20:06:14.299 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.4;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=9306;reactions=91;paused=false;targetFps=60
+20:06:14.636 PERF intervalSeconds=5.02 cursorBridgeHz=25.69 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=9315
+20:06:19.300 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=9431;reactions=91;paused=false;targetFps=60
+20:06:19.647 PERF intervalSeconds=5.01 cursorBridgeHz=24.95 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=9440
+20:06:24.304 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=40.2;frameTimeMs=16.76;fishCount=10;drawCalls=9;triangles=4024;pointerCount=9525;reactions=91;paused=false;targetFps=60
+20:06:24.654 PERF intervalSeconds=5.01 cursorBridgeHz=18.77 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=9534
+20:06:29.304 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=39.8;frameTimeMs=17.07;fishCount=10;drawCalls=9;triangles=4024;pointerCount=9642;reactions=91;paused=false;targetFps=60
+20:06:29.668 PERF intervalSeconds=5.01 cursorBridgeHz=22.93 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=9649
+20:06:34.323 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=43.5;frameTimeMs=16.86;fishCount=10;drawCalls=9;triangles=4024;pointerCount=9762;reactions=91;paused=false;targetFps=60
+20:06:34.686 PERF intervalSeconds=5.02 cursorBridgeHz=24.51 hostProcessCpuPercentNormalized=0.39 totalBridgeUpdates=9772
+20:06:39.335 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.5;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=9881;reactions=91;paused=false;targetFps=60
+20:06:39.722 PERF intervalSeconds=5.03 cursorBridgeHz=23.64 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=9891
+20:06:44.338 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.4;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=10000;reactions=91;paused=false;targetFps=60
+20:06:44.754 PERF intervalSeconds=5.03 cursorBridgeHz=23.84 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=10011
+20:06:49.368 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.7;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=10120;reactions=91;paused=false;targetFps=60
+20:06:49.779 PERF intervalSeconds=5.02 cursorBridgeHz=23.69 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=10130
+20:06:54.371 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.4;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=10241;reactions=91;paused=false;targetFps=60
+20:06:54.797 PERF intervalSeconds=5.02 cursorBridgeHz=24.31 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=10252
+20:06:59.399 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=44.1;frameTimeMs=16.74;fishCount=10;drawCalls=9;triangles=4024;pointerCount=10364;reactions=91;paused=false;targetFps=60
+20:06:59.820 PERF intervalSeconds=5.02 cursorBridgeHz=24.50 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=10375
+20:07:04.416 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.1;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=10492;reactions=91;paused=false;targetFps=60
+20:07:04.849 PERF intervalSeconds=5.03 cursorBridgeHz=25.45 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=10503
+20:07:09.415 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=43.4;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=10616;reactions=91;paused=false;targetFps=60
+20:07:09.850 PERF intervalSeconds=5.00 cursorBridgeHz=24.99 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=10628
+20:07:14.416 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.6;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=10744;reactions=91;paused=false;targetFps=60
+20:07:14.883 PERF intervalSeconds=5.03 cursorBridgeHz=25.43 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=10756
+20:07:19.417 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=43.6;frameTimeMs=16.69;fishCount=10;drawCalls=9;triangles=4024;pointerCount=10869;reactions=91;paused=false;targetFps=60
+20:07:19.914 PERF intervalSeconds=5.03 cursorBridgeHz=25.25 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=10883
+20:07:24.433 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.1;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=10998;reactions=91;paused=false;targetFps=60
+20:07:24.932 PERF intervalSeconds=5.02 cursorBridgeHz=25.51 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=11011
+20:07:29.449 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.5;frameTimeMs=16.94;fishCount=10;drawCalls=9;triangles=4024;pointerCount=11123;reactions=91;paused=false;targetFps=60
+20:07:29.949 PERF intervalSeconds=5.02 cursorBridgeHz=24.91 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=11136
+20:07:34.450 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=11248;reactions=91;paused=false;targetFps=60
+20:07:34.982 PERF intervalSeconds=5.03 cursorBridgeHz=24.83 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=11261
+20:07:39.466 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.3;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=11374;reactions=91;paused=false;targetFps=60
+20:07:39.986 PERF intervalSeconds=5.00 cursorBridgeHz=25.18 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=11387
+20:07:44.465 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.8;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=11498;reactions=91;paused=false;targetFps=60
+20:07:45.019 PERF intervalSeconds=5.03 cursorBridgeHz=25.23 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=11514
+20:07:49.482 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.5;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=11623;reactions=91;paused=false;targetFps=60
+20:07:50.035 PERF intervalSeconds=5.02 cursorBridgeHz=24.72 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=11638
+20:07:54.483 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=43.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=11748;reactions=91;paused=false;targetFps=60
+20:07:55.079 PERF intervalSeconds=5.04 cursorBridgeHz=24.98 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=11764
+20:07:59.483 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.6;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=11875;reactions=91;paused=false;targetFps=60
+20:08:00.086 PERF intervalSeconds=5.01 cursorBridgeHz=25.36 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=11891
+20:08:04.499 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.3;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=12002;reactions=91;paused=false;targetFps=60
+20:08:05.115 PERF intervalSeconds=5.03 cursorBridgeHz=25.45 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=12019
+20:08:09.499 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=12131;reactions=91;paused=false;targetFps=60
+20:08:10.131 PERF intervalSeconds=5.02 cursorBridgeHz=25.52 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=12147
+20:08:14.517 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.5;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=12254;reactions=91;paused=false;targetFps=60
+20:08:15.153 PERF intervalSeconds=5.02 cursorBridgeHz=24.49 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=12270
+20:08:19.532 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.7;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=12379;reactions=91;paused=false;targetFps=60
+20:08:20.185 PERF intervalSeconds=5.03 cursorBridgeHz=25.04 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=12396
+20:08:24.532 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.8;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=12505;reactions=91;paused=false;targetFps=60
+20:08:25.216 PERF intervalSeconds=5.03 cursorBridgeHz=25.25 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=12523
+20:08:29.549 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.1;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=12631;reactions=91;paused=false;targetFps=60
+20:08:30.233 PERF intervalSeconds=5.02 cursorBridgeHz=24.92 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=12648
+20:08:34.549 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.6;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=12754;reactions=91;paused=false;targetFps=60
+20:08:35.252 PERF intervalSeconds=5.02 cursorBridgeHz=24.71 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=12772
+20:08:39.566 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.3;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=12878;reactions=91;paused=false;targetFps=60
+20:08:40.267 PERF intervalSeconds=5.02 cursorBridgeHz=24.92 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=12897
+20:08:44.570 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.2;frameTimeMs=16.95;fishCount=10;drawCalls=9;triangles=4024;pointerCount=12998;reactions=91;paused=false;targetFps=60
+20:08:45.298 PERF intervalSeconds=5.03 cursorBridgeHz=23.46 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=13015
+20:08:49.586 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.5;frameTimeMs=16.73;fishCount=10;drawCalls=9;triangles=4024;pointerCount=13119;reactions=98;paused=false;targetFps=60
+20:08:50.318 PERF intervalSeconds=5.02 cursorBridgeHz=23.71 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=13134
+20:08:54.583 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=39.8;frameTimeMs=16.94;fishCount=10;drawCalls=9;triangles=4024;pointerCount=13233;reactions=102;paused=false;targetFps=60
+20:08:55.352 PERF intervalSeconds=5.03 cursorBridgeHz=23.65 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=13253
+20:08:59.602 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.1;frameTimeMs=16.72;fishCount=10;drawCalls=9;triangles=4024;pointerCount=13357;reactions=102;paused=false;targetFps=60
+20:09:00.367 PERF intervalSeconds=5.02 cursorBridgeHz=24.52 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=13376
+20:09:04.603 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.2;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=13481;reactions=102;paused=false;targetFps=60
+20:09:05.386 PERF intervalSeconds=5.02 cursorBridgeHz=24.70 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=13500
+20:09:09.617 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=40.3;frameTimeMs=16.76;fishCount=10;drawCalls=9;triangles=4024;pointerCount=13600;reactions=102;paused=false;targetFps=60
+20:09:10.417 PERF intervalSeconds=5.03 cursorBridgeHz=23.85 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=13620
+20:09:14.616 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=13726;reactions=102;paused=false;targetFps=60
+20:09:15.432 PERF intervalSeconds=5.02 cursorBridgeHz=25.52 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=13748
+20:09:19.616 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.4;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=13853;reactions=102;paused=false;targetFps=60
+20:09:20.449 PERF intervalSeconds=5.02 cursorBridgeHz=25.32 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=13875
+20:09:24.618 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.8;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=13979;reactions=103;paused=false;targetFps=60
+20:09:25.484 PERF intervalSeconds=5.04 cursorBridgeHz=25.22 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=14002
+20:09:29.680 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.1;frameTimeMs=16.82;fishCount=10;drawCalls=9;triangles=4024;pointerCount=14098;reactions=103;paused=false;targetFps=60
+20:09:30.486 PERF intervalSeconds=5.00 cursorBridgeHz=23.39 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=14119
+20:09:34.652 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=40.7;frameTimeMs=16.85;fishCount=10;drawCalls=9;triangles=4024;pointerCount=14218;reactions=103;paused=false;targetFps=60
+20:09:35.519 PERF intervalSeconds=5.03 cursorBridgeHz=23.45 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=14237
+20:09:39.653 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.2;frameTimeMs=17.12;fishCount=10;drawCalls=9;triangles=4024;pointerCount=14331;reactions=103;paused=false;targetFps=60
+20:09:40.520 PERF intervalSeconds=5.00 cursorBridgeHz=22.99 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=14352
+20:09:44.666 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.3;frameTimeMs=16.72;fishCount=10;drawCalls=9;triangles=4024;pointerCount=14451;reactions=103;paused=false;targetFps=60
+20:09:45.524 PERF intervalSeconds=5.00 cursorBridgeHz=23.98 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=14472
+20:09:49.671 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=39.6;frameTimeMs=16.79;fishCount=10;drawCalls=9;triangles=4024;pointerCount=14562;reactions=103;paused=false;targetFps=60
+20:09:50.568 PERF intervalSeconds=5.04 cursorBridgeHz=21.80 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=14582
+20:09:54.686 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=39.5;frameTimeMs=17.20;fishCount=10;drawCalls=9;triangles=4024;pointerCount=14680;reactions=104;paused=false;targetFps=60
+20:09:55.603 PERF intervalSeconds=5.03 cursorBridgeHz=23.84 hostProcessCpuPercentNormalized=0.47 totalBridgeUpdates=14702
+20:09:59.686 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=40.6;frameTimeMs=16.75;fishCount=10;drawCalls=9;triangles=4024;pointerCount=14799;reactions=115;paused=false;targetFps=60
+20:10:00.615 PERF intervalSeconds=5.01 cursorBridgeHz=23.75 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=14821
+20:10:04.700 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.9;frameTimeMs=16.73;fishCount=10;drawCalls=9;triangles=4024;pointerCount=14919;reactions=117;paused=false;targetFps=60
+20:10:05.619 PERF intervalSeconds=5.00 cursorBridgeHz=24.18 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=14942
+20:10:09.703 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=43.4;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=15040;reactions=117;paused=false;targetFps=60
+20:10:10.652 PERF intervalSeconds=5.03 cursorBridgeHz=24.04 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=15063
+20:10:14.702 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.4;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=15160;reactions=117;paused=false;targetFps=60
+20:10:15.664 PERF intervalSeconds=5.01 cursorBridgeHz=24.14 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=15184
+20:10:19.414 CONTROL pause
+20:10:20.685 PERF intervalSeconds=5.02 cursorBridgeHz=23.90 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=15304
+20:10:25.702 PERF intervalSeconds=5.02 cursorBridgeHz=24.72 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=15428
+20:10:27.763 PROBE state=paused bridgeUpdates=15479 webviewReady=1 cursorScreen=(1385,951) WindowFromPoint=0x10424/Chrome_RenderWidgetHostHWND hostHitTest=-1 rendererHitTest=-1
+20:10:27.768 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.4;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=15479;reactions=117;paused=true;targetFps=60
+20:10:27.768 WEBVIEW generation=1 event=info detail=Habitat: probe:fps=42.4;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=15479;reactions=117;paused=true;targetFps=60
+20:10:28.232 CONTROL resume
+20:10:30.718 PERF intervalSeconds=5.02 cursorBridgeHz=24.72 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=15552
+20:10:33.267 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.3;frameTimeMs=16.62;fishCount=10;drawCalls=9;triangles=4024;pointerCount=15612;reactions=117;paused=false;targetFps=60
+20:10:35.748 PERF intervalSeconds=5.03 cursorBridgeHz=23.66 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=15671
+20:10:38.272 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.4;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=15730;reactions=117;paused=false;targetFps=60
+20:10:40.770 PERF intervalSeconds=5.02 cursorBridgeHz=23.90 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=15791
+20:10:43.286 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=43.1;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=15850;reactions=117;paused=false;targetFps=60
+20:10:45.806 PERF intervalSeconds=5.04 cursorBridgeHz=23.43 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=15909
+20:10:48.283 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.0;frameTimeMs=16.72;fishCount=10;drawCalls=9;triangles=4024;pointerCount=15965;reactions=117;paused=false;targetFps=60
+20:10:50.823 PERF intervalSeconds=5.02 cursorBridgeHz=23.52 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=16027
+20:10:53.286 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=41.4;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=16086;reactions=117;paused=false;targetFps=60
+20:10:55.853 PERF intervalSeconds=5.03 cursorBridgeHz=24.45 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=16150
+20:10:58.286 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.8;frameTimeMs=16.74;fishCount=10;drawCalls=9;triangles=4024;pointerCount=16207;reactions=117;paused=false;targetFps=60
+20:11:00.855 PERF intervalSeconds=5.00 cursorBridgeHz=23.79 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=16269
+20:11:03.287 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=42.4;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=16327;reactions=120;paused=false;targetFps=60
+20:11:05.606 RECOVERY SIGNAL: 1 Hz desktop attachment health check failed.
+20:11:05.787 RECOVERY ATTEMPT 1
+20:11:05.787 ATTACH FAILURE: Progman was not found; refusing ordinary-window fallback.
+20:11:05.788 RECOVERY BACKOFF attempt=2 delayMs=250
+20:11:06.052 RECOVERY ATTEMPT 2
+20:11:06.053 ATTACH FAILURE: Progman was not found; refusing ordinary-window fallback.
+20:11:06.055 RECOVERY BACKOFF attempt=3 delayMs=500
+20:11:06.565 RECOVERY ATTEMPT 3
+20:11:06.565 ATTACH FAILURE: Progman was not found; refusing ordinary-window fallback.
+20:11:06.568 RECOVERY BACKOFF attempt=4 delayMs=1000
+20:11:07.602 RECOVERY ATTEMPT 4
+20:11:07.602 Progman hwnd=0xB0592 class=Progman parent=0x0 style=0x96000000 ex=0x200080 rect=[0,0,1920,1080] visible=1
+20:11:07.604 desktopMode=raised (WS_EX_NOREDIRECTIONBITMAP)
+20:11:07.604 SHELLDLL_DefView hwnd=0xD09C4 class=SHELLDLL_DefView parent=0xB0592 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+20:11:07.604 Explorer SysListView32 hwnd=0xD02DC class=SysListView32 parent=0xD09C4 style=0x56003A40 ex=0x0 rect=[0,0,1920,1080] visible=1
+20:11:07.604 Progman children before WorkerW request (top-to-bottom Z order):
+20:11:07.604   z=0 hwnd=0xD09C4 class=SHELLDLL_DefView parent=0xB0592 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+20:11:07.739 SendMessageTimeout(Progman,0x052C,wParam=0xD,lParam=0x1) return=1 messageResult=0 lastError=0
+20:11:07.807 Progman children after WorkerW request (top-to-bottom Z order):
+20:11:07.807   z=0 hwnd=0xD09C4 class=SHELLDLL_DefView parent=0xB0592 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+20:11:07.807   z=1 hwnd=0x30023A class=WorkerW parent=0xB0592 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+20:11:07.807 selected WorkerW hwnd=0x30023A class=WorkerW parent=0xB0592 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+20:11:07.807 ATTACH ASSUMPTION VERIFIED: selected WorkerW is a direct Progman child below SHELLDLL_DefView in child Z order.
+20:11:09.334 WEBVIEW generation=6 event=info detail=DirectComposition target and WebView visual created on renderer child HWND.
+20:11:09.424 WEBVIEW generation=6 event=info detail=WebView2 environment creation started.
+20:11:10.731 WEBVIEW generation=6 event=info detail=CompositionController bound; navigating to local aquarium habitat.
+20:11:13.239 WEBVIEW generation=6 event=ready detail=habitat-ready:three-webgl2
+20:11:13.287 WebView2 top-level host before desktop attachment hwnd=0x3A07BE class=AquariumSpike.RenderWindow.v1 parent=0x4106E6 style=0x96000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+20:11:13.287 WebView2 renderer child before desktop attachment hwnd=0x2F075E class=AquariumSpike.RendererChild.v1 parent=0x3A07BE style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+20:11:13.287 WEBVIEW TOP-LEVEL PRESENT OK: local habitat reported ready before desktop attachment.
+20:11:14.807 desktop host after extended-style setup hwnd=0x3A07BE class=AquariumSpike.RenderWindow.v1 parent=0x4106E6 style=0x96000000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+20:11:14.808 desktop host after WS_CHILD conversion hwnd=0x3A07BE class=AquariumSpike.RenderWindow.v1 parent=0x1000C style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+20:11:14.811 desktop host after SetParent hwnd=0x3A07BE class=AquariumSpike.RenderWindow.v1 parent=0xB0592 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+20:11:14.812 WebView2 host after desktop attachment hwnd=0x3A07BE class=AquariumSpike.RenderWindow.v1 parent=0xB0592 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+20:11:14.812 WebView2 host owner after desktop attachment=0x4106E6
+20:11:14.812 WebView2 renderer child after desktop attachment hwnd=0x2F075E class=AquariumSpike.RendererChild.v1 parent=0x3A07BE style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+20:11:14.812 Progman children after render-window attachment (top-to-bottom Z order):
+20:11:14.812   z=0 hwnd=0xD09C4 class=SHELLDLL_DefView parent=0xB0592 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+20:11:14.812   z=1 hwnd=0x3A07BE class=AquariumSpike.RenderWindow.v1 parent=0xB0592 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+20:11:14.812   z=2 hwnd=0x30023A class=WorkerW parent=0xB0592 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+20:11:14.812 ATTACH STRUCTURE OK: layered host is parented to Progman, immediately below SHELLDLL_DefView and above WorkerW.
+20:11:14.812 No normal always-on-bottom fallback exists in this spike.
+20:11:14.812 SESSION RUNNING generation=6
+20:11:14.812 RECOVERY SUCCESS cycle=1 processId=33496
+20:11:14.812 PROBE state=running bridgeUpdates=16379 webviewReady=1 cursorScreen=(1385,951) WindowFromPoint=0x10424/Chrome_RenderWidgetHostHWND hostHitTest=-1 rendererHitTest=-1
+20:11:14.855 PERF intervalSeconds=14.00 cursorBridgeHz=7.93 hostProcessCpuPercentNormalized=0.28 totalBridgeUpdates=16380
+20:11:18.124 WEBVIEW generation=6 event=info detail=Habitat: habitat-metrics:fps=36.6;frameTimeMs=17.55;fishCount=10;drawCalls=9;triangles=4024;pointerCount=62;reactions=0;paused=false;targetFps=60
+20:11:19.962 PERF intervalSeconds=5.11 cursorBridgeHz=16.84 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=16466
+20:11:22.275 RECOVERY SIGNAL: TaskbarCreated broadcast received.
+20:11:22.297 SESSION: desktop host destroyed intentionally.
+20:11:22.297 RECOVERY ATTEMPT 1
+20:11:22.300 Progman hwnd=0xB0592 class=Progman parent=0x0 style=0x96000000 ex=0x200080 rect=[0,0,1920,1080] visible=1
+20:11:22.300 desktopMode=raised (WS_EX_NOREDIRECTIONBITMAP)
+20:11:22.300 SHELLDLL_DefView hwnd=0xD09C4 class=SHELLDLL_DefView parent=0xB0592 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+20:11:22.301 Explorer SysListView32 hwnd=0xD02DC class=SysListView32 parent=0xD09C4 style=0x56003A40 ex=0x0 rect=[0,0,1920,1080] visible=1
+20:11:22.301 Progman children before WorkerW request (top-to-bottom Z order):
+20:11:22.301   z=0 hwnd=0xD09C4 class=SHELLDLL_DefView parent=0xB0592 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+20:11:22.301   z=1 hwnd=0x30023A class=WorkerW parent=0xB0592 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+20:11:22.301 A suitable wallpaper WorkerW already existed; spawn message was not sent.
+20:11:22.301 Progman children after WorkerW request (top-to-bottom Z order):
+20:11:22.301   z=0 hwnd=0xD09C4 class=SHELLDLL_DefView parent=0xB0592 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+20:11:22.301   z=1 hwnd=0x30023A class=WorkerW parent=0xB0592 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+20:11:22.301 selected WorkerW hwnd=0x30023A class=WorkerW parent=0xB0592 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+20:11:22.301 ATTACH ASSUMPTION VERIFIED: selected WorkerW is a direct Progman child below SHELLDLL_DefView in child Z order.
+20:11:23.213 WEBVIEW generation=8 event=info detail=DirectComposition target and WebView visual created on renderer child HWND.
+20:11:23.289 WEBVIEW generation=8 event=info detail=WebView2 environment creation started.
+20:11:26.137 WEBVIEW generation=8 event=info detail=CompositionController bound; navigating to local aquarium habitat.
+20:11:28.530 WEBVIEW generation=8 event=ready detail=habitat-ready:three-webgl2
+20:11:28.581 WebView2 top-level host before desktop attachment hwnd=0x3B07BE class=AquariumSpike.RenderWindow.v1 parent=0x4106E6 style=0x96000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+20:11:28.581 WebView2 renderer child before desktop attachment hwnd=0x30075E class=AquariumSpike.RendererChild.v1 parent=0x3B07BE style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+20:11:28.581 WEBVIEW TOP-LEVEL PRESENT OK: local habitat reported ready before desktop attachment.
+20:11:30.088 desktop host after extended-style setup hwnd=0x3B07BE class=AquariumSpike.RenderWindow.v1 parent=0x4106E6 style=0x96000000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+20:11:30.089 desktop host after WS_CHILD conversion hwnd=0x3B07BE class=AquariumSpike.RenderWindow.v1 parent=0x1000C style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+20:11:30.095 desktop host after SetParent hwnd=0x3B07BE class=AquariumSpike.RenderWindow.v1 parent=0xB0592 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+20:11:30.097 WebView2 host after desktop attachment hwnd=0x3B07BE class=AquariumSpike.RenderWindow.v1 parent=0xB0592 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+20:11:30.097 WebView2 host owner after desktop attachment=0x4106E6
+20:11:30.097 WebView2 renderer child after desktop attachment hwnd=0x30075E class=AquariumSpike.RendererChild.v1 parent=0x3B07BE style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+20:11:30.097 Progman children after render-window attachment (top-to-bottom Z order):
+20:11:30.097   z=0 hwnd=0xD09C4 class=SHELLDLL_DefView parent=0xB0592 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+20:11:30.097   z=1 hwnd=0x3B07BE class=AquariumSpike.RenderWindow.v1 parent=0xB0592 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+20:11:30.097   z=2 hwnd=0x30023A class=WorkerW parent=0xB0592 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+20:11:30.097 ATTACH STRUCTURE OK: layered host is parented to Progman, immediately below SHELLDLL_DefView and above WorkerW.
+20:11:30.097 No normal always-on-bottom fallback exists in this spike.
+20:11:30.097 SESSION RUNNING generation=8
+20:11:30.097 RECOVERY SUCCESS cycle=2 processId=33496
+20:11:30.097 PROBE state=running bridgeUpdates=16480 webviewReady=1 cursorScreen=(1385,951) WindowFromPoint=0x4067C/Windows.UI.Core.CoreWindow hostHitTest=-1 rendererHitTest=-1
+20:11:30.137 PERF intervalSeconds=10.18 cursorBridgeHz=1.47 hostProcessCpuPercentNormalized=0.19 totalBridgeUpdates=16481
+20:11:33.421 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=41.0;frameTimeMs=16.96;fishCount=10;drawCalls=9;triangles=4024;pointerCount=79;reactions=0;paused=false;targetFps=60
+20:11:35.154 PERF intervalSeconds=5.02 cursorBridgeHz=23.92 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=16601
+20:11:38.453 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.9;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=198;reactions=0;paused=false;targetFps=60
+20:11:40.169 PERF intervalSeconds=5.01 cursorBridgeHz=23.73 hostProcessCpuPercentNormalized=0.39 totalBridgeUpdates=16720
+20:11:43.470 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.5;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=317;reactions=0;paused=false;targetFps=60
+20:11:45.184 PERF intervalSeconds=5.02 cursorBridgeHz=23.73 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=16839
+20:11:48.468 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=41.0;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=440;reactions=0;paused=false;targetFps=60
+20:11:50.198 PERF intervalSeconds=5.01 cursorBridgeHz=24.73 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=16963
+20:11:53.486 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=41.3;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=562;reactions=0;paused=false;targetFps=60
+20:11:55.220 PERF intervalSeconds=5.02 cursorBridgeHz=23.69 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=17082
+20:11:58.517 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.5;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=679;reactions=0;paused=false;targetFps=60
+20:12:00.251 PERF intervalSeconds=5.03 cursorBridgeHz=23.45 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=17200
+20:12:03.549 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=39.9;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=795;reactions=0;paused=false;targetFps=60
+20:12:05.254 PERF intervalSeconds=5.00 cursorBridgeHz=23.39 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=17317
+20:12:08.552 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=41.2;frameTimeMs=16.79;fishCount=10;drawCalls=9;triangles=4024;pointerCount=914;reactions=2;paused=false;targetFps=60
+20:12:10.289 PERF intervalSeconds=5.03 cursorBridgeHz=23.64 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=17436
+20:12:13.569 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.3;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1034;reactions=2;paused=false;targetFps=60
+20:12:15.318 PERF intervalSeconds=5.03 cursorBridgeHz=24.06 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=17557
+20:12:18.568 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=39.6;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1153;reactions=2;paused=false;targetFps=60
+20:12:20.339 PERF intervalSeconds=5.02 cursorBridgeHz=23.51 hostProcessCpuPercentNormalized=0.47 totalBridgeUpdates=17675
+20:12:23.583 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=39.7;frameTimeMs=16.79;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1271;reactions=2;paused=false;targetFps=60
+20:12:25.408 PERF intervalSeconds=5.07 cursorBridgeHz=22.88 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=17791
+20:12:28.586 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=37.4;frameTimeMs=17.69;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1369;reactions=2;paused=false;targetFps=60
+20:12:30.458 PERF intervalSeconds=5.05 cursorBridgeHz=18.81 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=17886
+20:12:33.655 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.1;frameTimeMs=16.77;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1464;reactions=2;paused=false;targetFps=60
+20:12:35.464 PERF intervalSeconds=5.01 cursorBridgeHz=18.38 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=17978
+20:12:38.616 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=39.9;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1560;reactions=2;paused=false;targetFps=60
+20:12:40.495 PERF intervalSeconds=5.03 cursorBridgeHz=21.07 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=18084
+20:12:43.634 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=39.3;frameTimeMs=16.81;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1675;reactions=5;paused=false;targetFps=60
+20:12:45.514 PERF intervalSeconds=5.02 cursorBridgeHz=23.11 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=18200
+20:12:48.649 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.1;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1794;reactions=11;paused=false;targetFps=60
+20:12:50.600 PERF intervalSeconds=5.09 cursorBridgeHz=23.40 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=18319
+20:12:53.677 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=41.1;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=1913;reactions=14;paused=false;targetFps=60
+20:12:55.621 PERF intervalSeconds=5.02 cursorBridgeHz=24.10 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=18440
+20:12:58.689 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.9;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2034;reactions=15;paused=false;targetFps=60
+20:13:00.656 PERF intervalSeconds=5.03 cursorBridgeHz=24.23 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=18562
+20:13:03.684 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=41.2;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2155;reactions=17;paused=false;targetFps=60
+20:13:05.684 PERF intervalSeconds=5.03 cursorBridgeHz=24.28 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=18684
+20:13:08.684 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.0;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2276;reactions=27;paused=false;targetFps=60
+20:13:10.703 PERF intervalSeconds=5.02 cursorBridgeHz=24.30 hostProcessCpuPercentNormalized=0.39 totalBridgeUpdates=18806
+20:13:13.701 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.3;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2398;reactions=32;paused=false;targetFps=60
+20:13:15.735 PERF intervalSeconds=5.03 cursorBridgeHz=24.24 hostProcessCpuPercentNormalized=0.39 totalBridgeUpdates=18928
+20:13:18.705 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=41.8;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2517;reactions=37;paused=false;targetFps=60
+20:13:20.736 PERF intervalSeconds=5.00 cursorBridgeHz=23.80 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=19047
+20:13:23.701 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=41.2;frameTimeMs=16.87;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2634;reactions=37;paused=false;targetFps=60
+20:13:25.736 PERF intervalSeconds=5.00 cursorBridgeHz=23.20 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=19163
+20:13:28.720 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=39.9;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2754;reactions=39;paused=false;targetFps=60
+20:13:30.771 PERF intervalSeconds=5.04 cursorBridgeHz=23.83 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=19283
+20:13:33.719 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.2;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2872;reactions=44;paused=false;targetFps=60
+20:13:35.786 PERF intervalSeconds=5.01 cursorBridgeHz=23.73 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=19402
+20:13:38.736 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.9;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=2992;reactions=46;paused=false;targetFps=60
+20:13:40.804 PERF intervalSeconds=5.02 cursorBridgeHz=24.32 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=19524
+20:13:43.738 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.0;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3113;reactions=46;paused=false;targetFps=60
+20:13:45.836 PERF intervalSeconds=5.03 cursorBridgeHz=24.04 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=19645
+20:13:48.735 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.0;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3236;reactions=46;paused=false;targetFps=60
+20:13:50.854 PERF intervalSeconds=5.02 cursorBridgeHz=24.52 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=19768
+20:13:53.734 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.8;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3355;reactions=46;paused=false;targetFps=60
+20:13:55.872 PERF intervalSeconds=5.02 cursorBridgeHz=24.11 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=19889
+20:13:58.750 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=39.5;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3476;reactions=46;paused=false;targetFps=60
+20:14:00.884 PERF intervalSeconds=5.01 cursorBridgeHz=23.34 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=20006
+20:14:03.749 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.4;frameTimeMs=16.96;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3591;reactions=46;paused=false;targetFps=60
+20:14:05.900 PERF intervalSeconds=5.02 cursorBridgeHz=23.53 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=20124
+20:14:08.749 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=41.2;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3714;reactions=46;paused=false;targetFps=60
+20:14:10.900 PERF intervalSeconds=5.00 cursorBridgeHz=25.00 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=20249
+20:14:13.750 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=41.6;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3839;reactions=46;paused=false;targetFps=60
+20:14:15.915 PERF intervalSeconds=5.01 cursorBridgeHz=25.12 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=20375
+20:14:18.766 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=38.9;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=3968;reactions=46;paused=false;targetFps=60
+20:14:20.949 PERF intervalSeconds=5.03 cursorBridgeHz=25.04 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=20501
+20:14:23.766 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=41.4;frameTimeMs=16.86;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4091;reactions=46;paused=false;targetFps=60
+20:14:25.965 PERF intervalSeconds=5.02 cursorBridgeHz=25.31 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=20628
+20:14:28.766 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.4;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4217;reactions=46;paused=false;targetFps=60
+20:14:30.986 PERF intervalSeconds=5.02 cursorBridgeHz=25.30 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=20755
+20:14:33.765 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=41.8;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4343;reactions=46;paused=false;targetFps=60
+20:14:35.998 PERF intervalSeconds=5.01 cursorBridgeHz=24.74 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=20879
+20:14:38.783 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.9;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4469;reactions=46;paused=false;targetFps=60
+20:14:41.017 PERF intervalSeconds=5.02 cursorBridgeHz=25.50 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=21007
+20:14:43.800 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=42.3;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4596;reactions=46;paused=false;targetFps=60
+20:14:46.018 PERF intervalSeconds=5.00 cursorBridgeHz=25.20 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=21133
+20:14:48.815 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.5;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4722;reactions=46;paused=false;targetFps=60
+20:14:51.054 PERF intervalSeconds=5.04 cursorBridgeHz=25.01 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=21259
+20:14:52.876 PROBE state=running bridgeUpdates=21302 webviewReady=1 cursorScreen=(1000,400) WindowFromPoint=0xD02DC/SysListView32 hostHitTest=-1 rendererHitTest=-1
+20:14:52.882 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.5;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4822;reactions=46;paused=false;targetFps=60
+20:14:52.882 WEBVIEW generation=8 event=info detail=Habitat: probe:fps=40.5;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4822;reactions=46;paused=false;targetFps=60
+20:14:53.833 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=42.3;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4844;reactions=46;paused=false;targetFps=60
+20:14:56.084 PERF intervalSeconds=5.03 cursorBridgeHz=24.26 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=21381
+20:14:58.849 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.9;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=4969;reactions=46;paused=false;targetFps=60
+20:15:01.084 PERF intervalSeconds=5.00 cursorBridgeHz=25.00 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=21506
+20:15:03.851 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=41.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=5092;reactions=46;paused=false;targetFps=60
+20:15:06.116 PERF intervalSeconds=5.03 cursorBridgeHz=24.25 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=21628
+20:15:08.849 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.2;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=5217;reactions=50;paused=false;targetFps=60
+20:15:11.148 PERF intervalSeconds=5.03 cursorBridgeHz=25.24 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=21755
+20:15:13.852 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.8;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=5343;reactions=57;paused=false;targetFps=60
+20:15:16.148 PERF intervalSeconds=5.00 cursorBridgeHz=24.60 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=21878
+20:15:18.866 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=41.1;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=5464;reactions=69;paused=false;targetFps=60
+20:15:21.168 PERF intervalSeconds=5.02 cursorBridgeHz=24.90 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=22003
+20:15:23.865 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.4;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=5590;reactions=80;paused=false;targetFps=60
+20:15:26.210 PERF intervalSeconds=5.04 cursorBridgeHz=24.99 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=22129
+20:15:28.867 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=40.2;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=5714;reactions=87;paused=false;targetFps=60
+20:15:31.247 PERF intervalSeconds=5.04 cursorBridgeHz=24.62 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=22253
+20:15:33.882 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=41.3;frameTimeMs=16.71;fishCount=10;drawCalls=9;triangles=4024;pointerCount=5838;reactions=92;paused=false;targetFps=60
+20:15:36.267 PERF intervalSeconds=5.02 cursorBridgeHz=25.09 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=22379
+20:15:38.899 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=41.1;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=5965;reactions=98;paused=false;targetFps=60
+20:15:41.300 PERF intervalSeconds=5.03 cursorBridgeHz=25.04 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=22505
+20:15:43.900 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=42.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=6091;reactions=105;paused=false;targetFps=60
+20:15:46.315 PERF intervalSeconds=5.01 cursorBridgeHz=25.33 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=22632
+20:15:48.916 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=42.9;frameTimeMs=16.69;fishCount=10;drawCalls=9;triangles=4024;pointerCount=6218;reactions=114;paused=false;targetFps=60
+20:15:51.348 PERF intervalSeconds=5.03 cursorBridgeHz=25.43 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=22760
+20:15:53.916 WEBVIEW generation=8 event=info detail=Habitat: habitat-metrics:fps=42.0;frameTimeMs=16.70;fishCount=10;drawCalls=9;triangles=4024;pointerCount=6345;reactions=121;paused=false;targetFps=60
+20:15:56.371 PERF intervalSeconds=5.02 cursorBridgeHz=25.68 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=22889
+20:15:58.680 CONTROL quit
+20:15:58.680 PROBE state=running bridgeUpdates=22944 webviewReady=1 cursorScreen=(1000,400) WindowFromPoint=0xD02DC/SysListView32 hostHitTest=-1 rendererHitTest=-1
+20:15:58.725 SESSION: desktop host destroyed intentionally.
+20:15:58.729 Aquarium.exe WebView2 composition wallpaper spike stopped

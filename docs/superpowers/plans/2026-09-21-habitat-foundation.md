@@ -47,7 +47,7 @@
 - Produces: `createPointerState() -> { present, x, y, z, eventsReceived }`
 - Fish state remains plain numeric data and contains no Three.js object.
 
-- [ ] **Step 1: Add the ESM descriptor and failing deterministic/configuration tests**
+- [x] **Step 1: Add the ESM descriptor and failing deterministic/configuration tests**
 
 ```json
 {
@@ -85,17 +85,17 @@ test('steering remains finite and bounded at zero separation', () => {
 });
 ```
 
-- [ ] **Step 2: Run the tests and verify the missing-module failure**
+- [x] **Step 2: Run the tests and verify the missing-module failure**
 
 Run: `node --test tests/habitat/behavior.test.mjs`
 
 Expected: FAIL because `behavior.js` and `config.js` do not exist.
 
-- [ ] **Step 3: Implement validated configuration, seeded variation, school creation, and bounded steering**
+- [x] **Step 3: Implement validated configuration, seeded variation, school creation, and bounded steering**
 
 Implement a small integer PRNG, plain `{x,y,z}` vector helpers, deterministic fish parameter creation, bounded neighbor pair accumulation, cohesion/alignment/separation, soft boundaries/depth preference, wander, and personality-weighted cursor notice/curiosity/threat/recovery. Reuse scratch numeric fields/objects inside the step; do not import Three.js.
 
-- [ ] **Step 4: Extend tests for separation, cohesion/alignment, cursor personalities, pointer-out recovery, boundaries, and determinism**
+- [x] **Step 4: Extend tests for separation, cohesion/alignment, cursor personalities, pointer-out recovery, boundaries, and determinism**
 
 Add explicit tests that:
 
@@ -108,13 +108,13 @@ Add explicit tests that:
 - identical seeds and input sequences produce deeply equal states;
 - different seeds produce non-identical personality values.
 
-- [ ] **Step 5: Run the behavior suite**
+- [x] **Step 5: Run the behavior suite**
 
 Run: `node --test tests/habitat/behavior.test.mjs`
 
 Expected: all tests PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```powershell
 git add habitat/package.json habitat/core/behavior.js habitat/habitats/planted-tank/config.js tests/habitat/behavior.test.mjs
@@ -133,7 +133,7 @@ git commit -m "feat: add deterministic fish behavior"
 - Produces: `createHabitatEngine(options)` with `start()`, `setPaused(bool)`, `setTargetFps(number)`, `setPointer(pointer)`, `requestProbe()`, and `dispose()`.
 - Consumes habitat lifecycle: `step(dt, pointer)`, `project(simulationTime)`, `resize(width,height)`, `getFishCount()`, `dispose()`.
 
-- [ ] **Step 1: Write failing clock/lifecycle tests**
+- [x] **Step 1: Write failing clock/lifecycle tests**
 
 ```js
 import test from 'node:test';
@@ -159,21 +159,21 @@ test('catch-up is capped after a long frame', () => {
 });
 ```
 
-- [ ] **Step 2: Run the clock suite and verify failure**
+- [x] **Step 2: Run the clock suite and verify failure**
 
 Run: `node --test tests/habitat/engine.test.mjs`
 
 Expected: FAIL because `engine.js` does not exist.
 
-- [ ] **Step 3: Implement `FrameClock` and engine scheduling**
+- [x] **Step 3: Implement `FrameClock` and engine scheduling**
 
 Use injected `requestFrame`, `cancelFrame`, and `now` functions so lifecycle tests need no browser. Pausing cancels the scheduled callback. Resume clears accumulator and render timestamps. Rate zero uses the same idle state. The engine samples diagnostics after rendering and posts snapshots without calling simulation methods.
 
-- [ ] **Step 4: Add engine tests with fake scheduler and habitat**
+- [x] **Step 4: Add engine tests with fake scheduler and habitat**
 
 Verify one outstanding callback maximum, pause cancellation, no simulation/render while paused, smooth resume, target rate zero idling, pointer replacement, probe snapshot fields, and identical fake-habitat step history with diagnostics enabled or disabled.
 
-- [ ] **Step 5: Add habitat tests to the existing test target**
+- [x] **Step 5: Add habitat tests to the existing test target**
 
 Update `build.ps1` to require the already-present Node executable only for tests and run:
 
@@ -183,13 +183,13 @@ node --test tests/habitat/behavior.test.mjs tests/habitat/engine.test.mjs
 
 Do not install packages or alter the native compiler commands.
 
-- [ ] **Step 6: Run all tests**
+- [x] **Step 6: Run all tests**
 
 Run: `.\build.ps1 -Target Tests`
 
 Expected: behavior/engine tests and all three native probes PASS.
 
-- [ ] **Step 7: Commit**
+- [x] **Step 7: Commit**
 
 ```powershell
 git add habitat/core/engine.js tests/habitat/engine.test.mjs build.ps1
@@ -209,31 +209,31 @@ git commit -m "feat: add habitat runtime lifecycle"
 - Produces: `createEnvironment(scene, config) -> { updateVisuals(time), dispose() }`
 - Renderer consumes school state read-only.
 
-- [ ] **Step 1: Write the failing renderer-authority test**
+- [x] **Step 1: Write the failing renderer-authority test**
 
 Create a Three.js `Scene`, build a deterministic school, deep-clone it, call `project`, and assert the school remains deeply equal. Assert the renderer exposes four instanced fish meshes and sets their instance count to the school population. Also read `behavior.js` as text and assert it contains no import/reference to `THREE` or DOM globals.
 
-- [ ] **Step 2: Run the renderer contract test and verify failure**
+- [x] **Step 2: Run the renderer contract test and verify failure**
 
 Run: `node --test tests/habitat/render-contract.test.mjs`
 
 Expected: FAIL because `fish.js` does not exist.
 
-- [ ] **Step 3: Implement shared instanced fish geometry**
+- [x] **Step 3: Implement shared instanced fish geometry**
 
 Create shared body, tail, eye, and fin geometry/materials. Use instance color and reusable matrices/quaternions/vectors. Derive heading, banking, tail phase, and scale from authoritative state and simulation time. Never write to the school.
 
-- [ ] **Step 4: Implement the environment**
+- [x] **Step 4: Implement the environment**
 
 Add a low-contrast shader background, substrate plane, bounded `Points` particle field, instanced plant silhouettes, fog, hemisphere light, and one soft directional light. Allocate procedural positions deterministically from habitat seed.
 
-- [ ] **Step 5: Run all JavaScript tests**
+- [x] **Step 5: Run all JavaScript tests**
 
 Run: `node --test tests/habitat/behavior.test.mjs tests/habitat/engine.test.mjs tests/habitat/render-contract.test.mjs`
 
 Expected: all tests PASS and renderer projection leaves state unchanged.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```powershell
 git add habitat/core/fish.js habitat/core/environment.js habitat/shaders/water-background.js tests/habitat/render-contract.test.mjs
@@ -253,15 +253,15 @@ git commit -m "feat: render instanced fish and planted environment"
 - `habitat.js` selects WebView2 or preview input but creates exactly one Planted Tank path.
 - Retains readiness string `habitat-ready:three-webgl2` and existing failure prefixes.
 
-- [ ] **Step 1: Compose the habitat**
+- [x] **Step 1: Compose the habitat**
 
 Create the scene, fixed perspective camera, validated configuration, authoritative school, fish renderer, and environment. Convert normalized pointer coordinates to a stable world plane and pass only plain coordinates into `stepSchool`.
 
-- [ ] **Step 2: Replace the feasibility entry point**
+- [x] **Step 2: Replace the feasibility entry point**
 
 Keep the existing WebGL2 requirement/error handling. Normalize WebView2 pointer/state/rate/probe messages into engine calls. When WebView2 is absent, attach local pointer move/leave, Space pause/resume, and `D` diagnostics toggle. Emit compact metrics containing FPS, frame time, fish count, calls, triangles, pointer count, and pause state.
 
-- [ ] **Step 3: Update HTML and development documentation**
+- [x] **Step 3: Update HTML and development documentation**
 
 Rename feasibility/probe labels to product/habitat language, add an unobtrusive diagnostics element hidden by default, and document:
 
@@ -272,17 +272,17 @@ python -m http.server 8000 --bind 127.0.0.1
 
 State that Python is optional development-only and production still uses `aquarium.local`.
 
-- [ ] **Step 4: Run automated validation**
+- [x] **Step 4: Run automated validation**
 
 Run: `.\build.ps1 -Target All`
 
 Expected: all JavaScript/native tests PASS and `AquariumSpike.exe` builds with `/W4 /WX`.
 
-- [ ] **Step 5: Run browser preview smoke**
+- [x] **Step 5: Run browser preview smoke**
 
 Serve `habitat/` on loopback, open the preview, verify 10 moving non-identical fish, local pointer reaction/recovery, Space pause/resume, `D` diagnostics, and no external requests. Stop the server after the check.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```powershell
 git add habitat/habitats/planted-tank/scene.js habitat/habitat.js habitat/index.html README.md
@@ -300,25 +300,25 @@ git commit -m "feat: add planted tank habitat"
 **Interfaces:**
 - No new code interface; validates the complete branch against the frozen host.
 
-- [ ] **Step 1: Run final automated verification**
+- [x] **Step 1: Run final automated verification**
 
 Run: `.\build.ps1 -Target All`
 
 Expected: every JavaScript/native test passes and final executable builds.
 
-- [ ] **Step 2: Execute the Windows desktop acceptance smoke**
+- [x] **Step 2: Execute the Windows desktop acceptance smoke**
 
 Launch the built Aquarium and record actual observations for: below-icon composition, icon click, blank click, approximately 10 visible moving fish, non-synchronized movement, visible schooling, cursor reaction/recovery, pause idle, smooth resume, Win+D, one forced Explorer restart/recovery, and clean quit.
 
-- [ ] **Step 3: Measure the final run**
+- [x] **Step 3: Measure the final run**
 
 Record continuous duration, habitat FPS/frame time, draw calls, triangles, fish count, process-tree working set/private bytes, normalized CPU, attributed GPU samples, cursor/pointer counters, and Aquarium-owned TCP connections. Compare to the feasibility observations without claiming improvement unless supported.
 
-- [ ] **Step 4: Capture evidence and report**
+- [x] **Step 4: Capture evidence and report**
 
 Save one focused desktop screenshot and the final runtime log. Write the architecture, observed acceptance results, measurements, baseline comparison, limitations, native-file diff result, and recommendation in `docs/sprint1-habitat-report.md`.
 
-- [ ] **Step 5: Verify frozen infrastructure and repository state**
+- [x] **Step 5: Verify frozen infrastructure and repository state**
 
 Run:
 
@@ -330,14 +330,14 @@ git status --short
 
 Expected: no `src/` change, no whitespace errors, and only intended evidence/report changes before commit.
 
-- [ ] **Step 6: Commit final evidence**
+- [x] **Step 6: Commit final evidence**
 
 ```powershell
 git add docs/evidence/sprint1-habitat-final.log sprint1-planted-tank.png docs/sprint1-habitat-report.md README.md
 git commit -m "docs: record planted tank validation"
 ```
 
-- [ ] **Step 7: Final verification and push feature branch only**
+- [x] **Step 7: Final verification and push feature branch only**
 
 Run the complete build once more, confirm a clean working tree, confirm `main` and `feasibility-v1` are unchanged, and push only:
 

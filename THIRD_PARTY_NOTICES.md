@@ -22,4 +22,4 @@ No WebView2 source was copied from Lively. Lively's pinned package version was u
 - License: MIT; see `habitat/vendor/three/LICENSE.txt`
 - Vendoring details: `habitat/vendor/three/README.md`
 
-No Three.js code, shader, model, texture, fish, or other asset was copied from `desktop-habitats` or Lively. The primitive habitat simulation in `habitat/habitat.js` is original spike code.
+No Three.js code beyond the unmodified vendored distribution, and no shader, model, texture, fish, or other asset was copied from `desktop-habitats` or Lively. The Habitat Runtime, deterministic behavior, procedural fish geometry, water shader, and Planted Tank environment in this repository are original Aquarium.exe code.
