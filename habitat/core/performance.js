@@ -35,14 +35,24 @@ function summarize(values) {
 export function createPerformanceRecorder({ enabled = false, now } = {}) {
   const clock = now ?? (() => performance.now());
   const intervals = [];
+  const callbackIntervals = [];
   let lastRenderTimestamp = null;
+  let lastCallbackTimestamp = null;
+  let callbackCount = 0;
+  let renderedFrameCount = 0;
+  let gateSkippedCallbackCount = 0;
   const components = Object.fromEntries(
     COMPONENT_NAMES.map(name => [name, { count: 0, sum: 0, min: Infinity, max: 0 }]),
   );
 
   function reset() {
     intervals.length = 0;
+    callbackIntervals.length = 0;
     lastRenderTimestamp = null;
+    lastCallbackTimestamp = null;
+    callbackCount = 0;
+    renderedFrameCount = 0;
+    gateSkippedCallbackCount = 0;
     for (const value of Object.values(components)) {
       value.count = 0;
       value.sum = 0;
@@ -62,10 +72,20 @@ export function createPerformanceRecorder({ enabled = false, now } = {}) {
     },
     recordRender(timestamp) {
       if (!enabled) return;
+      renderedFrameCount += 1;
       if (lastRenderTimestamp !== null && intervals.length < MAX_INTERVALS) {
         intervals.push(Math.max(0, timestamp - lastRenderTimestamp));
       }
       lastRenderTimestamp = timestamp;
+    },
+    recordCallback(timestamp, rendered) {
+      if (!enabled) return;
+      callbackCount += 1;
+      if (!rendered) gateSkippedCallbackCount += 1;
+      if (lastCallbackTimestamp !== null && callbackIntervals.length < MAX_INTERVALS) {
+        callbackIntervals.push(Math.max(0, timestamp - lastCallbackTimestamp));
+      }
+      lastCallbackTimestamp = timestamp;
     },
     add(name, durationMs) {
       if (!enabled) return;
@@ -92,6 +112,14 @@ export function createPerformanceRecorder({ enabled = false, now } = {}) {
         clusters[bucket] = (clusters[bucket] ?? 0) + 1;
       }
       renderedIntervals.clusters = clusters;
+      const callbackSummary = summarize(callbackIntervals);
+      callbackSummary.values = callbackIntervals.map(rounded);
+      const callbackClusters = {};
+      for (const interval of callbackIntervals) {
+        const bucket = String(Math.round(interval));
+        callbackClusters[bucket] = (callbackClusters[bucket] ?? 0) + 1;
+      }
+      callbackSummary.clusters = callbackClusters;
       const componentSummary = {};
       for (const [name, value] of Object.entries(components)) {
         componentSummary[name] = {
@@ -101,8 +129,16 @@ export function createPerformanceRecorder({ enabled = false, now } = {}) {
           max: value.count ? rounded(value.max) : 0,
         };
       }
+      const result = {
+        callbackCount,
+        renderedFrameCount,
+        gateSkippedCallbackCount,
+        callbackIntervals: callbackSummary,
+        renderedIntervals,
+        components: componentSummary,
+      };
       reset();
-      return { renderedIntervals, components: componentSummary };
+      return result;
     },
   };
 }

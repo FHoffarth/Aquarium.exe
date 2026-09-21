@@ -224,6 +224,7 @@ test('performance recorder observes callbacks and actual projections only', () =
   const performanceRecorder = {
     enabled: true,
     mark() { events.push('mark'); return 5; },
+    recordCallback(timestamp, rendered) { events.push(['callback', timestamp, rendered]); },
     recordRender(timestamp) { events.push(['render', timestamp]); },
     finishFrame(start) { events.push(['finish', start]); },
   };
@@ -242,9 +243,12 @@ test('performance recorder observes callbacks and actual projections only', () =
   scheduler.fire(50.1);
 
   assert.deepEqual(events.filter(event => Array.isArray(event)), [
+    ['callback', 16.7, true],
     ['render', 16.7],
     ['finish', 5],
+    ['callback', 25, false],
     ['finish', 5],
+    ['callback', 50.1, true],
     ['render', 50.1],
     ['finish', 5],
   ]);

@@ -134,6 +134,22 @@ test('record measures a named component from an explicit start mark', () => {
   assert.equal(recorder.snapshot().components.renderMs.mean, 2.5);
 });
 
+test('recorder distinguishes rAF callbacks, rendered frames, and gate skips', () => {
+  const recorder = createPerformanceRecorder({ enabled: true });
+  recorder.recordCallback(0, true);
+  recorder.recordRender(0);
+  recorder.recordCallback(16.6, false);
+  recorder.recordCallback(33.3, true);
+  recorder.recordRender(33.3);
+
+  const snapshot = recorder.snapshot();
+  assert.equal(snapshot.callbackCount, 3);
+  assert.equal(snapshot.renderedFrameCount, 2);
+  assert.equal(snapshot.gateSkippedCallbackCount, 1);
+  assert.deepEqual(snapshot.callbackIntervals.values, [16.6, 16.7]);
+  assert.deepEqual(snapshot.renderedIntervals.values, [33.3]);
+});
+
 test('snapshot resets samples without changing configuration', () => {
   const recorder = createPerformanceRecorder({ enabled: true });
   recorder.recordRender(100);

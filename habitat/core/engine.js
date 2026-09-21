@@ -175,6 +175,9 @@ export function createHabitatEngine({
       ? performanceRecorder.mark()
       : 0;
     clock.tick(timestamp);
+    if (performanceRecorder?.enabled) {
+      performanceRecorder.recordCallback(timestamp, clock.shouldRender);
+    }
     for (let index = 0; index < clock.stepCount; index += 1) {
       const deltaSeconds = clock.fixedStepMs / 1000;
       habitat.step(deltaSeconds, pointer);
