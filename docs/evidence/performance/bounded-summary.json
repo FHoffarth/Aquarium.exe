@@ -1,0 +1,438 @@
+{
+  "generatedAtUtc": "2026-09-21T20:53:55.0838735Z",
+  "runs": [
+    {
+      "file": "frame-pacing-normal.json",
+      "status": "CONCLUSIVE",
+      "profile": "full-fish10-scale1-fps60",
+      "durationSeconds": 15.019,
+      "cpuPercentNormalized": 8.323,
+      "gpu": {
+        "samples": 14,
+        "mean": 45.056,
+        "min": 40.042,
+        "max": 48.342
+      },
+      "workingSetMiB": 533.1,
+      "privateMiB": 339.3,
+      "tcpConnectionCount": 4,
+      "callbackCount": 1793,
+      "renderedFrameCount": 1219,
+      "gateSkippedCallbackCount": 574,
+      "callbackIntervals": {
+        "count": 1785,
+        "mean": 16.807,
+        "median": 16.7,
+        "p95": 16.8,
+        "min": 12.8,
+        "max": 216.636,
+        "clusters": {
+          "13": 1,
+          "15": 1,
+          "16": 89,
+          "17": 1687,
+          "18": 1,
+          "19": 3,
+          "34": 1,
+          "50": 1,
+          "217": 1
+        }
+      },
+      "renderedIntervals": {
+        "count": 1212,
+        "mean": 24.739,
+        "median": 16.8,
+        "p95": 33.4,
+        "min": 16.7,
+        "max": 216.636,
+        "clusters": {
+          "17": 635,
+          "18": 1,
+          "19": 2,
+          "29": 1,
+          "31": 1,
+          "32": 1,
+          "33": 562,
+          "34": 6,
+          "35": 1,
+          "67": 1,
+          "217": 1
+        }
+      },
+      "derivedRenderedFps": 40.42,
+      "components": {
+        "simulationMs": {
+          "count": 1798,
+          "mean": 0.277
+        },
+        "fishProjectionMs": {
+          "count": 1219,
+          "mean": 0.285
+        },
+        "environmentMs": {
+          "count": 1219,
+          "mean": 0.015
+        },
+        "renderMs": {
+          "count": 1219,
+          "mean": 1.237
+        },
+        "callbackMs": {
+          "count": 1792,
+          "mean": 1.502
+        }
+      }
+    },
+    {
+      "file": "fish-0.json",
+      "status": "CONCLUSIVE",
+      "profile": "full-fish0-scale1-fps60",
+      "durationSeconds": 10.061,
+      "cpuPercentNormalized": 9.939,
+      "gpu": {
+        "samples": 10,
+        "mean": 43.713,
+        "min": 39.755,
+        "max": 48.653
+      },
+      "workingSetMiB": 503.8,
+      "privateMiB": 309.7,
+      "tcpConnectionCount": 4,
+      "callbackCount": 1205,
+      "renderedFrameCount": 806,
+      "gateSkippedCallbackCount": 399,
+      "callbackIntervals": {
+        "count": 1199,
+        "mean": 16.931,
+        "median": 16.7,
+        "p95": 16.8,
+        "min": 15.7,
+        "max": 333.302,
+        "clusters": {
+          "16": 58,
+          "17": 1138,
+          "18": 2,
+          "333": 1
+        }
+      },
+      "renderedIntervals": {
+        "count": 800,
+        "mean": 25.313,
+        "median": 17.0,
+        "p95": 33.4,
+        "min": 16.7,
+        "max": 333.302,
+        "clusters": {
+          "17": 401,
+          "18": 2,
+          "32": 2,
+          "33": 390,
+          "34": 4,
+          "333": 1
+        }
+      },
+      "derivedRenderedFps": 39.51,
+      "components": {
+        "simulationMs": {
+          "count": 1207,
+          "mean": 0.013
+        },
+        "fishProjectionMs": {
+          "count": 806,
+          "mean": 0.041
+        },
+        "environmentMs": {
+          "count": 806,
+          "mean": 0.037
+        },
+        "renderMs": {
+          "count": 806,
+          "mean": 1.835
+        },
+        "callbackMs": {
+          "count": 1205,
+          "mean": 1.49
+        }
+      }
+    },
+    {
+      "file": "fish-50.json",
+      "status": "CONCLUSIVE",
+      "profile": "full-fish50-scale1-fps60",
+      "durationSeconds": 10.061,
+      "cpuPercentNormalized": 9.939,
+      "gpu": {
+        "samples": 10,
+        "mean": 46.762,
+        "min": 33.352,
+        "max": 52.72
+      },
+      "workingSetMiB": 499.2,
+      "privateMiB": 314.0,
+      "tcpConnectionCount": 4,
+      "callbackCount": 679,
+      "renderedFrameCount": 468,
+      "gateSkippedCallbackCount": 211,
+      "callbackIntervals": {
+        "count": 676,
+        "mean": 17.012,
+        "median": 16.7,
+        "p95": 16.8,
+        "min": 13.0,
+        "max": 216.702,
+        "clusters": {
+          "13": 1,
+          "16": 30,
+          "17": 641,
+          "20": 1,
+          "33": 2,
+          "217": 1
+        }
+      },
+      "renderedIntervals": {
+        "count": 465,
+        "mean": 24.695,
+        "median": 16.8,
+        "p95": 33.3,
+        "min": 16.7,
+        "max": 216.702,
+        "clusters": {
+          "17": 252,
+          "20": 1,
+          "30": 1,
+          "33": 205,
+          "34": 4,
+          "50": 1,
+          "217": 1
+        }
+      },
+      "derivedRenderedFps": 40.49,
+      "components": {
+        "simulationMs": {
+          "count": 682,
+          "mean": 0.917
+        },
+        "fishProjectionMs": {
+          "count": 468,
+          "mean": 0.455
+        },
+        "environmentMs": {
+          "count": 468,
+          "mean": 0.01
+        },
+        "renderMs": {
+          "count": 468,
+          "mean": 1.299
+        },
+        "callbackMs": {
+          "count": 679,
+          "mean": 2.322
+        }
+      }
+    },
+    {
+      "file": "scale-0.5.json",
+      "status": "CONCLUSIVE",
+      "profile": "full-fish10-scale0.5-fps60",
+      "durationSeconds": 10.048,
+      "cpuPercentNormalized": 9.952,
+      "gpu": {
+        "samples": 10,
+        "mean": 26.818,
+        "min": 25.085,
+        "max": 29.324
+      },
+      "workingSetMiB": 420.9,
+      "privateMiB": 234.8,
+      "tcpConnectionCount": 4,
+      "callbackCount": 1171,
+      "renderedFrameCount": 786,
+      "gateSkippedCallbackCount": 385,
+      "callbackIntervals": {
+        "count": 1166,
+        "mean": 16.824,
+        "median": 16.7,
+        "p95": 16.8,
+        "min": 15.9,
+        "max": 200.002,
+        "clusters": {
+          "16": 36,
+          "17": 1129,
+          "200": 1
+        }
+      },
+      "renderedIntervals": {
+        "count": 781,
+        "mean": 25.054,
+        "median": 16.9,
+        "p95": 33.4,
+        "min": 16.7,
+        "max": 200.002,
+        "clusters": {
+          "17": 398,
+          "33": 379,
+          "34": 3,
+          "200": 1
+        }
+      },
+      "derivedRenderedFps": 39.91,
+      "components": {
+        "simulationMs": {
+          "count": 1173,
+          "mean": 0.208
+        },
+        "fishProjectionMs": {
+          "count": 786,
+          "mean": 0.277
+        },
+        "environmentMs": {
+          "count": 786,
+          "mean": 0.015
+        },
+        "renderMs": {
+          "count": 786,
+          "mean": 1.201
+        },
+        "callbackMs": {
+          "count": 1171,
+          "mean": 1.387
+        }
+      }
+    },
+    {
+      "file": "fps-30.json",
+      "status": "CONCLUSIVE",
+      "profile": "full-fish10-scale1-fps30",
+      "durationSeconds": 10.059,
+      "cpuPercentNormalized": 7.456,
+      "gpu": {
+        "samples": 10,
+        "mean": 28.566,
+        "min": 22.753,
+        "max": 30.818
+      },
+      "workingSetMiB": 496.1,
+      "privateMiB": 312.5,
+      "tcpConnectionCount": 4,
+      "callbackCount": 716,
+      "renderedFrameCount": 269,
+      "gateSkippedCallbackCount": 447,
+      "callbackIntervals": {
+        "count": 712,
+        "mean": 16.947,
+        "median": 16.7,
+        "p95": 16.8,
+        "min": 15.2,
+        "max": 216.736,
+        "clusters": {
+          "15": 2,
+          "16": 37,
+          "17": 668,
+          "18": 4,
+          "217": 1
+        }
+      },
+      "renderedIntervals": {
+        "count": 265,
+        "mean": 45.282,
+        "median": 49.9,
+        "p95": 50.0,
+        "min": 33.4,
+        "max": 216.736,
+        "clusters": {
+          "33": 75,
+          "34": 9,
+          "35": 1,
+          "48": 1,
+          "49": 2,
+          "50": 176,
+          "217": 1
+        }
+      },
+      "derivedRenderedFps": 22.08,
+      "components": {
+        "simulationMs": {
+          "count": 717,
+          "mean": 0.253
+        },
+        "fishProjectionMs": {
+          "count": 269,
+          "mean": 0.307
+        },
+        "environmentMs": {
+          "count": 269,
+          "mean": 0.016
+        },
+        "renderMs": {
+          "count": 269,
+          "mean": 1.587
+        },
+        "callbackMs": {
+          "count": 716,
+          "mean": 1.171
+        }
+      }
+    },
+    {
+      "file": "paused.json",
+      "status": "CONCLUSIVE",
+      "profile": "full-fish10-scale1-fps60-paused",
+      "durationSeconds": 5.046,
+      "cpuPercentNormalized": 0.0,
+      "gpu": {
+        "samples": 5,
+        "mean": 0.0,
+        "min": 0.0,
+        "max": 0.0
+      },
+      "workingSetMiB": 492.5,
+      "privateMiB": 311.0,
+      "tcpConnectionCount": 4,
+      "callbackCount": 0,
+      "renderedFrameCount": 0,
+      "gateSkippedCallbackCount": 0,
+      "callbackIntervals": {
+        "count": 0,
+        "mean": 0,
+        "median": 0,
+        "p95": 0,
+        "min": 0,
+        "max": 0,
+        "clusters": {}
+      },
+      "renderedIntervals": {
+        "count": 0,
+        "mean": 0,
+        "median": 0,
+        "p95": 0,
+        "min": 0,
+        "max": 0,
+        "clusters": {}
+      },
+      "derivedRenderedFps": 0,
+      "components": {
+        "simulationMs": {
+          "count": 0,
+          "mean": 0
+        },
+        "fishProjectionMs": {
+          "count": 0,
+          "mean": 0
+        },
+        "environmentMs": {
+          "count": 0,
+          "mean": 0
+        },
+        "renderMs": {
+          "count": 0,
+          "mean": 0
+        },
+        "callbackMs": {
+          "count": 0,
+          "mean": 0
+        }
+      }
+    }
+  ],
+  "networkFollowUp": "WebView2 background network activity / offline privacy audit required before MVP"
+}
