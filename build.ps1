@@ -30,6 +30,11 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 & "$out\fish_logic_tests.exe"
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
+& cl.exe @common (Join-Path $root 'tests\host_policy_tests.cpp') "/Fe:$out\host_policy_tests.exe"
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+& "$out\host_policy_tests.exe"
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
 & cl.exe @common "/I$webViewInclude" (Join-Path $root 'tests\webview2_sdk_probe.cpp') "/Fe:$out\webview2_sdk_probe.exe" "/link" "/LIBPATH:$webViewX64" 'WebView2Loader.dll.lib' 'ole32.lib'
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 Copy-Item -LiteralPath $webViewLoader -Destination (Join-Path $out 'WebView2Loader.dll') -Force
