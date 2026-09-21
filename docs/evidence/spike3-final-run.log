@@ -1,0 +1,678 @@
+14:30:57.275 Aquarium.exe WebView2 composition wallpaper spike starting
+14:30:57.275 OS version=10.0 build=26200
+14:30:57.275 STARTUP ATTEMPT 1
+14:30:57.275 Progman hwnd=0x50692 class=Progman parent=0x0 style=0x96000000 ex=0x200080 rect=[0,0,1920,1080] visible=1
+14:30:57.275 desktopMode=raised (WS_EX_NOREDIRECTIONBITMAP)
+14:30:57.275 SHELLDLL_DefView hwnd=0x801A8 class=SHELLDLL_DefView parent=0x50692 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:30:57.275 Explorer SysListView32 hwnd=0x70070 class=SysListView32 parent=0x801A8 style=0x56003A40 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:30:57.275 Progman children before WorkerW request (top-to-bottom Z order):
+14:30:57.275   z=0 hwnd=0x801A8 class=SHELLDLL_DefView parent=0x50692 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:30:57.275   z=1 hwnd=0x70116 class=WorkerW parent=0x50692 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:30:57.275 A suitable wallpaper WorkerW already existed; spawn message was not sent.
+14:30:57.275 Progman children after WorkerW request (top-to-bottom Z order):
+14:30:57.275   z=0 hwnd=0x801A8 class=SHELLDLL_DefView parent=0x50692 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:30:57.275   z=1 hwnd=0x70116 class=WorkerW parent=0x50692 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:30:57.275 selected WorkerW hwnd=0x70116 class=WorkerW parent=0x50692 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:30:57.275 ATTACH ASSUMPTION VERIFIED: selected WorkerW is a direct Progman child below SHELLDLL_DefView in child Z order.
+14:30:57.283 Stable hidden owner hwnd=0xB0962 class=AquariumSpike.HiddenOwner.v1 parent=0x0 style=0x4C00000 ex=0x180 rect=[-32000,-32000,-31980,-31961] visible=0
+14:30:57.398 WEBVIEW generation=1 event=info detail=DirectComposition target and WebView visual created on renderer child HWND.
+14:30:57.433 WEBVIEW generation=1 event=info detail=WebView2 environment creation started.
+14:30:58.667 WEBVIEW generation=1 event=info detail=CompositionController bound; navigating to local aquarium habitat.
+14:31:00.991 WEBVIEW generation=1 event=ready detail=habitat-ready:three-webgl2
+14:31:01.052 WebView2 top-level host before desktop attachment hwnd=0x2308F0 class=AquariumSpike.RenderWindow.v1 parent=0xB0962 style=0x96000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:31:01.052 WebView2 renderer child before desktop attachment hwnd=0x18078A class=AquariumSpike.RendererChild.v1 parent=0x2308F0 style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+14:31:01.052 WEBVIEW TOP-LEVEL PRESENT OK: local habitat reported ready before desktop attachment.
+14:31:02.564 desktop host after extended-style setup hwnd=0x2308F0 class=AquariumSpike.RenderWindow.v1 parent=0xB0962 style=0x96000000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:31:02.566 desktop host after WS_CHILD conversion hwnd=0x2308F0 class=AquariumSpike.RenderWindow.v1 parent=0x1000C style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:31:02.574 desktop host after SetParent hwnd=0x2308F0 class=AquariumSpike.RenderWindow.v1 parent=0x50692 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:31:02.576 WebView2 host after desktop attachment hwnd=0x2308F0 class=AquariumSpike.RenderWindow.v1 parent=0x50692 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:31:02.576 WebView2 host owner after desktop attachment=0xB0962
+14:31:02.576 WebView2 renderer child after desktop attachment hwnd=0x18078A class=AquariumSpike.RendererChild.v1 parent=0x2308F0 style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+14:31:02.576 Progman children after render-window attachment (top-to-bottom Z order):
+14:31:02.576   z=0 hwnd=0x801A8 class=SHELLDLL_DefView parent=0x50692 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:31:02.577   z=1 hwnd=0x2308F0 class=AquariumSpike.RenderWindow.v1 parent=0x50692 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:31:02.577   z=2 hwnd=0x70116 class=WorkerW parent=0x50692 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:31:02.577 ATTACH STRUCTURE OK: layered host is parented to Progman, immediately below SHELLDLL_DefView and above WorkerW.
+14:31:02.577 No normal always-on-bottom fallback exists in this spike.
+14:31:02.578 SESSION RUNNING generation=1
+14:31:02.578 STARTUP SUCCESS processId=7580
+14:31:02.578 PROBE state=running bridgeUpdates=0 webviewReady=1 cursorScreen=(1125,1032) WindowFromPoint=0x50172/Shell_TrayWnd hostHitTest=-1 rendererHitTest=-1
+14:31:02.616 PERF intervalSeconds=5.34 cursorBridgeHz=0.19 hostProcessCpuPercentNormalized=0.95 totalBridgeUpdates=1
+14:31:05.849 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.2;drawCalls:9;reactions:0
+14:31:07.631 PERF intervalSeconds=5.02 cursorBridgeHz=24.12 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=122
+14:31:10.848 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.6;drawCalls:9;reactions:0
+14:31:12.662 PERF intervalSeconds=5.03 cursorBridgeHz=23.86 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=242
+14:31:15.880 WEBVIEW generation=1 event=info detail=Habitat: three-fps:43.3;drawCalls:9;reactions:0
+14:31:17.707 PERF intervalSeconds=5.05 cursorBridgeHz=24.98 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=368
+14:31:20.896 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.7;drawCalls:9;reactions:0
+14:31:22.714 PERF intervalSeconds=5.01 cursorBridgeHz=24.76 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=492
+14:31:25.897 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.6;drawCalls:9;reactions:0
+14:31:27.729 PERF intervalSeconds=5.02 cursorBridgeHz=25.32 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=619
+14:31:30.897 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.4;drawCalls:9;reactions:0
+14:31:32.745 PERF intervalSeconds=5.02 cursorBridgeHz=24.52 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=742
+14:31:35.914 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.3;drawCalls:9;reactions:0
+14:31:36.559 CONTROL pause
+14:31:37.778 PERF intervalSeconds=5.03 cursorBridgeHz=25.23 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=869
+14:31:42.797 PERF intervalSeconds=5.02 cursorBridgeHz=25.51 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=997
+14:31:43.640 PROBE state=paused bridgeUpdates=1018 webviewReady=1 cursorScreen=(1125,1032) WindowFromPoint=0x50172/Shell_TrayWnd hostHitTest=-1 rendererHitTest=-1
+14:31:43.641 WEBVIEW generation=1 event=info detail=Habitat: probe:webgl2=true;paused=true;targetFps=60;reactions=0
+14:31:47.829 PERF intervalSeconds=5.03 cursorBridgeHz=25.44 hostProcessCpuPercentNormalized=0.39 totalBridgeUpdates=1125
+14:31:49.155 CONTROL resume
+14:31:49.163 WEBVIEW generation=1 event=info detail=Habitat: three-fps:2.3;drawCalls:9;reactions:0
+14:31:52.848 PERF intervalSeconds=5.02 cursorBridgeHz=25.30 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=1252
+14:31:54.180 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.7;drawCalls:9;reactions:0
+14:31:57.862 PERF intervalSeconds=5.01 cursorBridgeHz=24.93 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=1377
+14:31:59.181 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.2;drawCalls:9;reactions:0
+14:32:02.866 PERF intervalSeconds=5.00 cursorBridgeHz=24.78 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=1501
+14:32:04.198 WEBVIEW generation=1 event=info detail=Habitat: three-fps:43.5;drawCalls:9;reactions:0
+14:32:07.898 PERF intervalSeconds=5.03 cursorBridgeHz=24.44 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=1624
+14:32:09.197 WEBVIEW generation=1 event=info detail=Habitat: three-fps:43.0;drawCalls:9;reactions:0
+14:32:12.915 PERF intervalSeconds=5.01 cursorBridgeHz=24.93 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=1749
+14:32:14.213 WEBVIEW generation=1 event=info detail=Habitat: three-fps:43.3;drawCalls:9;reactions:0
+14:32:17.914 PERF intervalSeconds=5.00 cursorBridgeHz=24.80 hostProcessCpuPercentNormalized=0.47 totalBridgeUpdates=1873
+14:32:19.229 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.3;drawCalls:9;reactions:0
+14:32:22.948 PERF intervalSeconds=5.03 cursorBridgeHz=25.23 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=2000
+14:32:24.247 WEBVIEW generation=1 event=info detail=Habitat: three-fps:43.5;drawCalls:9;reactions:0
+14:32:27.981 PERF intervalSeconds=5.03 cursorBridgeHz=25.03 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=2126
+14:32:29.264 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.1;drawCalls:9;reactions:0
+14:32:33.011 PERF intervalSeconds=5.03 cursorBridgeHz=25.25 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=2253
+14:32:34.265 WEBVIEW generation=1 event=info detail=Habitat: three-fps:43.4;drawCalls:9;reactions:0
+14:32:38.012 PERF intervalSeconds=5.00 cursorBridgeHz=24.60 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=2376
+14:32:39.264 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.2;drawCalls:9;reactions:0
+14:32:43.036 PERF intervalSeconds=5.02 cursorBridgeHz=24.68 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=2500
+14:32:44.282 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.3;drawCalls:9;reactions:4
+14:32:48.046 PERF intervalSeconds=5.01 cursorBridgeHz=24.95 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=2625
+14:32:49.313 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.5;drawCalls:9;reactions:8
+14:32:53.072 PERF intervalSeconds=5.03 cursorBridgeHz=24.87 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=2750
+14:32:54.313 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.4;drawCalls:9;reactions:8
+14:32:58.172 PERF intervalSeconds=5.10 cursorBridgeHz=23.92 hostProcessCpuPercentNormalized=0.15 totalBridgeUpdates=2872
+14:32:59.338 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.7;drawCalls:9;reactions:9
+14:33:03.177 PERF intervalSeconds=5.00 cursorBridgeHz=20.18 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=2973
+14:33:04.350 WEBVIEW generation=1 event=info detail=Habitat: three-fps:38.1;drawCalls:9;reactions:9
+14:33:08.186 PERF intervalSeconds=5.01 cursorBridgeHz=22.76 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=3087
+14:33:09.347 WEBVIEW generation=1 event=info detail=Habitat: three-fps:39.8;drawCalls:9;reactions:9
+14:33:13.197 PERF intervalSeconds=5.01 cursorBridgeHz=22.15 hostProcessCpuPercentNormalized=0.39 totalBridgeUpdates=3198
+14:33:14.377 WEBVIEW generation=1 event=info detail=Habitat: three-fps:39.4;drawCalls:9;reactions:11
+14:33:18.215 PERF intervalSeconds=5.02 cursorBridgeHz=20.93 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=3303
+14:33:19.346 WEBVIEW generation=1 event=info detail=Habitat: three-fps:39.4;drawCalls:9;reactions:11
+14:33:23.228 PERF intervalSeconds=5.01 cursorBridgeHz=24.13 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=3424
+14:33:24.364 WEBVIEW generation=1 event=info detail=Habitat: three-fps:39.7;drawCalls:9;reactions:11
+14:33:28.266 PERF intervalSeconds=5.04 cursorBridgeHz=21.04 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=3530
+14:33:29.382 WEBVIEW generation=1 event=info detail=Habitat: three-fps:39.3;drawCalls:9;reactions:11
+14:33:33.289 PERF intervalSeconds=5.02 cursorBridgeHz=21.90 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=3640
+14:33:34.399 WEBVIEW generation=1 event=info detail=Habitat: three-fps:39.7;drawCalls:9;reactions:11
+14:33:38.301 PERF intervalSeconds=5.01 cursorBridgeHz=22.35 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=3752
+14:33:39.420 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.7;drawCalls:9;reactions:11
+14:33:43.336 PERF intervalSeconds=5.03 cursorBridgeHz=22.25 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=3864
+14:33:44.456 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.7;drawCalls:9;reactions:16
+14:33:48.362 PERF intervalSeconds=5.03 cursorBridgeHz=17.71 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=3953
+14:33:49.430 WEBVIEW generation=1 event=info detail=Habitat: three-fps:39.2;drawCalls:9;reactions:19
+14:33:53.402 PERF intervalSeconds=5.04 cursorBridgeHz=21.23 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=4060
+14:33:54.430 WEBVIEW generation=1 event=info detail=Habitat: three-fps:39.6;drawCalls:9;reactions:19
+14:33:58.443 PERF intervalSeconds=5.04 cursorBridgeHz=23.41 hostProcessCpuPercentNormalized=0.15 totalBridgeUpdates=4178
+14:33:59.446 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.7;drawCalls:9;reactions:19
+14:34:03.474 PERF intervalSeconds=5.03 cursorBridgeHz=23.06 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=4294
+14:34:04.446 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.4;drawCalls:9;reactions:19
+14:34:08.485 PERF intervalSeconds=5.01 cursorBridgeHz=22.55 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=4407
+14:34:09.447 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.6;drawCalls:9;reactions:19
+14:34:13.517 PERF intervalSeconds=5.03 cursorBridgeHz=23.65 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=4526
+14:34:14.446 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.4;drawCalls:9;reactions:19
+14:34:18.531 PERF intervalSeconds=5.01 cursorBridgeHz=24.53 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=4649
+14:34:19.463 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.7;drawCalls:9;reactions:19
+14:34:23.562 PERF intervalSeconds=5.03 cursorBridgeHz=24.85 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=4774
+14:34:24.479 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.3;drawCalls:9;reactions:19
+14:34:28.580 PERF intervalSeconds=5.02 cursorBridgeHz=23.91 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=4894
+14:34:29.480 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.6;drawCalls:9;reactions:21
+14:34:33.593 PERF intervalSeconds=5.01 cursorBridgeHz=24.54 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=5017
+14:34:34.481 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.2;drawCalls:9;reactions:26
+14:34:38.598 PERF intervalSeconds=5.00 cursorBridgeHz=20.99 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=5122
+14:34:39.481 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.4;drawCalls:9;reactions:28
+14:34:43.629 PERF intervalSeconds=5.03 cursorBridgeHz=22.05 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=5233
+14:34:44.502 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.7;drawCalls:9;reactions:28
+14:34:48.645 PERF intervalSeconds=5.02 cursorBridgeHz=20.54 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=5336
+14:34:49.529 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.3;drawCalls:9;reactions:28
+14:34:53.645 PERF intervalSeconds=5.00 cursorBridgeHz=25.00 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=5461
+14:34:54.531 WEBVIEW generation=1 event=info detail=Habitat: three-fps:39.8;drawCalls:9;reactions:28
+14:34:58.666 PERF intervalSeconds=5.02 cursorBridgeHz=24.90 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=5586
+14:34:59.547 WEBVIEW generation=1 event=info detail=Habitat: three-fps:43.3;drawCalls:9;reactions:28
+14:35:03.673 PERF intervalSeconds=5.01 cursorBridgeHz=21.57 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=5694
+14:35:04.563 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.5;drawCalls:9;reactions:28
+14:35:08.675 PERF intervalSeconds=5.00 cursorBridgeHz=21.99 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=5804
+14:35:09.586 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.7;drawCalls:9;reactions:28
+14:35:13.681 PERF intervalSeconds=5.01 cursorBridgeHz=21.77 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=5913
+14:35:14.583 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.0;drawCalls:9;reactions:28
+14:35:18.723 PERF intervalSeconds=5.04 cursorBridgeHz=21.82 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=6023
+14:35:19.597 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.9;drawCalls:9;reactions:28
+14:35:23.760 PERF intervalSeconds=5.04 cursorBridgeHz=21.64 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=6132
+14:35:24.596 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.0;drawCalls:9;reactions:28
+14:35:28.777 PERF intervalSeconds=5.02 cursorBridgeHz=21.73 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=6241
+14:35:29.596 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.4;drawCalls:9;reactions:28
+14:35:33.798 PERF intervalSeconds=5.02 cursorBridgeHz=21.51 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=6349
+14:35:34.613 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.5;drawCalls:9;reactions:28
+14:35:38.802 PERF intervalSeconds=5.00 cursorBridgeHz=22.00 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=6459
+14:35:39.614 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.6;drawCalls:9;reactions:28
+14:35:43.822 PERF intervalSeconds=5.02 cursorBridgeHz=22.89 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=6574
+14:35:44.629 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.7;drawCalls:9;reactions:29
+14:35:48.872 PERF intervalSeconds=5.05 cursorBridgeHz=22.58 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=6688
+14:35:49.647 WEBVIEW generation=1 event=info detail=Habitat: three-fps:39.8;drawCalls:9;reactions:32
+14:35:53.876 PERF intervalSeconds=5.00 cursorBridgeHz=21.78 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=6797
+14:35:54.647 WEBVIEW generation=1 event=info detail=Habitat: three-fps:39.9;drawCalls:9;reactions:32
+14:35:58.897 PERF intervalSeconds=5.02 cursorBridgeHz=24.10 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=6918
+14:35:59.681 WEBVIEW generation=1 event=info detail=Habitat: three-fps:39.1;drawCalls:9;reactions:32
+14:36:03.907 PERF intervalSeconds=5.01 cursorBridgeHz=20.96 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=7023
+14:36:04.698 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.3;drawCalls:9;reactions:32
+14:36:08.920 PERF intervalSeconds=5.01 cursorBridgeHz=23.34 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=7140
+14:36:09.713 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.9;drawCalls:9;reactions:32
+14:36:13.950 PERF intervalSeconds=5.03 cursorBridgeHz=21.67 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=7249
+14:36:14.713 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.4;drawCalls:9;reactions:32
+14:36:18.993 PERF intervalSeconds=5.04 cursorBridgeHz=21.61 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=7358
+14:36:19.714 WEBVIEW generation=1 event=info detail=Habitat: three-fps:43.4;drawCalls:9;reactions:32
+14:36:24.031 PERF intervalSeconds=5.04 cursorBridgeHz=21.63 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=7467
+14:36:24.730 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.9;drawCalls:9;reactions:32
+14:36:29.054 PERF intervalSeconds=5.02 cursorBridgeHz=22.70 hostProcessCpuPercentNormalized=0.39 totalBridgeUpdates=7581
+14:36:29.747 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.3;drawCalls:9;reactions:33
+14:36:34.054 PERF intervalSeconds=5.00 cursorBridgeHz=21.20 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=7687
+14:36:34.747 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.2;drawCalls:9;reactions:36
+14:36:39.098 PERF intervalSeconds=5.05 cursorBridgeHz=21.21 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=7794
+14:36:39.748 WEBVIEW generation=1 event=info detail=Habitat: three-fps:39.2;drawCalls:9;reactions:39
+14:36:44.162 PERF intervalSeconds=5.06 cursorBridgeHz=16.20 hostProcessCpuPercentNormalized=0.15 totalBridgeUpdates=7876
+14:36:44.757 WEBVIEW generation=1 event=info detail=Habitat: three-fps:39.4;drawCalls:9;reactions:39
+14:36:49.182 PERF intervalSeconds=5.02 cursorBridgeHz=19.32 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=7973
+14:36:49.749 WEBVIEW generation=1 event=info detail=Habitat: three-fps:26.4;drawCalls:9;reactions:39
+14:36:54.200 PERF intervalSeconds=5.02 cursorBridgeHz=22.52 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=8086
+14:36:54.765 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.7;drawCalls:9;reactions:39
+14:36:59.215 PERF intervalSeconds=5.01 cursorBridgeHz=23.94 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=8206
+14:36:59.764 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.0;drawCalls:9;reactions:39
+14:37:04.233 PERF intervalSeconds=5.02 cursorBridgeHz=23.90 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=8326
+14:37:04.782 WEBVIEW generation=1 event=info detail=Habitat: three-fps:39.7;drawCalls:9;reactions:39
+14:37:09.254 PERF intervalSeconds=5.02 cursorBridgeHz=23.70 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=8445
+14:37:09.782 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.2;drawCalls:9;reactions:39
+14:37:14.266 PERF intervalSeconds=5.01 cursorBridgeHz=24.14 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=8566
+14:37:14.783 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.2;drawCalls:9;reactions:39
+14:37:19.301 PERF intervalSeconds=5.03 cursorBridgeHz=24.64 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=8690
+14:37:19.800 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.9;drawCalls:9;reactions:39
+14:37:24.312 PERF intervalSeconds=5.01 cursorBridgeHz=23.15 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=8806
+14:37:24.814 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.3;drawCalls:9;reactions:39
+14:37:29.335 PERF intervalSeconds=5.02 cursorBridgeHz=24.29 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=8928
+14:37:29.816 WEBVIEW generation=1 event=info detail=Habitat: three-fps:43.2;drawCalls:9;reactions:39
+14:37:34.349 PERF intervalSeconds=5.01 cursorBridgeHz=24.33 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=9050
+14:37:34.816 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.0;drawCalls:9;reactions:39
+14:37:39.378 PERF intervalSeconds=5.03 cursorBridgeHz=24.06 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=9171
+14:37:39.831 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.5;drawCalls:9;reactions:39
+14:37:44.399 PERF intervalSeconds=5.02 cursorBridgeHz=24.70 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=9295
+14:37:44.832 WEBVIEW generation=1 event=info detail=Habitat: three-fps:43.0;drawCalls:9;reactions:39
+14:37:49.415 PERF intervalSeconds=5.01 cursorBridgeHz=24.34 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=9417
+14:37:49.849 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.3;drawCalls:9;reactions:39
+14:37:54.419 PERF intervalSeconds=5.01 cursorBridgeHz=23.57 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=9535
+14:37:54.881 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.3;drawCalls:9;reactions:39
+14:37:59.469 PERF intervalSeconds=5.05 cursorBridgeHz=22.97 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=9651
+14:37:59.881 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.2;drawCalls:9;reactions:39
+14:38:04.501 PERF intervalSeconds=5.03 cursorBridgeHz=23.85 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=9771
+14:38:04.883 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.2;drawCalls:9;reactions:39
+14:38:09.528 PERF intervalSeconds=5.03 cursorBridgeHz=23.87 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=9891
+14:38:09.898 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.9;drawCalls:9;reactions:39
+14:38:14.561 PERF intervalSeconds=5.03 cursorBridgeHz=24.04 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=10012
+14:38:14.915 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.7;drawCalls:9;reactions:39
+14:38:19.564 PERF intervalSeconds=5.00 cursorBridgeHz=24.18 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=10133
+14:38:19.914 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.4;drawCalls:9;reactions:39
+14:38:24.590 PERF intervalSeconds=5.03 cursorBridgeHz=24.67 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=10257
+14:38:24.931 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.9;drawCalls:9;reactions:39
+14:38:29.616 PERF intervalSeconds=5.03 cursorBridgeHz=22.48 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=10370
+14:38:29.932 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.8;drawCalls:9;reactions:39
+14:38:34.632 PERF intervalSeconds=5.02 cursorBridgeHz=24.13 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=10491
+14:38:34.933 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.4;drawCalls:9;reactions:39
+14:38:39.645 PERF intervalSeconds=5.01 cursorBridgeHz=24.14 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=10612
+14:38:39.949 WEBVIEW generation=1 event=info detail=Habitat: three-fps:43.3;drawCalls:9;reactions:39
+14:38:44.679 PERF intervalSeconds=5.03 cursorBridgeHz=23.24 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=10729
+14:38:44.948 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.4;drawCalls:9;reactions:39
+14:38:49.711 PERF intervalSeconds=5.03 cursorBridgeHz=23.84 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=10849
+14:38:49.964 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.7;drawCalls:9;reactions:39
+14:38:54.750 PERF intervalSeconds=5.04 cursorBridgeHz=23.22 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=10966
+14:38:54.980 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.1;drawCalls:9;reactions:39
+14:38:59.798 PERF intervalSeconds=5.05 cursorBridgeHz=23.98 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=11087
+14:38:59.981 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.4;drawCalls:9;reactions:39
+14:39:04.832 PERF intervalSeconds=5.03 cursorBridgeHz=24.23 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=11209
+14:39:04.983 WEBVIEW generation=1 event=info detail=Habitat: three-fps:43.8;drawCalls:9;reactions:39
+14:39:09.837 PERF intervalSeconds=5.00 cursorBridgeHz=23.58 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=11327
+14:39:09.998 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.3;drawCalls:9;reactions:39
+14:39:14.867 PERF intervalSeconds=5.03 cursorBridgeHz=24.87 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=11452
+14:39:15.014 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.7;drawCalls:9;reactions:39
+14:39:19.869 PERF intervalSeconds=5.01 cursorBridgeHz=24.17 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=11573
+14:39:20.015 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.8;drawCalls:9;reactions:43
+14:39:24.872 PERF intervalSeconds=5.00 cursorBridgeHz=21.39 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=11680
+14:39:25.048 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.5;drawCalls:9;reactions:43
+14:39:29.898 PERF intervalSeconds=5.03 cursorBridgeHz=20.10 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=11781
+14:39:30.051 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.9;drawCalls:9;reactions:48
+14:39:34.922 PERF intervalSeconds=5.02 cursorBridgeHz=21.49 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=11889
+14:39:35.064 WEBVIEW generation=1 event=info detail=Habitat: three-fps:39.3;drawCalls:9;reactions:48
+14:39:39.963 PERF intervalSeconds=5.04 cursorBridgeHz=21.62 hostProcessCpuPercentNormalized=0.39 totalBridgeUpdates=11998
+14:39:40.080 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.5;drawCalls:9;reactions:49
+14:39:44.976 PERF intervalSeconds=5.01 cursorBridgeHz=21.35 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=12105
+14:39:45.096 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.3;drawCalls:9;reactions:49
+14:39:50.000 PERF intervalSeconds=5.03 cursorBridgeHz=21.29 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=12212
+14:39:50.113 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.1;drawCalls:9;reactions:49
+14:39:55.009 PERF intervalSeconds=5.01 cursorBridgeHz=21.36 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=12319
+14:39:55.112 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.4;drawCalls:9;reactions:49
+14:40:00.014 PERF intervalSeconds=5.00 cursorBridgeHz=21.60 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=12427
+14:40:00.113 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.6;drawCalls:9;reactions:49
+14:40:05.024 PERF intervalSeconds=5.01 cursorBridgeHz=21.54 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=12535
+14:40:05.113 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.6;drawCalls:9;reactions:49
+14:40:10.026 PERF intervalSeconds=5.00 cursorBridgeHz=21.39 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=12642
+14:40:10.113 WEBVIEW generation=1 event=info detail=Habitat: three-fps:43.8;drawCalls:9;reactions:49
+14:40:15.053 PERF intervalSeconds=5.03 cursorBridgeHz=21.48 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=12750
+14:40:15.129 WEBVIEW generation=1 event=info detail=Habitat: three-fps:43.5;drawCalls:9;reactions:49
+14:40:20.056 PERF intervalSeconds=5.00 cursorBridgeHz=21.39 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=12857
+14:40:20.146 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.9;drawCalls:9;reactions:49
+14:40:25.094 PERF intervalSeconds=5.04 cursorBridgeHz=21.64 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=12966
+14:40:25.146 WEBVIEW generation=1 event=info detail=Habitat: three-fps:43.8;drawCalls:9;reactions:49
+14:40:30.134 PERF intervalSeconds=5.04 cursorBridgeHz=21.43 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=13074
+14:40:30.147 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.2;drawCalls:9;reactions:49
+14:40:35.147 WEBVIEW generation=1 event=info detail=Habitat: three-fps:43.6;drawCalls:9;reactions:50
+14:40:35.147 PERF intervalSeconds=5.01 cursorBridgeHz=21.55 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=13182
+14:40:40.148 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.2;drawCalls:9;reactions:50
+14:40:40.182 PERF intervalSeconds=5.03 cursorBridgeHz=21.45 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=13290
+14:40:45.149 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.0;drawCalls:9;reactions:50
+14:40:45.216 PERF intervalSeconds=5.03 cursorBridgeHz=23.24 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=13407
+14:40:50.159 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.0;drawCalls:9;reactions:50
+14:40:50.220 PERF intervalSeconds=5.01 cursorBridgeHz=22.98 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=13522
+14:40:55.147 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.0;drawCalls:9;reactions:52
+14:40:55.243 PERF intervalSeconds=5.02 cursorBridgeHz=22.11 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=13633
+14:41:00.163 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.1;drawCalls:9;reactions:55
+14:41:00.280 PERF intervalSeconds=5.04 cursorBridgeHz=24.82 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=13758
+14:41:05.163 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.6;drawCalls:9;reactions:55
+14:41:05.314 PERF intervalSeconds=5.03 cursorBridgeHz=25.22 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=13885
+14:41:10.180 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.1;drawCalls:9;reactions:55
+14:41:10.332 PERF intervalSeconds=5.02 cursorBridgeHz=25.90 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=14015
+14:41:15.196 WEBVIEW generation=1 event=info detail=Habitat: three-fps:40.5;drawCalls:9;reactions:55
+14:41:15.362 PERF intervalSeconds=5.03 cursorBridgeHz=25.45 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=14143
+14:41:20.196 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.6;drawCalls:9;reactions:55
+14:41:20.396 PERF intervalSeconds=5.03 cursorBridgeHz=25.23 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=14270
+14:41:25.213 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.9;drawCalls:9;reactions:57
+14:41:25.413 PERF intervalSeconds=5.02 cursorBridgeHz=25.12 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=14396
+14:41:30.230 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.9;drawCalls:9;reactions:57
+14:41:30.429 PERF intervalSeconds=5.02 cursorBridgeHz=25.92 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=14526
+14:41:35.229 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.4;drawCalls:9;reactions:57
+14:41:35.429 PERF intervalSeconds=5.00 cursorBridgeHz=25.60 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=14654
+14:41:40.246 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.9;drawCalls:9;reactions:57
+14:41:40.446 PERF intervalSeconds=5.02 cursorBridgeHz=25.32 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=14781
+14:41:45.246 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.0;drawCalls:9;reactions:57
+14:41:45.479 PERF intervalSeconds=5.03 cursorBridgeHz=25.23 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=14908
+14:41:50.263 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.9;drawCalls:9;reactions:57
+14:41:50.525 PERF intervalSeconds=5.05 cursorBridgeHz=25.17 hostProcessCpuPercentNormalized=0.46 totalBridgeUpdates=15035
+14:41:55.262 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.2;drawCalls:9;reactions:57
+14:41:55.561 PERF intervalSeconds=5.04 cursorBridgeHz=25.82 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=15165
+14:42:00.280 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.3;drawCalls:9;reactions:57
+14:42:00.595 PERF intervalSeconds=5.03 cursorBridgeHz=23.84 hostProcessCpuPercentNormalized=0.39 totalBridgeUpdates=15285
+14:42:05.280 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.0;drawCalls:9;reactions:57
+14:42:05.596 PERF intervalSeconds=5.00 cursorBridgeHz=24.80 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=15409
+14:42:10.296 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.3;drawCalls:9;reactions:57
+14:42:10.597 PERF intervalSeconds=5.00 cursorBridgeHz=25.00 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=15534
+14:42:15.296 WEBVIEW generation=1 event=info detail=Habitat: three-fps:41.4;drawCalls:9;reactions:57
+14:42:15.597 PERF intervalSeconds=5.00 cursorBridgeHz=25.80 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=15663
+14:42:20.314 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.1;drawCalls:9;reactions:57
+14:42:20.597 PERF intervalSeconds=5.00 cursorBridgeHz=25.40 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=15790
+14:42:25.312 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.0;drawCalls:9;reactions:57
+14:42:25.612 PERF intervalSeconds=5.01 cursorBridgeHz=25.53 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=15918
+14:42:30.313 WEBVIEW generation=1 event=info detail=Habitat: three-fps:42.0;drawCalls:9;reactions:57
+14:42:30.313 RECOVERY SIGNAL: 1 Hz desktop attachment health check failed.
+14:42:30.403 RECOVERY ATTEMPT 1
+14:42:30.403 ATTACH FAILURE: Progman was not found; refusing ordinary-window fallback.
+14:42:30.403 RECOVERY BACKOFF attempt=2 delayMs=250
+14:42:30.662 RECOVERY ATTEMPT 2
+14:42:30.664 Progman hwnd=0x130960 class=Progman parent=0x0 style=0x96000000 ex=0x200080 rect=[0,0,1920,1080] visible=1
+14:42:30.664 desktopMode=raised (WS_EX_NOREDIRECTIONBITMAP)
+14:42:30.664 SHELLDLL_DefView hwnd=0xB062A class=SHELLDLL_DefView parent=0x130960 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:42:30.664 Explorer SysListView32 hwnd=0x90640 class=SysListView32 parent=0xB062A style=0x56003A40 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:42:30.664 Progman children before WorkerW request (top-to-bottom Z order):
+14:42:30.664   z=0 hwnd=0xB062A class=SHELLDLL_DefView parent=0x130960 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:42:30.845 SendMessageTimeout(Progman,0x052C,wParam=0xD,lParam=0x1) return=1 messageResult=0 lastError=0
+14:42:30.907 Progman children after WorkerW request (top-to-bottom Z order):
+14:42:30.907   z=0 hwnd=0xB062A class=SHELLDLL_DefView parent=0x130960 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:42:30.907   z=1 hwnd=0x100986 class=WorkerW parent=0x130960 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:42:30.907 selected WorkerW hwnd=0x100986 class=WorkerW parent=0x130960 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:42:30.907 ATTACH ASSUMPTION VERIFIED: selected WorkerW is a direct Progman child below SHELLDLL_DefView in child Z order.
+14:42:32.458 WEBVIEW generation=4 event=info detail=DirectComposition target and WebView visual created on renderer child HWND.
+14:42:32.472 WEBVIEW generation=4 event=info detail=WebView2 environment creation started.
+14:42:35.960 WEBVIEW generation=4 event=info detail=CompositionController bound; navigating to local aquarium habitat.
+14:42:38.268 WEBVIEW generation=4 event=ready detail=habitat-ready:three-webgl2
+14:42:38.268 WebView2 top-level host before desktop attachment hwnd=0x805AA class=AquariumSpike.RenderWindow.v1 parent=0xB0962 style=0x96000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:42:38.270 WebView2 renderer child before desktop attachment hwnd=0x8061E class=AquariumSpike.RendererChild.v1 parent=0x805AA style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+14:42:38.270 WEBVIEW TOP-LEVEL PRESENT OK: local habitat reported ready before desktop attachment.
+14:42:39.779 desktop host after extended-style setup hwnd=0x805AA class=AquariumSpike.RenderWindow.v1 parent=0xB0962 style=0x96000000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:42:39.780 desktop host after WS_CHILD conversion hwnd=0x805AA class=AquariumSpike.RenderWindow.v1 parent=0x1000C style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:42:39.784 desktop host after SetParent hwnd=0x805AA class=AquariumSpike.RenderWindow.v1 parent=0x130960 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:42:39.786 WebView2 host after desktop attachment hwnd=0x805AA class=AquariumSpike.RenderWindow.v1 parent=0x130960 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:42:39.786 WebView2 host owner after desktop attachment=0xB0962
+14:42:39.787 WebView2 renderer child after desktop attachment hwnd=0x8061E class=AquariumSpike.RendererChild.v1 parent=0x805AA style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+14:42:39.787 Progman children after render-window attachment (top-to-bottom Z order):
+14:42:39.788   z=0 hwnd=0xB062A class=SHELLDLL_DefView parent=0x130960 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:42:39.788   z=1 hwnd=0x805AA class=AquariumSpike.RenderWindow.v1 parent=0x130960 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:42:39.789   z=2 hwnd=0x100986 class=WorkerW parent=0x130960 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:42:39.789 ATTACH STRUCTURE OK: layered host is parented to Progman, immediately below SHELLDLL_DefView and above WorkerW.
+14:42:39.789 No normal always-on-bottom fallback exists in this spike.
+14:42:39.789 SESSION RUNNING generation=4
+14:42:39.789 RECOVERY SUCCESS cycle=1 processId=7580
+14:42:39.790 PROBE state=running bridgeUpdates=16034 webviewReady=1 cursorScreen=(1502,200) WindowFromPoint=0x90640/SysListView32 hostHitTest=-1 rendererHitTest=-1
+14:42:39.833 PERF intervalSeconds=14.22 cursorBridgeHz=8.23 hostProcessCpuPercentNormalized=0.25 totalBridgeUpdates=16035
+14:42:43.175 WEBVIEW generation=4 event=info detail=Habitat: three-fps:39.3;drawCalls:9;reactions:0
+14:42:43.393 RECOVERY SIGNAL: TaskbarCreated broadcast received.
+14:42:43.576 SESSION: desktop host destroyed intentionally.
+14:42:43.577 RECOVERY ATTEMPT 1
+14:42:43.577 Progman hwnd=0x130960 class=Progman parent=0x0 style=0x96000000 ex=0x200080 rect=[0,0,1920,1080] visible=1
+14:42:43.577 desktopMode=raised (WS_EX_NOREDIRECTIONBITMAP)
+14:42:43.577 SHELLDLL_DefView hwnd=0xB062A class=SHELLDLL_DefView parent=0x130960 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:42:43.577 Explorer SysListView32 hwnd=0x90640 class=SysListView32 parent=0xB062A style=0x56003A40 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:42:43.577 Progman children before WorkerW request (top-to-bottom Z order):
+14:42:43.577   z=0 hwnd=0xB062A class=SHELLDLL_DefView parent=0x130960 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:42:43.577   z=1 hwnd=0x100986 class=WorkerW parent=0x130960 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:42:43.577 A suitable wallpaper WorkerW already existed; spawn message was not sent.
+14:42:43.577 Progman children after WorkerW request (top-to-bottom Z order):
+14:42:43.577   z=0 hwnd=0xB062A class=SHELLDLL_DefView parent=0x130960 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:42:43.577   z=1 hwnd=0x100986 class=WorkerW parent=0x130960 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:42:43.577 selected WorkerW hwnd=0x100986 class=WorkerW parent=0x130960 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:42:43.577 ATTACH ASSUMPTION VERIFIED: selected WorkerW is a direct Progman child below SHELLDLL_DefView in child Z order.
+14:42:43.652 WEBVIEW generation=6 event=info detail=DirectComposition target and WebView visual created on renderer child HWND.
+14:42:43.664 WEBVIEW generation=6 event=info detail=WebView2 environment creation started.
+14:42:44.789 WEBVIEW generation=6 event=info detail=CompositionController bound; navigating to local aquarium habitat.
+14:42:47.023 WEBVIEW generation=6 event=ready detail=habitat-ready:three-webgl2
+14:42:47.027 WebView2 top-level host before desktop attachment hwnd=0x905AA class=AquariumSpike.RenderWindow.v1 parent=0xB0962 style=0x96000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:42:47.027 WebView2 renderer child before desktop attachment hwnd=0x9061E class=AquariumSpike.RendererChild.v1 parent=0x905AA style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+14:42:47.027 WEBVIEW TOP-LEVEL PRESENT OK: local habitat reported ready before desktop attachment.
+14:42:48.530 desktop host after extended-style setup hwnd=0x905AA class=AquariumSpike.RenderWindow.v1 parent=0xB0962 style=0x96000000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:42:48.530 desktop host after WS_CHILD conversion hwnd=0x905AA class=AquariumSpike.RenderWindow.v1 parent=0x1000C style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:42:48.534 desktop host after SetParent hwnd=0x905AA class=AquariumSpike.RenderWindow.v1 parent=0x130960 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:42:48.535 WebView2 host after desktop attachment hwnd=0x905AA class=AquariumSpike.RenderWindow.v1 parent=0x130960 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:42:48.536 WebView2 host owner after desktop attachment=0xB0962
+14:42:48.536 WebView2 renderer child after desktop attachment hwnd=0x9061E class=AquariumSpike.RendererChild.v1 parent=0x905AA style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+14:42:48.536 Progman children after render-window attachment (top-to-bottom Z order):
+14:42:48.536   z=0 hwnd=0xB062A class=SHELLDLL_DefView parent=0x130960 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:42:48.536   z=1 hwnd=0x905AA class=AquariumSpike.RenderWindow.v1 parent=0x130960 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:42:48.536   z=2 hwnd=0x100986 class=WorkerW parent=0x130960 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:42:48.536 ATTACH STRUCTURE OK: layered host is parented to Progman, immediately below SHELLDLL_DefView and above WorkerW.
+14:42:48.536 No normal always-on-bottom fallback exists in this spike.
+14:42:48.537 SESSION RUNNING generation=6
+14:42:48.537 RECOVERY SUCCESS cycle=2 processId=7580
+14:42:48.537 PROBE state=running bridgeUpdates=16111 webviewReady=1 cursorScreen=(1502,200) WindowFromPoint=0x90640/SysListView32 hostHitTest=-1 rendererHitTest=-1
+14:42:48.583 PERF intervalSeconds=8.75 cursorBridgeHz=8.80 hostProcessCpuPercentNormalized=0.18 totalBridgeUpdates=16112
+14:42:51.980 WEBVIEW generation=6 event=info detail=Habitat: three-fps:42.3;drawCalls:9;reactions:0
+14:42:53.629 PERF intervalSeconds=5.05 cursorBridgeHz=25.17 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=16239
+14:42:56.980 WEBVIEW generation=6 event=info detail=Habitat: three-fps:41.0;drawCalls:9;reactions:0
+14:42:58.630 PERF intervalSeconds=5.00 cursorBridgeHz=25.20 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=16365
+14:43:01.996 WEBVIEW generation=6 event=info detail=Habitat: three-fps:43.5;drawCalls:9;reactions:0
+14:43:03.647 PERF intervalSeconds=5.02 cursorBridgeHz=25.32 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=16492
+14:43:06.996 WEBVIEW generation=6 event=info detail=Habitat: three-fps:43.2;drawCalls:9;reactions:0
+14:43:08.666 PERF intervalSeconds=5.02 cursorBridgeHz=25.11 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=16618
+14:43:09.979 RECOVERY SIGNAL: 1 Hz desktop attachment health check failed.
+14:43:10.037 RECOVERY ATTEMPT 1
+14:43:10.039 ATTACH FAILURE: Progman was not found; refusing ordinary-window fallback.
+14:43:10.039 RECOVERY BACKOFF attempt=2 delayMs=250
+14:43:10.301 RECOVERY ATTEMPT 2
+14:43:10.301 Progman hwnd=0x290672 class=Progman parent=0x0 style=0x96000000 ex=0x200080 rect=[0,0,1920,1080] visible=1
+14:43:10.301 desktopMode=raised (WS_EX_NOREDIRECTIONBITMAP)
+14:43:10.301 SHELLDLL_DefView hwnd=0x2005EE class=SHELLDLL_DefView parent=0x290672 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:43:10.301 Explorer SysListView32 hwnd=0x3F0726 class=SysListView32 parent=0x2005EE style=0x56003A40 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:43:10.301 Progman children before WorkerW request (top-to-bottom Z order):
+14:43:10.301   z=0 hwnd=0x2005EE class=SHELLDLL_DefView parent=0x290672 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:43:10.421 SendMessageTimeout(Progman,0x052C,wParam=0xD,lParam=0x1) return=1 messageResult=0 lastError=0
+14:43:10.485 Progman children after WorkerW request (top-to-bottom Z order):
+14:43:10.485   z=0 hwnd=0x2005EE class=SHELLDLL_DefView parent=0x290672 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:43:10.485   z=1 hwnd=0x2A0704 class=WorkerW parent=0x290672 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:43:10.485 selected WorkerW hwnd=0x2A0704 class=WorkerW parent=0x290672 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:43:10.485 ATTACH ASSUMPTION VERIFIED: selected WorkerW is a direct Progman child below SHELLDLL_DefView in child Z order.
+14:43:10.882 WEBVIEW generation=9 event=info detail=DirectComposition target and WebView visual created on renderer child HWND.
+14:43:10.970 WEBVIEW generation=9 event=info detail=WebView2 environment creation started.
+14:43:12.842 RECOVERY SIGNAL: TaskbarCreated broadcast received.
+14:43:12.844 RECOVERY SIGNAL: TaskbarCreated broadcast received.
+14:43:12.846 WEBVIEW INITIALIZATION INTERRUPTED: Explorer host changed.
+14:43:12.866 SESSION: desktop host destroyed intentionally.
+14:43:12.866 RECOVERY BACKOFF attempt=3 delayMs=500
+14:43:13.432 RECOVERY ATTEMPT 3
+14:43:13.432 Progman hwnd=0x290672 class=Progman parent=0x0 style=0x96000000 ex=0x200080 rect=[0,0,1920,1080] visible=1
+14:43:13.432 desktopMode=raised (WS_EX_NOREDIRECTIONBITMAP)
+14:43:13.434 SHELLDLL_DefView hwnd=0x2005EE class=SHELLDLL_DefView parent=0x290672 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:43:13.434 Explorer SysListView32 hwnd=0x3F0726 class=SysListView32 parent=0x2005EE style=0x56003A40 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:43:13.434 Progman children before WorkerW request (top-to-bottom Z order):
+14:43:13.434   z=0 hwnd=0x2005EE class=SHELLDLL_DefView parent=0x290672 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:43:13.434   z=1 hwnd=0x2A0704 class=WorkerW parent=0x290672 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:43:13.434 A suitable wallpaper WorkerW already existed; spawn message was not sent.
+14:43:13.434 Progman children after WorkerW request (top-to-bottom Z order):
+14:43:13.434   z=0 hwnd=0x2005EE class=SHELLDLL_DefView parent=0x290672 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:43:13.434   z=1 hwnd=0x2A0704 class=WorkerW parent=0x290672 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:43:13.434 selected WorkerW hwnd=0x2A0704 class=WorkerW parent=0x290672 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:43:13.434 ATTACH ASSUMPTION VERIFIED: selected WorkerW is a direct Progman child below SHELLDLL_DefView in child Z order.
+14:43:13.626 WEBVIEW generation=11 event=info detail=DirectComposition target and WebView visual created on renderer child HWND.
+14:43:13.632 WEBVIEW generation=11 event=info detail=WebView2 environment creation started.
+14:43:17.900 WEBVIEW generation=11 event=info detail=CompositionController bound; navigating to local aquarium habitat.
+14:43:20.163 WEBVIEW generation=11 event=ready detail=habitat-ready:three-webgl2
+14:43:20.217 WebView2 top-level host before desktop attachment hwnd=0x290830 class=AquariumSpike.RenderWindow.v1 parent=0xB0962 style=0x96000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:43:20.217 WebView2 renderer child before desktop attachment hwnd=0x1D0584 class=AquariumSpike.RendererChild.v1 parent=0x290830 style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+14:43:20.217 WEBVIEW TOP-LEVEL PRESENT OK: local habitat reported ready before desktop attachment.
+14:43:21.730 desktop host after extended-style setup hwnd=0x290830 class=AquariumSpike.RenderWindow.v1 parent=0xB0962 style=0x96000000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:43:21.730 desktop host after WS_CHILD conversion hwnd=0x290830 class=AquariumSpike.RenderWindow.v1 parent=0x1000C style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:43:21.737 desktop host after SetParent hwnd=0x290830 class=AquariumSpike.RenderWindow.v1 parent=0x290672 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:43:21.737 WebView2 host after desktop attachment hwnd=0x290830 class=AquariumSpike.RenderWindow.v1 parent=0x290672 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:43:21.737 WebView2 host owner after desktop attachment=0xB0962
+14:43:21.737 WebView2 renderer child after desktop attachment hwnd=0x1D0584 class=AquariumSpike.RendererChild.v1 parent=0x290830 style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+14:43:21.737 Progman children after render-window attachment (top-to-bottom Z order):
+14:43:21.739   z=0 hwnd=0x2005EE class=SHELLDLL_DefView parent=0x290672 style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:43:21.739   z=1 hwnd=0x290830 class=AquariumSpike.RenderWindow.v1 parent=0x290672 style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:43:21.739   z=2 hwnd=0x2A0704 class=WorkerW parent=0x290672 style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:43:21.739 ATTACH STRUCTURE OK: layered host is parented to Progman, immediately below SHELLDLL_DefView and above WorkerW.
+14:43:21.739 No normal always-on-bottom fallback exists in this spike.
+14:43:21.739 SESSION RUNNING generation=11
+14:43:21.739 RECOVERY SUCCESS cycle=3 processId=7580
+14:43:21.739 PROBE state=running bridgeUpdates=16645 webviewReady=1 cursorScreen=(1502,200) WindowFromPoint=0x3F0726/SysListView32 hostHitTest=-1 rendererHitTest=-1
+14:43:21.780 PERF intervalSeconds=13.12 cursorBridgeHz=2.13 hostProcessCpuPercentNormalized=0.51 totalBridgeUpdates=16646
+14:43:25.080 WEBVIEW generation=11 event=info detail=Habitat: three-fps:40.7;drawCalls:9;reactions:0
+14:43:26.797 PERF intervalSeconds=5.02 cursorBridgeHz=25.51 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=16774
+14:43:30.096 WEBVIEW generation=11 event=info detail=Habitat: three-fps:42.5;drawCalls:9;reactions:0
+14:43:31.815 PERF intervalSeconds=5.02 cursorBridgeHz=25.31 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=16901
+14:43:35.113 WEBVIEW generation=11 event=info detail=Habitat: three-fps:42.7;drawCalls:9;reactions:0
+14:43:36.862 PERF intervalSeconds=5.05 cursorBridgeHz=25.36 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=17029
+14:43:40.129 WEBVIEW generation=11 event=info detail=Habitat: three-fps:42.5;drawCalls:9;reactions:0
+14:43:41.877 PERF intervalSeconds=5.01 cursorBridgeHz=25.72 hostProcessCpuPercentNormalized=0.47 totalBridgeUpdates=17158
+14:43:45.129 WEBVIEW generation=11 event=info detail=Habitat: three-fps:42.2;drawCalls:9;reactions:0
+14:43:46.896 PERF intervalSeconds=5.02 cursorBridgeHz=25.30 hostProcessCpuPercentNormalized=0.39 totalBridgeUpdates=17285
+14:43:50.132 WEBVIEW generation=11 event=info detail=Habitat: three-fps:41.2;drawCalls:9;reactions:0
+14:43:50.313 RECOVERY SIGNAL: 1 Hz desktop attachment health check failed.
+14:43:50.577 RECOVERY ATTEMPT 1
+14:43:50.577 Progman hwnd=0x31063E class=Progman parent=0x0 style=0x96000000 ex=0x200080 rect=[0,0,1920,1080] visible=1
+14:43:50.577 desktopMode=raised (WS_EX_NOREDIRECTIONBITMAP)
+14:43:50.577 SHELLDLL_DefView hwnd=0x1101B2 class=SHELLDLL_DefView parent=0x31063E style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:43:50.577 Explorer SysListView32 hwnd=0x1F0914 class=SysListView32 parent=0x1101B2 style=0x56003A40 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:43:50.577 Progman children before WorkerW request (top-to-bottom Z order):
+14:43:50.577   z=0 hwnd=0x1101B2 class=SHELLDLL_DefView parent=0x31063E style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:43:50.750 SendMessageTimeout(Progman,0x052C,wParam=0xD,lParam=0x1) return=1 messageResult=0 lastError=0
+14:43:50.809 Progman children after WorkerW request (top-to-bottom Z order):
+14:43:50.809   z=0 hwnd=0x1101B2 class=SHELLDLL_DefView parent=0x31063E style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:43:50.809   z=1 hwnd=0x230780 class=WorkerW parent=0x31063E style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:43:50.809 selected WorkerW hwnd=0x230780 class=WorkerW parent=0x31063E style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:43:50.809 ATTACH ASSUMPTION VERIFIED: selected WorkerW is a direct Progman child below SHELLDLL_DefView in child Z order.
+14:43:51.661 WEBVIEW generation=13 event=info detail=DirectComposition target and WebView visual created on renderer child HWND.
+14:43:51.736 WEBVIEW generation=13 event=info detail=WebView2 environment creation started.
+14:43:57.077 WEBVIEW generation=13 event=info detail=CompositionController bound; navigating to local aquarium habitat.
+14:43:59.374 WEBVIEW generation=13 event=ready detail=habitat-ready:three-webgl2
+14:43:59.435 WebView2 top-level host before desktop attachment hwnd=0x1D0912 class=AquariumSpike.RenderWindow.v1 parent=0xB0962 style=0x96000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:43:59.435 WebView2 renderer child before desktop attachment hwnd=0x190012 class=AquariumSpike.RendererChild.v1 parent=0x1D0912 style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+14:43:59.438 WEBVIEW TOP-LEVEL PRESENT OK: local habitat reported ready before desktop attachment.
+14:44:00.948 desktop host after extended-style setup hwnd=0x1D0912 class=AquariumSpike.RenderWindow.v1 parent=0xB0962 style=0x96000000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:44:00.948 desktop host after WS_CHILD conversion hwnd=0x1D0912 class=AquariumSpike.RenderWindow.v1 parent=0x1000C style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:44:00.958 desktop host after SetParent hwnd=0x1D0912 class=AquariumSpike.RenderWindow.v1 parent=0x31063E style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:44:00.958 WebView2 host after desktop attachment hwnd=0x1D0912 class=AquariumSpike.RenderWindow.v1 parent=0x31063E style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:44:00.958 WebView2 host owner after desktop attachment=0xB0962
+14:44:00.958 WebView2 renderer child after desktop attachment hwnd=0x190012 class=AquariumSpike.RendererChild.v1 parent=0x1D0912 style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+14:44:00.958 Progman children after render-window attachment (top-to-bottom Z order):
+14:44:00.958   z=0 hwnd=0x1101B2 class=SHELLDLL_DefView parent=0x31063E style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:44:00.958   z=1 hwnd=0x1D0912 class=AquariumSpike.RenderWindow.v1 parent=0x31063E style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:44:00.958   z=2 hwnd=0x230780 class=WorkerW parent=0x31063E style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:44:00.959 ATTACH STRUCTURE OK: layered host is parented to Progman, immediately below SHELLDLL_DefView and above WorkerW.
+14:44:00.959 No normal always-on-bottom fallback exists in this spike.
+14:44:00.959 SESSION RUNNING generation=13
+14:44:00.959 RECOVERY SUCCESS cycle=4 processId=7580
+14:44:00.959 PROBE state=running bridgeUpdates=17366 webviewReady=1 cursorScreen=(1502,200) WindowFromPoint=0x1F0914/SysListView32 hostHitTest=-1 rendererHitTest=-1
+14:44:01.000 PERF intervalSeconds=14.10 cursorBridgeHz=5.81 hostProcessCpuPercentNormalized=0.19 totalBridgeUpdates=17367
+14:44:02.843 RECOVERY SIGNAL: TaskbarCreated broadcast received.
+14:44:03.439 SESSION: desktop host destroyed intentionally.
+14:44:03.441 RECOVERY ATTEMPT 1
+14:44:03.441 Progman hwnd=0x31063E class=Progman parent=0x0 style=0x96000000 ex=0x200080 rect=[0,0,1920,1080] visible=1
+14:44:03.441 desktopMode=raised (WS_EX_NOREDIRECTIONBITMAP)
+14:44:03.441 SHELLDLL_DefView hwnd=0x1101B2 class=SHELLDLL_DefView parent=0x31063E style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:44:03.441 Explorer SysListView32 hwnd=0x1F0914 class=SysListView32 parent=0x1101B2 style=0x56003A40 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:44:03.441 Progman children before WorkerW request (top-to-bottom Z order):
+14:44:03.441   z=0 hwnd=0x1101B2 class=SHELLDLL_DefView parent=0x31063E style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:44:03.441   z=1 hwnd=0x230780 class=WorkerW parent=0x31063E style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:44:03.441 A suitable wallpaper WorkerW already existed; spawn message was not sent.
+14:44:03.441 Progman children after WorkerW request (top-to-bottom Z order):
+14:44:03.441   z=0 hwnd=0x1101B2 class=SHELLDLL_DefView parent=0x31063E style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:44:03.441   z=1 hwnd=0x230780 class=WorkerW parent=0x31063E style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:44:03.441 selected WorkerW hwnd=0x230780 class=WorkerW parent=0x31063E style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:44:03.441 ATTACH ASSUMPTION VERIFIED: selected WorkerW is a direct Progman child below SHELLDLL_DefView in child Z order.
+14:44:03.661 WEBVIEW generation=15 event=info detail=DirectComposition target and WebView visual created on renderer child HWND.
+14:44:03.687 WEBVIEW generation=15 event=info detail=WebView2 environment creation started.
+14:44:04.537 WEBVIEW generation=15 event=info detail=CompositionController bound; navigating to local aquarium habitat.
+14:44:06.789 WEBVIEW generation=15 event=ready detail=habitat-ready:three-webgl2
+14:44:06.847 WebView2 top-level host before desktop attachment hwnd=0x1E0912 class=AquariumSpike.RenderWindow.v1 parent=0xB0962 style=0x96000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:44:06.847 WebView2 renderer child before desktop attachment hwnd=0x1A0012 class=AquariumSpike.RendererChild.v1 parent=0x1E0912 style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+14:44:06.847 WEBVIEW TOP-LEVEL PRESENT OK: local habitat reported ready before desktop attachment.
+14:44:08.363 desktop host after extended-style setup hwnd=0x1E0912 class=AquariumSpike.RenderWindow.v1 parent=0xB0962 style=0x96000000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:44:08.363 desktop host after WS_CHILD conversion hwnd=0x1E0912 class=AquariumSpike.RenderWindow.v1 parent=0x1000C style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:44:08.368 desktop host after SetParent hwnd=0x1E0912 class=AquariumSpike.RenderWindow.v1 parent=0x31063E style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:44:08.369 WebView2 host after desktop attachment hwnd=0x1E0912 class=AquariumSpike.RenderWindow.v1 parent=0x31063E style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:44:08.369 WebView2 host owner after desktop attachment=0xB0962
+14:44:08.369 WebView2 renderer child after desktop attachment hwnd=0x1A0012 class=AquariumSpike.RendererChild.v1 parent=0x1E0912 style=0x56010000 ex=0x20 rect=[0,0,1920,1080] visible=1
+14:44:08.370 Progman children after render-window attachment (top-to-bottom Z order):
+14:44:08.370   z=0 hwnd=0x1101B2 class=SHELLDLL_DefView parent=0x31063E style=0x56010000 ex=0x80000 rect=[0,0,1920,1080] visible=1
+14:44:08.370   z=1 hwnd=0x1E0912 class=AquariumSpike.RenderWindow.v1 parent=0x31063E style=0x56010000 ex=0x8090080 rect=[0,0,1920,1080] visible=1
+14:44:08.370   z=2 hwnd=0x230780 class=WorkerW parent=0x31063E style=0x58000000 ex=0x0 rect=[0,0,1920,1080] visible=1
+14:44:08.370 ATTACH STRUCTURE OK: layered host is parented to Progman, immediately below SHELLDLL_DefView and above WorkerW.
+14:44:08.370 No normal always-on-bottom fallback exists in this spike.
+14:44:08.370 SESSION RUNNING generation=15
+14:44:08.371 RECOVERY SUCCESS cycle=5 processId=7580
+14:44:08.372 PROBE state=running bridgeUpdates=17401 webviewReady=1 cursorScreen=(1502,200) WindowFromPoint=0x1F0914/SysListView32 hostHitTest=-1 rendererHitTest=-1
+14:44:08.417 PERF intervalSeconds=7.42 cursorBridgeHz=4.72 hostProcessCpuPercentNormalized=0.37 totalBridgeUpdates=17402
+14:44:11.713 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.0;drawCalls:9;reactions:0
+14:44:13.448 PERF intervalSeconds=5.03 cursorBridgeHz=25.24 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=17529
+14:44:16.714 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.2;drawCalls:9;reactions:0
+14:44:18.464 PERF intervalSeconds=5.02 cursorBridgeHz=25.32 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=17656
+14:44:21.713 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.8;drawCalls:9;reactions:0
+14:44:23.481 PERF intervalSeconds=5.02 cursorBridgeHz=25.51 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=17784
+14:44:26.713 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.6;drawCalls:9;reactions:0
+14:44:28.498 PERF intervalSeconds=5.01 cursorBridgeHz=25.52 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=17912
+14:44:31.713 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.0;drawCalls:9;reactions:0
+14:44:33.528 PERF intervalSeconds=5.03 cursorBridgeHz=25.44 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=18040
+14:44:36.729 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.1;drawCalls:9;reactions:0
+14:44:38.535 PERF intervalSeconds=5.01 cursorBridgeHz=24.96 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=18165
+14:44:41.729 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.2;drawCalls:9;reactions:0
+14:44:43.544 PERF intervalSeconds=5.01 cursorBridgeHz=25.36 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=18292
+14:44:46.730 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.4;drawCalls:9;reactions:0
+14:44:48.578 PERF intervalSeconds=5.03 cursorBridgeHz=25.43 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=18420
+14:44:51.730 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.0;drawCalls:9;reactions:0
+14:44:53.579 PERF intervalSeconds=5.00 cursorBridgeHz=24.79 hostProcessCpuPercentNormalized=0.39 totalBridgeUpdates=18544
+14:44:56.746 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.3;drawCalls:9;reactions:0
+14:44:58.613 PERF intervalSeconds=5.03 cursorBridgeHz=25.23 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=18671
+14:45:01.747 WEBVIEW generation=15 event=info detail=Habitat: three-fps:40.8;drawCalls:9;reactions:0
+14:45:03.616 PERF intervalSeconds=5.01 cursorBridgeHz=25.17 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=18797
+14:45:06.763 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.7;drawCalls:9;reactions:0
+14:45:08.629 PERF intervalSeconds=5.01 cursorBridgeHz=24.74 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=18921
+14:45:11.763 WEBVIEW generation=15 event=info detail=Habitat: three-fps:40.8;drawCalls:9;reactions:0
+14:45:13.663 PERF intervalSeconds=5.03 cursorBridgeHz=25.23 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=19048
+14:45:16.769 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.4;drawCalls:9;reactions:3
+14:45:18.709 PERF intervalSeconds=5.05 cursorBridgeHz=22.99 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=19164
+14:45:21.800 WEBVIEW generation=15 event=info detail=Habitat: three-fps:39.9;drawCalls:9;reactions:3
+14:45:23.768 PERF intervalSeconds=5.06 cursorBridgeHz=18.78 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=19259
+14:45:26.783 WEBVIEW generation=15 event=info detail=Habitat: three-fps:39.0;drawCalls:9;reactions:3
+14:45:28.799 PERF intervalSeconds=5.03 cursorBridgeHz=23.45 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=19377
+14:45:31.799 WEBVIEW generation=15 event=info detail=Habitat: three-fps:43.5;drawCalls:9;reactions:3
+14:45:33.820 PERF intervalSeconds=5.02 cursorBridgeHz=23.70 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=19496
+14:45:36.813 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.3;drawCalls:9;reactions:5
+14:45:38.829 PERF intervalSeconds=5.01 cursorBridgeHz=24.36 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=19618
+14:45:41.815 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.4;drawCalls:9;reactions:9
+14:45:43.831 PERF intervalSeconds=5.00 cursorBridgeHz=24.79 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=19742
+14:45:46.813 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.4;drawCalls:9;reactions:10
+14:45:48.865 PERF intervalSeconds=5.03 cursorBridgeHz=25.03 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=19868
+14:45:51.813 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.4;drawCalls:9;reactions:10
+14:45:53.880 PERF intervalSeconds=5.02 cursorBridgeHz=25.12 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=19994
+14:45:56.830 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.5;drawCalls:9;reactions:11
+14:45:58.912 PERF intervalSeconds=5.03 cursorBridgeHz=25.25 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=20121
+14:46:01.830 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.6;drawCalls:9;reactions:11
+14:46:03.913 PERF intervalSeconds=5.00 cursorBridgeHz=25.20 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=20247
+14:46:06.830 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.2;drawCalls:9;reactions:11
+14:46:08.946 PERF intervalSeconds=5.03 cursorBridgeHz=25.23 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=20374
+14:46:11.846 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.1;drawCalls:9;reactions:11
+14:46:13.962 PERF intervalSeconds=5.02 cursorBridgeHz=25.32 hostProcessCpuPercentNormalized=0.39 totalBridgeUpdates=20501
+14:46:16.863 WEBVIEW generation=15 event=info detail=Habitat: three-fps:43.1;drawCalls:9;reactions:11
+14:46:19.007 PERF intervalSeconds=5.05 cursorBridgeHz=25.36 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=20629
+14:46:21.863 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.2;drawCalls:9;reactions:11
+14:46:24.030 PERF intervalSeconds=5.02 cursorBridgeHz=25.49 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=20757
+14:46:26.880 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.5;drawCalls:9;reactions:11
+14:46:29.063 PERF intervalSeconds=5.03 cursorBridgeHz=25.63 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=20886
+14:46:31.879 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.0;drawCalls:9;reactions:11
+14:46:34.105 PERF intervalSeconds=5.04 cursorBridgeHz=25.39 hostProcessCpuPercentNormalized=0.15 totalBridgeUpdates=21014
+14:46:34.885 CONTROL pause
+14:46:39.111 PERF intervalSeconds=5.01 cursorBridgeHz=25.77 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=21143
+14:46:44.144 PERF intervalSeconds=5.03 cursorBridgeHz=25.63 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=21272
+14:46:49.163 PERF intervalSeconds=5.02 cursorBridgeHz=25.70 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=21401
+14:46:54.177 PERF intervalSeconds=5.01 cursorBridgeHz=26.12 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=21532
+14:46:59.210 PERF intervalSeconds=5.03 cursorBridgeHz=26.03 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=21663
+14:47:04.231 PERF intervalSeconds=5.02 cursorBridgeHz=25.29 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=21790
+14:47:09.262 PERF intervalSeconds=5.03 cursorBridgeHz=25.44 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=21918
+14:47:14.263 PERF intervalSeconds=5.00 cursorBridgeHz=25.40 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=22045
+14:47:18.390 CONTROL resume
+14:47:18.396 WEBVIEW generation=15 event=info detail=Habitat: three-fps:2.6;drawCalls:9;reactions:11
+14:47:19.282 PERF intervalSeconds=5.02 cursorBridgeHz=25.70 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=22174
+14:47:23.396 WEBVIEW generation=15 event=info detail=Habitat: three-fps:43.4;drawCalls:9;reactions:11
+14:47:24.326 PERF intervalSeconds=5.04 cursorBridgeHz=25.38 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=22302
+14:47:28.413 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.9;drawCalls:9;reactions:11
+14:47:29.328 PERF intervalSeconds=5.00 cursorBridgeHz=25.39 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=22429
+14:47:33.429 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.5;drawCalls:9;reactions:11
+14:47:34.361 PERF intervalSeconds=5.03 cursorBridgeHz=25.24 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=22556
+14:47:38.431 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.0;drawCalls:9;reactions:11
+14:47:39.362 PERF intervalSeconds=5.00 cursorBridgeHz=25.39 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=22683
+14:47:43.431 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.6;drawCalls:9;reactions:11
+14:47:44.395 PERF intervalSeconds=5.03 cursorBridgeHz=25.23 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=22810
+14:47:48.429 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.0;drawCalls:9;reactions:11
+14:47:49.428 PERF intervalSeconds=5.03 cursorBridgeHz=25.63 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=22939
+14:47:53.446 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.1;drawCalls:9;reactions:11
+14:47:54.447 PERF intervalSeconds=5.02 cursorBridgeHz=25.30 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=23066
+14:47:58.463 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.1;drawCalls:9;reactions:11
+14:47:59.478 PERF intervalSeconds=5.03 cursorBridgeHz=25.04 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=23192
+14:48:03.463 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.6;drawCalls:9;reactions:11
+14:48:04.479 PERF intervalSeconds=5.00 cursorBridgeHz=25.40 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=23319
+14:48:08.497 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.3;drawCalls:9;reactions:11
+14:48:09.479 PERF intervalSeconds=5.00 cursorBridgeHz=25.80 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=23448
+14:48:13.513 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.5;drawCalls:9;reactions:11
+14:48:14.479 PERF intervalSeconds=5.00 cursorBridgeHz=25.40 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=23575
+14:48:18.513 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.4;drawCalls:9;reactions:11
+14:48:19.494 PERF intervalSeconds=5.01 cursorBridgeHz=25.13 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=23701
+14:48:23.513 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.2;drawCalls:9;reactions:11
+14:48:24.509 PERF intervalSeconds=5.01 cursorBridgeHz=24.93 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=23826
+14:48:28.530 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.1;drawCalls:9;reactions:11
+14:48:29.547 PERF intervalSeconds=5.04 cursorBridgeHz=25.20 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=23953
+14:48:33.530 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.8;drawCalls:9;reactions:11
+14:48:34.547 PERF intervalSeconds=5.00 cursorBridgeHz=25.00 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=24078
+14:48:38.529 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.0;drawCalls:9;reactions:11
+14:48:39.595 PERF intervalSeconds=5.05 cursorBridgeHz=25.37 hostProcessCpuPercentNormalized=0.31 totalBridgeUpdates=24206
+14:48:43.529 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.8;drawCalls:9;reactions:11
+14:48:44.629 PERF intervalSeconds=5.03 cursorBridgeHz=25.62 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=24335
+14:48:48.546 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.5;drawCalls:9;reactions:11
+14:48:49.668 PERF intervalSeconds=5.04 cursorBridgeHz=25.40 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=24463
+14:48:53.563 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.9;drawCalls:9;reactions:11
+14:48:54.680 PERF intervalSeconds=5.01 cursorBridgeHz=24.94 hostProcessCpuPercentNormalized=0.47 totalBridgeUpdates=24588
+14:48:58.579 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.7;drawCalls:9;reactions:11
+14:48:59.714 PERF intervalSeconds=5.03 cursorBridgeHz=25.43 hostProcessCpuPercentNormalized=0.39 totalBridgeUpdates=24716
+14:49:03.596 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.3;drawCalls:9;reactions:11
+14:49:04.715 PERF intervalSeconds=5.00 cursorBridgeHz=25.00 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=24841
+14:49:08.596 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.8;drawCalls:9;reactions:11
+14:49:09.747 PERF intervalSeconds=5.03 cursorBridgeHz=25.43 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=24969
+14:49:13.629 WEBVIEW generation=15 event=info detail=Habitat: three-fps:42.3;drawCalls:9;reactions:11
+14:49:14.761 PERF intervalSeconds=5.01 cursorBridgeHz=25.33 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=25096
+14:49:18.646 WEBVIEW generation=15 event=info detail=Habitat: three-fps:40.5;drawCalls:9;reactions:11
+14:49:19.763 PERF intervalSeconds=5.00 cursorBridgeHz=25.59 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=25224
+14:49:23.663 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.9;drawCalls:9;reactions:11
+14:49:24.796 PERF intervalSeconds=5.03 cursorBridgeHz=25.63 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=25353
+14:49:28.663 WEBVIEW generation=15 event=info detail=Habitat: three-fps:41.2;drawCalls:9;reactions:11
+14:49:29.814 PERF intervalSeconds=5.02 cursorBridgeHz=25.91 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=25483
+14:49:32.132 CONTROL quit
+14:49:32.132 PROBE state=running bridgeUpdates=25541 webviewReady=1 cursorScreen=(1500,500) WindowFromPoint=0x1F0914/SysListView32 hostHitTest=-1 rendererHitTest=-1
+14:49:32.164 SESSION: desktop host destroyed intentionally.
+14:49:32.167 Aquarium.exe WebView2 composition wallpaper spike stopped

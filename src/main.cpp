@@ -30,17 +30,30 @@ enum class Control : WPARAM { Pause = 1, Resume = 2, Toggle = 3, Probe = 4, Quit
 std::wofstream g_log;
 std::mutex g_log_mutex;
 UINT g_control_message = 0;
+UINT g_taskbar_created_message = 0;
 bool g_paused = false;
 bool g_quit = false;
+bool g_host_lost = false;
+bool g_intentional_host_destroy = false;
 unsigned long long g_frames = 0;
 WebViewRuntime* g_webview_runtime = nullptr;
+aquarium::HostLifecycle g_lifecycle;
 HWND g_window = nullptr;
 HWND g_renderer_window = nullptr;
 HWND g_owner_window = nullptr;
 HWND g_progman = nullptr;
 HWND g_defview = nullptr;
+HWND g_listview = nullptr;
 HWND g_workerw = nullptr;
 bool g_raised_desktop = false;
+
+struct RuntimeStatus {
+  std::uint64_t generation = 0;
+  bool ready = false;
+  bool failed = false;
+};
+
+RuntimeStatus g_runtime_status;
 
 std::wstring hex_handle(HWND handle) {
   std::wostringstream out;
@@ -159,6 +172,10 @@ HWND find_wallpaper_worker(HWND progman, HWND defview) {
 }
 
 bool discover_desktop_host() {
+  g_progman = nullptr;
+  g_defview = nullptr;
+  g_listview = nullptr;
+  g_workerw = nullptr;
   g_progman = find_progman();
   if (!g_progman) {
     log_line(L"ATTACH FAILURE: Progman was not found; refusing ordinary-window fallback.");
@@ -176,6 +193,13 @@ bool discover_desktop_host() {
     return false;
   }
   log_window(L"SHELLDLL_DefView", g_defview);
+  g_listview = FindWindowExW(g_defview, nullptr, L"SysListView32", L"FolderView");
+  if (!g_listview) g_listview = FindWindowExW(g_defview, nullptr, L"SysListView32", nullptr);
+  if (!g_listview) {
+    log_line(L"ATTACH FAILURE: Explorer SysListView32 was not found below SHELLDLL_DefView.");
+    return false;
+  }
+  log_window(L"Explorer SysListView32", g_listview);
   log_progman_children(L"before WorkerW request");
 
   g_workerw = find_wallpaper_worker(g_progman, g_defview);
@@ -216,13 +240,19 @@ void log_probe() {
       << L" webviewReady=" << (g_webview_runtime && g_webview_runtime->ready())
       << L" cursorScreen=(" << point.x << L"," << point.y << L")"
       << L" WindowFromPoint=" << hex_handle(hit) << L"/" << class_name(hit)
-      << L" hostHitTest=" << SendMessageW(g_window, WM_NCHITTEST, 0, MAKELPARAM(point.x, point.y))
-      << L" rendererHitTest=" << SendMessageW(g_renderer_window, WM_NCHITTEST, 0,
-                                                MAKELPARAM(point.x, point.y));
+      << L" hostHitTest=" << (IsWindow(g_window) ? SendMessageW(
+             g_window, WM_NCHITTEST, 0, MAKELPARAM(point.x, point.y)) : 0)
+      << L" rendererHitTest=" << (IsWindow(g_renderer_window) ? SendMessageW(
+             g_renderer_window, WM_NCHITTEST, 0, MAKELPARAM(point.x, point.y)) : 0);
   log_line(out.str());
 }
 
 LRESULT CALLBACK window_proc(HWND window, UINT message, WPARAM wparam, LPARAM lparam) {
+  if (message == g_taskbar_created_message && g_taskbar_created_message != 0) {
+    log_line(L"RECOVERY SIGNAL: TaskbarCreated broadcast received.");
+    g_host_lost = true;
+    return 0;
+  }
   if (message == g_control_message) {
     switch (static_cast<Control>(wparam)) {
       case Control::Pause:
@@ -257,11 +287,21 @@ LRESULT CALLBACK window_proc(HWND window, UINT message, WPARAM wparam, LPARAM lp
     case WM_MOUSEACTIVATE: return MA_NOACTIVATE;
     case WM_ERASEBKGND: return 1;
     case WM_CLOSE:
-      g_quit = true;
+      if (window == g_owner_window) g_quit = true;
+      else g_host_lost = true;
       DestroyWindow(window);
       return 0;
     case WM_DESTROY:
-      PostQuitMessage(0);
+      if (window == g_owner_window) {
+        PostQuitMessage(0);
+      } else if (window == g_window) {
+        log_line(g_intentional_host_destroy
+                     ? L"SESSION: desktop host destroyed intentionally."
+                     : L"RECOVERY SIGNAL: desktop host HWND was destroyed.");
+        g_window = nullptr;
+        g_renderer_window = nullptr;
+        if (!g_intentional_host_destroy) g_host_lost = true;
+      }
       return 0;
     default: return DefWindowProcW(window, message, wparam, lparam);
   }
@@ -277,6 +317,7 @@ LRESULT CALLBACK renderer_window_proc(HWND window, UINT message, WPARAM wparam, 
 }
 
 HWND find_existing_render_window() {
+  if (HWND owner = FindWindowW(kOwnerWindowClass, nullptr)) return owner;
   struct State { HWND result = nullptr; } state;
   EnumWindows([](HWND top, LPARAM data) -> BOOL {
     auto* state = reinterpret_cast<State*>(data);
@@ -322,7 +363,7 @@ int send_control(const std::wstring& argument) {
 HWND create_top_level_host_window(HINSTANCE instance, int width, int height) {
   WNDCLASSEXW owner_class{sizeof(owner_class)};
   owner_class.style = CS_DBLCLKS;
-  owner_class.lpfnWndProc = DefWindowProcW;
+  owner_class.lpfnWndProc = window_proc;
   owner_class.hInstance = instance;
   owner_class.lpszClassName = kOwnerWindowClass;
   if (!RegisterClassExW(&owner_class) && GetLastError() != ERROR_CLASS_ALREADY_EXISTS) {
@@ -349,18 +390,20 @@ HWND create_top_level_host_window(HINSTANCE instance, int width, int height) {
     log_line(L"RegisterClassEx(renderer child) failed error=" + std::to_wstring(GetLastError()));
     return nullptr;
   }
-  g_owner_window = CreateWindowExW(
-      WS_EX_TOOLWINDOW | WS_EX_WINDOWEDGE,
-      kOwnerWindowClass, L"",
-      WS_CAPTION | WS_CLIPSIBLINGS,
-      0, 0, 0, 0, nullptr, nullptr, instance, nullptr);
-  if (!g_owner_window) {
-    log_line(L"CreateWindowEx(hidden owner) failed error=" + std::to_wstring(GetLastError()));
-    return nullptr;
+  if (!IsWindow(g_owner_window)) {
+    g_owner_window = CreateWindowExW(
+        WS_EX_TOOLWINDOW | WS_EX_WINDOWEDGE,
+        kOwnerWindowClass, L"Aquarium.exe stable control owner",
+        WS_CAPTION | WS_CLIPSIBLINGS,
+        0, 0, 0, 0, nullptr, nullptr, instance, nullptr);
+    if (!g_owner_window) {
+      log_line(L"CreateWindowEx(hidden owner) failed error=" + std::to_wstring(GetLastError()));
+      return nullptr;
+    }
+    SetWindowPos(g_owner_window, nullptr, -32000, -32000, 16, 16,
+                 SWP_NOACTIVATE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+    log_window(L"Stable hidden owner", g_owner_window);
   }
-  SetWindowPos(g_owner_window, nullptr, -32000, -32000, 16, 16,
-               SWP_NOACTIVATE | SWP_NOZORDER | SWP_NOOWNERZORDER);
-  log_window(L"Final hidden owner", g_owner_window);
 
   HWND window = CreateWindowExW(
       0,
@@ -448,6 +491,154 @@ double process_cpu_percent(FILETIME previous_kernel, FILETIME previous_user, dou
   return wall_seconds > 0 ? cpu_seconds / wall_seconds / std::max<DWORD>(1, info.dwNumberOfProcessors) * 100.0 : 0;
 }
 
+void pump_messages() {
+  MSG message{};
+  while (PeekMessageW(&message, nullptr, 0, 0, PM_REMOVE)) {
+    if (message.message == WM_QUIT) g_quit = true;
+    TranslateMessage(&message);
+    DispatchMessageW(&message);
+  }
+}
+
+bool wait_with_messages(std::chrono::milliseconds duration) {
+  const auto deadline = std::chrono::steady_clock::now() + duration;
+  while (!g_quit && std::chrono::steady_clock::now() < deadline) {
+    pump_messages();
+    const auto remaining = std::chrono::duration_cast<std::chrono::milliseconds>(
+        deadline - std::chrono::steady_clock::now());
+    const DWORD wait_ms = static_cast<DWORD>(std::clamp<long long>(remaining.count(), 1, 100));
+    MsgWaitForMultipleObjectsEx(0, nullptr, wait_ms, QS_ALLINPUT, MWMO_INPUTAVAILABLE);
+  }
+  return !g_quit;
+}
+
+bool desktop_attachment_valid() {
+  if (!IsWindow(g_owner_window) || !IsWindow(g_window) || !IsWindow(g_renderer_window) ||
+      !IsWindow(g_progman) || !IsWindow(g_defview) || !IsWindow(g_listview) ||
+      !IsWindow(g_workerw)) {
+    return false;
+  }
+  if (GetParent(g_defview) != g_progman || GetParent(g_listview) != g_defview ||
+      GetParent(g_renderer_window) != g_window) {
+    return false;
+  }
+  const HWND expected_parent = g_raised_desktop ? g_progman : g_workerw;
+  if (GetParent(g_window) != expected_parent) return false;
+  return !g_raised_desktop ||
+         (ordered_above(g_progman, g_defview, g_window) &&
+          ordered_above(g_progman, g_window, g_workerw));
+}
+
+void destroy_render_session(WebViewRuntime& runtime) {
+  runtime.shutdown();
+  g_intentional_host_destroy = true;
+  if (IsWindow(g_window)) DestroyWindow(g_window);
+  g_window = nullptr;
+  g_renderer_window = nullptr;
+  g_intentional_host_destroy = false;
+  g_progman = nullptr;
+  g_defview = nullptr;
+  g_listview = nullptr;
+  g_workerw = nullptr;
+}
+
+void on_webview_event(std::uint64_t generation, WebViewEvent event,
+                      const std::wstring& detail) {
+  std::wostringstream line;
+  line << L"WEBVIEW generation=" << generation << L" event=";
+  if (event == WebViewEvent::Ready) line << L"ready";
+  else if (event == WebViewEvent::Failure) line << L"failure";
+  else line << L"info";
+  line << L" detail=" << detail;
+  log_line(line.str());
+  if (generation != g_runtime_status.generation) {
+    log_line(L"WEBVIEW stale callback ignored for generation=" + std::to_wstring(generation));
+    return;
+  }
+  if (event == WebViewEvent::Ready) g_runtime_status.ready = true;
+  if (event == WebViewEvent::Failure) {
+    g_runtime_status.failed = true;
+    if (g_lifecycle.state() == aquarium::HostState::Running) g_host_lost = true;
+  }
+}
+
+bool initialize_render_session(HINSTANCE instance, WebViewRuntime& runtime,
+                               const std::filesystem::path& executable_directory) {
+  g_host_lost = false;
+  if (!discover_desktop_host()) return false;
+
+  RECT client{};
+  GetClientRect(g_workerw, &client);
+  const int width = client.right - client.left;
+  const int height = client.bottom - client.top;
+  if (width <= 0 || height <= 0) {
+    log_line(L"ATTACH FAILURE: selected WorkerW has an empty client area.");
+    return false;
+  }
+
+  g_window = create_top_level_host_window(instance, width, height);
+  if (!g_window) return false;
+  if (!SetWindowPos(g_window, HWND_TOP, 0, 0, width, height,
+                    SWP_NOACTIVATE | SWP_SHOWWINDOW)) {
+    log_line(L"Top-level SetWindowPos failed error=" + std::to_wstring(GetLastError()));
+    return false;
+  }
+
+  const auto generation = g_lifecycle.begin_initialization();
+  g_runtime_status = {generation, false, false};
+  const RECT webview_bounds{0, 0, width, height};
+  if (!runtime.initialize(
+          g_renderer_window, g_owner_window, webview_bounds,
+          executable_directory / L"habitat", executable_directory / L"webview2-user-data",
+          generation, on_webview_event)) {
+    return false;
+  }
+
+  const auto initialization_deadline =
+      std::chrono::steady_clock::now() + std::chrono::seconds(30);
+  while (!g_runtime_status.ready && !g_runtime_status.failed && !g_quit && !g_host_lost &&
+         std::chrono::steady_clock::now() < initialization_deadline) {
+    pump_messages();
+    MsgWaitForMultipleObjectsEx(0, nullptr, 50, QS_ALLINPUT, MWMO_INPUTAVAILABLE);
+  }
+  if (!g_runtime_status.ready) {
+    if (g_host_lost) log_line(L"WEBVIEW INITIALIZATION INTERRUPTED: Explorer host changed.");
+    else log_line(g_runtime_status.failed ? L"WEBVIEW INITIALIZATION FAILED"
+                                         : L"WEBVIEW INITIALIZATION TIMEOUT");
+    return false;
+  }
+
+  log_window(L"WebView2 top-level host before desktop attachment", g_window);
+  log_window(L"WebView2 renderer child before desktop attachment", g_renderer_window);
+  log_line(L"WEBVIEW TOP-LEVEL PRESENT OK: local habitat reported ready before desktop attachment.");
+  if (!wait_with_messages(std::chrono::milliseconds(1500)) || g_host_lost) return false;
+
+  if (!attach_render_window_to_desktop(g_window, width, height)) return false;
+  log_window(L"WebView2 host after desktop attachment", g_window);
+  log_line(L"WebView2 host owner after desktop attachment=" +
+           hex_handle(GetWindow(g_window, GW_OWNER)));
+  log_window(L"WebView2 renderer child after desktop attachment", g_renderer_window);
+  log_progman_children(L"after render-window attachment");
+  if (!desktop_attachment_valid()) {
+    log_line(L"ATTACH FAILURE: recovered hierarchy or Z order did not validate.");
+    return false;
+  }
+
+  log_line(g_raised_desktop
+               ? L"ATTACH STRUCTURE OK: layered host is parented to Progman, immediately below SHELLDLL_DefView and above WorkerW."
+               : L"ATTACH STRUCTURE OK: render child is parented to the classic below-icons WorkerW.");
+  log_line(L"No normal always-on-bottom fallback exists in this spike.");
+  runtime.post_json(aquarium::pause_message(g_paused));
+  runtime.post_json(aquarium::rate_message(60));
+  if (!g_lifecycle.mark_running(generation)) {
+    log_line(L"RECOVERY FAILURE: lifecycle rejected initialized generation.");
+    return false;
+  }
+  g_host_lost = false;
+  log_line(L"SESSION RUNNING generation=" + std::to_wstring(generation));
+  return true;
+}
+
 }  // namespace
 
 int wmain(int argc, wchar_t** argv) {
@@ -471,120 +662,70 @@ int wmain(int argc, wchar_t** argv) {
   log_line(L"Aquarium.exe WebView2 composition wallpaper spike starting");
   log_os_build();
   g_control_message = RegisterWindowMessageW(kControlMessageName);
-
-  if (!discover_desktop_host()) return 10;
-  RECT client{};
-  GetClientRect(g_workerw, &client);
-  const int width = client.right - client.left;
-  const int height = client.bottom - client.top;
-  if (width <= 0 || height <= 0) {
-    log_line(L"ATTACH FAILURE: selected WorkerW has an empty client area.");
-    return 11;
-  }
-
-  g_window = create_top_level_host_window(GetModuleHandleW(nullptr), width, height);
-  if (!g_window) return 12;
-
-  if (!SetWindowPos(g_window, HWND_TOP, 0, 0, width, height,
-                    SWP_NOACTIVATE | SWP_SHOWWINDOW)) {
-    log_line(L"Experiment A top-level SetWindowPos failed error=" + std::to_wstring(GetLastError()));
-    DestroyWindow(g_window);
-    return 12;
-  }
+  g_taskbar_created_message = RegisterWindowMessageW(L"TaskbarCreated");
   WebViewRuntime webview_runtime;
   g_webview_runtime = &webview_runtime;
-  bool webview_ready = false;
-  bool webview_failed = false;
   const auto executable_directory = std::filesystem::path(argv[0]).parent_path();
-  const auto habitat_directory = executable_directory / L"habitat";
-  const auto user_data_directory = executable_directory / L"webview2-user-data";
-  const RECT webview_bounds{0, 0, width, height};
-  if (!webview_runtime.initialize(
-          g_renderer_window, g_owner_window, webview_bounds, habitat_directory,
-          user_data_directory, 1,
-          [&](std::uint64_t generation, WebViewEvent event, const std::wstring& detail) {
-            std::wostringstream line;
-            line << L"WEBVIEW generation=" << generation << L" event=";
-            if (event == WebViewEvent::Ready) line << L"ready";
-            else if (event == WebViewEvent::Failure) line << L"failure";
-            else line << L"info";
-            line << L" detail=" << detail;
-            log_line(line.str());
-            if (event == WebViewEvent::Ready) webview_ready = true;
-            if (event == WebViewEvent::Failure) webview_failed = true;
-          })) {
-    DestroyWindow(g_window);
-    CoUninitialize();
-    return 14;
-  }
-  const auto initialization_deadline =
-      std::chrono::steady_clock::now() + std::chrono::seconds(30);
-  while (!webview_ready && !webview_failed &&
-         std::chrono::steady_clock::now() < initialization_deadline) {
-    MSG message{};
-    while (PeekMessageW(&message, nullptr, 0, 0, PM_REMOVE)) {
-      TranslateMessage(&message);
-      DispatchMessageW(&message);
-    }
-    MsgWaitForMultipleObjectsEx(0, nullptr, 50, QS_ALLINPUT, MWMO_INPUTAVAILABLE);
-  }
-  if (!webview_ready) {
-    log_line(webview_failed ? L"WEBVIEW INITIALIZATION FAILED" : L"WEBVIEW INITIALIZATION TIMEOUT");
-    webview_runtime.shutdown();
-    DestroyWindow(g_window);
-    CoUninitialize();
-    return 14;
-  }
-  log_window(L"WebView2 top-level host before desktop attachment", g_window);
-  log_window(L"WebView2 renderer child before desktop attachment", g_renderer_window);
-  log_line(L"WEBVIEW TOP-LEVEL PRESENT OK: local habitat reported ready before desktop attachment.");
-  Sleep(1500);
-
-  if (!attach_render_window_to_desktop(g_window, width, height)) {
-    DestroyWindow(g_window);
-    return 12;
-  }
-  log_window(L"WebView2 host after desktop attachment", g_window);
-  log_line(L"WebView2 host owner after desktop attachment=" + hex_handle(GetWindow(g_window, GW_OWNER)));
-  log_window(L"WebView2 renderer child after desktop attachment", g_renderer_window);
-  const HWND expected_parent = g_raised_desktop ? g_progman : g_workerw;
-  if (GetParent(g_window) != expected_parent) {
-    log_line(L"ATTACH FAILURE: render window does not have the expected desktop parent.");
-    DestroyWindow(g_window);
-    return 13;
-  }
-  log_progman_children(L"after render-window attachment");
-  if (g_raised_desktop &&
-      !(ordered_above(g_progman, g_defview, g_window) &&
-        ordered_above(g_progman, g_window, g_workerw))) {
-    log_line(L"ATTACH FAILURE: raised-desktop Z order is not DefView > render window > WorkerW.");
-    DestroyWindow(g_window);
-    return 13;
-  }
-  log_line(g_raised_desktop
-               ? L"ATTACH STRUCTURE OK: layered host is parented to Progman, immediately below SHELLDLL_DefView and above WorkerW."
-               : L"ATTACH STRUCTURE OK: render child is parented to the classic below-icons WorkerW.");
-  log_line(L"Structural attachment does not prove that Explorer/DWM visibly composites the surface.");
-  log_line(L"No normal always-on-bottom fallback exists in this spike.");
-
-  log_probe();
 
   using clock = std::chrono::steady_clock;
   auto previous = clock::now();
   auto report_start = previous;
+  auto next_health_check = previous;
   unsigned long long report_frames = 0;
   FILETIME creation{}, exit{}, previous_kernel{}, previous_user{};
   GetProcessTimes(GetCurrentProcess(), &creation, &exit, &previous_kernel, &previous_user);
+  aquarium::RecoveryBackoff recovery_backoff;
+  bool session_running = false;
+  bool ever_started = false;
+  unsigned int attempt = 0;
+  unsigned int recovery_cycles = 0;
 
   while (!g_quit) {
-    MSG message{};
-    while (PeekMessageW(&message, nullptr, 0, 0, PM_REMOVE)) {
-      if (message.message == WM_QUIT) g_quit = true;
-      TranslateMessage(&message);
-      DispatchMessageW(&message);
-    }
+    pump_messages();
     if (g_quit) break;
+
+    if (!session_running) {
+      destroy_render_session(webview_runtime);
+      if (attempt > 0) {
+        const auto delay = recovery_backoff.next_delay();
+        log_line(L"RECOVERY BACKOFF attempt=" + std::to_wstring(attempt + 1) +
+                 L" delayMs=" + std::to_wstring(delay.count()));
+        if (!wait_with_messages(delay)) break;
+      }
+      ++attempt;
+      log_line(std::wstring(ever_started ? L"RECOVERY ATTEMPT " : L"STARTUP ATTEMPT ") +
+               std::to_wstring(attempt));
+      if (!initialize_render_session(GetModuleHandleW(nullptr), webview_runtime,
+                                     executable_directory)) {
+        g_lifecycle.mark_lost();
+        continue;
+      }
+      session_running = true;
+      if (ever_started) {
+        ++recovery_cycles;
+        log_line(L"RECOVERY SUCCESS cycle=" + std::to_wstring(recovery_cycles) +
+                 L" processId=" + std::to_wstring(GetCurrentProcessId()));
+      } else {
+        ever_started = true;
+        log_line(L"STARTUP SUCCESS processId=" + std::to_wstring(GetCurrentProcessId()));
+      }
+      attempt = 0;
+      recovery_backoff.reset();
+      previous = clock::now();
+      next_health_check = previous + std::chrono::seconds(1);
+      log_probe();
+    }
+
     const auto now = clock::now();
+    if (g_host_lost || (now >= next_health_check && !desktop_attachment_valid())) {
+      if (!g_host_lost) log_line(L"RECOVERY SIGNAL: 1 Hz desktop attachment health check failed.");
+      g_lifecycle.mark_lost();
+      g_host_lost = true;
+      session_running = false;
+      continue;
+    }
+    if (now >= next_health_check) next_health_check = now + std::chrono::seconds(1);
+
     const double elapsed = std::chrono::duration<double>(now - previous).count();
     if (elapsed < 1.0 / 30.0) {
       const DWORD wait_ms = static_cast<DWORD>(std::max(1.0, (1.0 / 30.0 - elapsed) * 1000.0));
@@ -596,10 +737,17 @@ int wmain(int argc, wchar_t** argv) {
     bool present = false;
     double normalized_x = 0;
     double normalized_y = 0;
+    RECT renderer_client{};
+    GetClientRect(g_renderer_window, &renderer_client);
+    const int width = renderer_client.right - renderer_client.left;
+    const int height = renderer_client.bottom - renderer_client.top;
     if (GetCursorPos(&cursor) && ScreenToClient(g_renderer_window, &cursor)) {
-      present = cursor.x >= 0 && cursor.y >= 0 && cursor.x < width && cursor.y < height;
-      normalized_x = static_cast<double>(cursor.x) / width;
-      normalized_y = static_cast<double>(cursor.y) / height;
+      present = width > 0 && height > 0 && cursor.x >= 0 && cursor.y >= 0 &&
+                cursor.x < width && cursor.y < height;
+      if (present) {
+        normalized_x = static_cast<double>(cursor.x) / width;
+        normalized_y = static_cast<double>(cursor.y) / height;
+      }
     }
     webview_runtime.post_json(aquarium::pointer_message(present, normalized_x, normalized_y));
     ++g_frames;
@@ -621,10 +769,11 @@ int wmain(int argc, wchar_t** argv) {
   }
 
   log_probe();
+  g_lifecycle.stop();
+  destroy_render_session(webview_runtime);
   g_webview_runtime = nullptr;
-  webview_runtime.shutdown();
-  if (g_window) DestroyWindow(g_window);
-  if (g_owner_window) DestroyWindow(g_owner_window);
+  if (IsWindow(g_owner_window)) DestroyWindow(g_owner_window);
+  g_owner_window = nullptr;
   log_line(L"Aquarium.exe WebView2 composition wallpaper spike stopped");
   CoUninitialize();
   return 0;

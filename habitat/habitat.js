@@ -134,16 +134,18 @@ function postDiagnostics(now) {
 
 function frame(now) {
   requestAnimationFrame(frame);
+  if (paused || targetFps === 0) {
+    previousUpdate = now;
+    return;
+  }
   const interval = targetFps > 0 ? 1000 / targetFps : Infinity;
   if (now - previousRender < interval) return;
   previousRender = now;
 
   const elapsed = Math.min(0.1, (now - previousUpdate) / 1000);
   previousUpdate = now;
-  if (!paused) {
-    const aspect = innerWidth / Math.max(1, innerHeight);
-    for (const item of fish) updateFish(item, elapsed, aspect);
-  }
+  const aspect = innerWidth / Math.max(1, innerHeight);
+  for (const item of fish) updateFish(item, elapsed, aspect);
   renderer.render(scene, camera);
   renderedFrames += 1;
   if (!readySent) {

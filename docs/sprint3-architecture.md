@@ -47,6 +47,17 @@ A hidden Aquarium-owned top-level control window survives Explorer. Explorer los
 
 Retry delay grows from 250 ms through 500 ms, 1 s, 2 s, and caps at 5 s. Attempts and HRESULTs are logged. There is no busy polling and no normal process restart recovery path.
 
+### Recovery gate result (2026-09-21)
+
+- **Tested:** the stable owner survived while Explorer was forcibly terminated and restarted three consecutive times.
+- **Tested:** Aquarium remained PID 7580 for every cycle; Explorer changed 23848 → 5840 → 1320 → 14788.
+- **Tested:** every cycle rediscovered new `Progman`, `SHELLDLL_DefView`, `SysListView32`, and `WorkerW` handles, recreated WebView2/DComp resources, received `habitat-ready:three-webgl2`, validated Z-order, and logged `RECOVERY SUCCESS`.
+- **Tested:** Win+D after recovery #3 preserved the habitat and both icon/blank hit-tests reached the replacement Explorer `SysListView32` PID 14788. A click changed Explorer's selected count to 1; a blank click restored it to 0; foreground stayed `Progman`.
+- **Observed:** `TaskbarCreated` can arrive after the 1 Hz check has already begun recovery. Generation guards and teardown handled the stale initialization safely, at the cost of several additional seconds before recovery.
+- **Tested:** the final process ran 18 minutes 37 seconds. It rendered continuously for 14 minutes 45 seconds after the last behavioral change and before the deliberate final pause, including all three restarts.
+- **Tested:** clean quit removed Aquarium and all seven tracked descendants within ten seconds.
+- **Evidence:** `spike3-recovery-3.png` and `docs/evidence/spike3-final-run.log`.
+
 ## Experimental gates
 
 1. Revalidate the native D3D baseline from `00e0b58`.
@@ -69,9 +80,9 @@ Retry delay grows from 250 ms through 500 ms, 1 s, 2 s, and caps at 5 s. Attempt
 - **Tested:** three original primitive-geometry fish remained visibly animated beneath real Explorer icons.
 - **Tested:** both an icon location and blank desktop returned Explorer `SysListView32` (PID 26036); a single click visibly selected the `music` desktop folder.
 - **Tested:** native global cursor messages caused recorded proximity reactions in JavaScript (`reactions` increased from 0 to more than 300 during the extended probe run).
-- **Tested:** `--pause` and `--resume` crossed the JSON bridge; JavaScript reported `paused=true` and then `paused=false` while WebGL rendering stayed alive.
+- **Tested:** `--pause` and `--resume` crossed the JSON bridge; pause stopped the render calls/FPS messages and measured 0.00% GPU in two samples, while resume restored roughly 42–43 FPS.
 - **Observed diagnostics:** about 38–42 rendered FPS, 9 draw calls, roughly 18–25 Hz cursor bridge, and 0.0–0.5% normalized CPU for the native host process during short samples. These are diagnostic figures, not comparative benchmarks.
-- **Evidence:** `spike3-threejs-desktop.png` and `bin/aquarium-spike.log` (runtime log is generated, not committed).
+- **Evidence:** `spike3-threejs-desktop.png` and the committed final run at `docs/evidence/spike3-final-run.log`.
 
 ## Dependencies
 

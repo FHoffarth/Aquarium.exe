@@ -1,10 +1,10 @@
 # Aquarium.exe Windows feasibility spike
 
-This repository contains a deliberately minimal Win32/D3D11 experiment. It is not a product implementation.
+This repository contains a deliberately minimal native Win32/WebView2 wallpaper experiment. It is not a product implementation.
 
 ## Build and run
 
-Requirements: Windows 11, Visual Studio C++ Build Tools, and a Windows SDK.
+Requirements: Windows 11, Visual Studio C++ Build Tools, a Windows SDK, and the Evergreen WebView2 Runtime. The native WebView2 SDK and Three.js files needed to build/run the probe are already vendored with their licenses; no .NET SDK, npm install, CDN, or runtime network service is required.
 
 ```powershell
 .\build.ps1
@@ -24,8 +24,8 @@ Diagnostics are written to `bin/aquarium-spike.log`.
 
 ## Result on the tested machine
 
-Spike #2 succeeded on Windows 11 Pro 25H2 build 26200.9457. The decisive change was replacing the legacy DXGI HWND swap chain with a D3D11 composition swap chain presented through DirectComposition. The fish is visibly animated beneath Explorer icons, desktop input remains with Explorer, global cursor proximity affects the fish, and pause/resume works.
+Spike #3 succeeded on Windows 11 Pro 25H2 build 26200.9457. A native DirectComposition host now displays a WebView2 CompositionController loading a local Three.js/WebGL2 habitat. Three primitive fish animate beneath Explorer icons, desktop input remains with Explorer, native cursor proximity affects the fish, and pause/resume stops and restarts WebGL rendering.
 
-Automatic recovery after Explorer restart is not implemented; relaunching the probe recovers correctly. A normal `HWND_BOTTOM` fallback is intentionally absent. WebView2 and Three.js are not part of this spike.
+The same Aquarium process automatically recovered after three consecutive Explorer restarts by rebuilding its desktop-bound HWND, DirectComposition, and WebView2 resources. A normal `HWND_BOTTOM` or conventional interactive WebView fallback is intentionally absent.
 
 See [the feasibility report](docs/feasibility-report.md) for exact evidence and the recommendation.

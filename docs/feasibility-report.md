@@ -5,7 +5,91 @@
 - Reference inspected: `chaseleantj/desktop-habitats@e6ea239e92bb04dcd3953f80758aef61c72b2146`
 - Known-good control: Lively 2.2.1.0 x64 desktop-native (`6860a4093fc50058c4815908658a4391c4449935`)
 
-## Decision
+## Spike #3 superseding result
+
+**GO WITH CONDITIONS for a real Aquarium.exe MVP.** The requested production-shaped chain is now demonstrated on the test machine:
+
+```text
+native Win32 host
+  -> DirectComposition target/visual on Aquarium renderer child HWND
+  -> WebView2 CompositionController
+  -> local https://aquarium.local/ habitat
+  -> locally bundled Three.js 0.186.0 / WebGL2
+```
+
+All Sprint #3 gates A–H passed in the final configuration: the local habitat is visible and animated below Explorer icons; three primitive fish move and react to the native global cursor bridge; icon and blank-desktop hit-testing remains with Explorer; pause/resume stops and restarts WebGL rendering; runtime content has no network dependency; three consecutive Explorer restarts recovered in-process; and clean exit left no Aquarium-owned WebView2 processes. This result supersedes Spike #2's Explorer-recovery blocker while preserving the older evidence below.
+
+The recommendation remains conditional because the working input isolation uses a split not explicitly promised by WebView2's contract: the CompositionController parent is Aquarium's hidden offscreen owner, while its `RootVisualTarget` is in the DirectComposition tree attached to the full-screen renderer child. Using the renderer child as controller parent visibly rendered but caused WebView2's internal `Chrome_RenderWidgetHostHWND` to win desktop hit-testing. The split configuration rendered correctly and returned Explorer `SysListView32` for both icons and blank desktop, but it needs cross-version validation. Short diagnostic sampling also showed a high WebView2 footprint and approximately 26–44% GPU-engine utilization while rendering this unoptimized full-screen probe.
+
+### Exact Spike #3 architecture
+
+1. A stable hidden Aquarium-owned top-level HWND remains alive independently of Explorer. It receives the registered control message and `TaskbarCreated` broadcast and is also the CompositionController parent/input reference.
+2. Each render session rediscovers `Progman`, direct-child `SHELLDLL_DefView`, its `SysListView32`, and the full-screen `WorkerW` below DefView. The known-good raised-desktop attachment is unchanged: `SHELLDLL_DefView > Aquarium host > WorkerW`.
+3. A transient Aquarium host and renderer child are created and shown as ordinary Aquarium-owned windows first. The host creates a hardware D3D11 BGRA device only for DirectComposition, then creates a target on the renderer child plus root and WebView visuals.
+4. `ICoreWebView2Environment3::CreateCoreWebView2CompositionController` creates the visual-hosting controller. `ICoreWebView2CompositionController::put_RootVisualTarget` connects it to the WebView visual; `IDCompositionDevice::Commit` publishes the tree.
+5. Only after `habitat-ready:three-webgl2` is received is the outer host made layered/nonactivating, converted to a child, parented to Progman, and ordered below DefView and above WorkerW. There is no conventional HWND WebView2, top-level-bottom, or overlay fallback.
+6. `SetVirtualHostNameToFolderMapping` exposes only the bundled `habitat/` directory at `https://aquarium.local/`. External top-level navigation is cancelled. WebView2 starts with background networking, component updates, and proxy use disabled.
+7. Native code polls `GetCursorPos` at roughly 18–25 Hz, converts to normalized renderer coordinates, and sends JSON with `PostWebMessageAsJson`. It also sends pause/resume, FPS/rate, and probe messages. JavaScript returns readiness and small diagnostics only. No mouse/keyboard hook, capture, or input forwarding exists.
+8. The habitat owns all fish state and rendering. It explicitly requests WebGL2, constructs three original fish from sphere/cone primitives, animates them autonomously, and accelerates them away from the native cursor.
+
+### Explorer recovery
+
+Recovery uses both the `TaskbarCreated` broadcast and a defensive 1 Hz validation of all relevant handles, parent relationships, renderer ownership, and raised-desktop Z-order. On loss, the host closes the WebView2 controller, releases its DComp/D3D resources, destroys stale render HWNDs, and retains only the stable hidden owner. It retries shell discovery with 250 ms, 500 ms, 1 s, 2 s, then capped 5 s delays. Every successful attempt creates a new generation; stale async callbacks are ignored. The Aquarium process is never relaunched as the normal recovery path.
+
+On the final recovery run, Aquarium remained PID **7580** while Explorer changed **23848 → 5840 → 1320 → 14788** across three forced restarts. Each cycle rediscovered new shell handles, received a fresh `habitat-ready:three-webgl2`, restored `DefView > Aquarium > WorkerW`, and logged `RECOVERY SUCCESS`. Late `TaskbarCreated` delivery caused two deliberately discarded/rebuilt sessions, so the final healthy lifecycle generation was 15; the generation guards handled this without changing the process. The third recovered desktop is shown in [`spike3-recovery-3.png`](../spike3-recovery-3.png), and the complete run is retained in [`docs/evidence/spike3-final-run.log`](evidence/spike3-final-run.log) (SHA-256 `15B55F575659EF4056EFE073B6A8F9297F2D2B1F3E420AB2751131FAF651E96D`).
+
+### Windows APIs/techniques added in Spike #3
+
+- WebView2 environment/controller: `CreateCoreWebView2EnvironmentWithOptions`, `ICoreWebView2Environment3::CreateCoreWebView2CompositionController`, `ICoreWebView2Controller`, and `ICoreWebView2CompositionController::put_RootVisualTarget`.
+- Local content/bridge: `ICoreWebView2_3::SetVirtualHostNameToFolderMapping`, `Navigate`, `PostWebMessageAsJson`, `WebMessageReceived`, `NavigationStarting`, and `ProcessFailed`.
+- DirectComposition ownership remains native: `D3D11CreateDevice` with BGRA support, `DCompositionCreateDevice`, `CreateTargetForHwnd`, `CreateVisual`, `AddVisual`, `SetRoot`, and `Commit`.
+- Recovery: registered `TaskbarCreated`, `IsWindow`, parent/Z-order validation, `MsgWaitForMultipleObjectsEx`, lifecycle generations, and capped retry backoff.
+- Desktop input proof: `WindowFromPoint`, Explorer `SysListView32`, host `WM_NCHITTEST -> HTTRANSPARENT`, `WM_MOUSEACTIVATE -> MA_NOACTIVATE`; no WebView2 `SendMouseInput`, hook, or capture.
+
+### Spike #3 tests actually executed
+
+- Built native x64 with `/W4 /WX`; fish logic, host lifecycle/backoff/bridge policy, and installed WebView2 runtime probes passed.
+- Confirmed Evergreen WebView2 Runtime **153.0.4234.48** and native SDK **1.0.3405.78** on Windows 11 Pro 25H2 build **26200.9457**.
+- Revalidated the exact Spike #2 D3D baseline before replacing the content layer.
+- Proved a local Canvas CompositionController gate before adding Three.js. The first Canvas desktop capture is [`spike3-webview2-canvas-desktop.png`](../spike3-webview2-canvas-desktop.png).
+- Proved local Three.js/WebGL2 with three animated primitive fish beneath real icons: [`spike3-threejs-desktop.png`](../spike3-threejs-desktop.png).
+- At icon and blank coordinates, `WindowFromPoint` returned Explorer `SysListView32`; real single clicks visibly selected icons. Aquarium host and renderer returned `HTTRANSPARENT` and did not become the active desktop surface.
+- Native cursor proximity increased JavaScript reaction counts from 0 into the hundreds during the extended run.
+- `--pause` produced `paused=true`, stopped habitat FPS messages, and measured 0.00% Aquarium WebView2 GPU-engine utilization during a two-sample pause; `--resume` restored rendering.
+- Win+D after the third recovery left the habitat visible under icons. At `(180,130)` and `(1500,500)`, `WindowFromPoint` returned Explorer `SysListView32` PID **14788**. Clicking the icon changed `LVM_GETSELECTEDCOUNT` to 1; clicking blank desktop changed it to 0; foreground remained Explorer `Progman`.
+- Three consecutive forced Explorer restarts recovered without changing Aquarium PID **7580**. Explorer changed **23848 → 5840 → 1320 → 14788**; final-run timestamps and handle diagnostics are in the committed log.
+- The final process ran from **14:30:55 to 14:49:32** (18 minutes 37 seconds). After the post-change resume at 14:31:49, it rendered continuously for **14 minutes 45 seconds** before the deliberate final pause test, spanning all three Explorer restarts; this exceeds the ten-minute gate.
+- The post-recovery pause from 14:46:34 produced no habitat FPS messages and two GPU samples of 0.00%; resume at 14:47:18 restored about 42–43 FPS.
+- Clean `--quit` tracked PIDs `5820, 7580, 12364, 18712, 21824, 25364, 27348, 28484`; ten seconds later none remained.
+
+The Codex native-computer-control surface was unavailable, so narrowly scoped Win32 input and `CopyFromScreen` were used for the actual Windows visibility/input checks. This limitation does not convert screenshots or observed Explorer hit-testing into assumptions; they were executed on the stated machine.
+
+### Spike #3 diagnostic performance
+
+- Habitat diagnostics generally reported about **38–43 rendered FPS** and **9 draw calls** at 1920×1080, target 60 FPS.
+- Native cursor bridge diagnostics generally reported **18–25 Hz**.
+- Native-host normalized CPU samples were usually **0.0–0.5%** outside initialization/recovery.
+- A final five-second whole Aquarium/WebView2 process-tree sample consumed **1.109 CPU-seconds**, or about **5.53% normalized across four logical processors**. An earlier sample measured 5.94%.
+- After three recoveries, the active process tree contained Aquarium, one WebView2 browser group (browser, GPU, renderer, network, storage, crash handler), and the console host: **504.2 MB aggregate working set** and **311 MB aggregate private bytes**. This includes shared WebView2 pages and is not a production benchmark, but is heavy for a lightweight utility.
+- One final three-sample GPU Engine pass attributed to the WebView2 GPU process reported **26.03–27.27%** summed engine utilization while rendering; an earlier pass on the same build reported **40.09–44.05%**. A paused two-sample check reported **0.00%**. These counters are variable diagnostic observations, but the cost is an obvious optimization/hardening concern.
+- `Get-NetTCPConnection` found **zero TCP connections** owned by the eight-process Aquarium/WebView2 tree during the final run.
+
+### Spike #3 dependencies and reuse
+
+- Microsoft WebView2 SDK 1.0.3405.78: native headers and x64 loader only, from the official NuGet package, with license/notice and hashes recorded in `THIRD_PARTY_NOTICES.md`.
+- Three.js 0.186.0: `three.module.js`, required `three.core.js`, and MIT license only, from the official npm package, with integrity/hashes recorded locally.
+- No code, shaders, fish, models, textures, or assets were copied from `desktop-habitats` or Lively. Both remain architectural/behavioral references only.
+- No .NET SDK, account, analytics, telemetry, cloud service, CDN, or runtime network server was introduced.
+
+### Remaining conditions
+
+- Validate the offscreen CompositionController-parent split across supported Evergreen WebView2 and retail Windows 11 versions; it is the largest architectural risk.
+- Reduce GPU and memory cost before calling the product lightweight; test frame-rate caps, render scale, WebView2 process options, and real habitat workloads.
+- Test multiple monitors/mixed DPI, virtual desktops, lock/display-off, sleep/wake, RDP, HDR, display reconfiguration, and competing wallpaper tools.
+- Treat WorkerW/Progman classes, message `0x052C`, and shell Z-order as undocumented compatibility behavior with diagnostics and clean failure.
+- Add the proposed power/session policy only after this runtime boundary is retained: 60 FPS on AC, lower FPS on battery, reduce/stop when materially covered, stop on lock/display-off, and sample cursor no faster than useful.
+
+## Spike #2 historical decision (superseded by Spike #3)
 
 **GO WITH CONDITIONS for an Aquarium.exe MVP.**
 
@@ -206,6 +290,6 @@ Recommended future boundary:
 - Lively is used only as an installed behavioral control and source-inspection reference. No Lively source or assets were copied.
 - The Win32 host, D3D11 fish/shaders, tests, DirectComposition integration, and documentation in this repository were written for this spike.
 
-## Final recommendation
+## Spike #2 historical final recommendation (superseded)
 
 **GO WITH CONDITIONS.** The core Windows 11 experience is demonstrably feasible on build 26200.9457 when Aquarium uses compositor-backed D3D11 presentation. The MVP should proceed only if a short hardening phase first proves automatic Explorer recovery and acceptable behavior across representative Windows 11 builds and display configurations.

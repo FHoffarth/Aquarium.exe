@@ -204,6 +204,10 @@ struct WebViewRuntime::Impl {
                 if (value.starts_with(L"habitat-ready:")) {
                   is_ready = true;
                   emit(WebViewEvent::Ready, value);
+                } else if (value.starts_with(L"habitat-failure:") ||
+                           value.starts_with(L"habitat-js-error:") ||
+                           value.starts_with(L"habitat-promise-error:")) {
+                  emit(WebViewEvent::Failure, value);
                 } else {
                   emit(WebViewEvent::Info, L"Habitat: " + value);
                 }
