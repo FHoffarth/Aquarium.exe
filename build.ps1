@@ -12,6 +12,11 @@ $webViewX64 = Join-Path $webViewRoot 'x64'
 $webViewLoader = Join-Path $webViewX64 'WebView2Loader.dll'
 New-Item -ItemType Directory -Force $out | Out-Null
 
+$node = Get-Command node -ErrorAction SilentlyContinue
+if (-not $node) { throw 'Node.js is required to run the habitat tests.' }
+& $node.Source --test (Join-Path $root 'tests\habitat\behavior.test.mjs') (Join-Path $root 'tests\habitat\engine.test.mjs')
+if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
 if (-not (Test-Path (Join-Path $webViewInclude 'WebView2.h')) -or
     -not (Test-Path (Join-Path $webViewX64 'WebView2Loader.dll.lib')) -or
     -not (Test-Path $webViewLoader)) {
