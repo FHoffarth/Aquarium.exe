@@ -37,7 +37,7 @@ export function createEnvironment(scene, config) {
     depthWrite: false,
   });
   const background = new THREE.Mesh(
-    new THREE.PlaneGeometry(width * 1.18, height * 1.25),
+    new THREE.PlaneGeometry(width * 1.8, height * 2.0),
     backgroundMaterial,
   );
   background.name = 'water-background';
@@ -87,8 +87,12 @@ export function createEnvironment(scene, config) {
   scene.add(particles);
   owned.push(particles);
 
-  const plantGeometry = new THREE.PlaneGeometry(1, 1, 1, 4);
-  plantGeometry.translate(0, 0.5, 0);
+  const plantShape = new THREE.Shape();
+  plantShape.moveTo(-0.12, 0);
+  plantShape.bezierCurveTo(-0.28, 0.32, -0.13, 0.82, 0, 1);
+  plantShape.bezierCurveTo(0.15, 0.75, 0.24, 0.28, 0.12, 0);
+  plantShape.closePath();
+  const plantGeometry = new THREE.ShapeGeometry(plantShape, 3);
   const plantMaterial = new THREE.MeshStandardMaterial({
     color: 0x315f49,
     roughness: 0.88,
@@ -123,13 +127,13 @@ export function createEnvironment(scene, config) {
   scene.add(plants);
   owned.push(plants);
 
-  const hemisphere = new THREE.HemisphereLight(0xb9f5ef, 0x07191b, 1.65);
-  const directional = new THREE.DirectionalLight(0xd9fff4, 1.8);
+  const hemisphere = new THREE.HemisphereLight(0xd8fff7, 0x102426, 2.15);
+  const directional = new THREE.DirectionalLight(0xfff5dc, 2.35);
   directional.position.set(-2.2, 2.8, 3.4);
   scene.add(hemisphere, directional);
   owned.push(hemisphere, directional);
 
-  scene.fog = new THREE.Fog(environment.fogColor, 5.4, 8.5);
+  scene.fog = new THREE.Fog(environment.fogColor, 6.1, 9.8);
 
   return {
     drawCallBudget: 4,

@@ -23,14 +23,26 @@ export function createFishRenderer(scene, maximumFish) {
       scene,
       'body',
       new THREE.SphereGeometry(1, 16, 10),
-      new THREE.MeshStandardMaterial({ roughness: 0.68, metalness: 0, vertexColors: true }),
+      new THREE.MeshStandardMaterial({
+        roughness: 0.62,
+        metalness: 0,
+        vertexColors: true,
+        emissive: 0x1b0b03,
+        emissiveIntensity: 0.42,
+      }),
       maximumFish,
     ),
     tail: createPart(
       scene,
       'tail',
       new THREE.ConeGeometry(1, 1, 3),
-      new THREE.MeshStandardMaterial({ roughness: 0.72, metalness: 0, vertexColors: true }),
+      new THREE.MeshStandardMaterial({
+        roughness: 0.68,
+        metalness: 0,
+        vertexColors: true,
+        emissive: 0x160702,
+        emissiveIntensity: 0.36,
+      }),
       maximumFish,
     ),
     eye: createPart(
@@ -44,7 +56,13 @@ export function createFishRenderer(scene, maximumFish) {
       scene,
       'fin',
       new THREE.ConeGeometry(1, 1, 3),
-      new THREE.MeshStandardMaterial({ roughness: 0.76, metalness: 0, vertexColors: true }),
+      new THREE.MeshStandardMaterial({
+        roughness: 0.72,
+        metalness: 0,
+        vertexColors: true,
+        emissive: 0x130702,
+        emissiveIntensity: 0.3,
+      }),
       maximumFish,
     ),
   };
@@ -65,9 +83,9 @@ export function createFishRenderer(scene, maximumFish) {
 
   function setFishColor(index, fish) {
     const hue = 0.045 + ((fish.seed >>> 8) % 1000) / 1000 * 0.12;
-    const saturation = 0.52 + ((fish.seed >>> 18) % 100) / 500;
-    const lightness = 0.48 + ((fish.seed >>> 25) % 50) / 500;
-    color.setHSL(hue, saturation, lightness, THREE.SRGBColorSpace);
+    const saturation = 0.66 + ((fish.seed >>> 18) % 100) / 600;
+    const lightness = 0.58 + ((fish.seed >>> 25) % 50) / 600;
+    color.setHSL(hue, saturation, lightness);
     meshes.body.setColorAt(index, color);
     color.offsetHSL(0.015, -0.05, -0.06);
     meshes.tail.setColorAt(index, color);

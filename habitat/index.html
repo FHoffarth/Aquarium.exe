@@ -3,20 +3,36 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Aquarium WebView2 composition probe</title>
+  <link rel="icon" href="data:,">
+  <title>Aquarium.exe — Planted Tank</title>
   <style>
     html, body, canvas { width: 100%; height: 100%; margin: 0; overflow: hidden; }
-    body { background: #031d29; }
+    body { background: #02141d; }
+    #diagnostics {
+      position: fixed;
+      inset: 12px auto auto 12px;
+      margin: 0;
+      padding: 8px 10px;
+      color: #c7e4df;
+      background: rgb(1 14 20 / 72%);
+      border: 1px solid rgb(164 215 204 / 18%);
+      border-radius: 5px;
+      font: 11px/1.45 ui-monospace, Consolas, monospace;
+      white-space: pre;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
-  <canvas id="probe"></canvas>
+  <canvas id="aquarium" aria-label="Planted Tank habitat"></canvas>
+  <pre id="diagnostics" hidden></pre>
   <script>
+    const reportFailure = message => window.chrome?.webview?.postMessage(message);
     addEventListener('error', event => {
-      window.chrome.webview.postMessage(`habitat-js-error:${event.message}@${event.filename}:${event.lineno}`);
+      reportFailure(`habitat-js-error:${event.message}@${event.filename}:${event.lineno}`);
     });
     addEventListener('unhandledrejection', event => {
-      window.chrome.webview.postMessage(`habitat-promise-error:${String(event.reason)}`);
+      reportFailure(`habitat-promise-error:${String(event.reason)}`);
     });
   </script>
   <script type="module" src="habitat.js"></script>

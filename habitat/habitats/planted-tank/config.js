@@ -31,8 +31,8 @@ const DEFAULT_CONFIG = {
   environment: {
     particleCount: 90,
     plantCount: 22,
-    backgroundTop: 0x082f3c,
-    backgroundBottom: 0x02141d,
+    backgroundTop: 0x0b4855,
+    backgroundBottom: 0x031b25,
     substrateColor: 0x172d2d,
     fogColor: 0x062631,
   },
