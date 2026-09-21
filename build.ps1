@@ -14,7 +14,7 @@ New-Item -ItemType Directory -Force $out | Out-Null
 
 $node = Get-Command node -ErrorAction SilentlyContinue
 if (-not $node) { throw 'Node.js is required to run the habitat tests.' }
-& $node.Source --test (Join-Path $root 'tests\habitat\behavior.test.mjs') (Join-Path $root 'tests\habitat\engine.test.mjs')
+& $node.Source --test (Join-Path $root 'tests\habitat\behavior.test.mjs') (Join-Path $root 'tests\habitat\engine.test.mjs') (Join-Path $root 'tests\habitat\render-contract.test.mjs')
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 if (-not (Test-Path (Join-Path $webViewInclude 'WebView2.h')) -or
