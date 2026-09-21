@@ -1,6 +1,10 @@
-# Aquarium.exe Windows feasibility spike
+# Aquarium.exe
 
-This repository contains a deliberately minimal native Win32/WebView2 wallpaper experiment. It is not a product implementation.
+A living aquarium for your Windows desktop.
+
+**debother. — Small software for annoying problems.**
+
+Aquarium.exe is under active development. The current repository contains the native Win32/WebView2 feasibility implementation; it is not yet a production release.
 
 ## Build and run
 
