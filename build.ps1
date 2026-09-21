@@ -21,7 +21,6 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 if ($Target -eq 'All') {
-  & cl.exe @common '/O2' (Join-Path $root 'src\main.cpp') "/Fe:$out\AquariumSpike.exe" '/link' 'd3d11.lib' 'dxgi.lib' 'd3dcompiler.lib' 'user32.lib' 'gdi32.lib' 'shell32.lib'
+  & cl.exe @common '/O2' (Join-Path $root 'src\main.cpp') "/Fe:$out\AquariumSpike.exe" '/link' 'd3d11.lib' 'dxgi.lib' 'd3dcompiler.lib' 'dcomp.lib' 'user32.lib' 'gdi32.lib' 'shell32.lib'
   if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
-

@@ -3,7 +3,9 @@
 #include <windows.h>
 #include <d3d11.h>
 #include <d3dcompiler.h>
+#include <dcomp.h>
 #include <dxgi.h>
+#include <dxgi1_2.h>
 #include <wrl/client.h>
 
 #include <algorithm>
@@ -26,6 +28,8 @@ using Microsoft::WRL::ComPtr;
 namespace {
 
 constexpr wchar_t kWindowClass[] = L"AquariumSpike.RenderWindow.v1";
+constexpr wchar_t kRendererChildClass[] = L"AquariumSpike.RendererChild.v1";
+constexpr wchar_t kOwnerWindowClass[] = L"AquariumSpike.HiddenOwner.v1";
 constexpr wchar_t kControlMessageName[] = L"AquariumSpike.Control.v1";
 constexpr UINT kSpawnWorkerW = 0x052C;
 constexpr LONG_PTR kWsExNoRedirectionBitmap = 0x00200000L;
@@ -41,6 +45,8 @@ unsigned long long g_frames = 0;
 aquarium::FishState g_fish{420.0f, 360.0f, 85.0f, 0.0f, 1.0f, 0};
 aquarium::PointerState g_pointer{false, 0, 0};
 HWND g_window = nullptr;
+HWND g_renderer_window = nullptr;
+HWND g_owner_window = nullptr;
 HWND g_progman = nullptr;
 HWND g_defview = nullptr;
 HWND g_workerw = nullptr;
@@ -220,36 +226,26 @@ class Renderer {
   bool initialize(HWND window, int width, int height) {
     width_ = static_cast<float>(width);
     height_ = static_cast<float>(height);
-    DXGI_SWAP_CHAIN_DESC swap{};
-    swap.BufferDesc.Width = width;
-    swap.BufferDesc.Height = height;
-    swap.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-    swap.SampleDesc.Count = 1;
-    swap.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-    swap.BufferCount = 2;
-    swap.OutputWindow = window;
-    swap.Windowed = TRUE;
-    swap.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
-
     const std::array levels{D3D_FEATURE_LEVEL_11_1, D3D_FEATURE_LEVEL_11_0};
     D3D_FEATURE_LEVEL selected{};
-    HRESULT hr = D3D11CreateDeviceAndSwapChain(
+    HRESULT hr = D3D11CreateDevice(
         nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_BGRA_SUPPORT,
-        levels.data(), static_cast<UINT>(levels.size()), D3D11_SDK_VERSION, &swap,
-        swap_chain_.GetAddressOf(), device_.GetAddressOf(), &selected, context_.GetAddressOf());
+        levels.data(), static_cast<UINT>(levels.size()), D3D11_SDK_VERSION,
+        device_.GetAddressOf(), &selected, context_.GetAddressOf());
     if (hr == E_INVALIDARG) {
-      hr = D3D11CreateDeviceAndSwapChain(
+      hr = D3D11CreateDevice(
           nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_BGRA_SUPPORT,
-          levels.data() + 1, 1, D3D11_SDK_VERSION, &swap,
-          swap_chain_.GetAddressOf(), device_.GetAddressOf(), &selected, context_.GetAddressOf());
+          levels.data() + 1, 1, D3D11_SDK_VERSION,
+          device_.GetAddressOf(), &selected, context_.GetAddressOf());
     }
     if (FAILED(hr)) {
-      log_hresult(L"D3D11CreateDeviceAndSwapChain(HARDWARE)", hr);
+      log_hresult(L"D3D11CreateDevice(HARDWARE)", hr);
       return false;
     }
 
     ComPtr<IDXGIDevice> dxgi_device;
     ComPtr<IDXGIAdapter> adapter;
+    ComPtr<IDXGIFactory2> factory;
     DXGI_ADAPTER_DESC description{};
     if (SUCCEEDED(device_.As(&dxgi_device)) &&
         SUCCEEDED(dxgi_device->GetAdapter(adapter.GetAddressOf())) &&
@@ -261,6 +257,39 @@ class Renderer {
           << L" featureLevel=0x" << std::hex << selected;
       log_line(out.str());
     }
+
+    if (!dxgi_device || !adapter ||
+        FAILED(hr = adapter->GetParent(IID_PPV_ARGS(factory.GetAddressOf())))) {
+      log_hresult(L"Get IDXGIFactory2", hr);
+      return false;
+    }
+    DXGI_SWAP_CHAIN_DESC1 swap{};
+    swap.Width = width;
+    swap.Height = height;
+    swap.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+    swap.SampleDesc.Count = 1;
+    swap.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+    swap.BufferCount = 2;
+    swap.Scaling = DXGI_SCALING_STRETCH;
+    swap.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
+    swap.AlphaMode = DXGI_ALPHA_MODE_PREMULTIPLIED;
+    if (FAILED(hr = factory->CreateSwapChainForComposition(
+                   device_.Get(), &swap, nullptr, swap_chain_.GetAddressOf()))) {
+      log_hresult(L"CreateSwapChainForComposition", hr);
+      return false;
+    }
+    if (FAILED(hr = DCompositionCreateDevice(
+                   dxgi_device.Get(), IID_PPV_ARGS(composition_device_.GetAddressOf()))) ||
+        FAILED(hr = composition_device_->CreateTargetForHwnd(
+                   window, TRUE, composition_target_.GetAddressOf())) ||
+        FAILED(hr = composition_device_->CreateVisual(composition_visual_.GetAddressOf())) ||
+        FAILED(hr = composition_visual_->SetContent(swap_chain_.Get())) ||
+        FAILED(hr = composition_target_->SetRoot(composition_visual_.Get())) ||
+        FAILED(hr = composition_device_->Commit())) {
+      log_hresult(L"Initialize DirectComposition target", hr);
+      return false;
+    }
+    log_line(L"EXPERIMENT D: D3D11 uses a composition swap chain bound to the existing renderer child HWND.");
 
     ComPtr<ID3D11Texture2D> back_buffer;
     if (FAILED(hr = swap_chain_->GetBuffer(0, IID_PPV_ARGS(back_buffer.GetAddressOf()))) ||
@@ -400,7 +429,10 @@ class Renderer {
   float height_ = 1;
   ComPtr<ID3D11Device> device_;
   ComPtr<ID3D11DeviceContext> context_;
-  ComPtr<IDXGISwapChain> swap_chain_;
+  ComPtr<IDXGISwapChain1> swap_chain_;
+  ComPtr<IDCompositionDevice> composition_device_;
+  ComPtr<IDCompositionTarget> composition_target_;
+  ComPtr<IDCompositionVisual> composition_visual_;
   ComPtr<ID3D11RenderTargetView> target_;
   ComPtr<ID3D11VertexShader> vertex_shader_;
   ComPtr<ID3D11PixelShader> pixel_shader_;
@@ -418,7 +450,9 @@ void log_probe() {
       << L" velocity=(" << g_fish.vx << L"," << g_fish.vy << L")"
       << L" cursorScreen=(" << point.x << L"," << point.y << L") reactions=" << g_fish.reactions
       << L" WindowFromPoint=" << hex_handle(hit) << L"/" << class_name(hit)
-      << L" renderHitTest=" << SendMessageW(g_window, WM_NCHITTEST, 0, MAKELPARAM(point.x, point.y));
+      << L" hostHitTest=" << SendMessageW(g_window, WM_NCHITTEST, 0, MAKELPARAM(point.x, point.y))
+      << L" rendererHitTest=" << SendMessageW(g_renderer_window, WM_NCHITTEST, 0,
+                                                MAKELPARAM(point.x, point.y));
   log_line(out.str());
 }
 
@@ -459,6 +493,15 @@ LRESULT CALLBACK window_proc(HWND window, UINT message, WPARAM wparam, LPARAM lp
     case WM_DESTROY:
       PostQuitMessage(0);
       return 0;
+    default: return DefWindowProcW(window, message, wparam, lparam);
+  }
+}
+
+LRESULT CALLBACK renderer_window_proc(HWND window, UINT message, WPARAM wparam, LPARAM lparam) {
+  switch (message) {
+    case WM_NCHITTEST: return HTTRANSPARENT;
+    case WM_MOUSEACTIVATE: return MA_NOACTIVATE;
+    case WM_ERASEBKGND: return 1;
     default: return DefWindowProcW(window, message, wparam, lparam);
   }
 }
@@ -506,8 +549,18 @@ int send_control(const std::wstring& argument) {
   return 0;
 }
 
-HWND create_render_window(HINSTANCE instance, int width, int height) {
+HWND create_top_level_host_window(HINSTANCE instance, int width, int height) {
+  WNDCLASSEXW owner_class{sizeof(owner_class)};
+  owner_class.style = CS_DBLCLKS;
+  owner_class.lpfnWndProc = DefWindowProcW;
+  owner_class.hInstance = instance;
+  owner_class.lpszClassName = kOwnerWindowClass;
+  if (!RegisterClassExW(&owner_class) && GetLastError() != ERROR_CLASS_ALREADY_EXISTS) {
+    log_line(L"RegisterClassEx(hidden owner) failed error=" + std::to_wstring(GetLastError()));
+    return nullptr;
+  }
   WNDCLASSEXW window_class{sizeof(window_class)};
+  window_class.style = CS_DBLCLKS;
   window_class.lpfnWndProc = window_proc;
   window_class.hInstance = instance;
   window_class.lpszClassName = kWindowClass;
@@ -516,47 +569,94 @@ HWND create_render_window(HINSTANCE instance, int width, int height) {
     log_line(L"RegisterClassEx failed error=" + std::to_wstring(GetLastError()));
     return nullptr;
   }
+  WNDCLASSEXW renderer_class{sizeof(renderer_class)};
+  renderer_class.style = CS_DBLCLKS;
+  renderer_class.lpfnWndProc = renderer_window_proc;
+  renderer_class.hInstance = instance;
+  renderer_class.lpszClassName = kRendererChildClass;
+  renderer_class.hCursor = LoadCursorW(nullptr, IDC_ARROW);
+  if (!RegisterClassExW(&renderer_class) && GetLastError() != ERROR_CLASS_ALREADY_EXISTS) {
+    log_line(L"RegisterClassEx(renderer child) failed error=" + std::to_wstring(GetLastError()));
+    return nullptr;
+  }
+  g_owner_window = CreateWindowExW(
+      WS_EX_TOOLWINDOW | WS_EX_WINDOWEDGE,
+      kOwnerWindowClass, L"",
+      WS_CAPTION | WS_CLIPSIBLINGS,
+      0, 0, 0, 0, nullptr, nullptr, instance, nullptr);
+  if (!g_owner_window) {
+    log_line(L"CreateWindowEx(hidden owner) failed error=" + std::to_wstring(GetLastError()));
+    return nullptr;
+  }
+  log_window(L"Final hidden owner", g_owner_window);
+
   HWND window = CreateWindowExW(
-      WS_EX_LAYERED | WS_EX_TRANSPARENT | WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW,
+      0,
       kWindowClass, L"Aquarium.exe D3D11 feasibility spike",
       WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
-      0, 0, width, height, nullptr, nullptr, instance, nullptr);
+      0, 0, width, height, g_owner_window, nullptr, instance, nullptr);
   if (!window) {
     log_line(L"CreateWindowEx failed error=" + std::to_wstring(GetLastError()));
     return nullptr;
   }
-  if (!SetLayeredWindowAttributes(window, 0, 255, LWA_ALPHA)) {
-    log_line(L"SetLayeredWindowAttributes failed error=" + std::to_wstring(GetLastError()));
+  g_renderer_window = CreateWindowExW(
+      WS_EX_TRANSPARENT, kRendererChildClass, L"Aquarium.exe D3D11 renderer child",
+      WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_TABSTOP,
+      0, 0, width, height, window, nullptr, instance, nullptr);
+  if (!g_renderer_window) {
+    log_line(L"CreateWindowEx(renderer child) failed error=" + std::to_wstring(GetLastError()));
     DestroyWindow(window);
     return nullptr;
   }
+  return window;
+}
+
+bool attach_render_window_to_desktop(HWND window, int width, int height) {
+  LONG_PTR ex_style = GetWindowLongPtrW(window, GWL_EXSTYLE);
+  ex_style |= WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW | WS_EX_CONTROLPARENT;
+  SetLastError(ERROR_SUCCESS);
+  if (!SetWindowLongPtrW(window, GWL_EXSTYLE, ex_style) && GetLastError() != ERROR_SUCCESS) {
+    log_line(L"SetWindowLongPtr(desktop ex styles) failed error=" + std::to_wstring(GetLastError()));
+    return false;
+  }
+
+  ex_style |= WS_EX_LAYERED;
+  SetLastError(ERROR_SUCCESS);
+  if (!SetWindowLongPtrW(window, GWL_EXSTYLE, ex_style) && GetLastError() != ERROR_SUCCESS) {
+    log_line(L"SetWindowLongPtr(WS_EX_LAYERED) failed error=" + std::to_wstring(GetLastError()));
+    return false;
+  }
+  if (!SetLayeredWindowAttributes(window, 0, 255, LWA_ALPHA)) {
+    log_line(L"SetLayeredWindowAttributes failed error=" + std::to_wstring(GetLastError()));
+    return false;
+  }
+  log_window(L"desktop host after extended-style setup", window);
 
   LONG_PTR style = GetWindowLongPtrW(window, GWL_STYLE);
   style = (style & ~static_cast<LONG_PTR>(WS_POPUP)) |
-          WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
+          WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_TABSTOP;
   SetLastError(ERROR_SUCCESS);
   if (!SetWindowLongPtrW(window, GWL_STYLE, style) && GetLastError() != ERROR_SUCCESS) {
     log_line(L"SetWindowLongPtr(WS_CHILD) failed error=" + std::to_wstring(GetLastError()));
-    DestroyWindow(window);
-    return nullptr;
+    return false;
   }
+  log_window(L"desktop host after WS_CHILD conversion", window);
 
   const HWND parent = g_raised_desktop ? g_progman : g_workerw;
   SetLastError(ERROR_SUCCESS);
   const HWND previous_parent = SetParent(window, parent);
   if (!previous_parent && GetLastError() != ERROR_SUCCESS) {
     log_line(L"SetParent failed error=" + std::to_wstring(GetLastError()));
-    DestroyWindow(window);
-    return nullptr;
+    return false;
   }
+  log_window(L"desktop host after SetParent", window);
 
   const HWND insert_after = g_raised_desktop ? g_defview : HWND_BOTTOM;
   if (!SetWindowPos(window, insert_after, 0, 0, width, height, SWP_NOACTIVATE | SWP_SHOWWINDOW)) {
     log_line(L"SetWindowPos failed error=" + std::to_wstring(GetLastError()));
-    DestroyWindow(window);
-    return nullptr;
+    return false;
   }
-  return window;
+  return true;
 }
 
 double process_cpu_percent(FILETIME previous_kernel, FILETIME previous_user, double wall_seconds,
@@ -605,9 +705,38 @@ int wmain(int argc, wchar_t** argv) {
     return 11;
   }
 
-  g_window = create_render_window(GetModuleHandleW(nullptr), width, height);
+  g_window = create_top_level_host_window(GetModuleHandleW(nullptr), width, height);
   if (!g_window) return 12;
-  log_window(L"render window", g_window);
+
+  Renderer renderer;
+  if (!renderer.initialize(g_renderer_window, width, height)) {
+    DestroyWindow(g_window);
+    return 14;
+  }
+  g_fish.y = height * 0.55f;
+  if (!SetWindowPos(g_window, HWND_TOP, 0, 0, width, height,
+                    SWP_NOACTIVATE | SWP_SHOWWINDOW)) {
+    log_line(L"Experiment A top-level SetWindowPos failed error=" + std::to_wstring(GetLastError()));
+    DestroyWindow(g_window);
+    return 12;
+  }
+  if (!renderer.draw(g_fish)) {
+    DestroyWindow(g_window);
+    return 14;
+  }
+  ++g_frames;
+  log_window(L"Experiment D top-level host before desktop attachment", g_window);
+  log_window(L"Experiment D renderer child before desktop attachment", g_renderer_window);
+  log_line(L"EXPERIMENT D TOP-LEVEL PRESENT OK: D3D11 initialized on the renderer child before desktop attachment.");
+  Sleep(1500);
+
+  if (!attach_render_window_to_desktop(g_window, width, height)) {
+    DestroyWindow(g_window);
+    return 12;
+  }
+  log_window(L"Experiment D host after desktop attachment", g_window);
+  log_line(L"Experiment D host owner after desktop attachment=" + hex_handle(GetWindow(g_window, GW_OWNER)));
+  log_window(L"Experiment D renderer child after desktop attachment", g_renderer_window);
   const HWND expected_parent = g_raised_desktop ? g_progman : g_workerw;
   if (GetParent(g_window) != expected_parent) {
     log_line(L"ATTACH FAILURE: render window does not have the expected desktop parent.");
@@ -623,17 +752,11 @@ int wmain(int argc, wchar_t** argv) {
     return 13;
   }
   log_line(g_raised_desktop
-               ? L"ATTACH STRUCTURE OK: layered render child is parented to Progman, immediately below SHELLDLL_DefView and above WorkerW."
+               ? L"ATTACH STRUCTURE OK: layered host is parented to Progman, immediately below SHELLDLL_DefView and above WorkerW."
                : L"ATTACH STRUCTURE OK: render child is parented to the classic below-icons WorkerW.");
   log_line(L"Structural attachment does not prove that Explorer/DWM visibly composites the surface.");
   log_line(L"No normal always-on-bottom fallback exists in this spike.");
 
-  Renderer renderer;
-  if (!renderer.initialize(g_window, width, height)) {
-    DestroyWindow(g_window);
-    return 14;
-  }
-  g_fish.y = height * 0.55f;
   log_probe();
 
   using clock = std::chrono::steady_clock;
@@ -666,7 +789,7 @@ int wmain(int argc, wchar_t** argv) {
     }
     previous = now;
     POINT cursor{};
-    if (GetCursorPos(&cursor) && ScreenToClient(g_window, &cursor)) {
+    if (GetCursorPos(&cursor) && ScreenToClient(g_renderer_window, &cursor)) {
       g_pointer = {cursor.x >= 0 && cursor.y >= 0 && cursor.x < width && cursor.y < height,
                    static_cast<float>(cursor.x), static_cast<float>(cursor.y)};
     } else {
@@ -695,6 +818,7 @@ int wmain(int argc, wchar_t** argv) {
 
   log_probe();
   if (g_window) DestroyWindow(g_window);
+  if (g_owner_window) DestroyWindow(g_owner_window);
   log_line(L"Aquarium.exe D3D11 wallpaper spike stopped");
   return 0;
 }

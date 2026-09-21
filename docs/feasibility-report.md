@@ -1,168 +1,211 @@
 # Aquarium.exe Windows wallpaper feasibility report
 
-Date: 2026-09-20  
-Test machine: Windows 11 Pro 10.0.26200, 1920×1080, Intel(R) UHD Graphics  
-Reference repository revision inspected: `chaseleantj/desktop-habitats@e6ea239e92bb04dcd3953f80758aef61c72b2146`
+- Date: 2026-09-21
+- Test machine: Windows 11 Pro 25H2, build **26200.9457**, 1920×1080, Intel(R) UHD Graphics
+- Reference inspected: `chaseleantj/desktop-habitats@e6ea239e92bb04dcd3953f80758aef61c72b2146`
+- Known-good control: Lively 2.2.1.0 x64 desktop-native (`6860a4093fc50058c4815908658a4391c4449935`)
 
 ## Decision
 
-**NO-GO for a real Aquarium.exe MVP using the tested self-hosted WorkerW/Progman technique.**
+**GO WITH CONDITIONS for an Aquarium.exe MVP.**
 
-The renderer and interaction model are viable. The essential host requirement is not: on this Windows 11 build, the shell accepted the expected raised-desktop HWND hierarchy but did not visibly composite either D3D11 or GDI content from that HWND. Shipping would therefore depend on undocumented shell behavior that failed on the target machine.
+Spike #2 achieved the primary acceptance test on this exact Windows build: a native D3D11 fish was visibly animated beneath Explorer's desktop icons; Explorer retained icon and blank-desktop input; the fish reacted to global cursor proximity; and pause/resume stopped and restarted presentation.
 
-This is not a permanent rejection of the product concept. It is a stop condition for this hosting technique until a follow-up can demonstrate a supported or independently repeatable desktop-composition path across Windows 11 24H2/25H2 builds, Explorer restart, virtual desktops, and multiple monitors.
+The first successful delta was replacing the legacy DXGI HWND swap chain with a composition swap chain (`CreateSwapChainForComposition`) displayed through DirectComposition. The renderer, fish simulation, desktop topology, and input model did not otherwise change between the final failed trial and the first successful trial.
 
-## Reference architecture inspected
+This supersedes, but does not erase, Spike #1's original NO-GO. Spike #1 correctly recorded that a classic `D3D11CreateDeviceAndSwapChain` HWND surface was not composed in the raised desktop on this machine. The Lively control proved the shell topology itself viable; Spike #2 then isolated the Aquarium gap to its presentation path.
 
-`desktop-habitats` separates the aquarium from its macOS host cleanly:
+Conditions before an MVP commitment:
 
-- `scenes/riverscape/` is the platform-neutral Three.js/WebGL2 scene. `wallpaper.html` marks motion as host-controlled, and `src/main.js` exposes small host calls such as `habitatRate`, `habitatPower`, `habitatPointer`, and `habitatPointerOut`.
-- `src/frame-loop.js` owns scheduling. A zero rate, pause, or hidden state cancels pending callbacks instead of continuing to render invisibly.
-- `wallpaper/Wallpaper.swift` is a macOS adapter, not part of the scene. It creates one borderless `WKWebView` window per display at the AppKit desktop window level, sets `ignoresMouseEvents`, polls the global cursor, and injects synthetic pointer events into the page.
-- The Swift controller owns display enumeration, power/session state, approximate coverage, pointer polling, menu commands, and the host-to-page bridge. Bundled content is served with a private URL scheme and a non-persistent data store.
+- implement automatic Explorer-restart detection and recreation of all desktop-bound HWND/DirectComposition resources;
+- test multiple monitors, mixed DPI, virtual desktops, lock/display-off, sleep/wake, RDP, HDR, and current retail Windows 11 builds;
+- treat Progman/WorkerW attachment as an undocumented compatibility layer with diagnostics and clean failure, not a Windows contract;
+- retain a compositor-backed renderer path. Do not regress to the failed legacy HWND swap chain.
 
-That boundary is the useful reference: scene code owns rendering and simulation; the native host owns desktop placement, lifecycle, power, and global cursor data. No Swift code was ported.
+## Reference architecture
 
-## Exact spike architecture
+`desktop-habitats` separates scene and platform host cleanly:
 
-The probe is one dependency-free Win32 process:
+- `scenes/riverscape/` is a platform-neutral Three.js/WebGL2 aquarium. Its JavaScript exposes a small host-facing control surface and owns simulation/rendering.
+- `src/frame-loop.js` owns frame scheduling and cancels callbacks when paused, hidden, or configured for zero rate.
+- `wallpaper/Wallpaper.swift` is only the macOS host adapter. It owns desktop placement, one `WKWebView` per display, global cursor sampling, power/session policy, and native-to-page messages.
+- Bundled content is local. The architecture does not require an account, analytics, cloud service, or runtime network server.
 
-1. Discover `Progman`, its direct `SHELLDLL_DefView` child, and the full-screen `WorkerW` below it.
-2. If needed, ask Explorer to create the raised-desktop WorkerW by sending undocumented message `0x052C` to `Progman` with `wParam=0xD`, `lParam=0x1`.
-3. Create a borderless popup HWND, add `WS_CHILD`, `WS_EX_LAYERED`, `WS_EX_TRANSPARENT`, `WS_EX_NOACTIVATE`, and `WS_EX_TOOLWINDOW`, set constant alpha to 255, then call `SetParent`.
-4. On the detected raised desktop, parent to `Progman` and place the HWND in child Z order `SHELLDLL_DefView > AquariumSpike > WorkerW`. A classic desktop path would parent to WorkerW.
-5. Create a hardware-only D3D11 device and blt-model swap chain. Render a procedural fish over a solid background; no assets are loaded.
-6. Poll `GetCursorPos` only on rendered frames. Convert screen coordinates to the render HWND and update the fish with proximity repulsion.
-7. Accept `--pause`, `--resume`, `--probe`, and `--quit` through a registered window message. While paused, the loop blocks in `WaitMessage` and makes no present calls.
+That separation is the reusable idea. No Swift code was ported, and no substantial source or assets were copied.
 
-There is deliberately no ordinary `HWND_BOTTOM` fallback, installer, settings UI, WebView2 package, networking, telemetry, or persistence.
+## Lively control and implementation-gap evidence
 
-## Desktop diagnostics from build 26200
-
-Initial raised-desktop structure:
+Lively 2.2.1.0 was run on the same machine before Aquarium testing. Its WebGL wallpaper was visibly animated beneath Explorer icons and the icons remained interactive. Its raised-desktop hierarchy was:
 
 ```text
-Progman hwnd=0x1010A style=0x96000000 ex=0x200080 rect=[0,0,1920,1080]
-  SHELLDLL_DefView hwnd=0x1010E style=0x56010000 ex=0x80000
-    SysListView32 hwnd=0x10110
+Progman
+  SHELLDLL_DefView
+  Lively host                style=0x56010000 ex=0x8090080
+    Lively renderer child    style=0x56010000 ex=0x20
+      Chrome/WebView2 children
+  WorkerW
 ```
 
-`Progman` had `WS_EX_NOREDIRECTIONBITMAP`; `SHELLDLL_DefView` had `WS_EX_LAYERED`. The spawn request returned success and produced:
+The Lively host also had `CS_DBLCLKS`, a hidden WinForms owner, `WS_EX_LAYERED` with alpha 255, and the exact child Z-order above. Inspection of the tagged Lively source showed the same raised-desktop sequence: initialize/show the wallpaper, add child/layered styles, set alpha 255, parent to Progman, order below `SHELLDLL_DefView`, and retain WorkerW beneath it. No Lively source was copied.
+
+## Experiments and first successful delta
+
+Each trial changed one architectural variable relative to the preceding trial. A top-level screenshot/capture confirmed the fish rendered before every desktop attachment attempt.
+
+| Experiment | Isolated delta | Result beneath icons |
+|---|---|---|
+| Spike #1 baseline | Legacy HWND swap chain attached directly to the raised desktop | Not visible |
+| A | Initialize/present while an ordinary top-level popup; only then apply desktop styles, layer alpha, child conversion, parenting, and Z-order | Not visible |
+| B | Separate Aquarium host HWND and D3D11 renderer child HWND | Not visible |
+| C1 | Remove `WS_EX_TRANSPARENT` from outer host | Not visible |
+| C2 | Add `WS_EX_TRANSPARENT` to renderer child | Not visible |
+| C3 | Add decoded `WS_EX_CONTROLPARENT` to host | Not visible |
+| C4 | Add `WS_TABSTOP` to host | Not visible |
+| C5 | Add `WS_TABSTOP` to renderer child; host/child standard and extended styles now matched Lively | Not visible |
+| C6 | Add Lively-matching `CS_DBLCLKS` class styles | Not visible |
+| C7 | Add a hidden owner matching Lively's ownership shape (`style=0x4C00000`, `ex=0x180`) | Not visible |
+| **D** | Keep C7's HWND topology and D3D11 drawing, but use `CreateSwapChainForComposition` + DirectComposition instead of a legacy HWND swap chain | **Visible; first success** |
+
+Two additional isolation checks strengthened the negative result before D:
+
+- GDI `FillRect` calls against both the host and child returned success but remained invisible in the desktop capture.
+- C5's host/child window styles were bit-for-bit equal to Lively's relevant pair, yet Aquarium remained invisible.
+
+This makes style cloning an implausible explanation. The observed implementation gap was the presentation/composition path.
+
+## Exact successful architecture
+
+The final spike is a single dependency-free native Win32 process:
+
+1. Discover `Progman`, its direct `SHELLDLL_DefView` child, and a full-screen `WorkerW` below it.
+2. On the detected raised desktop, request WorkerW only if missing by sending Explorer's undocumented `0x052C` message with `wParam=0xD`, `lParam=0x1`.
+3. Create a hidden owner, a borderless top-level Aquarium host, and a renderer child. Initialize D3D11 and present once while the host is still an ordinary Aquarium-owned top-level window.
+4. Apply `WS_EX_NOACTIVATE | WS_EX_TOOLWINDOW | WS_EX_CONTROLPARENT | WS_EX_LAYERED` and constant alpha 255 to the host. Convert it to a child and parent it to Progman.
+5. Establish direct-child Z-order `SHELLDLL_DefView > Aquarium host > WorkerW`. No ordinary `HWND_BOTTOM` fallback exists.
+6. Create a hardware D3D11 device with BGRA support. Create an `IDXGISwapChain1` using `CreateSwapChainForComposition`, flip sequential presentation, BGRA8, premultiplied alpha, and two buffers.
+7. Bind that swap chain to the renderer child with `DCompositionCreateDevice`, `CreateTargetForHwnd`, an `IDCompositionVisual`, and `Commit`.
+8. Render the same procedural fish and solid aquarium background through the existing shaders and dynamic vertex buffer.
+9. Poll `GetCursorPos` on render frames, convert with `ScreenToClient`, and update fish proximity response. Normal mouse input is never forwarded to Aquarium.
+10. Handle `--pause`, `--resume`, `--probe`, and `--quit` through a registered window message. Paused rendering blocks in `WaitMessage` and issues no presents.
+
+Final pre-restart hierarchy:
 
 ```text
-SendMessageTimeout(0x052C, 0xD, 0x1): API return=1, message result=0, last error=0
-WorkerW hwnd=0x160472 style=0x58000000 ex=0x0 rect=[0,0,1920,1080]
+Progman 0x1010A
+  z=0 SHELLDLL_DefView 0x1010E
+  z=1 AquariumSpike.RenderWindow.v1 0x190712 style=0x56010000 ex=0x8090080
+        AquariumSpike.RendererChild.v1 0x10062E style=0x56010000 ex=0x20
+  z=2 WorkerW 0x160472
 ```
 
-Final tested hierarchy, reported by `GetWindow(..., GW_CHILD/GW_HWNDNEXT)` in top-to-bottom order:
+After Explorer was restarted and Aquarium was relaunched, the new handles and the same order were discovered correctly:
 
 ```text
-z=0 SHELLDLL_DefView 0x1010E
-z=1 AquariumSpike.RenderWindow.v1 0xF04FA
-z=2 WorkerW 0x160472
+Progman 0x202A8
+  z=0 SHELLDLL_DefView 0x202B4
+  z=1 AquariumSpike.RenderWindow.v1 0x70644
+  z=2 WorkerW 0x80246
 ```
 
-The render HWND was visible, not DWM-cloaked, full-screen, constant-alpha 255, and parented to `Progman`. Its final styles were `style=0x56000000`, `ex=0x80800A0`. `WM_NCHITTEST` returned `HTTRANSPARENT`.
+## Actually tested on Windows
 
-### Attachment variants actually attempted
+### Passed
 
-- Direct `CreateWindowEx(WS_CHILD, WorkerW)` failed before D3D setup: null HWND with last error 0.
-- Creating a popup first, converting it to a child, parenting it to `Progman`, and ordering it between DefView and WorkerW succeeded structurally.
-- The D3D back buffer rendered correctly and could be captured directly from the render HWND, including the moving fish.
-- A full desktop capture still showed the original static wallpaper. The D3D surface was not visible behind the icons.
-- Pausing D3D and painting the attached HWND with GDI also remained invisible, isolating the failure to desktop composition rather than D3D rendering.
-- Reparenting the live HWND from `Progman` to WorkerW did not make it visible.
-- Removing `WS_EX_LAYERED` from the live WorkerW child did not make it visible.
-- Removing `WS_EX_TRANSPARENT` in a separate run did not make it visible.
+- Native x64 warning-as-error build and fish-logic unit test.
+- Hardware D3D11 initialization on Intel UHD Graphics, vendor `0x8086`, device `0x46d1`, feature level 11.1.
+- Actual screen capture after other top-level windows were minimized showed the D3D11 fish and aquarium background beneath normal Explorer desktop icons: [`spike2-experiment-d-screen.png`](../spike2-experiment-d-screen.png).
+- Animation continued for 273.6 seconds before the Explorer restart test; frame and fish-position logs continued changing.
+- Cursor response: immediately before positioning the global cursor at the fish, `reactions=0`; afterward `reactions=1` and horizontal velocity changed from `-85.0` to `-467.8`.
+- Pause/resume: the paused frame count remained exactly `3356` across 3.05 seconds, then advanced to `3469` after resume.
+- Explorer icon input: an actual single click hit `SysListView32`, changed Explorer's selected count to 1, and left `Progman` (Explorer PID 6344) foreground.
+- Blank desktop input: an actual blank-area click also hit `SysListView32`, cleared the selection to 0, and left Progman foreground.
+- Both Aquarium HWNDs returned `HTTRANSPARENT`; Aquarium never became the active desktop surface.
+- Show Desktop via the shell command left rendering alive: frames advanced `8295 -> 8384 -> 8427` before/during/after the transition.
+- Manual recovery after Explorer restart: terminating the stale Aquarium process and relaunching the unchanged executable rediscovered the new Progman/WorkerW topology and visibly rendered again: [`spike2-experiment-d-after-explorer-relaunch.png`](../spike2-experiment-d-after-explorer-relaunch.png).
+- No application network, account, analytics, telemetry, cloud, installer, settings, WebView2, or Three.js dependency was added.
 
-No attempt was reported as successful merely because `SetParent`, Z-order, or `Present` returned success.
+### Failed or incomplete
 
-## Behavior actually tested
-
-### Worked
-
-- Native x64 build with Visual Studio Build Tools; warning-as-error build completed.
-- Hardware D3D11 device on `Intel(R) UHD Graphics`, vendor `0x8086`, device `0x46d1`, feature level 11.1.
-- Procedural fish rendered in the swap-chain HWND capture.
-- Global cursor reaction: with the cursor placed 45 pixels to the fish's right, reaction count increased and horizontal velocity changed from `+15.2` to `-480.0`, visibly representing flight away from the cursor.
-- Pause: frame count stayed at `134` for 2.06 seconds across two probes.
-- Resume: frame count then advanced from `134` to `217`.
-- Desktop input routing: `WindowFromPoint` at the first icon and at both ends of a blank-area drag returned `SysListView32`, not the render HWND. A real single click changed the desktop ListView selected count from 0 to 1. A real blank-area drag gesture was delivered to the ListView. Icon repositioning was not attempted.
-- `WM_NCHITTEST` on the render HWND returned `-1` (`HTTRANSPARENT`).
-- No product runtime network calls, accounts, analytics, or cloud services exist.
-
-### Failed
-
-- Primary acceptance: the D3D fish was not visibly composited beneath the desktop icons.
-- Therefore the complete combination “visible animation plus usable icons” was not achieved, even though icon interaction and rendering worked separately.
-- A stable 60 FPS was not achieved in this off-screen/failed-composition state; five-second intervals were roughly 34–41 presented frames per second.
+- **Automatic Explorer restart recovery failed.** Explorer destroyed the old desktop-bound Aquarium host. The Aquarium process continued presenting to stale composition resources, its control window was no longer discoverable, and it did not bind to the new Progman automatically.
+- A stable 60 FPS was not observed. Five-second log intervals during the visible run were usually about 35-43 presents/second on this machine.
+- The native Computer Use surface was unavailable in this Codex session. Visibility was therefore verified by both direct Progman capture and an actual `CopyFromScreen` capture after programmatically minimizing other top-level windows; input was exercised with narrowly scoped Win32 clicks and verified through Explorer's ListView state.
 
 ### Not tested
 
-- Battery operation, display-off, lock/unlock, sleep/wake, substantial coverage, multiple monitors, mixed DPI, virtual desktops, Explorer restart/recovery, RDP, HDR, WebView2, or a real Three.js scene.
-- Long-run stability and battery drain.
+- Multiple monitors, mixed DPI, virtual desktops, battery policy, lock/display-off, sleep/wake, RDP, HDR, display reconfiguration, full-screen games, and long-duration/battery drain.
+- WebView2 or Three.js integration.
+- Automatic Explorer recovery, because no recovery code exists in this minimal spike.
 
 ## CPU/GPU observations
 
-These are lightweight samples, not benchmarks, and the rendered surface was not visible on the desktop:
+These are lightweight observations, not benchmarks:
 
-- 5.02-second running sample: 0.312 process CPU seconds, 1.56% normalized CPU on four logical processors.
-- Working set: approximately 48 MB.
-- One Windows `GPU Engine` performance-counter sample for the process's 3D engine: 7.01%.
-- Render log: approximately 34–41 presents per second in steady five-second intervals.
-- Paused rendering produced no additional frames; the loop blocked pending a message.
+- Running process CPU logs were typically about 0.5-1.9% normalized across the machine's logical processors.
+- The successful visible configuration presented roughly 35-43 FPS in most five-second intervals, below the intended future 60 FPS target.
+- A five-sample Windows GPU Engine counter pass for the Aquarium PID reported approximately 1.32% mean and 1.49% peak summed utilization across active engines. Several unrelated/invalid counter instances produced warnings and were excluded.
+- While paused, the frame count did not advance and the loop blocked for messages.
 
 ## Windows APIs and techniques used
 
-- Shell/window discovery: `FindWindow`, `FindWindowEx`, `EnumWindows`, `GetWindow`, `GetWindowLongPtr`, `GetWindowRect`.
+- Desktop discovery: `EnumWindows`, `FindWindow`, `FindWindowEx`, `GetWindow`, `GetWindowLongPtr`, `GetWindowRect`.
 - Undocumented shell request: `SendMessageTimeout(Progman, 0x052C, 0xD, 0x1)`.
-- Attachment and ordering: `SetWindowLongPtr`, `SetParent`, `SetWindowPos`, `SetLayeredWindowAttributes`.
-- Click-through/non-activation: `WS_EX_TRANSPARENT`, `WS_EX_NOACTIVATE`, `WM_NCHITTEST -> HTTRANSPARENT`, `WM_MOUSEACTIVATE -> MA_NOACTIVATE`.
-- Cursor: `GetCursorPos`, `ScreenToClient`; no hooks or raw input.
-- Rendering: `D3D11CreateDeviceAndSwapChain`, dynamic vertex buffer, runtime HLSL compilation, `IDXGISwapChain::Present`.
-- Programmatic control: `RegisterWindowMessage`, `PostMessage`, `WaitMessage`.
+- Attachment/Z-order: `SetWindowLongPtr`, `SetLayeredWindowAttributes`, `SetParent`, `SetWindowPos`.
+- Input pass-through: `WS_EX_NOACTIVATE`, `WS_EX_TRANSPARENT` on the renderer child, `WM_NCHITTEST -> HTTRANSPARENT`, `WM_MOUSEACTIVATE -> MA_NOACTIVATE`.
+- Cursor: `GetCursorPos`, `ScreenToClient`; no hook, capture, or raw-input ownership.
+- Rendering: `D3D11CreateDevice`, `IDXGIFactory2::CreateSwapChainForComposition`, `DCompositionCreateDevice`, `IDCompositionDevice::CreateTargetForHwnd`, `IDCompositionVisual::SetContent`, `Commit`, `IDXGISwapChain1::Present`.
+- Control/scheduling: `RegisterWindowMessage`, `PostMessage`, `WaitMessage`, `MsgWaitForMultipleObjectsEx`.
 
-## Risks and undocumented dependencies
+Relevant platform references: [IDXGIFactory2::CreateSwapChainForComposition](https://learn.microsoft.com/en-us/windows/win32/api/dxgi1_2/nf-dxgi1_2-idxgifactory2-createswapchainforcomposition), [DirectComposition bitmap surfaces](https://learn.microsoft.com/en-us/windows/win32/directcomp/bitmap-surfaces), [DXGI swap effects](https://learn.microsoft.com/en-us/windows/win32/api/dxgi/ne-dxgi-dxgi_swap_effect), and [SetParent](https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setparent).
 
-- `0x052C`, its arguments, WorkerW creation, class names, and shell child order are not documented contracts. Explorer can change them in servicing updates.
-- `SetParent` itself is documented, but reparenting an application HWND into Explorer's private desktop tree is not a supported wallpaper API. Cross-process DPI-awareness resets are explicitly documented behavior.
-- A successful HWND relationship did not imply successful DWM composition on the tested build.
-- Explorer or another desktop customization tool can destroy/recreate WorkerW or change Z-order.
-- An always-on-bottom top-level popup can look convincing but is not equivalent: it can participate incorrectly in Show Desktop, virtual desktops, focus/Z-order, and shell transitions. It was intentionally not accepted or implemented as fallback.
-- There is no documented Windows API for hosting an arbitrary live GPU surface as the system wallpaper. `IDesktopWallpaper` manages static wallpaper images, not application surfaces.
+## Risks and undocumented behavior
+
+- `0x052C`, its arguments, WorkerW creation, shell class names, and the Progman child order are undocumented implementation details.
+- `SetParent` is documented, but inserting an application HWND into Explorer's private desktop tree is not a supported live-wallpaper API.
+- The raised-desktop mode depends on `Progman` having `WS_EX_NOREDIRECTIONBITMAP` and `SHELLDLL_DefView` being layered. Servicing updates may alter this behavior.
+- Explorer destroys the bound HWND hierarchy on restart. Production code must detect this and recreate the host, renderer child, composition target, and swap chain.
+- Another wallpaper/customization product can compete for WorkerW/Z-order or alter the same shell tree.
+- There is no documented Windows API equivalent to AppKit's desktop window level for arbitrary live GPU content. `IDesktopWallpaper` manages static images only.
+- DirectComposition solved this machine's composition gap, but cross-build reliability remains to be established.
 
 ## Future WebView2 + Three.js architecture
 
-WebView2 + Three.js remains the recommended **renderer architecture**, but it does not solve the failed outer desktop-host problem.
+**Yes: WebView2 + Three.js remains the recommended production renderer architecture**, now with stronger evidence than after Spike #1.
 
-If a reliable host mechanism is first established:
+The successful native DirectComposition experiment validates the class of compositor-backed presentation used by modern embedded web content. It does not prove WebView2 itself on the desktop layer, because WebView2 was not integrated in this spike.
 
-- Keep a small native Win32 host responsible for display topology, desktop attachment, cursor polling, power/session notifications, coverage policy, and recovery after Explorer restart.
-- Host one WebView2 controller per display. Map bundled scene files to a reserved HTTPS virtual host with `SetVirtualHostNameToFolderMapping`; no local HTTP server or network access is needed.
-- Bundle Three.js and every scene asset. Reject or cancel navigation outside the virtual origin and expose only a tiny host bridge.
-- Send cursor coordinates and state changes to JavaScript; do not make the WebView interactive or forward normal clicks.
-- Preserve scene APIs equivalent to `setRate`, `setPower`, `pointerMove`, `pointerLeave`, and `pause`. The JavaScript frame loop must fully cancel scheduling at 0 FPS.
-- A composition-controller experiment is worth evaluating because WebView2 can expose a DirectComposition visual, but it still needs a desktop composition target that Windows actually displays beneath DefView.
+Recommended future boundary:
 
-The installed WebView2 Runtime on this machine was `153.0.4234.48`. It was not used by this spike.
+- native Win32 host: desktop discovery/attachment, one host per display, Explorer recovery, cursor sampling, power/session/display notifications, and frame-rate policy;
+- WebView2 composition controller per display, kept non-interactive for ordinary desktop input;
+- bundled Three.js and assets mapped to a private virtual HTTPS host, with external navigation and network requests denied;
+- a minimal host bridge for cursor coordinates, pause/resume, rate, power, visibility, and resize;
+- JavaScript scheduling that fully cancels animation callbacks at 0 FPS.
 
-## Proposed power-management path
+## Proposed power-management path (not tested)
 
-This section is architectural, not tested behavior:
+- Visible/on AC: target 60 FPS.
+- Battery: reduce to about 30 FPS and optionally lower render scale/expensive effects.
+- Materially covered: estimate coverage at low frequency and reduce to 20 FPS or stop when nearly fully covered; corroborate with DXGI occlusion signals where applicable.
+- Lock/display off: listen for session and display-status notifications and force 0 FPS.
+- AC/battery: use power-setting notifications rather than frequent polling.
+- Cursor: sample no faster than `min(render FPS, 30 Hz)` and stop entirely at 0 FPS.
 
-- **Visible/on AC:** host rate 60 FPS.
-- **On battery:** 30 FPS; optionally lower render scale/shadow frequency inside Three.js.
-- **Partially covered:** estimate visible area at about 1 Hz from ordinary top-level window rectangles; use 20 FPS when materially exposed and 0 when almost entirely covered. Treat this as a heuristic and test transparent, cloaked, virtual-desktop, and full-screen windows.
-- **Entirely occluded:** use DXGI occlusion status as an additional full-occlusion signal, not as a partial-coverage estimator.
-- **Lock/display off:** register for `WM_WTSSESSION_CHANGE` lock/unlock and power-setting notifications such as `GUID_SESSION_DISPLAY_STATUS`; force 0 FPS while inactive.
-- **AC/battery:** register for `GUID_ACDC_POWER_SOURCE`, avoiding frequent polling.
-- **Cursor:** sample at `min(render FPS, 30 Hz)` and stop sampling at 0 FPS. Send only changed coordinates.
+## Files changed or created in Spike #2
+
+- `src/main.cpp`: initialization-order experiment, nested renderer HWND, decoded style/owner diagnostics, DirectComposition presentation, and detailed topology logging.
+- `build.ps1`: link `dcomp.lib`.
+- `docs/implementation-plan.md`: Spike #2 experimental plan.
+- `docs/feasibility-report.md`: this superseding report.
+- `README.md`: updated observed result and controls.
+- Evidence images retained: `lively-desktop-observation.png`, `spike2-experiment-a-top-level.png`, `spike2-experiment-c7-progman.png`, `spike2-experiment-d-screen.png`, and `spike2-experiment-d-after-explorer-relaunch.png`.
 
 ## Licensing and reuse
 
-- `desktop-habitats` is MIT licensed; its bundled Three.js is also MIT, and its listed textures are CC0.
-- No source code, shader, asset, texture, or fish model from `desktop-habitats` was copied into this repository.
-- The spike uses only architectural ideas visible in the reference: renderer/host separation, global cursor injection, and explicit frame-rate control.
-- The D3D fish, shaders, Win32 host, tests, and documentation here were written for this spike.
-- Lively and AereReact were inspected only to understand contemporary Windows techniques and failures; no material was copied from either project.
+- `desktop-habitats` is MIT licensed; its bundled Three.js is MIT and its listed textures are CC0.
+- No source, shader, asset, texture, or fish model from `desktop-habitats` was copied.
+- Lively is used only as an installed behavioral control and source-inspection reference. No Lively source or assets were copied.
+- The Win32 host, D3D11 fish/shaders, tests, DirectComposition integration, and documentation in this repository were written for this spike.
 
+## Final recommendation
+
+**GO WITH CONDITIONS.** The core Windows 11 experience is demonstrably feasible on build 26200.9457 when Aquarium uses compositor-backed D3D11 presentation. The MVP should proceed only if a short hardening phase first proves automatic Explorer recovery and acceptable behavior across representative Windows 11 builds and display configurations.

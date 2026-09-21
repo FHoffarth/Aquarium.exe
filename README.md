@@ -24,7 +24,8 @@ Diagnostics are written to `bin/aquarium-spike.log`.
 
 ## Result on the tested machine
 
-The D3D11 renderer, fish reaction, input pass-through, and pause/resume controls worked. Explorer accepted the expected raised-desktop HWND hierarchy, but Windows 11 build 26200 did **not** visibly composite the attached surface behind the icons. A normal `HWND_BOTTOM` fallback is intentionally absent.
+Spike #2 succeeded on Windows 11 Pro 25H2 build 26200.9457. The decisive change was replacing the legacy DXGI HWND swap chain with a D3D11 composition swap chain presented through DirectComposition. The fish is visibly animated beneath Explorer icons, desktop input remains with Explorer, global cursor proximity affects the fish, and pause/resume works.
+
+Automatic recovery after Explorer restart is not implemented; relaunching the probe recovers correctly. A normal `HWND_BOTTOM` fallback is intentionally absent. WebView2 and Three.js are not part of this spike.
 
 See [the feasibility report](docs/feasibility-report.md) for exact evidence and the recommendation.
-
