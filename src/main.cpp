@@ -1,17 +1,9 @@
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
 #include <windows.h>
-#include <d3d11.h>
-#include <d3dcompiler.h>
-#include <dcomp.h>
-#include <dxgi.h>
-#include <dxgi1_2.h>
-#include <wrl/client.h>
-
+#include <objbase.h>
 #include <algorithm>
-#include <array>
 #include <chrono>
-#include <cmath>
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
@@ -21,9 +13,8 @@
 #include <string>
 #include <vector>
 
-#include "fish_logic.h"
-
-using Microsoft::WRL::ComPtr;
+#include "host_policy.h"
+#include "webview_runtime.h"
 
 namespace {
 
@@ -42,8 +33,7 @@ UINT g_control_message = 0;
 bool g_paused = false;
 bool g_quit = false;
 unsigned long long g_frames = 0;
-aquarium::FishState g_fish{420.0f, 360.0f, 85.0f, 0.0f, 1.0f, 0};
-aquarium::PointerState g_pointer{false, 0, 0};
+WebViewRuntime* g_webview_runtime = nullptr;
 HWND g_window = nullptr;
 HWND g_renderer_window = nullptr;
 HWND g_owner_window = nullptr;
@@ -216,239 +206,15 @@ bool discover_desktop_host() {
   return true;
 }
 
-struct Vertex {
-  float x, y;
-  float r, g, b, a;
-};
-
-class Renderer {
- public:
-  bool initialize(HWND window, int width, int height) {
-    width_ = static_cast<float>(width);
-    height_ = static_cast<float>(height);
-    const std::array levels{D3D_FEATURE_LEVEL_11_1, D3D_FEATURE_LEVEL_11_0};
-    D3D_FEATURE_LEVEL selected{};
-    HRESULT hr = D3D11CreateDevice(
-        nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_BGRA_SUPPORT,
-        levels.data(), static_cast<UINT>(levels.size()), D3D11_SDK_VERSION,
-        device_.GetAddressOf(), &selected, context_.GetAddressOf());
-    if (hr == E_INVALIDARG) {
-      hr = D3D11CreateDevice(
-          nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, D3D11_CREATE_DEVICE_BGRA_SUPPORT,
-          levels.data() + 1, 1, D3D11_SDK_VERSION,
-          device_.GetAddressOf(), &selected, context_.GetAddressOf());
-    }
-    if (FAILED(hr)) {
-      log_hresult(L"D3D11CreateDevice(HARDWARE)", hr);
-      return false;
-    }
-
-    ComPtr<IDXGIDevice> dxgi_device;
-    ComPtr<IDXGIAdapter> adapter;
-    ComPtr<IDXGIFactory2> factory;
-    DXGI_ADAPTER_DESC description{};
-    if (SUCCEEDED(device_.As(&dxgi_device)) &&
-        SUCCEEDED(dxgi_device->GetAdapter(adapter.GetAddressOf())) &&
-        SUCCEEDED(adapter->GetDesc(&description))) {
-      std::wostringstream out;
-      out << L"D3D11 adapter=\"" << description.Description << L"\" vendor=0x" << std::hex
-          << description.VendorId << L" device=0x" << description.DeviceId << std::dec
-          << L" dedicatedVideoMB=" << description.DedicatedVideoMemory / (1024 * 1024)
-          << L" featureLevel=0x" << std::hex << selected;
-      log_line(out.str());
-    }
-
-    if (!dxgi_device || !adapter ||
-        FAILED(hr = adapter->GetParent(IID_PPV_ARGS(factory.GetAddressOf())))) {
-      log_hresult(L"Get IDXGIFactory2", hr);
-      return false;
-    }
-    DXGI_SWAP_CHAIN_DESC1 swap{};
-    swap.Width = width;
-    swap.Height = height;
-    swap.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
-    swap.SampleDesc.Count = 1;
-    swap.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-    swap.BufferCount = 2;
-    swap.Scaling = DXGI_SCALING_STRETCH;
-    swap.SwapEffect = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
-    swap.AlphaMode = DXGI_ALPHA_MODE_PREMULTIPLIED;
-    if (FAILED(hr = factory->CreateSwapChainForComposition(
-                   device_.Get(), &swap, nullptr, swap_chain_.GetAddressOf()))) {
-      log_hresult(L"CreateSwapChainForComposition", hr);
-      return false;
-    }
-    if (FAILED(hr = DCompositionCreateDevice(
-                   dxgi_device.Get(), IID_PPV_ARGS(composition_device_.GetAddressOf()))) ||
-        FAILED(hr = composition_device_->CreateTargetForHwnd(
-                   window, TRUE, composition_target_.GetAddressOf())) ||
-        FAILED(hr = composition_device_->CreateVisual(composition_visual_.GetAddressOf())) ||
-        FAILED(hr = composition_visual_->SetContent(swap_chain_.Get())) ||
-        FAILED(hr = composition_target_->SetRoot(composition_visual_.Get())) ||
-        FAILED(hr = composition_device_->Commit())) {
-      log_hresult(L"Initialize DirectComposition target", hr);
-      return false;
-    }
-    log_line(L"EXPERIMENT D: D3D11 uses a composition swap chain bound to the existing renderer child HWND.");
-
-    ComPtr<ID3D11Texture2D> back_buffer;
-    if (FAILED(hr = swap_chain_->GetBuffer(0, IID_PPV_ARGS(back_buffer.GetAddressOf()))) ||
-        FAILED(hr = device_->CreateRenderTargetView(back_buffer.Get(), nullptr, target_.GetAddressOf()))) {
-      log_hresult(L"CreateRenderTargetView", hr);
-      return false;
-    }
-
-    static constexpr char vertex_source[] =
-        "struct V{float2 p:POSITION;float4 c:COLOR;};"
-        "struct O{float4 p:SV_POSITION;float4 c:COLOR;};"
-        "O main(V v){O o;o.p=float4(v.p,0,1);o.c=v.c;return o;}";
-    static constexpr char pixel_source[] =
-        "struct I{float4 p:SV_POSITION;float4 c:COLOR;};"
-        "float4 main(I i):SV_TARGET{return i.c;}";
-    ComPtr<ID3DBlob> vertex_blob;
-    ComPtr<ID3DBlob> pixel_blob;
-    ComPtr<ID3DBlob> errors;
-    if (FAILED(hr = D3DCompile(vertex_source, sizeof(vertex_source), nullptr, nullptr, nullptr,
-                               "main", "vs_4_0", 0, 0, vertex_blob.GetAddressOf(), errors.GetAddressOf()))) {
-      log_shader_error(L"vertex shader", hr, errors.Get());
-      return false;
-    }
-    errors.Reset();
-    if (FAILED(hr = D3DCompile(pixel_source, sizeof(pixel_source), nullptr, nullptr, nullptr,
-                               "main", "ps_4_0", 0, 0, pixel_blob.GetAddressOf(), errors.GetAddressOf()))) {
-      log_shader_error(L"pixel shader", hr, errors.Get());
-      return false;
-    }
-    if (FAILED(hr = device_->CreateVertexShader(vertex_blob->GetBufferPointer(), vertex_blob->GetBufferSize(),
-                                                 nullptr, vertex_shader_.GetAddressOf())) ||
-        FAILED(hr = device_->CreatePixelShader(pixel_blob->GetBufferPointer(), pixel_blob->GetBufferSize(),
-                                                nullptr, pixel_shader_.GetAddressOf()))) {
-      log_hresult(L"CreateShader", hr);
-      return false;
-    }
-    const D3D11_INPUT_ELEMENT_DESC input[] = {
-        {"POSITION", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0},
-        {"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 8, D3D11_INPUT_PER_VERTEX_DATA, 0}};
-    if (FAILED(hr = device_->CreateInputLayout(input, 2, vertex_blob->GetBufferPointer(),
-                                                vertex_blob->GetBufferSize(), input_layout_.GetAddressOf()))) {
-      log_hresult(L"CreateInputLayout", hr);
-      return false;
-    }
-    D3D11_BUFFER_DESC buffer{};
-    buffer.ByteWidth = sizeof(Vertex) * 256;
-    buffer.Usage = D3D11_USAGE_DYNAMIC;
-    buffer.BindFlags = D3D11_BIND_VERTEX_BUFFER;
-    buffer.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-    if (FAILED(hr = device_->CreateBuffer(&buffer, nullptr, vertex_buffer_.GetAddressOf()))) {
-      log_hresult(L"CreateBuffer", hr);
-      return false;
-    }
-    D3D11_VIEWPORT viewport{0, 0, static_cast<float>(width), static_cast<float>(height), 0, 1};
-    context_->RSSetViewports(1, &viewport);
-    return true;
-  }
-
-  bool draw(const aquarium::FishState& fish) {
-    std::vector<Vertex> vertices;
-    vertices.reserve(96);
-    const bool alarm = fish.startled;
-    const std::array<float, 4> body = alarm ? std::array{1.0f, 0.25f, 0.12f, 1.0f}
-                                            : std::array{0.98f, 0.62f, 0.16f, 1.0f};
-    constexpr int segments = 24;
-    for (int i = 0; i < segments; ++i) {
-      const float a0 = 6.2831853f * i / segments;
-      const float a1 = 6.2831853f * (i + 1) / segments;
-      add_triangle(vertices,
-                   point(fish.x, fish.y, body),
-                   point(fish.x + std::cos(a0) * 72.0f, fish.y + std::sin(a0) * 34.0f, body),
-                   point(fish.x + std::cos(a1) * 72.0f, fish.y + std::sin(a1) * 34.0f, body));
-    }
-    const float tail_x = fish.x - fish.facing * 68.0f;
-    const float tail_tip = fish.x - fish.facing * 118.0f;
-    add_triangle(vertices,
-                 point(tail_x, fish.y, body), point(tail_tip, fish.y - 45.0f, body),
-                 point(tail_tip, fish.y + 45.0f, body));
-    const std::array<float, 4> eye{0.02f, 0.03f, 0.04f, 1.0f};
-    const float eye_x = fish.x + fish.facing * 42.0f;
-    add_triangle(vertices, point(eye_x - 5, fish.y - 10, eye), point(eye_x + 5, fish.y - 10, eye),
-                 point(eye_x, fish.y, eye));
-
-    D3D11_MAPPED_SUBRESOURCE mapped{};
-    const HRESULT hr = context_->Map(vertex_buffer_.Get(), 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped);
-    if (FAILED(hr)) {
-      log_hresult(L"Map(vertex buffer)", hr);
-      return false;
-    }
-    memcpy(mapped.pData, vertices.data(), vertices.size() * sizeof(Vertex));
-    context_->Unmap(vertex_buffer_.Get(), 0);
-
-    const float clear[]{0.018f, 0.105f, 0.145f, 1.0f};
-    context_->OMSetRenderTargets(1, target_.GetAddressOf(), nullptr);
-    context_->ClearRenderTargetView(target_.Get(), clear);
-    const UINT stride = sizeof(Vertex), offset = 0;
-    context_->IASetVertexBuffers(0, 1, vertex_buffer_.GetAddressOf(), &stride, &offset);
-    context_->IASetInputLayout(input_layout_.Get());
-    context_->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-    context_->VSSetShader(vertex_shader_.Get(), nullptr, 0);
-    context_->PSSetShader(pixel_shader_.Get(), nullptr, 0);
-    context_->Draw(static_cast<UINT>(vertices.size()), 0);
-    const HRESULT present = swap_chain_->Present(1, 0);
-    if (FAILED(present)) {
-      log_hresult(L"Present", present);
-      return false;
-    }
-    return true;
-  }
-
- private:
-  Vertex point(float x, float y, const std::array<float, 4>& color) const {
-    return {x / width_ * 2.0f - 1.0f, 1.0f - y / height_ * 2.0f,
-            color[0], color[1], color[2], color[3]};
-  }
-
-  static void add_triangle(std::vector<Vertex>& vertices, Vertex a, Vertex b, Vertex c) {
-    vertices.push_back(a);
-    vertices.push_back(b);
-    vertices.push_back(c);
-  }
-
-  static void log_hresult(const wchar_t* operation, HRESULT hr) {
-    std::wostringstream out;
-    out << operation << L" failed HRESULT=0x" << std::hex << std::uppercase << static_cast<unsigned long>(hr);
-    log_line(out.str());
-  }
-
-  static void log_shader_error(const wchar_t* stage, HRESULT hr, ID3DBlob* errors) {
-    std::wostringstream out;
-    out << stage << L" compile failed HRESULT=0x" << std::hex << std::uppercase << static_cast<unsigned long>(hr);
-    if (errors) out << L" detail=" << reinterpret_cast<const char*>(errors->GetBufferPointer());
-    log_line(out.str());
-  }
-
-  float width_ = 1;
-  float height_ = 1;
-  ComPtr<ID3D11Device> device_;
-  ComPtr<ID3D11DeviceContext> context_;
-  ComPtr<IDXGISwapChain1> swap_chain_;
-  ComPtr<IDCompositionDevice> composition_device_;
-  ComPtr<IDCompositionTarget> composition_target_;
-  ComPtr<IDCompositionVisual> composition_visual_;
-  ComPtr<ID3D11RenderTargetView> target_;
-  ComPtr<ID3D11VertexShader> vertex_shader_;
-  ComPtr<ID3D11PixelShader> pixel_shader_;
-  ComPtr<ID3D11InputLayout> input_layout_;
-  ComPtr<ID3D11Buffer> vertex_buffer_;
-};
-
 void log_probe() {
   POINT point{};
   GetCursorPos(&point);
   const HWND hit = WindowFromPoint(point);
   std::wostringstream out;
-  out << L"PROBE state=" << (g_paused ? L"paused" : L"running") << L" frames=" << g_frames
-      << L" fish=(" << std::fixed << std::setprecision(1) << g_fish.x << L"," << g_fish.y << L")"
-      << L" velocity=(" << g_fish.vx << L"," << g_fish.vy << L")"
-      << L" cursorScreen=(" << point.x << L"," << point.y << L") reactions=" << g_fish.reactions
+  out << L"PROBE state=" << (g_paused ? L"paused" : L"running")
+      << L" bridgeUpdates=" << g_frames
+      << L" webviewReady=" << (g_webview_runtime && g_webview_runtime->ready())
+      << L" cursorScreen=(" << point.x << L"," << point.y << L")"
       << L" WindowFromPoint=" << hex_handle(hit) << L"/" << class_name(hit)
       << L" hostHitTest=" << SendMessageW(g_window, WM_NCHITTEST, 0, MAKELPARAM(point.x, point.y))
       << L" rendererHitTest=" << SendMessageW(g_renderer_window, WM_NCHITTEST, 0,
@@ -462,14 +228,17 @@ LRESULT CALLBACK window_proc(HWND window, UINT message, WPARAM wparam, LPARAM lp
       case Control::Pause:
         if (!g_paused) log_line(L"CONTROL pause");
         g_paused = true;
+        if (g_webview_runtime) g_webview_runtime->post_json(aquarium::pause_message(true));
         break;
       case Control::Resume:
         if (g_paused) log_line(L"CONTROL resume");
         g_paused = false;
+        if (g_webview_runtime) g_webview_runtime->post_json(aquarium::pause_message(false));
         break;
       case Control::Toggle:
         g_paused = !g_paused;
         log_line(std::wstring(L"CONTROL toggle -> ") + (g_paused ? L"paused" : L"running"));
+        if (g_webview_runtime) g_webview_runtime->post_json(aquarium::pause_message(g_paused));
         break;
       case Control::Probe:
         log_probe();
@@ -588,11 +357,13 @@ HWND create_top_level_host_window(HINSTANCE instance, int width, int height) {
     log_line(L"CreateWindowEx(hidden owner) failed error=" + std::to_wstring(GetLastError()));
     return nullptr;
   }
+  SetWindowPos(g_owner_window, nullptr, -32000, -32000, 16, 16,
+               SWP_NOACTIVATE | SWP_NOZORDER | SWP_NOOWNERZORDER);
   log_window(L"Final hidden owner", g_owner_window);
 
   HWND window = CreateWindowExW(
       0,
-      kWindowClass, L"Aquarium.exe D3D11 feasibility spike",
+      kWindowClass, L"Aquarium.exe WebView2 feasibility spike",
       WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN,
       0, 0, width, height, g_owner_window, nullptr, instance, nullptr);
   if (!window) {
@@ -600,7 +371,7 @@ HWND create_top_level_host_window(HINSTANCE instance, int width, int height) {
     return nullptr;
   }
   g_renderer_window = CreateWindowExW(
-      WS_EX_TRANSPARENT, kRendererChildClass, L"Aquarium.exe D3D11 renderer child",
+      WS_EX_TRANSPARENT, kRendererChildClass, L"Aquarium.exe WebView2 renderer child",
       WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_TABSTOP,
       0, 0, width, height, window, nullptr, instance, nullptr);
   if (!g_renderer_window) {
@@ -691,7 +462,12 @@ int wmain(int argc, wchar_t** argv) {
     std::wcerr << L"Unable to open log: " << log_path << L"\n";
     return 65;
   }
-  log_line(L"Aquarium.exe D3D11 wallpaper spike starting");
+  const HRESULT com_result = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+  if (FAILED(com_result)) {
+    std::wcerr << L"CoInitializeEx failed: 0x" << std::hex << com_result << L"\n";
+    return 66;
+  }
+  log_line(L"Aquarium.exe WebView2 composition wallpaper spike starting");
   log_os_build();
   g_control_message = RegisterWindowMessageW(kControlMessageName);
 
@@ -708,35 +484,68 @@ int wmain(int argc, wchar_t** argv) {
   g_window = create_top_level_host_window(GetModuleHandleW(nullptr), width, height);
   if (!g_window) return 12;
 
-  Renderer renderer;
-  if (!renderer.initialize(g_renderer_window, width, height)) {
-    DestroyWindow(g_window);
-    return 14;
-  }
-  g_fish.y = height * 0.55f;
   if (!SetWindowPos(g_window, HWND_TOP, 0, 0, width, height,
                     SWP_NOACTIVATE | SWP_SHOWWINDOW)) {
     log_line(L"Experiment A top-level SetWindowPos failed error=" + std::to_wstring(GetLastError()));
     DestroyWindow(g_window);
     return 12;
   }
-  if (!renderer.draw(g_fish)) {
+  WebViewRuntime webview_runtime;
+  g_webview_runtime = &webview_runtime;
+  bool webview_ready = false;
+  bool webview_failed = false;
+  const auto executable_directory = std::filesystem::path(argv[0]).parent_path();
+  const auto habitat_directory = executable_directory / L"habitat";
+  const auto user_data_directory = executable_directory / L"webview2-user-data";
+  const RECT webview_bounds{0, 0, width, height};
+  if (!webview_runtime.initialize(
+          g_renderer_window, g_owner_window, webview_bounds, habitat_directory,
+          user_data_directory, 1,
+          [&](std::uint64_t generation, WebViewEvent event, const std::wstring& detail) {
+            std::wostringstream line;
+            line << L"WEBVIEW generation=" << generation << L" event=";
+            if (event == WebViewEvent::Ready) line << L"ready";
+            else if (event == WebViewEvent::Failure) line << L"failure";
+            else line << L"info";
+            line << L" detail=" << detail;
+            log_line(line.str());
+            if (event == WebViewEvent::Ready) webview_ready = true;
+            if (event == WebViewEvent::Failure) webview_failed = true;
+          })) {
     DestroyWindow(g_window);
+    CoUninitialize();
     return 14;
   }
-  ++g_frames;
-  log_window(L"Experiment D top-level host before desktop attachment", g_window);
-  log_window(L"Experiment D renderer child before desktop attachment", g_renderer_window);
-  log_line(L"EXPERIMENT D TOP-LEVEL PRESENT OK: D3D11 initialized on the renderer child before desktop attachment.");
+  const auto initialization_deadline =
+      std::chrono::steady_clock::now() + std::chrono::seconds(30);
+  while (!webview_ready && !webview_failed &&
+         std::chrono::steady_clock::now() < initialization_deadline) {
+    MSG message{};
+    while (PeekMessageW(&message, nullptr, 0, 0, PM_REMOVE)) {
+      TranslateMessage(&message);
+      DispatchMessageW(&message);
+    }
+    MsgWaitForMultipleObjectsEx(0, nullptr, 50, QS_ALLINPUT, MWMO_INPUTAVAILABLE);
+  }
+  if (!webview_ready) {
+    log_line(webview_failed ? L"WEBVIEW INITIALIZATION FAILED" : L"WEBVIEW INITIALIZATION TIMEOUT");
+    webview_runtime.shutdown();
+    DestroyWindow(g_window);
+    CoUninitialize();
+    return 14;
+  }
+  log_window(L"WebView2 top-level host before desktop attachment", g_window);
+  log_window(L"WebView2 renderer child before desktop attachment", g_renderer_window);
+  log_line(L"WEBVIEW TOP-LEVEL PRESENT OK: local Canvas habitat reported ready before desktop attachment.");
   Sleep(1500);
 
   if (!attach_render_window_to_desktop(g_window, width, height)) {
     DestroyWindow(g_window);
     return 12;
   }
-  log_window(L"Experiment D host after desktop attachment", g_window);
-  log_line(L"Experiment D host owner after desktop attachment=" + hex_handle(GetWindow(g_window, GW_OWNER)));
-  log_window(L"Experiment D renderer child after desktop attachment", g_renderer_window);
+  log_window(L"WebView2 host after desktop attachment", g_window);
+  log_line(L"WebView2 host owner after desktop attachment=" + hex_handle(GetWindow(g_window, GW_OWNER)));
+  log_window(L"WebView2 renderer child after desktop attachment", g_renderer_window);
   const HWND expected_parent = g_raised_desktop ? g_progman : g_workerw;
   if (GetParent(g_window) != expected_parent) {
     log_line(L"ATTACH FAILURE: render window does not have the expected desktop parent.");
@@ -774,30 +583,24 @@ int wmain(int argc, wchar_t** argv) {
       DispatchMessageW(&message);
     }
     if (g_quit) break;
-    if (g_paused) {
-      WaitMessage();
-      previous = clock::now();
-      continue;
-    }
-
     const auto now = clock::now();
     const double elapsed = std::chrono::duration<double>(now - previous).count();
-    if (elapsed < 1.0 / 60.0) {
-      const DWORD wait_ms = static_cast<DWORD>(std::max(1.0, (1.0 / 60.0 - elapsed) * 1000.0));
+    if (elapsed < 1.0 / 30.0) {
+      const DWORD wait_ms = static_cast<DWORD>(std::max(1.0, (1.0 / 30.0 - elapsed) * 1000.0));
       MsgWaitForMultipleObjectsEx(0, nullptr, wait_ms, QS_ALLINPUT, MWMO_INPUTAVAILABLE);
       continue;
     }
     previous = now;
     POINT cursor{};
+    bool present = false;
+    double normalized_x = 0;
+    double normalized_y = 0;
     if (GetCursorPos(&cursor) && ScreenToClient(g_renderer_window, &cursor)) {
-      g_pointer = {cursor.x >= 0 && cursor.y >= 0 && cursor.x < width && cursor.y < height,
-                   static_cast<float>(cursor.x), static_cast<float>(cursor.y)};
-    } else {
-      g_pointer.present = false;
+      present = cursor.x >= 0 && cursor.y >= 0 && cursor.x < width && cursor.y < height;
+      normalized_x = static_cast<double>(cursor.x) / width;
+      normalized_y = static_cast<double>(cursor.y) / height;
     }
-    g_fish = aquarium::advance_fish(g_fish, g_pointer, static_cast<float>(std::min(elapsed, 0.1)),
-                                    static_cast<float>(width), static_cast<float>(height));
-    if (!renderer.draw(g_fish)) break;
+    webview_runtime.post_json(aquarium::pointer_message(present, normalized_x, normalized_y));
     ++g_frames;
 
     const double report_seconds = std::chrono::duration<double>(now - report_start).count();
@@ -806,8 +609,8 @@ int wmain(int argc, wchar_t** argv) {
       const double cpu = process_cpu_percent(previous_kernel, previous_user, report_seconds, &kernel, &user);
       std::wostringstream out;
       out << L"PERF intervalSeconds=" << std::fixed << std::setprecision(2) << report_seconds
-          << L" presentedFps=" << (g_frames - report_frames) / report_seconds
-          << L" processCpuPercentNormalized=" << cpu << L" totalFrames=" << g_frames;
+          << L" cursorBridgeHz=" << (g_frames - report_frames) / report_seconds
+          << L" hostProcessCpuPercentNormalized=" << cpu << L" totalBridgeUpdates=" << g_frames;
       log_line(out.str());
       previous_kernel = kernel;
       previous_user = user;
@@ -817,8 +620,11 @@ int wmain(int argc, wchar_t** argv) {
   }
 
   log_probe();
+  g_webview_runtime = nullptr;
+  webview_runtime.shutdown();
   if (g_window) DestroyWindow(g_window);
   if (g_owner_window) DestroyWindow(g_owner_window);
-  log_line(L"Aquarium.exe D3D11 wallpaper spike stopped");
+  log_line(L"Aquarium.exe WebView2 composition wallpaper spike stopped");
+  CoUninitialize();
   return 0;
 }

@@ -42,6 +42,7 @@ Copy-Item -LiteralPath $webViewLoader -Destination (Join-Path $out 'WebView2Load
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
 if ($Target -eq 'All') {
-  & cl.exe @common "/I$webViewInclude" '/O2' (Join-Path $root 'src\main.cpp') "/Fe:$out\AquariumSpike.exe" '/link' "/LIBPATH:$webViewX64" 'WebView2Loader.dll.lib' 'd3d11.lib' 'dxgi.lib' 'd3dcompiler.lib' 'dcomp.lib' 'user32.lib' 'gdi32.lib' 'shell32.lib' 'ole32.lib'
+  & cl.exe @common "/I$webViewInclude" '/O2' (Join-Path $root 'src\main.cpp') (Join-Path $root 'src\webview_runtime.cpp') "/Fe:$out\AquariumSpike.exe" '/link' "/LIBPATH:$webViewX64" 'WebView2Loader.dll.lib' 'd3d11.lib' 'dxgi.lib' 'dcomp.lib' 'user32.lib' 'gdi32.lib' 'shell32.lib' 'ole32.lib'
   if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+  Copy-Item -LiteralPath (Join-Path $root 'habitat') -Destination $out -Recurse -Force
 }
