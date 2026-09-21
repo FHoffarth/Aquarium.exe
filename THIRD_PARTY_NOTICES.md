@@ -11,3 +11,15 @@
 - Additional notices: `third_party/webview2/NOTICE.txt`
 
 No WebView2 source was copied from Lively. Lively's pinned package version was used only as compatibility evidence for the installed runtime and native Windows environment.
+
+## Three.js
+
+- Package: `three`
+- Version: `0.186.0`
+- Source: official npm package
+- Package SHA-256: `61EEFF9D7616005C9A481C796F52287D81FBBBC0D55EACA5565322924252C1AA`
+- Included files: `build/three.module.js`, required `build/three.core.js`, and license
+- License: MIT; see `habitat/vendor/three/LICENSE.txt`
+- Vendoring details: `habitat/vendor/three/README.md`
+
+No Three.js code, shader, model, texture, fish, or other asset was copied from `desktop-habitats` or Lively. The primitive habitat simulation in `habitat/habitat.js` is original spike code.

@@ -242,6 +242,7 @@ LRESULT CALLBACK window_proc(HWND window, UINT message, WPARAM wparam, LPARAM lp
         break;
       case Control::Probe:
         log_probe();
+        if (g_webview_runtime) g_webview_runtime->post_json(aquarium::probe_message());
         break;
       case Control::Quit:
         log_line(L"CONTROL quit");
@@ -536,7 +537,7 @@ int wmain(int argc, wchar_t** argv) {
   }
   log_window(L"WebView2 top-level host before desktop attachment", g_window);
   log_window(L"WebView2 renderer child before desktop attachment", g_renderer_window);
-  log_line(L"WEBVIEW TOP-LEVEL PRESENT OK: local Canvas habitat reported ready before desktop attachment.");
+  log_line(L"WEBVIEW TOP-LEVEL PRESENT OK: local habitat reported ready before desktop attachment.");
   Sleep(1500);
 
   if (!attach_render_window_to_desktop(g_window, width, height)) {

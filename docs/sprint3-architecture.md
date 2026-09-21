@@ -63,6 +63,16 @@ Retry delay grows from 250 ms through 500 ms, 1 s, 2 s, and caps at 5 s. Attempt
 - **Failed control:** with the renderer child as controller parent, hit tests returned Aquarium's `msedgewebview2.exe` `Chrome_RenderWidgetHostHWND` and Explorer did not receive the click.
 - **Evidence:** `spike3-webview2-canvas-desktop.png`, `spike3-webview2-atomic-icon-click.png`, and `bin/aquarium-spike.log` (runtime log is generated, not committed).
 
+### Three.js/WebGL2 gate result (2026-09-21)
+
+- **Tested:** locally bundled Three.js 0.186.0 created a WebGL2 renderer and reported `habitat-ready:three-webgl2`; no CDN or runtime download is used.
+- **Tested:** three original primitive-geometry fish remained visibly animated beneath real Explorer icons.
+- **Tested:** both an icon location and blank desktop returned Explorer `SysListView32` (PID 26036); a single click visibly selected the `music` desktop folder.
+- **Tested:** native global cursor messages caused recorded proximity reactions in JavaScript (`reactions` increased from 0 to more than 300 during the extended probe run).
+- **Tested:** `--pause` and `--resume` crossed the JSON bridge; JavaScript reported `paused=true` and then `paused=false` while WebGL rendering stayed alive.
+- **Observed diagnostics:** about 38–42 rendered FPS, 9 draw calls, roughly 18–25 Hz cursor bridge, and 0.0–0.5% normalized CPU for the native host process during short samples. These are diagnostic figures, not comparative benchmarks.
+- **Evidence:** `spike3-threejs-desktop.png` and `bin/aquarium-spike.log` (runtime log is generated, not committed).
+
 ## Dependencies
 
 - Existing Visual Studio Build Tools 2026 and Windows SDK.

@@ -11,6 +11,14 @@
 </head>
 <body>
   <canvas id="probe"></canvas>
-  <script src="habitat.js"></script>
+  <script>
+    addEventListener('error', event => {
+      window.chrome.webview.postMessage(`habitat-js-error:${event.message}@${event.filename}:${event.lineno}`);
+    });
+    addEventListener('unhandledrejection', event => {
+      window.chrome.webview.postMessage(`habitat-promise-error:${String(event.reason)}`);
+    });
+  </script>
+  <script type="module" src="habitat.js"></script>
 </body>
 </html>
