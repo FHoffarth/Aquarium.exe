@@ -216,3 +216,36 @@ test('dispose cancels scheduling and disposes the habitat once', () => {
   assert.deepEqual(habitat.resizeCalls, [[1920, 1080]]);
   assert.equal(habitat.disposed, true);
 });
+
+test('performance recorder observes callbacks and actual projections only', () => {
+  const scheduler = createScheduler();
+  const habitat = createFakeHabitat();
+  const events = [];
+  const performanceRecorder = {
+    enabled: true,
+    mark() { events.push('mark'); return 5; },
+    recordRender(timestamp) { events.push(['render', timestamp]); },
+    finishFrame(start) { events.push(['finish', start]); },
+  };
+  const engine = createHabitatEngine({
+    habitat,
+    requestFrame: callback => scheduler.request(callback),
+    cancelFrame: id => scheduler.cancel(id),
+    now: () => 0,
+    targetFps: 30,
+    performanceRecorder,
+  });
+
+  engine.start();
+  scheduler.fire(16.7);
+  scheduler.fire(25);
+  scheduler.fire(50.1);
+
+  assert.deepEqual(events.filter(event => Array.isArray(event)), [
+    ['render', 16.7],
+    ['finish', 5],
+    ['finish', 5],
+    ['render', 50.1],
+    ['finish', 5],
+  ]);
+});

@@ -1,10 +1,14 @@
 import * as THREE from './vendor/three/three.module.js';
+import { readAuditConfig } from './audit-config.js';
 import { createHabitatEngine } from './core/engine.js';
+import { createPerformanceRecorder } from './core/performance.js';
 import { createPlantedTank } from './habitats/planted-tank/scene.js';
 
 const bridge = window.chrome?.webview;
 const canvas = document.getElementById('aquarium');
 const diagnostics = document.getElementById('diagnostics');
+const auditConfig = readAuditConfig(location);
+const performanceRecorder = createPerformanceRecorder({ enabled: auditConfig.enabled });
 const context = canvas.getContext('webgl2', {
   alpha: false,
   antialias: true,
@@ -27,13 +31,13 @@ const renderer = new THREE.WebGLRenderer({
   antialias: true,
   alpha: false,
 });
-renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2) * auditConfig.renderScale);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.2;
 renderer.setClearColor(0x02141d, 1);
 
-const habitat = createPlantedTank(renderer);
+const habitat = createPlantedTank(renderer, {}, auditConfig, performanceRecorder);
 let diagnosticsVisible = new URLSearchParams(location.search).get('diagnostics') === '1';
 let previewPaused = false;
 let pointerCount = 0;
@@ -53,7 +57,18 @@ function formatMetrics(report, prefix = 'habitat-metrics') {
 function presentDiagnostics(report) {
   const message = formatMetrics(report);
   post(message);
-  diagnostics.textContent = message.replace('habitat-metrics:', '').replaceAll(';', '\n');
+  if (report.performance) {
+    const auditReport = { config: auditConfig, performance: report.performance };
+    post(`audit-performance:${JSON.stringify(auditReport)}`);
+    if (auditConfig.enabled) {
+      window.__aquariumAuditReports ??= [];
+      window.__aquariumAuditReports.push(auditReport);
+    }
+  }
+  diagnostics.textContent = message.replace('habitat-metrics:', '').replaceAll(';', '\n')
+    + (report.performance
+      ? `\nrenderMedianMs=${report.performance.renderedIntervals.median.toFixed(2)}`
+      : '');
   diagnostics.hidden = !diagnosticsVisible;
 }
 
@@ -64,6 +79,8 @@ const engine = createHabitatEngine({
   now: () => performance.now(),
   onReady: () => post('habitat-ready:three-webgl2'),
   onDiagnostics: presentDiagnostics,
+  targetFps: auditConfig.targetFps ?? 60,
+  performanceRecorder,
 });
 
 function resize() {
@@ -72,6 +89,8 @@ function resize() {
 
 function updatePointer(present, x = 0, y = 0) {
   pointerCount += 1;
+  if (auditConfig.pointerMode === 'ignore') return;
+  if (auditConfig.pointerMode === 'stationary' && pointerCount > 1) return;
   engine.setPointer({ present, x, y, z: 0, eventsReceived: pointerCount });
 }
 
@@ -87,7 +106,8 @@ if (bridge) {
     } else if (message.type === 'state') {
       engine.setPaused(Boolean(message.paused));
     } else if (message.type === 'rate') {
-      engine.setTargetFps(Math.max(0, Math.min(60, Number(message.fps) || 0)));
+      engine.setTargetFps(auditConfig.targetFps
+        ?? Math.max(0, Math.min(60, Number(message.fps) || 0)));
     } else if (message.type === 'probe') {
       post(formatMetrics(engine.requestProbe(), 'probe'));
     }

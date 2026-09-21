@@ -105,6 +105,7 @@ export function createHabitatEngine({
   fixedStepMs = DEFAULT_STEP_MS,
   maxSteps = 4,
   targetFps = 60,
+  performanceRecorder = null,
 }) {
   if (!habitat || typeof habitat.step !== 'function' || typeof habitat.project !== 'function') {
     throw new TypeError('habitat must provide step() and project()');
@@ -135,7 +136,7 @@ export function createHabitatEngine({
     const renderInfo = typeof habitat.getRenderInfo === 'function'
       ? habitat.getRenderInfo()
       : {};
-    return {
+    const report = {
       fps: measuredFps,
       frameTimeMs: measuredFrameTimeMs,
       fishCount: typeof habitat.getFishCount === 'function' ? habitat.getFishCount() : 0,
@@ -148,6 +149,11 @@ export function createHabitatEngine({
       paused: paused || clock.targetFps === 0,
       targetFps: clock.targetFps,
     };
+    const performance = typeof habitat.getPerformanceSnapshot === 'function'
+      ? habitat.getPerformanceSnapshot()
+      : null;
+    if (performance) report.performance = performance;
+    return report;
   };
 
   const schedule = () => {
@@ -165,6 +171,9 @@ export function createHabitatEngine({
   function frame(timestamp) {
     frameRequest = null;
     if (!active()) return;
+    const performanceStart = performanceRecorder?.enabled
+      ? performanceRecorder.mark()
+      : 0;
     clock.tick(timestamp);
     for (let index = 0; index < clock.stepCount; index += 1) {
       const deltaSeconds = clock.fixedStepMs / 1000;
@@ -172,6 +181,7 @@ export function createHabitatEngine({
       simulationTime += deltaSeconds;
     }
     if (clock.shouldRender) {
+      if (performanceRecorder?.enabled) performanceRecorder.recordRender(timestamp);
       habitat.project(simulationTime);
       reportFrames += 1;
       reportFrameTimeMs += clock.frameDeltaMs;
@@ -190,6 +200,7 @@ export function createHabitatEngine({
       }
     }
     schedule();
+    if (performanceRecorder?.enabled) performanceRecorder.finishFrame(performanceStart);
   }
 
   const cancelScheduledFrame = () => {

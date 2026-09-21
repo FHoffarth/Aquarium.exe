@@ -2,21 +2,43 @@ import * as THREE from '../../vendor/three/three.module.js';
 import { createSchool, stepSchool } from '../../core/behavior.js';
 import { createEnvironment } from '../../core/environment.js';
 import { createFishRenderer } from '../../core/fish.js';
+import { deriveAuditScenePlan } from '../../audit-config.js';
 import { createPlantedTankConfig } from './config.js';
 
-export function createPlantedTank(renderer, overrides = {}) {
+export function createPlantedTank(
+  renderer,
+  overrides = {},
+  auditConfig = { enabled: false, mode: 'full', fishCount: 10 },
+  performanceRecorder = null,
+) {
   if (!renderer?.isWebGLRenderer) {
     throw new TypeError('renderer must be a Three.js WebGLRenderer');
   }
-  const config = createPlantedTankConfig(overrides);
+  const productConfig = createPlantedTankConfig(overrides);
+  const scenePlan = deriveAuditScenePlan(auditConfig);
+  const config = scenePlan.fishCount === productConfig.fishCount
+    ? productConfig
+    : Object.freeze({ ...productConfig, fishCount: scenePlan.fishCount });
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(38, 1, 0.1, 20);
   camera.position.set(0, 0.06, 6.2);
   camera.lookAt(0, 0, 0);
 
   const school = createSchool(config);
-  const fishRenderer = createFishRenderer(scene, 12);
-  const environment = createEnvironment(scene, config);
+  const fishRenderer = scenePlan.createFish
+    ? createFishRenderer(scene, Math.max(1, scenePlan.fishCount))
+    : null;
+  const environment = scenePlan.createEnvironment
+    ? createEnvironment(scene, config)
+    : null;
+  const auditLights = [];
+  if (scenePlan.createFish && !scenePlan.createEnvironment) {
+    const hemisphere = new THREE.HemisphereLight(0xd8fff7, 0x102426, 2.15);
+    const directional = new THREE.DirectionalLight(0xfff5dc, 2.35);
+    directional.position.set(-2.2, 2.8, 3.4);
+    scene.add(hemisphere, directional);
+    auditLights.push(hemisphere, directional);
+  }
   const simulationPointer = {
     present: false,
     x: 0,
@@ -36,12 +58,28 @@ export function createPlantedTank(renderer, overrides = {}) {
           - pointer.y * (config.bounds.maxY - config.bounds.minY);
         simulationPointer.z = 0;
       }
+      const start = performanceRecorder?.enabled ? performanceRecorder.mark() : 0;
       stepSchool(school, simulationPointer, deltaSeconds, config.bounds);
+      if (performanceRecorder?.enabled) performanceRecorder.record('simulationMs', start);
     },
     project(simulationTime) {
-      fishRenderer.project(school, simulationTime);
-      environment.updateVisuals(simulationTime);
-      renderer.render(scene, camera);
+      if (fishRenderer) {
+        const start = performanceRecorder?.enabled ? performanceRecorder.mark() : 0;
+        fishRenderer.project(school, simulationTime);
+        if (performanceRecorder?.enabled) {
+          performanceRecorder.record('fishProjectionMs', start);
+        }
+      }
+      if (environment) {
+        const start = performanceRecorder?.enabled ? performanceRecorder.mark() : 0;
+        environment.updateVisuals(simulationTime);
+        if (performanceRecorder?.enabled) performanceRecorder.record('environmentMs', start);
+      }
+      if (scenePlan.render) {
+        const start = performanceRecorder?.enabled ? performanceRecorder.mark() : 0;
+        renderer.render(scene, camera);
+        if (performanceRecorder?.enabled) performanceRecorder.record('renderMs', start);
+      }
     },
     resize(width, height) {
       const safeWidth = Math.max(1, width);
@@ -62,9 +100,13 @@ export function createPlantedTank(renderer, overrides = {}) {
         triangles: renderer.info.render.triangles,
       };
     },
+    getPerformanceSnapshot() {
+      return performanceRecorder?.snapshot() ?? null;
+    },
     dispose() {
-      fishRenderer.dispose();
-      environment.dispose();
+      fishRenderer?.dispose();
+      environment?.dispose();
+      for (const light of auditLights) scene.remove(light);
     },
   };
 }
