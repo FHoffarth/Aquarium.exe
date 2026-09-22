@@ -2,14 +2,47 @@ import * as THREE from '../../vendor/three/three.module.js';
 import { createSchool, stepSchool } from '../../core/behavior.js';
 import { createEnvironment } from '../../core/environment.js';
 import { createFishRenderer } from '../../core/fish.js';
+import { createSliceAEnvironment } from '../../core/slice-a-environment.js';
 import { deriveAuditScenePlan } from '../../audit-config.js';
 import { createPlantedTankConfig } from './config.js';
+
+const DEFAULT_AUDIT = { enabled: false, mode: 'full', fishCount: 10 };
+
+// Tries the requested art mode and falls back to the accepted procedural
+// environment if its assets cannot be loaded or verified. The failure is
+// reported, never hidden; the wallpaper keeps working either way.
+export async function createPlantedTankForArt(renderer, {
+  artMode,
+  loadArtGroup,
+  reportAssetFailure,
+  overrides = {},
+  auditConfig = DEFAULT_AUDIT,
+  performanceRecorder = null,
+}) {
+  if (artMode === 'slice-a' && deriveAuditScenePlan(auditConfig).createEnvironment) {
+    try {
+      const artAssets = await loadArtGroup('slice-a');
+      const habitat = createPlantedTank(renderer, overrides, auditConfig, performanceRecorder, { artAssets });
+      return {
+        habitat,
+        art: { mode: 'slice-a', loadMs: artAssets.loadMs, bytes: artAssets.totalBytes },
+      };
+    } catch (error) {
+      reportAssetFailure(error);
+    }
+  }
+  return {
+    habitat: createPlantedTank(renderer, overrides, auditConfig, performanceRecorder),
+    art: { mode: 'procedural', loadMs: 0, bytes: 0 },
+  };
+}
 
 export function createPlantedTank(
   renderer,
   overrides = {},
-  auditConfig = { enabled: false, mode: 'full', fishCount: 10 },
+  auditConfig = DEFAULT_AUDIT,
   performanceRecorder = null,
+  { artAssets = null } = {},
 ) {
   if (!renderer?.isWebGLRenderer) {
     throw new TypeError('renderer must be a Three.js WebGLRenderer');
@@ -28,9 +61,12 @@ export function createPlantedTank(
   const fishRenderer = scenePlan.createFish
     ? createFishRenderer(scene, Math.max(1, scenePlan.fishCount))
     : null;
-  const environment = scenePlan.createEnvironment
-    ? createEnvironment(scene, config)
-    : null;
+  let environment = null;
+  if (scenePlan.createEnvironment) {
+    environment = artAssets
+      ? createSliceAEnvironment(scene, config, artAssets)
+      : createEnvironment(scene, config);
+  }
   const auditLights = [];
   if (scenePlan.createFish && !scenePlan.createEnvironment) {
     const hemisphere = new THREE.HemisphereLight(0xd8fff7, 0x102426, 2.15);

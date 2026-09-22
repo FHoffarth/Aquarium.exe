@@ -1,17 +1,25 @@
 import * as THREE from './vendor/three/three.module.js';
 import { readAuditConfig } from './audit-config.js';
+import { readArtMode } from './core/art-mode.js';
 import { createHabitatEngine } from './core/engine.js';
 import { createPerformanceRecorder } from './core/performance.js';
-import { createPlantedTank } from './habitats/planted-tank/scene.js';
+import { createPlantedTankForArt } from './habitats/planted-tank/scene.js';
 
 const bridge = window.chrome?.webview;
 const canvas = document.getElementById('aquarium');
 const diagnostics = document.getElementById('diagnostics');
 const auditConfig = readAuditConfig(location);
+const artMode = readArtMode(location);
 const performanceRecorder = createPerformanceRecorder({ enabled: auditConfig.enabled });
+// Measured in the real host (1920x1080, Intel UHD): 4x MSAA multiplied by the
+// planted corner's alpha-tested overdraw cost ~31 FPS; without it ~59 FPS at
+// a visually near-identical result. The procedural baseline keeps MSAA. The
+// context exists before assets load, so a fallback to procedural after an
+// asset failure runs without MSAA.
+const antialias = artMode !== 'slice-a';
 const context = canvas.getContext('webgl2', {
   alpha: false,
-  antialias: true,
+  antialias,
   depth: true,
   powerPreference: 'high-performance',
 });
@@ -28,7 +36,7 @@ if (!context) {
 const renderer = new THREE.WebGLRenderer({
   canvas,
   context,
-  antialias: true,
+  antialias,
   alpha: false,
 });
 renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2) * auditConfig.renderScale);
@@ -37,7 +45,23 @@ renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.42;
 renderer.setClearColor(0x02141d, 1);
 
-const habitat = createPlantedTank(renderer, {}, auditConfig, performanceRecorder);
+const { habitat, art } = await createPlantedTankForArt(renderer, {
+  artMode,
+  auditConfig,
+  performanceRecorder,
+  // Imported lazily so even a loader module failure falls back to procedural.
+  loadArtGroup: async group => (await import('./core/assets.js')).loadArtGroup(group, {
+    maxAnisotropy: Math.min(4, renderer.capabilities.getMaxAnisotropy()),
+  }),
+  // Deliberately not `habitat-failure:`: the host treats that as a lost
+  // runtime and rebuilds. The fallback habitat is healthy, so report as info.
+  reportAssetFailure: error => {
+    const reason = `${error?.name ?? 'Error'}: ${error?.message ?? error}`;
+    console.error('Aquarium art assets unavailable; using procedural environment.', error);
+    window.__aquariumAssetFailure = reason;
+    post(`habitat-asset-failure:${reason}`);
+  },
+});
 let diagnosticsVisible = new URLSearchParams(location.search).get('diagnostics') === '1';
 let previewPaused = false;
 let pointerCount = 0;
@@ -51,7 +75,11 @@ function formatMetrics(report, prefix = 'habitat-metrics') {
     + `;pointerCount=${report.pointerCount}`
     + `;reactions=${report.reactions}`
     + `;paused=${report.paused}`
-    + `;targetFps=${report.targetFps}`;
+    + `;targetFps=${report.targetFps}`
+    + `;art=${art.mode}`
+    + `;msaa=${antialias}`
+    + `;assetLoadMs=${art.loadMs.toFixed(0)}`
+    + `;assetBytes=${art.bytes}`;
 }
 
 function presentDiagnostics(report) {

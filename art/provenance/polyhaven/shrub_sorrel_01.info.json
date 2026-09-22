@@ -1,0 +1,59 @@
+{
+  "date_published": 1649376000,
+  "name": "Shrub Sorrel 01",
+  "type": 2,
+  "staging": null,
+  "authors": {
+    "Rico Cilliers": "All"
+  },
+  "categories": [
+    "plants",
+    "flowers",
+    "nature",
+    "collection: smugglers_cove"
+  ],
+  "tags": [
+    "nature",
+    "sorrel",
+    "potplant",
+    "bush",
+    "shrub",
+    "leaf",
+    "leaves",
+    "green",
+    "small",
+    "forest",
+    "field",
+    "floral",
+    "flower"
+  ],
+  "max_resolution": [
+    8192,
+    8192
+  ],
+  "polycount": 3319,
+  "texel_density": 168223.46231941675,
+  "dimensions": [
+    352.09934413433075,
+    146.4103851467371,
+    58.00368043128401
+  ],
+  "files_hash": "65530d7157644eab84ae2b32da08acd26efa07f6",
+  "description": "Free 8K model of small sorrel shrubs: clusters of round scalloped green leaves on thin stems, subtle edge wear and delicate pink five-petaled flowers.",
+  "category_id": "f85fb5e2-abfd-5de4-9860-c9c3d04f12df",
+  "category": "Nature/Plants/Shrubs & Bushes",
+  "collections": [
+    "smugglers_cove"
+  ],
+  "attributes": {
+    "condition": [
+      "clean"
+    ],
+    "material": [
+      "plant"
+    ]
+  },
+  "img_version": "079989cc",
+  "download_count": 46552,
+  "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/shrub_sorrel_01.png?width=256&height=256&v=079989cc"
+}

@@ -1,0 +1,69 @@
+{
+  "lods": true,
+  "name": "Moss 01",
+  "type": 2,
+  "authors": {
+    "Rob Tuytel": "All"
+  },
+  "info": null,
+  "date_published": 1687305600,
+  "staging": null,
+  "geonodes": true,
+  "categories": [
+    "nature",
+    "plants",
+    "ground cover",
+    "collection: pine_forest"
+  ],
+  "sponsors": [
+    "42579608"
+  ],
+  "tags": [
+    "moss",
+    "ground cover",
+    "forest",
+    "woodland",
+    "foliage",
+    "nature",
+    "plant",
+    "natural",
+    "botany",
+    "small",
+    "geometry nodes",
+    "outdoor",
+    "undergrowth",
+    "vegetation",
+    "shrubs"
+  ],
+  "max_resolution": [
+    4096,
+    4096
+  ],
+  "polycount": 246170,
+  "texel_density": 17465.478013898166,
+  "dimensions": [
+    838.9523178339005,
+    300.28730630874634,
+    298.94982278347015
+  ],
+  "files_hash": "2b55f8db1e0e00e0aa2681ef0bccc7d1aec5bfab",
+  "description": "Free 4K model - dense, lush ground-cover moss clump with fine fronds, varied green tones and realistic undergrowth geometry.",
+  "category_id": "91b3ed2b-c651-5e0f-aa38-96ec64d9c8e1",
+  "category": "Nature/Ground Cover & Moss/Moss",
+  "collections": [
+    "pine_forest"
+  ],
+  "attributes": {
+    "lods": true,
+    "geonodes": true,
+    "condition": [
+      "clean"
+    ],
+    "material": [
+      "plant"
+    ]
+  },
+  "img_version": "5f65cb0e",
+  "download_count": 37951,
+  "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/moss_01.png?width=256&height=256&v=5f65cb0e"
+}

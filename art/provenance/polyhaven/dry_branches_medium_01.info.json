@@ -1,0 +1,72 @@
+{
+  "date_published": 1667952000,
+  "name": "Dry Branches Medium 01",
+  "type": 2,
+  "staging": null,
+  "authors": {
+    "Rico Cilliers": "All"
+  },
+  "info": null,
+  "tags": [
+    "branches",
+    "dead",
+    "dry",
+    "plants",
+    "nature",
+    "natural",
+    "plant",
+    "outdoor",
+    "foliage",
+    "forest",
+    "jungle",
+    "shrub",
+    "medium",
+    "stick",
+    "twig",
+    "botany",
+    "wood"
+  ],
+  "categories": [
+    "props",
+    "nature",
+    "plants",
+    "ground cover",
+    "collection: pine_forest",
+    "collection: verdant_trail"
+  ],
+  "max_resolution": [
+    8192,
+    8192
+  ],
+  "polycount": 16803,
+  "texel_density": 9162.400389328128,
+  "dimensions": [
+    1059.486210346222,
+    1299.152910709381,
+    340.9853130578995
+  ],
+  "sponsors": [
+    "25436656",
+    "3237733",
+    "26820710"
+  ],
+  "files_hash": "9707cc29f837b6946d6787c231b522dc2ed69573",
+  "description": "Free 8K photoscanned set of medium dry branches - gnarled, cracked bark, weathered texture, natural twists, knots and subtle moss.",
+  "category_id": "5d4c0745-3f8b-5788-b36c-bc636a73a0bc",
+  "category": "Nature/Logs, Branches & Roots/Branches & Twigs",
+  "collections": [
+    "pine_forest",
+    "verdant_trail"
+  ],
+  "attributes": {
+    "condition": [
+      "weathered"
+    ],
+    "material": [
+      "wood"
+    ]
+  },
+  "img_version": "5fecfa26",
+  "download_count": 48556,
+  "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/dry_branches_medium_01.png?width=256&height=256&v=5fecfa26"
+}

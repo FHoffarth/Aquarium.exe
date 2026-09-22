@@ -1,0 +1,70 @@
+{
+  "lods": true,
+  "type": 2,
+  "date_published": 1664323200,
+  "sponsors": [
+    "25436656"
+  ],
+  "name": "Nettle Plant",
+  "staging": null,
+  "authors": {
+    "Rob Tuytel": "Photography",
+    "Rico Cilliers": "modeling"
+  },
+  "info": null,
+  "categories": [
+    "nature",
+    "plants",
+    "ground cover",
+    "collection: the_shed"
+  ],
+  "tags": [
+    "nettle",
+    "plant",
+    "green",
+    "nature",
+    "shrub",
+    "outdoor",
+    "leaf",
+    "bush",
+    "botany",
+    "leaves",
+    "forest",
+    "jungle",
+    "foliage",
+    "field",
+    "meadow",
+    "natural",
+    "floral"
+  ],
+  "max_resolution": [
+    8192,
+    8192
+  ],
+  "polycount": 46195,
+  "texel_density": 50149.637210843226,
+  "dimensions": [
+    1084.1034203767776,
+    94.6834422647953,
+    218.78226287662983
+  ],
+  "files_hash": "8f65dcb085e502c39e2abfa0161f4de2b43c6096",
+  "description": "Free 8K photoreal nettle plant model: slender stems with serrated green leaves, multiple sprigs, detailed veins and a natural wet sheen.",
+  "category_id": "f85fb5e2-abfd-5de4-9860-c9c3d04f12df",
+  "category": "Nature/Plants/Shrubs & Bushes",
+  "collections": [
+    "the_shed"
+  ],
+  "attributes": {
+    "condition": [
+      "clean"
+    ],
+    "lods": true,
+    "material": [
+      "plant"
+    ]
+  },
+  "img_version": "84344496",
+  "download_count": 32627,
+  "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/nettle_plant.png?width=256&height=256&v=84344496"
+}

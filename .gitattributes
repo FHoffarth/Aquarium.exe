@@ -1,0 +1,4 @@
+# Shipped binary art must be byte-exact (manifest SHA-256 checks).
+habitat/assets/** binary
+*.glb binary
+*.webp binary

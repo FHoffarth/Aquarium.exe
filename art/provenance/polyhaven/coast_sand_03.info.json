@@ -1,0 +1,62 @@
+{
+  "date_published": 1647475200,
+  "name": "Coast Sand 03",
+  "type": 1,
+  "staging": null,
+  "dimensions": [
+    3000,
+    3000.000238418579
+  ],
+  "authors": {
+    "Rob Tuytel": "All"
+  },
+  "categories": [
+    "sand",
+    "terrain",
+    "rock",
+    "outdoor",
+    "natural",
+    "collection: smugglers_cove"
+  ],
+  "tags": [
+    "sand",
+    "pebbles",
+    "stones",
+    "beach",
+    "seaside",
+    "ocean",
+    "costal",
+    "brown",
+    "ground",
+    "gravel",
+    "dry",
+    "pathway",
+    "coral",
+    "rock",
+    "broken",
+    "nature",
+    "debris"
+  ],
+  "max_resolution": [
+    16384,
+    16384
+  ],
+  "files_hash": "987449a430159bf9e6f2c81e03667e717f407e49",
+  "description": "Free 16K texture of coarse coastal sand with mixed pebbles, broken coral and gritty brown gravel; high-detail dry, uneven surface with scattered debris.",
+  "category_id": "2bed9a9d-8f5f-5f1f-815c-e33cfa63bf69",
+  "category": "Ground & Terrain/Sand/Beach & Coastal Sand",
+  "collections": [
+    "smugglers_cove"
+  ],
+  "attributes": {
+    "surface_use": "ground",
+    "origin": "natural",
+    "setting": "outdoor",
+    "condition": [
+      "clean"
+    ]
+  },
+  "img_version": "eee7557d",
+  "download_count": 22391,
+  "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/coast_sand_03.png?width=256&height=256&v=eee7557d"
+}

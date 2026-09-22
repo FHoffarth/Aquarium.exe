@@ -1,0 +1,515 @@
+{
+  "dry_branches_medium_01": {
+    "source": "Poly Haven",
+    "sourcePage": "https://polyhaven.com/a/dry_branches_medium_01",
+    "name": "Dry Branches Medium 01",
+    "creator": {
+      "Rico Cilliers": "All"
+    },
+    "license": "CC0-1.0",
+    "licenseUrl": "https://polyhaven.com/license",
+    "dateAcquired": "2026-09-22",
+    "resolution": "2k",
+    "files": [
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/dry_branches_medium_01/dry_branches_medium_01_2k.gltf",
+        "originalFilename": "dry_branches_medium_01_2k.gltf",
+        "localPath": "art/source/polyhaven/dry_branches_medium_01/dry_branches_medium_01_2k.gltf",
+        "bytes": 5844,
+        "md5": "48cebd47ff47f1c166e32bf2846fc5f8",
+        "sha256": "95d29c7dc5cf55b6b06ac0999ffc6773d4929ac3a77d0e9c8e2e2dcfa68894df"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/dry_branches_medium_01/dry_branches_medium_01_nor_gl_2k.jpg",
+        "originalFilename": "dry_branches_medium_01_nor_gl_2k.jpg",
+        "localPath": "art/source/polyhaven/dry_branches_medium_01/textures/dry_branches_medium_01_nor_gl_2k.jpg",
+        "bytes": 4559165,
+        "md5": "385022548e1a3b84be6c4ab2e103aa4f",
+        "sha256": "62c2352a8b194889cb6a9430e74fff044a6fa0b34c579d8d5be1b3fd539b7f14"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/dry_branches_medium_01/dry_branches_medium_01_arm_2k.jpg",
+        "originalFilename": "dry_branches_medium_01_arm_2k.jpg",
+        "localPath": "art/source/polyhaven/dry_branches_medium_01/textures/dry_branches_medium_01_arm_2k.jpg",
+        "bytes": 2959483,
+        "md5": "7610240aa1aafb3c6cfa5c7f89051c33",
+        "sha256": "53cf4afec248f49ccea0a49975ec9ba0a91bae2124adc802fd80568e17019751"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/dry_branches_medium_01/dry_branches_medium_01_diff_2k.jpg",
+        "originalFilename": "dry_branches_medium_01_diff_2k.jpg",
+        "localPath": "art/source/polyhaven/dry_branches_medium_01/textures/dry_branches_medium_01_diff_2k.jpg",
+        "bytes": 2815859,
+        "md5": "5f7ca4d25884545bd9b2063e43c0595c",
+        "sha256": "dcabdd1c0c4d801f5c0ce6376f42daba2a632a5433ea679d38bf4e44e5b4ead2"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/dry_branches_medium_01/dry_branches_medium_01.bin",
+        "originalFilename": "dry_branches_medium_01.bin",
+        "localPath": "art/source/polyhaven/dry_branches_medium_01/dry_branches_medium_01.bin",
+        "bytes": 465172,
+        "md5": "10de852c8bf38e3f3ca5fb1d6c8de9d0",
+        "sha256": "969da1e8cbb2d8201e7fa0fc0dac5b19ef354b32c3d8c62dd9faa7cb3833d8ca"
+      }
+    ]
+  },
+  "rock_moss_set_02": {
+    "source": "Poly Haven",
+    "sourcePage": "https://polyhaven.com/a/rock_moss_set_02",
+    "name": "Rock Moss Set 02",
+    "creator": {
+      "Kless Gyzen": "All"
+    },
+    "license": "CC0-1.0",
+    "licenseUrl": "https://polyhaven.com/license",
+    "dateAcquired": "2026-09-22",
+    "resolution": "2k",
+    "files": [
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/rock_moss_set_02/rock_moss_set_02_2k.gltf",
+        "originalFilename": "rock_moss_set_02_2k.gltf",
+        "localPath": "art/source/polyhaven/rock_moss_set_02/rock_moss_set_02_2k.gltf",
+        "bytes": 11608,
+        "md5": "6161594df6870389d65b7d95fa6461b0",
+        "sha256": "d17cf3d4ea94bdc5007b249cdc2f42c8525cf312043a90c6762361ef5c03fd4a"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/rock_moss_set_02/rock_moss_set_02_diff_2k.jpg",
+        "originalFilename": "rock_moss_set_02_diff_2k.jpg",
+        "localPath": "art/source/polyhaven/rock_moss_set_02/textures/rock_moss_set_02_diff_2k.jpg",
+        "bytes": 750955,
+        "md5": "338ebc76d5472e04b93c603dccc10bdc",
+        "sha256": "796cbab6ee2708f443f5a57e9081ac8747c703ab035e9cf3a438147bcde187f0"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/rock_moss_set_02/rock_moss_set_02.bin",
+        "originalFilename": "rock_moss_set_02.bin",
+        "localPath": "art/source/polyhaven/rock_moss_set_02/rock_moss_set_02.bin",
+        "bytes": 1316572,
+        "md5": "a63878339f14feceab7347cc28110eaa",
+        "sha256": "2df9d8eaaca4207529b0f613d4886d3962d0b9ffc0cdfd2bc4bf35dbcd391cb5"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/rock_moss_set_02/rock_moss_set_02_nor_gl_2k.jpg",
+        "originalFilename": "rock_moss_set_02_nor_gl_2k.jpg",
+        "localPath": "art/source/polyhaven/rock_moss_set_02/textures/rock_moss_set_02_nor_gl_2k.jpg",
+        "bytes": 1000512,
+        "md5": "18014eba605072a91ac27b2ba0ebc77a",
+        "sha256": "5d2d7095a4ad459b40d3da2c5d9083e0735484a7df6033ac696e4379fb2e86f3"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/rock_moss_set_02/rock_moss_set_02_rough_2k.jpg",
+        "originalFilename": "rock_moss_set_02_rough_2k.jpg",
+        "localPath": "art/source/polyhaven/rock_moss_set_02/textures/rock_moss_set_02_rough_2k.jpg",
+        "bytes": 501755,
+        "md5": "802ec244c86d10888efad97737adc938",
+        "sha256": "89a178fc23de0c3df2f316a869bcd74a3c17bc646405a3ba66e4c6c51230a9e6"
+      }
+    ]
+  },
+  "anthurium_botany_01": {
+    "source": "Poly Haven",
+    "sourcePage": "https://polyhaven.com/a/anthurium_botany_01",
+    "name": "Anthurium Botany 01",
+    "creator": {
+      "Rob Tuytel": "scanning",
+      "Rico Cilliers": "modeling"
+    },
+    "license": "CC0-1.0",
+    "licenseUrl": "https://polyhaven.com/license",
+    "dateAcquired": "2026-09-22",
+    "resolution": "2k",
+    "files": [
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/anthurium_botany_01/anthurium_botany_01_2k.gltf",
+        "originalFilename": "anthurium_botany_01_2k.gltf",
+        "localPath": "art/source/polyhaven/anthurium_botany_01/anthurium_botany_01_2k.gltf",
+        "bytes": 10675,
+        "md5": "3d277dfee757d3709b222dd72bc73379",
+        "sha256": "ecee0d5cdf4b80b001ba59388ea9cd8b2d1e5d9c89ec070f000605747518aa95"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/anthurium_botany_01/anthurium_botany_01_nor_gl_2k.jpg",
+        "originalFilename": "anthurium_botany_01_nor_gl_2k.jpg",
+        "localPath": "art/source/polyhaven/anthurium_botany_01/textures/anthurium_botany_01_nor_gl_2k.jpg",
+        "bytes": 1900025,
+        "md5": "d91661ccf57f931fbc22d5b1cd1db92b",
+        "sha256": "515f9168577d727bd208d8f8e521c8c6ac318fc9d5c65f29510a5b861608c639"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/anthurium_botany_01/anthurium_botany_01.bin",
+        "originalFilename": "anthurium_botany_01.bin",
+        "localPath": "art/source/polyhaven/anthurium_botany_01/anthurium_botany_01.bin",
+        "bytes": 1744256,
+        "md5": "121f1e490c98ea71ebb1a61a2246c585",
+        "sha256": "6a23daf128e297ad99e984bec11bdea3c6eab64e52d07cbdc948ace5a05b2e25"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/anthurium_botany_01/anthurium_botany_01_diff_2k.jpg",
+        "originalFilename": "anthurium_botany_01_diff_2k.jpg",
+        "localPath": "art/source/polyhaven/anthurium_botany_01/textures/anthurium_botany_01_diff_2k.jpg",
+        "bytes": 1565878,
+        "md5": "0fc12b2b2db969ff4f5cc783ffdb807c",
+        "sha256": "7ef41c8fb14951c8fb74e9924a60ce6b2fc8c150b8f0c21e59af29b88df36762"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/anthurium_botany_01/anthurium_botany_01_arm_2k.jpg",
+        "originalFilename": "anthurium_botany_01_arm_2k.jpg",
+        "localPath": "art/source/polyhaven/anthurium_botany_01/textures/anthurium_botany_01_arm_2k.jpg",
+        "bytes": 1833646,
+        "md5": "5e327c9486f0470a7808b6cea99993b4",
+        "sha256": "81bcc96fa59e09169df48cf2eb930361c4df157a8114e7f3149c97934d47aadc"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/anthurium_botany_01/anthurium_botany_01_alpha_2k.png",
+        "originalFilename": "anthurium_botany_01_alpha_2k.png",
+        "localPath": "art/source/polyhaven/anthurium_botany_01/textures/anthurium_botany_01_alpha_2k.png",
+        "bytes": 95881,
+        "md5": "2a14dde9381b983427adcba195c7d6c6",
+        "sha256": "77b48de549a9612b271af990016884eab3efe344b4b0704298b4b5e9ffc64280"
+      }
+    ]
+  },
+  "fern_02": {
+    "source": "Poly Haven",
+    "sourcePage": "https://polyhaven.com/a/fern_02",
+    "name": "Fern 02",
+    "creator": {
+      "Rob Tuytel": "scanning",
+      "Rico Cilliers": "modeling"
+    },
+    "license": "CC0-1.0",
+    "licenseUrl": "https://polyhaven.com/license",
+    "dateAcquired": "2026-09-22",
+    "resolution": "2k",
+    "files": [
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/fern_02/fern_02_2k.gltf",
+        "originalFilename": "fern_02_2k.gltf",
+        "localPath": "art/source/polyhaven/fern_02/fern_02_2k.gltf",
+        "bytes": 6899,
+        "md5": "904c73900125e017f5e76ac1cdd906fe",
+        "sha256": "50540d37531f93fd693d5340d5b3095c9d6d2834fa05c74bea797d54f290cb6a"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/fern_02/fern_02_diff_2k.jpg",
+        "originalFilename": "fern_02_diff_2k.jpg",
+        "localPath": "art/source/polyhaven/fern_02/textures/fern_02_diff_2k.jpg",
+        "bytes": 993703,
+        "md5": "ba8bbb9dc9ff55bdc081565cd926d776",
+        "sha256": "9ee18172170728050871772e2cd6d8d37b52f9138e61b49b04486623f9caf84b"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/fern_02/fern_02_arm_2k.jpg",
+        "originalFilename": "fern_02_arm_2k.jpg",
+        "localPath": "art/source/polyhaven/fern_02/textures/fern_02_arm_2k.jpg",
+        "bytes": 850856,
+        "md5": "7f7b46e813a3cb4811405191de0ecdce",
+        "sha256": "1eaf9bd29e2d83a77ca5d89bdddebcd9216b8b4ba244644580fe5b89bbe713f1"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/fern_02/fern_02.bin",
+        "originalFilename": "fern_02.bin",
+        "localPath": "art/source/polyhaven/fern_02/fern_02.bin",
+        "bytes": 176176,
+        "md5": "c061e9255f7d36ae9ce0e92ef3e100b2",
+        "sha256": "fe1abb762bcbbc7ad9e86925c8080437a62add257d9280e9142fdc85c226e64c"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/fern_02/fern_02_nor_gl_2k.jpg",
+        "originalFilename": "fern_02_nor_gl_2k.jpg",
+        "localPath": "art/source/polyhaven/fern_02/textures/fern_02_nor_gl_2k.jpg",
+        "bytes": 1365615,
+        "md5": "00936dff4661dc9fe1f2fbe6c000615a",
+        "sha256": "dfe1ac4a428d21f7c134411500177d66b8dd800c8fec6f0040c50f44414a777b"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/fern_02/fern_02_alpha_2k.png",
+        "originalFilename": "fern_02_alpha_2k.png",
+        "localPath": "art/source/polyhaven/fern_02/textures/fern_02_alpha_2k.png",
+        "bytes": 230089,
+        "md5": "ff18f7e8e869c58eac8f9c7d7c519f4a",
+        "sha256": "f51eb9b8f9f4b25a882f8fe12d1ef53ba69448bac7e71396ec1f05b684e9ea75"
+      }
+    ]
+  },
+  "shrub_sorrel_01": {
+    "source": "Poly Haven",
+    "sourcePage": "https://polyhaven.com/a/shrub_sorrel_01",
+    "name": "Shrub Sorrel 01",
+    "creator": {
+      "Rico Cilliers": "All"
+    },
+    "license": "CC0-1.0",
+    "licenseUrl": "https://polyhaven.com/license",
+    "dateAcquired": "2026-09-22",
+    "resolution": "2k",
+    "files": [
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/shrub_sorrel_01/shrub_sorrel_01_2k.gltf",
+        "originalFilename": "shrub_sorrel_01_2k.gltf",
+        "localPath": "art/source/polyhaven/shrub_sorrel_01/shrub_sorrel_01_2k.gltf",
+        "bytes": 17428,
+        "md5": "ac909c509e20613f8f1fdab2db3b49e7",
+        "sha256": "803e54269cd9cd787eef44a797b399e6d7c433e897013602dd3569bf45ceb164"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/shrub_sorrel_01/shrub_sorrel_01_diff_2k.jpg",
+        "originalFilename": "shrub_sorrel_01_diff_2k.jpg",
+        "localPath": "art/source/polyhaven/shrub_sorrel_01/textures/shrub_sorrel_01_diff_2k.jpg",
+        "bytes": 1208902,
+        "md5": "8fd8dac54992e90fb4d6548cc24ac627",
+        "sha256": "956ea2f96f3d8a1156233b773293fdef8d255ff0e076e69ddb05ff66695e7d4c"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/shrub_sorrel_01/shrub_sorrel_01.bin",
+        "originalFilename": "shrub_sorrel_01.bin",
+        "localPath": "art/source/polyhaven/shrub_sorrel_01/shrub_sorrel_01.bin",
+        "bytes": 110936,
+        "md5": "5b6481fc43f4dc36ab4e80d79a19119f",
+        "sha256": "725f46bf6d330486bf22d4b897fa1d8ef01cdc77a72f1400a3939f86740b4e5d"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/shrub_sorrel_01/shrub_sorrel_01_arm_2k.jpg",
+        "originalFilename": "shrub_sorrel_01_arm_2k.jpg",
+        "localPath": "art/source/polyhaven/shrub_sorrel_01/textures/shrub_sorrel_01_arm_2k.jpg",
+        "bytes": 613088,
+        "md5": "b157675c3fba855286cba25b5e01a84a",
+        "sha256": "376e8d768a156b6f498df7d639df83056607b5c4c0334b2079a6a8838d52dd2f"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/shrub_sorrel_01/shrub_sorrel_01_nor_gl_2k.jpg",
+        "originalFilename": "shrub_sorrel_01_nor_gl_2k.jpg",
+        "localPath": "art/source/polyhaven/shrub_sorrel_01/textures/shrub_sorrel_01_nor_gl_2k.jpg",
+        "bytes": 1751781,
+        "md5": "c78a33b5d4c11f007fbd43aef8daca98",
+        "sha256": "de0374dcb0c346d1fc9ac4a9babb60b9aa70fc8f55db991f89683dbc949e98a1"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/shrub_sorrel_01/shrub_sorrel_01_alpha_2k.png",
+        "originalFilename": "shrub_sorrel_01_alpha_2k.png",
+        "localPath": "art/source/polyhaven/shrub_sorrel_01/textures/shrub_sorrel_01_alpha_2k.png",
+        "bytes": 152339,
+        "md5": "103c750f2bcac491ea47b4efea48477c",
+        "sha256": "41780f20a9721ad58ed30381a80845408c331c31c293d5987c7c782de618ac0f"
+      }
+    ]
+  },
+  "nettle_plant": {
+    "source": "Poly Haven",
+    "sourcePage": "https://polyhaven.com/a/nettle_plant",
+    "name": "Nettle Plant",
+    "creator": {
+      "Rob Tuytel": "Photography",
+      "Rico Cilliers": "modeling"
+    },
+    "license": "CC0-1.0",
+    "licenseUrl": "https://polyhaven.com/license",
+    "dateAcquired": "2026-09-22",
+    "resolution": "2k",
+    "files": [
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/nettle_plant/nettle_plant_2k.gltf",
+        "originalFilename": "nettle_plant_2k.gltf",
+        "localPath": "art/source/polyhaven/nettle_plant/nettle_plant_2k.gltf",
+        "bytes": 10450,
+        "md5": "b684bcbe68aa98aa7988e3fa3b40ffd1",
+        "sha256": "75e1debf2fce510fb119847ec4a427d6dea4de33a1aac3e6484d880845e4047b"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/nettle_plant/nettle_plant_nor_gl_2k.jpg",
+        "originalFilename": "nettle_plant_nor_gl_2k.jpg",
+        "localPath": "art/source/polyhaven/nettle_plant/textures/nettle_plant_nor_gl_2k.jpg",
+        "bytes": 2356297,
+        "md5": "f9c7a2f400685159583a75221e06bfa8",
+        "sha256": "90d75c7ac70df26d6abb938e14676b0ecc08e35a596034a47f54865a5ab283a2"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/nettle_plant/nettle_plant.bin",
+        "originalFilename": "nettle_plant.bin",
+        "localPath": "art/source/polyhaven/nettle_plant/nettle_plant.bin",
+        "bytes": 956560,
+        "md5": "975cb59d9f42871bb448de70aeecbc01",
+        "sha256": "24810f9d80b5fafdd71e1599b0cc81afa3eb9b744cfa8bf388c5e9f30271ba46"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/nettle_plant/nettle_plant_diff_2k.jpg",
+        "originalFilename": "nettle_plant_diff_2k.jpg",
+        "localPath": "art/source/polyhaven/nettle_plant/textures/nettle_plant_diff_2k.jpg",
+        "bytes": 1197929,
+        "md5": "bd08db8a634d02c12a0cf4f4daac8937",
+        "sha256": "7baf0c5bf0695ddbba590baba686e284803244703959092526eb2bc226724351"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/nettle_plant/nettle_plant_arm_2k.jpg",
+        "originalFilename": "nettle_plant_arm_2k.jpg",
+        "localPath": "art/source/polyhaven/nettle_plant/textures/nettle_plant_arm_2k.jpg",
+        "bytes": 1566589,
+        "md5": "dee323f552417bf65614c1f9bbb73214",
+        "sha256": "94a5bcfdb6c00f3f44105e06eef9cc759e6826bf30bd3ef56c4991b18691d230"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/nettle_plant/nettle_plant_alpha_2k.png",
+        "originalFilename": "nettle_plant_alpha_2k.png",
+        "localPath": "art/source/polyhaven/nettle_plant/textures/nettle_plant_alpha_2k.png",
+        "bytes": 421402,
+        "md5": "e41081a23ef3480364649e152b0a09b3",
+        "sha256": "0efece04fcc2780e7a13cd92ad3acd8eb7ad5f84fc4b66beb4402af06b229434"
+      }
+    ]
+  },
+  "moss_01": {
+    "source": "Poly Haven",
+    "sourcePage": "https://polyhaven.com/a/moss_01",
+    "name": "Moss 01",
+    "creator": {
+      "Rob Tuytel": "All"
+    },
+    "license": "CC0-1.0",
+    "licenseUrl": "https://polyhaven.com/license",
+    "dateAcquired": "2026-09-22",
+    "resolution": "2k",
+    "files": [
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/2k/moss_01/moss_01_2k.gltf",
+        "originalFilename": "moss_01_2k.gltf",
+        "localPath": "art/source/polyhaven/moss_01/moss_01_2k.gltf",
+        "bytes": 18481,
+        "md5": "2a4fd6d96cbe0bbc3f65a657df64ad94",
+        "sha256": "16c490f2d8c932d85455a6943b0a45283fb867669d6139054b2b7951d66fe13a"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/moss_01/moss_01_nor_gl_2k.jpg",
+        "originalFilename": "moss_01_nor_gl_2k.jpg",
+        "localPath": "art/source/polyhaven/moss_01/textures/moss_01_nor_gl_2k.jpg",
+        "bytes": 1632699,
+        "md5": "96db55f825bbaefa2ded5c8d1cc6abbe",
+        "sha256": "1d8489019937af3dd4c72b6a187c84baa166d18b6712fcbb037034e04c6182e7"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/moss_01/moss_01_diff_2k.jpg",
+        "originalFilename": "moss_01_diff_2k.jpg",
+        "localPath": "art/source/polyhaven/moss_01/textures/moss_01_diff_2k.jpg",
+        "bytes": 511727,
+        "md5": "268c4ea561fa189fead481250ab5835c",
+        "sha256": "75acf965b37418e1f35401a307d759bb2f7171f231e88e0c327f94d142d2499a"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/2k/moss_01/moss_01_arm_2k.jpg",
+        "originalFilename": "moss_01_arm_2k.jpg",
+        "localPath": "art/source/polyhaven/moss_01/textures/moss_01_arm_2k.jpg",
+        "bytes": 1095803,
+        "md5": "427fabe137e96a5e9f9087fc2220407c",
+        "sha256": "91d01f1f37d3bc1ce9b699878dc42bd5ca7cf5508b8513607f900e643237b561"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/4k/moss_01/moss_01.bin",
+        "originalFilename": "moss_01.bin",
+        "localPath": "art/source/polyhaven/moss_01/moss_01.bin",
+        "bytes": 7260,
+        "md5": "cdb092878a81b3208a162d79546892fe",
+        "sha256": "440e3cadbd93ad383cdbb9b4c17c3236774924c33ff62ac409ab00b8ed622861"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/moss_01/moss_01_alpha_2k.png",
+        "originalFilename": "moss_01_alpha_2k.png",
+        "localPath": "art/source/polyhaven/moss_01/textures/moss_01_alpha_2k.png",
+        "bytes": 167941,
+        "md5": "838476c334c1c70807d9c3b999b81186",
+        "sha256": "43b8d86ec306f39bc9c896906d16aadfb20d00c1c773c9bcdc3122b6eff8a6d0"
+      }
+    ]
+  },
+  "gravelly_sand": {
+    "source": "Poly Haven",
+    "sourcePage": "https://polyhaven.com/a/gravelly_sand",
+    "name": "Gravelly Sand",
+    "creator": {
+      "Dario Barresi": "All"
+    },
+    "license": "CC0-1.0",
+    "licenseUrl": "https://polyhaven.com/license",
+    "dateAcquired": "2026-09-22",
+    "resolution": "2k",
+    "files": [
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/gravelly_sand/gravelly_sand_diff_2k.jpg",
+        "originalFilename": "gravelly_sand_diff_2k.jpg",
+        "localPath": "art/source/polyhaven/gravelly_sand/textures/gravelly_sand_diff_2k.jpg",
+        "bytes": 4402825,
+        "md5": "b90aa766dac59af8c136321149ca86bc",
+        "sha256": "cdab7130a67bc70f8c241b9ab2cd41b731d2baf1ec533939a333573b80070dd6"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/gravelly_sand/gravelly_sand_nor_gl_2k.jpg",
+        "originalFilename": "gravelly_sand_nor_gl_2k.jpg",
+        "localPath": "art/source/polyhaven/gravelly_sand/textures/gravelly_sand_nor_gl_2k.jpg",
+        "bytes": 5955314,
+        "md5": "cad65c6ba322bbd7f89e72f00d9508cf",
+        "sha256": "191985454de9403961aab2a6ffd33b6ca1e4c2715712e03f3c928a8140322719"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/gravelly_sand/gravelly_sand_arm_2k.jpg",
+        "originalFilename": "gravelly_sand_arm_2k.jpg",
+        "localPath": "art/source/polyhaven/gravelly_sand/textures/gravelly_sand_arm_2k.jpg",
+        "bytes": 3413124,
+        "md5": "ada1448787709e295ea5cb6d87d075a6",
+        "sha256": "ebbb750c2112813901f424e83c901a0bb103276755beb4fb9b7df7ab0e0732fc"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/gravelly_sand/gravelly_sand_disp_2k.png",
+        "originalFilename": "gravelly_sand_disp_2k.png",
+        "localPath": "art/source/polyhaven/gravelly_sand/textures/gravelly_sand_disp_2k.png",
+        "bytes": 6549537,
+        "md5": "8e7c90a376ba8903e4c80dcaec142fa0",
+        "sha256": "c25baa34c381fcf18fbb132bc52a2eb8ec0fc339f0b30f3585defc06cc34a972"
+      }
+    ]
+  },
+  "coast_sand_03": {
+    "source": "Poly Haven",
+    "sourcePage": "https://polyhaven.com/a/coast_sand_03",
+    "name": "Coast Sand 03",
+    "creator": {
+      "Rob Tuytel": "All"
+    },
+    "license": "CC0-1.0",
+    "licenseUrl": "https://polyhaven.com/license",
+    "dateAcquired": "2026-09-22",
+    "resolution": "2k",
+    "files": [
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/coast_sand_03/coast_sand_03_diff_2k.jpg",
+        "originalFilename": "coast_sand_03_diff_2k.jpg",
+        "localPath": "art/source/polyhaven/coast_sand_03/textures/coast_sand_03_diff_2k.jpg",
+        "bytes": 4278557,
+        "md5": "9515eccb1cc53cb07615012076e0e5b2",
+        "sha256": "b64e5eb08f7d83d05ef2f277e67c78e4619bd1b87a34638458f03868def2fb89"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/coast_sand_03/coast_sand_03_nor_gl_2k.jpg",
+        "originalFilename": "coast_sand_03_nor_gl_2k.jpg",
+        "localPath": "art/source/polyhaven/coast_sand_03/textures/coast_sand_03_nor_gl_2k.jpg",
+        "bytes": 5636070,
+        "md5": "db16a7a0ea5fe5a346f7b51422720bd6",
+        "sha256": "4f3c0865e73288670522f5c426d18e21f53bf122e88b2b61e442af94cf8cb623"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/coast_sand_03/coast_sand_03_arm_2k.jpg",
+        "originalFilename": "coast_sand_03_arm_2k.jpg",
+        "localPath": "art/source/polyhaven/coast_sand_03/textures/coast_sand_03_arm_2k.jpg",
+        "bytes": 3989281,
+        "md5": "4c0702d9ccc7bbcd09538b6d2c6e6d1b",
+        "sha256": "10870cd287cdcb13fcc3fbc4060f3fac6b3daf3223c9a2f90ec2626e1043eced"
+      },
+      {
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/png/2k/coast_sand_03/coast_sand_03_disp_2k.png",
+        "originalFilename": "coast_sand_03_disp_2k.png",
+        "localPath": "art/source/polyhaven/coast_sand_03/textures/coast_sand_03_disp_2k.png",
+        "bytes": 8928266,
+        "md5": "4e14d039b34409491d39956da8e3ec26",
+        "sha256": "b50f68d487b185030d7a2bd018308ff2555fd5cd817d48217f6449a43500eaed"
+      }
+    ]
+  }
+}

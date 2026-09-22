@@ -1,0 +1,59 @@
+{
+  "date_published": 1651017600,
+  "name": "Anthurium Botany 01",
+  "type": 2,
+  "staging": null,
+  "authors": {
+    "Rob Tuytel": "scanning",
+    "Rico Cilliers": "modeling"
+  },
+  "categories": [
+    "plants",
+    "nature",
+    "collection: the_shed",
+    "collection: smugglers_cove"
+  ],
+  "tags": [
+    "nature",
+    "bush",
+    "leaf",
+    "shrub",
+    "leaves",
+    "forest",
+    "plant",
+    "green",
+    "jungle",
+    "outdoor",
+    "botany"
+  ],
+  "max_resolution": [
+    8192,
+    8192
+  ],
+  "polycount": 4134,
+  "texel_density": 10047.775343894895,
+  "dimensions": [
+    2806.4264059066772,
+    1800.9886145591736,
+    506.7181019112468
+  ],
+  "files_hash": "9a9818247596717d5d754411c5e63f1d8655f2cc",
+  "description": "Free 8K shrub showcasing glossy broad leaves, wet sheen, detailed veins and varied low-growing clumps.",
+  "collections": [
+    "smugglers_cove",
+    "the_shed"
+  ],
+  "category_id": "5a6111fb-71be-5686-a0cc-7e96df75aaf7",
+  "category": "Nature/Plants/Tropical Plants",
+  "attributes": {
+    "condition": [
+      "clean"
+    ],
+    "material": [
+      "plant"
+    ]
+  },
+  "img_version": "19be8ef7",
+  "download_count": 41955,
+  "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/anthurium_botany_01.png?width=256&height=256&v=19be8ef7"
+}
