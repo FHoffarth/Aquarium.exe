@@ -4,23 +4,23 @@ const ARCHETYPES = Object.freeze({
   copper: Object.freeze({
     bodyScale: Object.freeze([0.29, 0.112, 0.082]),
     tailScale: Object.freeze([0.105, 0.165, 0.07]),
-    bodyColor: 0xd87b49,
-    accentColor: 0xe6b86f,
-    finColor: 0x9e4e39,
+    bodyColor: 0xe8955f,
+    accentColor: 0xf7ce84,
+    finColor: 0xb3623f,
   }),
   silver: Object.freeze({
     bodyScale: Object.freeze([0.335, 0.078, 0.063]),
     tailScale: Object.freeze([0.105, 0.14, 0.06]),
-    bodyColor: 0x91c8c3,
-    accentColor: 0xd8c88e,
-    finColor: 0x4d817b,
+    bodyColor: 0xa9dcd6,
+    accentColor: 0xe6f5f0,
+    finColor: 0x64a196,
   }),
   shadow: Object.freeze({
     bodyScale: Object.freeze([0.255, 0.122, 0.086]),
     tailScale: Object.freeze([0.11, 0.16, 0.075]),
-    bodyColor: 0x6f956f,
-    accentColor: 0xb27e4f,
-    finColor: 0x3f6651,
+    bodyColor: 0x86ac7c,
+    accentColor: 0xd2a165,
+    finColor: 0x527d61,
   }),
 });
 
@@ -37,7 +37,7 @@ export function deriveFishVisualState(fish, simulationTime) {
   return {
     heading: Math.atan2(fish.velocity.y, fish.velocity.x),
     pitch: -Math.atan2(fish.velocity.z, Math.max(0.001, horizontalSpeed)),
-    bank: clamp(-fish.velocity.y * 0.5 + Math.sin(phase * 0.37) * 0.025, -0.2, 0.2),
+    bank: clamp(-fish.velocity.y * 0.95 + Math.sin(phase * 0.37) * 0.02, -0.34, 0.34),
     tailAngle: Math.sin(phase) * (0.17 + speedRatio * 0.18),
     finAngle: Math.sin(phase * 0.53) * 0.08,
     bodyScale: [...archetype.bodyScale],
@@ -46,6 +46,12 @@ export function deriveFishVisualState(fish, simulationTime) {
     accentColor: archetype.accentColor,
     finColor: archetype.finColor,
   };
+}
+
+function withNeutralVertexColor(geometry) {
+  const count = geometry.attributes.position.count;
+  geometry.setAttribute('color', new THREE.Float32BufferAttribute(new Float32Array(count * 3).fill(1), 3));
+  return geometry;
 }
 
 function createPart(scene, name, geometry, material, maximumInstances) {
@@ -68,35 +74,39 @@ export function createFishRenderer(scene, maximumFish) {
     body: createPart(
       scene,
       'body',
-      new THREE.SphereGeometry(1, 16, 10),
-      new THREE.MeshPhongMaterial({
-        shininess: 42,
-        specular: 0x5c827b,
+      withNeutralVertexColor(new THREE.SphereGeometry(1, 16, 10)),
+      new THREE.MeshStandardMaterial({
+        roughness: 0.4,
+        metalness: 0.05,
         vertexColors: true,
-        emissive: 0x172321,
+        emissive: 0x060a09,
+        emissiveIntensity: 0.35,
       }),
       maximumFish,
     ),
     accent: createPart(
       scene,
       'accent',
-      new THREE.SphereGeometry(1, 12, 8),
-      new THREE.MeshPhongMaterial({
-        shininess: 36,
-        specular: 0x4d6f67,
+      withNeutralVertexColor(new THREE.SphereGeometry(1, 12, 8)),
+      new THREE.MeshStandardMaterial({
+        roughness: 0.3,
+        metalness: 0.1,
         vertexColors: true,
-        emissive: 0x202622,
+        emissive: 0x0a0e0b,
+        emissiveIntensity: 0.3,
       }),
       maximumFish,
     ),
     tail: createPart(
       scene,
       'tail',
-      new THREE.ConeGeometry(1, 1, 3),
-      new THREE.MeshPhongMaterial({
-        shininess: 20,
+      withNeutralVertexColor(new THREE.ConeGeometry(1, 1, 3)),
+      new THREE.MeshStandardMaterial({
+        roughness: 0.5,
+        metalness: 0.02,
         vertexColors: true,
-        emissive: 0x241b17,
+        emissive: 0x0a0705,
+        emissiveIntensity: 0.3,
       }),
       maximumFish * 2,
     ),
@@ -104,17 +114,25 @@ export function createFishRenderer(scene, maximumFish) {
       scene,
       'eye',
       new THREE.SphereGeometry(1, 8, 6),
-      new THREE.MeshBasicMaterial({ color: 0x07161d }),
+      new THREE.MeshStandardMaterial({
+        color: 0x123240,
+        roughness: 0.1,
+        metalness: 0.25,
+        emissive: 0x0a1a22,
+        emissiveIntensity: 0.5,
+      }),
       maximumFish * 3,
     ),
     fin: createPart(
       scene,
       'fin',
-      new THREE.ConeGeometry(1, 1, 3),
-      new THREE.MeshPhongMaterial({
-        shininess: 18,
+      withNeutralVertexColor(new THREE.ConeGeometry(1, 1, 3)),
+      new THREE.MeshStandardMaterial({
+        roughness: 0.45,
+        metalness: 0.02,
         vertexColors: true,
-        emissive: 0x19221f,
+        emissive: 0x080b09,
+        emissiveIntensity: 0.3,
       }),
       maximumFish,
     ),

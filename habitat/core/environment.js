@@ -27,6 +27,20 @@ function createLeafGeometry(width = 0.18) {
   return new THREE.ShapeGeometry(shape, 4);
 }
 
+function clamp(value, minimum, maximum) {
+  return Math.max(minimum, Math.min(maximum, value));
+}
+
+function pickCluster(clusters, seed, index, channel) {
+  const roll = seededUnit(seed, index, channel);
+  let cumulative = 0;
+  for (const cluster of clusters) {
+    cumulative += cluster.weight;
+    if (roll < cumulative) return cluster;
+  }
+  return clusters[clusters.length - 1];
+}
+
 function disposeObject(object) {
   object.geometry?.dispose();
   if (Array.isArray(object.material)) {
@@ -67,20 +81,34 @@ export function createEnvironment(scene, config) {
   background.position.set(0, 0.05, bounds.minZ - 0.28);
   background.renderOrder = -10;
 
-  const substrateGeometry = new THREE.PlaneGeometry(width * 1.18, 1.35, 24, 4);
+  const substrateGeometry = new THREE.PlaneGeometry(width * 1.18, 1.35, 32, 6);
   const substratePositions = substrateGeometry.attributes.position;
+  const baseColor = new THREE.Color(environment.substrateColor);
+  const shadeColor = baseColor.clone().multiplyScalar(0.6);
+  const substrateColors = new Float32Array(substratePositions.count * 3);
+  const hardscapeCenters = [-2.05, -1.6, 1.85, 2.1];
   for (let index = 0; index < substratePositions.count; index += 1) {
     const x = substratePositions.getX(index);
     const y = substratePositions.getY(index);
-    const contour = Math.sin(x * 1.32) * 0.045 + Math.sin(x * 2.7 + 0.8) * 0.018;
+    const contour = Math.sin(x * 1.32) * 0.045 + Math.sin(x * 2.7 + 0.8) * 0.018
+      + Math.sin(x * 5.4 - 1.3) * 0.008;
     substratePositions.setY(index, y + contour);
+    let nearest = Infinity;
+    for (const center of hardscapeCenters) nearest = Math.min(nearest, Math.abs(x - center));
+    const blend = clamp(1 - nearest / 0.85, 0, 1);
+    const mixed = baseColor.clone().lerp(shadeColor, blend * 0.75);
+    substrateColors[index * 3] = mixed.r;
+    substrateColors[index * 3 + 1] = mixed.g;
+    substrateColors[index * 3 + 2] = mixed.b;
   }
   substratePositions.needsUpdate = true;
+  substrateGeometry.setAttribute('color', new THREE.BufferAttribute(substrateColors, 3));
   substrateGeometry.computeVertexNormals();
   const substrate = add(new THREE.Mesh(
     substrateGeometry,
     new THREE.MeshStandardMaterial({
-      color: environment.substrateColor,
+      color: 0xffffff,
+      vertexColors: true,
       roughness: 0.98,
       metalness: 0,
     }),
@@ -119,11 +147,22 @@ export function createEnvironment(scene, config) {
   );
   foregroundPlants.name = 'foreground-plants';
   foregroundPlants.instanceMatrix.setUsage(THREE.StaticDrawUsage);
+  const foregroundClusters = [
+    { x: bounds.minX + width * 0.1, weight: 0.34, spread: width * 0.09, scaleBias: 1.2 },
+    { x: bounds.minX + width * 0.3, weight: 0.18, spread: width * 0.07, scaleBias: 0.8 },
+    { x: bounds.minX + width * 0.62, weight: 0.14, spread: width * 0.1, scaleBias: 0.65 },
+    { x: bounds.minX + width * 0.86, weight: 0.34, spread: width * 0.1, scaleBias: 1.05 },
+  ];
   const foregroundLayout = [];
   for (let index = 0; index < environment.foregroundPlantCount; index += 1) {
-    const x = bounds.minX + seededUnit(config.seed, index, 50) * width;
-    const z = 0.18 + seededUnit(config.seed, index, 51) * 0.38;
-    const scale = 0.19 + seededUnit(config.seed, index, 52) * 0.23;
+    const cluster = pickCluster(foregroundClusters, config.seed, index, 55);
+    const x = clamp(
+      cluster.x + (seededUnit(config.seed, index, 50) - 0.5) * 2 * cluster.spread,
+      bounds.minX,
+      bounds.maxX,
+    );
+    const z = 0.16 + seededUnit(config.seed, index, 51) * 0.4;
+    const scale = (0.17 + seededUnit(config.seed, index, 52) * 0.22) * cluster.scaleBias;
     foregroundLayout.push(x, bounds.minY, z, scale);
     transform.position.set(x, bounds.minY + 0.01, z);
     transform.rotation.set(0, (seededUnit(config.seed, index, 53) - 0.5) * 0.7, 0);
@@ -141,12 +180,17 @@ export function createEnvironment(scene, config) {
   );
   midPlants.name = 'midground-plants';
   midPlants.instanceMatrix.setUsage(THREE.StaticDrawUsage);
+  const midClusters = [
+    { x: -2.05, weight: 0.42, spread: 0.55, scaleBias: 1.25 },
+    { x: -0.95, weight: 0.16, spread: 0.35, scaleBias: 0.75 },
+    { x: 2.2, weight: 0.42, spread: 0.5, scaleBias: 1.0 },
+  ];
   const midLayout = [];
   for (let index = 0; index < environment.midPlantCount; index += 1) {
-    const side = index % 3 === 0 ? 1 : -1;
-    const x = side * (1.35 + seededUnit(config.seed, index, 60) * 1.35);
+    const cluster = pickCluster(midClusters, config.seed, index, 65);
+    const x = cluster.x + (seededUnit(config.seed, index, 60) - 0.5) * 2 * cluster.spread;
     const z = -0.2 + seededUnit(config.seed, index, 61) * 0.55;
-    const scale = 0.52 + seededUnit(config.seed, index, 62) * 0.68;
+    const scale = (0.46 + seededUnit(config.seed, index, 62) * 0.62) * cluster.scaleBias;
     midLayout.push(x, bounds.minY, z, scale);
     transform.position.set(x, bounds.minY + 0.015, z);
     transform.rotation.set(0, (seededUnit(config.seed, index, 63) - 0.5) * 0.9, 0);
@@ -195,13 +239,15 @@ export function createEnvironment(scene, config) {
     const z = -0.15 + seededUnit(config.seed, index, 81) * 0.45;
     const scale = 0.16 + seededUnit(config.seed, index, 82) * 0.26;
     rockLayout.push(x, bounds.minY + 0.05, z, scale);
+    const stretchX = 0.95 + seededUnit(config.seed, index, 86) * 0.7;
+    const stretchZ = 0.85 + seededUnit(config.seed, index, 87) * 0.55;
     transform.position.set(x, bounds.minY + scale * 0.36, z);
     transform.rotation.set(
       seededUnit(config.seed, index, 83) * 0.4,
       seededUnit(config.seed, index, 84) * Math.PI,
       seededUnit(config.seed, index, 85) * 0.3,
     );
-    transform.scale.set(scale * 1.25, scale * 0.72, scale);
+    transform.scale.set(scale * 1.25 * stretchX, scale * 0.72, scale * stretchZ);
     transform.updateMatrix();
     rocks.setMatrixAt(index, transform.matrix);
   }
@@ -233,11 +279,11 @@ export function createEnvironment(scene, config) {
   driftwood.instanceMatrix.needsUpdate = true;
   add(driftwood);
 
-  const ambient = add(new THREE.AmbientLight(0xffffff, 0.62));
-  const hemisphere = add(new THREE.HemisphereLight(0xc8eee5, 0x0a1b1d, 2.35));
-  const topLight = add(new THREE.DirectionalLight(0xffefcd, 3.45));
+  const ambient = add(new THREE.AmbientLight(0xffffff, 0.6));
+  const hemisphere = add(new THREE.HemisphereLight(0xc8eee5, 0x15332c, 2.35));
+  const topLight = add(new THREE.DirectionalLight(0xffefcd, 3.7));
   topLight.position.set(-1.6, 3.4, 3.2);
-  const rimLight = add(new THREE.DirectionalLight(0x62a89e, 0.65));
+  const rimLight = add(new THREE.DirectionalLight(0x86e0cf, 1.15));
   rimLight.position.set(2.8, 0.8, -1.5);
   ambient.name = 'water-ambient-light';
   hemisphere.name = 'water-fill-light';

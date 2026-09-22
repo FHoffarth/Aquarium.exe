@@ -139,7 +139,7 @@ export function createSchool(config) {
         z: depthPreference + (seededUnit(config.seed, index, 8) - 0.5) * 0.12,
       },
       roamAnchor: { x: startX, y: startY, z: depthPreference },
-      roamAnchorWeight: role === 'cautious' ? 0.09 : role === 'follower' ? 0.035 : 0.06,
+      roamAnchorWeight: role === 'cautious' ? 0.12 : role === 'follower' ? 0.05 : 0.09,
       velocity: {
         x: preferredSpeed * direction,
         y: (seededUnit(config.seed, index, 9) - 0.5) * preferredSpeed * 0.35,
@@ -238,7 +238,8 @@ function accumulateNeighbors(school) {
         leftScratch.separationY += Math.sin(angle) * sign;
       } else {
         const distance = Math.sqrt(distanceSquared);
-        const strength = 1 - distance / separationRadius;
+        const linear = 1 - distance / separationRadius;
+        const strength = Math.sqrt(linear);
         leftScratch.separationX -= (dx / distance) * strength;
         leftScratch.separationY -= (dy / distance) * strength;
         leftScratch.separationZ -= (dz / distance) * strength;
@@ -351,13 +352,13 @@ function updateFish(fish, scratch, input, dtSeconds, elapsedSeconds, bounds) {
   const anchorY = fish.roamAnchor.y - fish.position.y;
   const anchorZ = fish.roamAnchor.z - fish.position.z;
   const anchorDistance = magnitude(anchorX, anchorY, anchorZ);
-  if (anchorDistance > 0.72) {
+  if (anchorDistance > 0.5) {
     addNormalized(
       steering,
       anchorX,
       anchorY,
       anchorZ * 0.35,
-      Math.min(0.16, (anchorDistance - 0.72) * fish.roamAnchorWeight),
+      Math.min(0.2, (anchorDistance - 0.5) * fish.roamAnchorWeight),
     );
   }
   addBoundarySteering(steering, fish, bounds);
