@@ -35,6 +35,9 @@
       reportFailure(`habitat-promise-error:${String(event.reason)}`);
     });
   </script>
+  <script type="importmap">
+    { "imports": { "three": "./vendor/three/three.module.js" } }
+  </script>
   <script type="module" src="habitat.js"></script>
 </body>
 </html>
