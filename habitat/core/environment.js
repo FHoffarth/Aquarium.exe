@@ -19,12 +19,21 @@ function seededUnit(seed, index, channel) {
     ^ Math.imul(channel + 1, 0x85ebca77)) / 0x100000000;
 }
 
-function createLeafGeometry(width = 0.18) {
+// An asymmetric, gently curved blade rather than a symmetric spike: one
+// side bulges more than the other and the tip leans, closer to a real
+// plant leaf than a repeated procedural lens shape.
+function createLeafGeometry(width = 0.18, lean = 0.32) {
   const shape = new THREE.Shape();
   shape.moveTo(0, 0);
-  shape.bezierCurveTo(-width, 0.28, -width * 0.8, 0.8, 0, 1);
-  shape.bezierCurveTo(width * 0.8, 0.8, width, 0.28, 0, 0);
-  return new THREE.ShapeGeometry(shape, 4);
+  shape.bezierCurveTo(
+    -width * 0.55, 0.24,
+    -width * 0.68 - lean * 0.2, 0.58,
+    -width * 0.22 - lean * 0.32, 0.88,
+  );
+  shape.quadraticCurveTo(-width * 0.06 - lean * 0.1, 0.97, 0, 1.0);
+  shape.quadraticCurveTo(width * 0.46, 0.8, width * 0.5, 0.46);
+  shape.quadraticCurveTo(width * 0.38, 0.16, 0, 0);
+  return new THREE.ShapeGeometry(shape, 6);
 }
 
 function clamp(value, minimum, maximum) {
@@ -96,7 +105,7 @@ export function createEnvironment(scene, config) {
     let nearest = Infinity;
     for (const center of hardscapeCenters) nearest = Math.min(nearest, Math.abs(x - center));
     const blend = clamp(1 - nearest / 0.85, 0, 1);
-    const mixed = baseColor.clone().lerp(shadeColor, blend * 0.75);
+    const mixed = baseColor.clone().lerp(shadeColor, blend * 0.5);
     substrateColors[index * 3] = mixed.r;
     substrateColors[index * 3 + 1] = mixed.g;
     substrateColors[index * 3 + 2] = mixed.b;
@@ -226,30 +235,47 @@ export function createEnvironment(scene, config) {
 
   const rocks = new THREE.InstancedMesh(
     new THREE.DodecahedronGeometry(1, 0),
-    new THREE.MeshStandardMaterial({ color: 0x263a36, roughness: 0.96, metalness: 0 }),
+    new THREE.MeshStandardMaterial({ color: 0x3c5750, roughness: 0.92, metalness: 0 }),
     environment.rockCount,
   );
   rocks.name = 'hardscape-rocks';
   rocks.instanceMatrix.setUsage(THREE.StaticDrawUsage);
+  // Two connected piles rather than scattered isolated boulders: each
+  // cluster has one larger anchor rock with smaller satellites offset just
+  // far enough to overlap/touch it, and bigger rocks sink further into the
+  // substrate (partially buried bases).
+  const rockClusters = [
+    { x: -2.15, z: -0.05, count: Math.max(1, environment.rockCount - 2), anchorScale: 0.34 },
+    { x: 1.95, z: 0.08, count: Math.min(2, environment.rockCount), anchorScale: 0.21 },
+  ];
   const rockLayout = [];
-  for (let index = 0; index < environment.rockCount; index += 1) {
-    const x = index < environment.rockCount - 2
-      ? -2.25 + seededUnit(config.seed, index, 80) * 1.5
-      : 1.7 + seededUnit(config.seed, index, 80) * 0.65;
-    const z = -0.15 + seededUnit(config.seed, index, 81) * 0.45;
-    const scale = 0.16 + seededUnit(config.seed, index, 82) * 0.26;
-    rockLayout.push(x, bounds.minY + 0.05, z, scale);
-    const stretchX = 0.95 + seededUnit(config.seed, index, 86) * 0.7;
-    const stretchZ = 0.85 + seededUnit(config.seed, index, 87) * 0.55;
-    transform.position.set(x, bounds.minY + scale * 0.36, z);
-    transform.rotation.set(
-      seededUnit(config.seed, index, 83) * 0.4,
-      seededUnit(config.seed, index, 84) * Math.PI,
-      seededUnit(config.seed, index, 85) * 0.3,
-    );
-    transform.scale.set(scale * 1.25 * stretchX, scale * 0.72, scale * stretchZ);
-    transform.updateMatrix();
-    rocks.setMatrixAt(index, transform.matrix);
+  let rockIndex = 0;
+  for (const cluster of rockClusters) {
+    for (let member = 0; member < cluster.count && rockIndex < environment.rockCount; member += 1) {
+      const index = rockIndex;
+      rockIndex += 1;
+      const isAnchor = member === 0;
+      const scale = isAnchor
+        ? cluster.anchorScale + seededUnit(config.seed, index, 82) * 0.05
+        : cluster.anchorScale * (0.38 + seededUnit(config.seed, index, 82) * 0.4);
+      const spread = isAnchor ? 0 : cluster.anchorScale * (0.6 + seededUnit(config.seed, index, 88) * 0.55);
+      const angle = seededUnit(config.seed, index, 89) * Math.PI * 2;
+      const x = cluster.x + Math.cos(angle) * spread;
+      const z = cluster.z + Math.sin(angle) * spread * 0.65;
+      const buried = 0.06 + seededUnit(config.seed, index, 87) * 0.16;
+      const stretchX = 0.95 + seededUnit(config.seed, index, 86) * 0.7;
+      const stretchZ = 0.85 + seededUnit(config.seed, index, 87) * 0.55;
+      rockLayout.push(x, bounds.minY + 0.05, z, scale);
+      transform.position.set(x, bounds.minY + scale * (0.62 - buried), z);
+      transform.rotation.set(
+        seededUnit(config.seed, index, 83) * 0.4,
+        seededUnit(config.seed, index, 84) * Math.PI,
+        seededUnit(config.seed, index, 85) * 0.3,
+      );
+      transform.scale.set(scale * 1.25 * stretchX, scale * 0.72, scale * stretchZ);
+      transform.updateMatrix();
+      rocks.setMatrixAt(index, transform.matrix);
+    }
   }
   rocks.instanceMatrix.needsUpdate = true;
   add(rocks);
@@ -261,14 +287,19 @@ export function createEnvironment(scene, config) {
   );
   driftwood.name = 'driftwood';
   driftwood.instanceMatrix.setUsage(THREE.StaticDrawUsage);
+  // One coherent fallen branch sweeping through the composition, rather
+  // than several sticks converging to a point: pieces follow a single
+  // diagonal direction, thickening and leveling out toward the buried base.
   const driftwoodLayout = [];
+  const driftwoodSteps = Math.max(1, environment.driftwoodCount - 1);
   for (let index = 0; index < environment.driftwoodCount; index += 1) {
-    const x = 0.78 + index * 0.12 + seededUnit(config.seed, index, 90) * 0.1;
-    const y = bounds.minY + 0.16 + index * 0.045;
-    const z = -0.42 + seededUnit(config.seed, index, 91) * 0.18;
-    const scale = 0.42 + seededUnit(config.seed, index, 92) * 0.28;
-    const tilt = -1.08 + index * 0.35;
-    const rotation = (seededUnit(config.seed, index, 93) - 0.5) * 0.45;
+    const t = index / driftwoodSteps;
+    const x = 0.5 + t * 0.95 + (seededUnit(config.seed, index, 90) - 0.5) * 0.08;
+    const y = bounds.minY + 0.08 + t * 0.3 + (seededUnit(config.seed, index, 94) - 0.5) * 0.03;
+    const z = -0.4 + (seededUnit(config.seed, index, 91) - 0.5) * 0.16;
+    const scale = 0.5 - t * 0.18 + seededUnit(config.seed, index, 92) * 0.1;
+    const tilt = -0.6 - t * 0.32 + (seededUnit(config.seed, index, 93) - 0.5) * 0.18;
+    const rotation = (seededUnit(config.seed, index, 95) - 0.5) * 0.2;
     driftwoodLayout.push(x, y, z, scale, tilt, rotation);
     transform.position.set(x, y, z);
     transform.rotation.set(rotation, 0, tilt);

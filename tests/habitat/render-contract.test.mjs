@@ -68,7 +68,7 @@ test('fish projection is a one-way read of authoritative simulation state', () =
   );
   assert.equal(
     fishMeshes.find(mesh => mesh.userData.aquariumFishPart === 'fin').count,
-    school.fish.length * 3,
+    school.fish.length * 4,
   );
   assert.equal(fishRenderer.drawCallBudget, 5);
   fishRenderer.dispose();
