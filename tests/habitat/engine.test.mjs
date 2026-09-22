@@ -91,6 +91,30 @@ test('target frame rate gates projection without changing fixed-step timing', ()
   assert.equal(clock.shouldRender, true);
 });
 
+test('frame gate quantizes 60, 30, and 20 FPS targets to a 60 Hz callback stream', () => {
+  const callbackDeltas = Array.from(
+    { length: 120 },
+    (_, index) => [16.7, 16.6, 16.7][index % 3],
+  );
+
+  function countRenderedFrames(targetFps) {
+    const clock = new FrameClock({ targetFps });
+    clock.resume(0);
+    let timestamp = 0;
+    let renderedFrames = 0;
+    for (const delta of callbackDeltas) {
+      timestamp += delta;
+      clock.tick(timestamp);
+      if (clock.shouldRender) renderedFrames += 1;
+    }
+    return renderedFrames;
+  }
+
+  assert.equal(countRenderedFrames(60), 120);
+  assert.equal(countRenderedFrames(30), 60);
+  assert.equal(countRenderedFrames(20), 40);
+});
+
 test('engine keeps one callback outstanding and pause cancels it', () => {
   const scheduler = createScheduler();
   const habitat = createFakeHabitat();

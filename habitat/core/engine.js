@@ -25,6 +25,7 @@ export class FrameClock {
     this.running = false;
     this.lastNowMs = 0;
     this.lastRenderMs = null;
+    this.renderAccumulatorMs = 0;
     this.accumulatorMs = 0;
     this.frameDeltaMs = 0;
     this.stepCount = 0;
@@ -34,6 +35,7 @@ export class FrameClock {
   resume(nowMs) {
     this.lastNowMs = finiteNonNegative(nowMs, 'nowMs');
     this.lastRenderMs = null;
+    this.renderAccumulatorMs = 0;
     this.accumulatorMs = 0;
     this.frameDeltaMs = 0;
     this.stepCount = 0;
@@ -51,6 +53,7 @@ export class FrameClock {
   setTargetFps(fps) {
     this.targetFps = finiteNonNegative(fps, 'fps');
     this.lastRenderMs = null;
+    this.renderAccumulatorMs = 0;
   }
 
   tick(nowMs) {
@@ -75,10 +78,23 @@ export class FrameClock {
       this.shouldRender = false;
       return;
     }
+    if (this.lastRenderMs === null) {
+      this.shouldRender = true;
+      this.lastRenderMs = currentNowMs;
+      this.renderAccumulatorMs = 0;
+      return;
+    }
     const renderInterval = 1000 / this.targetFps;
-    this.shouldRender = this.lastRenderMs === null
-      || currentNowMs - this.lastRenderMs + 1e-9 >= renderInterval;
-    if (this.shouldRender) this.lastRenderMs = currentNowMs;
+    this.renderAccumulatorMs = Math.min(
+      renderInterval,
+      this.renderAccumulatorMs + unboundedDelta,
+    );
+    const quantizationWindow = Math.min(unboundedDelta, renderInterval) * 0.5;
+    this.shouldRender = this.renderAccumulatorMs >= renderInterval - quantizationWindow;
+    if (this.shouldRender) {
+      this.renderAccumulatorMs -= renderInterval;
+      this.lastRenderMs = currentNowMs;
+    }
   }
 }
 
