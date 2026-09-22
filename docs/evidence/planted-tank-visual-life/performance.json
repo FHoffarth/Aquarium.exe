@@ -1,0 +1,434 @@
+{
+  "schemaVersion": 1,
+  "status": "CONCLUSIVE",
+  "profile": "planted-tank-visual-life",
+  "requestedState": "running",
+  "startedAtUtc": "2026-09-22T13:53:16.6828518Z",
+  "completedAtUtc": "2026-09-22T13:53:50.7962855Z",
+  "durationSeconds": 10.073,
+  "sampleIntervalSeconds": 1.0,
+  "environment": {
+    "osCaption": "Microsoft Windows 11 Pro",
+    "osVersion": "10.0.26200",
+    "osBuild": "26200",
+    "logicalProcessors": 4,
+    "videoControllers": [
+      {
+        "Name": "Intel(R) UHD Graphics",
+        "DriverVersion": "32.0.101.7085",
+        "CurrentHorizontalResolution": 1920,
+        "CurrentVerticalResolution": 1080
+      }
+    ]
+  },
+  "validity": {
+    "exactlyOneAquariumRoot": true,
+    "sessionRunning": true,
+    "noAttachmentFailure": true,
+    "rootAliveThroughSample": true
+  },
+  "processSummary": [
+    {
+      "pid": 2256,
+      "parentPid": 7936,
+      "name": "msedgewebview2.exe",
+      "role": "browser",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --embedded-browser-webview=1 --webview-exe-name=AquariumSpike.exe --user-data-dir=\"C:\\Users\\Flo\\Documents\\ChatGPT\\Aquarium.exe\\bin\\webview2-user-data\\EBWebView\" --noerrdialogs --disable-background-networking --disable-component-update --no-proxy-server --mojo-named-platform-channel-pipe=7936.9736.5976746320054369720 /pfhostedapp:8195f210b1c249acf3b83e4b348059421492e972",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 129732608,
+      "workingSetBytesMax": 129843200,
+      "privateBytesMean": 42016768
+    },
+    {
+      "pid": 7936,
+      "parentPid": 8468,
+      "name": "AquariumSpike.exe",
+      "role": "native",
+      "commandLine": "\"C:\\Users\\Flo\\Documents\\ChatGPT\\Aquarium.exe\\bin\\AquariumSpike.exe\" ",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 43495424,
+      "workingSetBytesMax": 43495424,
+      "privateBytesMean": 41934848
+    },
+    {
+      "pid": 11904,
+      "parentPid": 2256,
+      "name": "msedgewebview2.exe",
+      "role": "network",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --type=utility --utility-sub-type=network.mojom.NetworkService --lang=de --service-sandbox-type=none --noerrdialogs --user-data-dir=\"C:\\Users\\Flo\\Documents\\ChatGPT\\Aquarium.exe\\bin\\webview2-user-data\\EBWebView\" --webview-exe-name=AquariumSpike.exe --embedded-browser-webview=1 --startup-read-main-dll --metrics-shmem-handle=2024,i,3562011650156386456,12542128843537856042,524288 --field-trial-handle=1928,i,14753384131333177341,10702121982360634342,262144 --variations-seed-version --pseudonymization-salt-handle=1932,i,10331210051300607282,5062866720101189919,4 --trace-process-track-uuid=3190708989122997041 --mojo-platform-channel-handle=2036 /prefetch:11 /pfhostedapp:8195f210b1c249acf3b83e4b348059421492e972",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 32854016,
+      "workingSetBytesMax": 32854016,
+      "privateBytesMean": 10649600
+    },
+    {
+      "pid": 14524,
+      "parentPid": 7936,
+      "name": "conhost.exe",
+      "role": "console",
+      "commandLine": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 9805824,
+      "workingSetBytesMax": 9805824,
+      "privateBytesMean": 1687552
+    },
+    {
+      "pid": 15720,
+      "parentPid": 2256,
+      "name": "msedgewebview2.exe",
+      "role": "crashpad",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --type=crashpad-handler --user-data-dir=C:\\Users\\Flo\\Documents\\ChatGPT\\Aquarium.exe\\bin\\webview2-user-data\\EBWebView /prefetch:4 /pfhostedapp:8195f210b1c249acf3b83e4b348059421492e972 --monitor-self-annotation=ptype=crashpad-handler --database=C:\\Users\\Flo\\Documents\\ChatGPT\\Aquarium.exe\\bin\\webview2-user-data\\EBWebView\\Crashpad --annotation=IsOfficialBuild=1 --annotation=channel= --annotation=chromium-version=153.0.8010.53 \"--annotation=exe=C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --annotation=plat=Win64 \"--annotation=prod=Edge WebView2\" --annotation=ver=153.0.4234.48 --initial-client-data=0x174,0x178,0x17c,0x150,0x184,0x7ffdf6f83360,0x7ffdf6f83370,0x7ffdf6f83380",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 10313728,
+      "workingSetBytesMax": 10313728,
+      "privateBytesMean": 2527232
+    },
+    {
+      "pid": 16096,
+      "parentPid": 2256,
+      "name": "msedgewebview2.exe",
+      "role": "storage",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --type=utility --utility-sub-type=storage.mojom.StorageService --lang=de --service-sandbox-type=service --noerrdialogs --user-data-dir=\"C:\\Users\\Flo\\Documents\\ChatGPT\\Aquarium.exe\\bin\\webview2-user-data\\EBWebView\" --webview-exe-name=AquariumSpike.exe --embedded-browser-webview=1 --startup-read-main-dll --metrics-shmem-handle=2556,i,7997995794263510664,4656547643491190269,524288 --field-trial-handle=1928,i,14753384131333177341,10702121982360634342,262144 --variations-seed-version --pseudonymization-salt-handle=1932,i,10331210051300607282,5062866720101189919,4 --trace-process-track-uuid=3190708990060038890 --mojo-platform-channel-handle=2572 /prefetch:13 /pfhostedapp:8195f210b1c249acf3b83e4b348059421492e972",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 18841600,
+      "workingSetBytesMax": 18841600,
+      "privateBytesMean": 8228864
+    },
+    {
+      "pid": 16216,
+      "parentPid": 2256,
+      "name": "msedgewebview2.exe",
+      "role": "gpu",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --type=gpu-process --noerrdialogs --user-data-dir=\"C:\\Users\\Flo\\Documents\\ChatGPT\\Aquarium.exe\\bin\\webview2-user-data\\EBWebView\" --webview-exe-name=AquariumSpike.exe --embedded-browser-webview=1 --gpu-preferences=WAAAAAAAAADgAAAEAAAAAAAAAAAAAGAAQAAAAAAAAAADAAAAAAAAADgAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAoAAAAAAAAAAgAAAAAAAAAEAAAAAIAAAABAAAAAAAAAAgAAAAAAAAACAAAAAAAAAA= --startup-read-main-dll --metrics-shmem-handle=1744,i,11018354653057211925,8511131540954591279,262144 --field-trial-handle=1928,i,14753384131333177341,10702121982360634342,262144 --variations-seed-version --pseudonymization-salt-handle=1932,i,10331210051300607282,5062866720101189919,4 --trace-process-track-uuid=3190708988185955192 --mojo-platform-channel-handle=1924 /prefetch:2 /pfhostedapp:8195f210b1c249acf3b83e4b348059421492e972",
+      "cpuSeconds": 4.0,
+      "cpuPercentNormalized": 9.927,
+      "workingSetBytesMean": 236304384,
+      "workingSetBytesMax": 244748288,
+      "privateBytesMean": 211472384
+    },
+    {
+      "pid": 17056,
+      "parentPid": 2256,
+      "name": "msedgewebview2.exe",
+      "role": "renderer",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --type=renderer --noerrdialogs --user-data-dir=\"C:\\Users\\Flo\\Documents\\ChatGPT\\Aquarium.exe\\bin\\webview2-user-data\\EBWebView\" --webview-exe-name=AquariumSpike.exe --embedded-browser-webview=1 --video-capture-use-gpu-memory-buffer --lang=de --js-flags --device-scale-factor=1 --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=5 --js-flags=--ms-user-locale=de_DE --launch-time-ticks=2473941238 --ssd-no-pressure-read-main-dll --metrics-shmem-handle=4076,i,11021036382324418740,4305126383768436045,1048576 --field-trial-handle=1928,i,14753384131333177341,10702121982360634342,262144 --variations-seed-version --pseudonymization-salt-handle=1932,i,10331210051300607282,5062866720101189919,4 --trace-process-track-uuid=3190708990997080739 --mojo-platform-channel-handle=4084 /pfhostedapp:8195f210b1c249acf3b83e4b348059421492e972 /prefetch:1",
+      "cpuSeconds": 3.0,
+      "cpuPercentNormalized": 7.445,
+      "workingSetBytesMean": 87457792,
+      "workingSetBytesMax": 88088576,
+      "privateBytesMean": 46086144
+    }
+  ],
+  "totals": {
+    "cpuSeconds": 7.0,
+    "cpuPercentNormalized": 17.373,
+    "workingSetBytesLast": 577990656,
+    "privateBytesLast": 373436416,
+    "gpuPercentSummedEnginesMean": 49.209,
+    "gpuPercentSummedEnginesMin": 47.514,
+    "gpuPercentSummedEnginesMax": 51.474,
+    "tcpConnectionCount": 4
+  },
+  "gpuMethod": "Windows GPU Engine utilization counters, summed only for exact current descendant PID tokens; simultaneous engines can sum above one engine and counters exclude compositor work in dwm.exe.",
+  "gpuSamples": [
+    {
+      "available": true,
+      "timestamp": "2026-09-22T13:53:36.0625081Z",
+      "treePercentSummedEngines": 48.406,
+      "byPidPercentSummedEngines": {
+        "17056": 0.0,
+        "7936": 0.0,
+        "15720": 0.0,
+        "16216": 48.406005859375,
+        "2256": 0.0,
+        "11904": 0.0,
+        "16096": 0.0,
+        "14524": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-22T13:53:37.1983433Z",
+      "treePercentSummedEngines": 49.415,
+      "byPidPercentSummedEngines": {
+        "17056": 0.0,
+        "7936": 0.0,
+        "15720": 0.0,
+        "16216": 49.415184020996094,
+        "2256": 0.0,
+        "11904": 0.0,
+        "16096": 0.0,
+        "14524": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-22T13:53:38.2722640Z",
+      "treePercentSummedEngines": 48.475,
+      "byPidPercentSummedEngines": {
+        "17056": 0.0,
+        "7936": 0.0,
+        "15720": 0.0,
+        "16216": 48.475059509277344,
+        "2256": 0.0,
+        "11904": 0.0,
+        "16096": 0.0,
+        "14524": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-22T13:53:39.3287100Z",
+      "treePercentSummedEngines": 47.514,
+      "byPidPercentSummedEngines": {
+        "17056": 0.0,
+        "7936": 0.0,
+        "15720": 0.0,
+        "16216": 47.514339447021484,
+        "2256": 0.0,
+        "11904": 0.0,
+        "16096": 0.0,
+        "14524": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-22T13:53:40.3624114Z",
+      "treePercentSummedEngines": 48.63,
+      "byPidPercentSummedEngines": {
+        "17056": 0.0,
+        "7936": 0.0,
+        "15720": 0.0,
+        "16216": 48.62958908081055,
+        "2256": 0.0,
+        "11904": 0.0,
+        "16096": 0.0,
+        "14524": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-22T13:53:41.3933177Z",
+      "treePercentSummedEngines": 50.39,
+      "byPidPercentSummedEngines": {
+        "17056": 0.0,
+        "7936": 0.0,
+        "15720": 0.0,
+        "16216": 50.390403747558594,
+        "2256": 0.0,
+        "11904": 0.0,
+        "16096": 0.0,
+        "14524": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-22T13:53:42.5251956Z",
+      "treePercentSummedEngines": 48.119,
+      "byPidPercentSummedEngines": {
+        "17056": 0.0,
+        "7936": 0.0,
+        "15720": 0.0,
+        "16216": 48.11935043334961,
+        "2256": 0.0,
+        "11904": 0.0,
+        "16096": 0.0,
+        "14524": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-22T13:53:43.6288640Z",
+      "treePercentSummedEngines": 50.533,
+      "byPidPercentSummedEngines": {
+        "17056": 0.0,
+        "7936": 0.0,
+        "15720": 0.0,
+        "16216": 50.53253936767578,
+        "2256": 0.0,
+        "11904": 0.0,
+        "16096": 0.0,
+        "14524": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-22T13:53:44.6964231Z",
+      "treePercentSummedEngines": 49.134,
+      "byPidPercentSummedEngines": {
+        "17056": 0.0,
+        "7936": 0.0,
+        "15720": 0.0,
+        "16216": 49.13426208496094,
+        "2256": 0.0,
+        "11904": 0.0,
+        "16096": 0.0,
+        "14524": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-22T13:53:44.8805574Z",
+      "treePercentSummedEngines": 51.474,
+      "byPidPercentSummedEngines": {
+        "17056": 0.0,
+        "7936": 0.0,
+        "15720": 0.0,
+        "16216": 51.47394561767578,
+        "2256": 0.0,
+        "11904": 0.0,
+        "16096": 0.0,
+        "14524": 0.0
+      },
+      "error": null
+    }
+  ],
+  "memorySamples": [
+    {
+      "timestampUtc": "2026-09-22T13:53:34.6488718Z",
+      "processes": [
+        {
+          "pid": 7936,
+          "role": "native",
+          "workingSetBytes": 43495424,
+          "privateBytes": 41934848
+        },
+        {
+          "pid": 14524,
+          "role": "console",
+          "workingSetBytes": 9805824,
+          "privateBytes": 1687552
+        },
+        {
+          "pid": 2256,
+          "role": "browser",
+          "workingSetBytes": 129622016,
+          "privateBytes": 41979904
+        },
+        {
+          "pid": 15720,
+          "role": "crashpad",
+          "workingSetBytes": 10313728,
+          "privateBytes": 2527232
+        },
+        {
+          "pid": 11904,
+          "role": "network",
+          "workingSetBytes": 32854016,
+          "privateBytes": 10649600
+        },
+        {
+          "pid": 16216,
+          "role": "gpu",
+          "workingSetBytes": 227860480,
+          "privateBytes": 203055104
+        },
+        {
+          "pid": 16096,
+          "role": "storage",
+          "workingSetBytes": 18841600,
+          "privateBytes": 8228864
+        },
+        {
+          "pid": 17056,
+          "role": "renderer",
+          "workingSetBytes": 86827008,
+          "privateBytes": 45707264
+        }
+      ]
+    },
+    {
+      "timestampUtc": "2026-09-22T13:53:45.2893437Z",
+      "processes": [
+        {
+          "pid": 7936,
+          "role": "native",
+          "workingSetBytes": 43495424,
+          "privateBytes": 41934848
+        },
+        {
+          "pid": 14524,
+          "role": "console",
+          "workingSetBytes": 9805824,
+          "privateBytes": 1687552
+        },
+        {
+          "pid": 2256,
+          "role": "browser",
+          "workingSetBytes": 129843200,
+          "privateBytes": 42053632
+        },
+        {
+          "pid": 15720,
+          "role": "crashpad",
+          "workingSetBytes": 10313728,
+          "privateBytes": 2527232
+        },
+        {
+          "pid": 11904,
+          "role": "network",
+          "workingSetBytes": 32854016,
+          "privateBytes": 10649600
+        },
+        {
+          "pid": 16216,
+          "role": "gpu",
+          "workingSetBytes": 244748288,
+          "privateBytes": 219889664
+        },
+        {
+          "pid": 16096,
+          "role": "storage",
+          "workingSetBytes": 18841600,
+          "privateBytes": 8228864
+        },
+        {
+          "pid": 17056,
+          "role": "renderer",
+          "workingSetBytes": 88088576,
+          "privateBytes": 46465024
+        }
+      ]
+    }
+  ],
+  "tcpEndpoints": [
+    "2256:0.0.0.0:59695->0.0.0.0:0:Bound",
+    "2256:0.0.0.0:59694->0.0.0.0:0:Bound",
+    "2256:192.168.178.39:59695->52.98.171.242:443:Established",
+    "2256:192.168.178.39:59694->52.98.171.242:443:Established"
+  ],
+  "diagnosticLines": [
+    "15:53:22.810 PROBE state=running bridgeUpdates=0 webviewReady=1 cursorScreen=(856,939) WindowFromPoint=0x10408/Chrome_WidgetWin_1 hostHitTest=-1 rendererHitTest=-1\r",
+    "15:53:22.857 PERF intervalSeconds=6.08 cursorBridgeHz=0.16 hostProcessCpuPercentNormalized=0.96 totalBridgeUpdates=1\r",
+    "15:53:25.543 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=52.1;frameTimeMs=16.86;fishCount=10;drawCalls=13;triangles=7418;pointerCount=57;reactions=0;paused=false;targetFps=60\r",
+    "15:53:26.462 PROBE state=running bridgeUpdates=77 webviewReady=1 cursorScreen=(856,939) WindowFromPoint=0x10408/Chrome_WidgetWin_1 hostHitTest=-1 rendererHitTest=-1\r",
+    "15:53:26.463 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=52.1;frameTimeMs=16.86;fishCount=10;drawCalls=13;triangles=7418;pointerCount=77;reactions=0;paused=false;targetFps=60\r",
+    "15:53:27.894 PERF intervalSeconds=5.04 cursorBridgeHz=21.24 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=108\r",
+    "15:53:30.536 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=60.0;frameTimeMs=16.67;fishCount=10;drawCalls=13;triangles=7418;pointerCount=164;reactions=0;paused=false;targetFps=60\r",
+    "15:53:32.941 PERF intervalSeconds=5.05 cursorBridgeHz=21.20 hostProcessCpuPercentNormalized=0.15 totalBridgeUpdates=215\r",
+    "15:53:35.540 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=60.0;frameTimeMs=16.67;fishCount=10;drawCalls=13;triangles=7418;pointerCount=270;reactions=0;paused=false;targetFps=60\r",
+    "15:53:37.978 PERF intervalSeconds=5.04 cursorBridgeHz=21.24 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=322\r",
+    "15:53:40.554 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=60.0;frameTimeMs=16.67;fishCount=10;drawCalls=13;triangles=7418;pointerCount=375;reactions=1;paused=false;targetFps=60\r",
+    "15:53:43.008 PERF intervalSeconds=5.03 cursorBridgeHz=20.87 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=427\r",
+    "15:53:45.557 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=60.0;frameTimeMs=16.67;fishCount=10;drawCalls=13;triangles=7418;pointerCount=479;reactions=3;paused=false;targetFps=60\r",
+    "15:53:48.010 PERF intervalSeconds=5.00 cursorBridgeHz=20.40 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=529\r",
+    "15:53:49.763 PROBE state=running bridgeUpdates=566 webviewReady=1 cursorScreen=(856,939) WindowFromPoint=0x10408/Chrome_WidgetWin_1 hostHitTest=-1 rendererHitTest=-1\r",
+    "15:53:49.764 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=60.0;frameTimeMs=16.67;fishCount=10;drawCalls=13;triangles=7418;pointerCount=566;reactions=4;paused=false;targetFps=60\r"
+  ],
+  "sampleErrors": []
+}

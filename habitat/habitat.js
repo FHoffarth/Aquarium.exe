@@ -34,7 +34,7 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2) * auditConfig.renderScale);
 renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure = 1.2;
+renderer.toneMappingExposure = 1.42;
 renderer.setClearColor(0x02141d, 1);
 
 const habitat = createPlantedTank(renderer, {}, auditConfig, performanceRecorder);

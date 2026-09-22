@@ -16,25 +16,29 @@ const DEFAULT_CONFIG = {
     maximumAcceleration: [0.42, 0.62],
     turnResponsiveness: [1.2, 1.8],
     scale: [0.82, 1.14],
-    neighborRadius: [0.9, 1.25],
-    separationRadius: [0.25, 0.38],
+    neighborRadius: [1.0, 1.35],
+    separationRadius: [0.34, 0.48],
     cursorNoticeRadius: [1.0, 1.45],
     cursorThreatRadius: [0.3, 0.48],
     cursorResponseStrength: [0.9, 1.35],
     boundaryMargin: [0.38, 0.58],
     wanderStrength: [0.035, 0.075],
-    cohesionWeight: [0.16, 0.3],
-    alignmentWeight: [0.2, 0.38],
-    separationWeight: [0.65, 1.05],
+    cohesionWeight: [0.07, 0.16],
+    alignmentWeight: [0.18, 0.34],
+    separationWeight: [1.0, 1.5],
     depthWeight: [0.18, 0.32],
   },
   environment: {
-    particleCount: 90,
-    plantCount: 22,
-    backgroundTop: 0x0b4855,
-    backgroundBottom: 0x031b25,
-    substrateColor: 0x172d2d,
-    fogColor: 0x062631,
+    particleCount: 72,
+    foregroundPlantCount: 30,
+    midPlantCount: 24,
+    stemCount: 18,
+    rockCount: 7,
+    driftwoodCount: 5,
+    backgroundTop: 0x176872,
+    backgroundBottom: 0x06242d,
+    substrateColor: 0x172521,
+    fogColor: 0x041f27,
   },
   diagnostics: false,
 };
@@ -119,8 +123,17 @@ export function validatePlantedTankConfig(config) {
   if (fish.cursorThreatRadius[1] >= fish.cursorNoticeRadius[0]) {
     throw new RangeError('cursor threat radius must stay below notice radius');
   }
-  if (!Number.isInteger(environment.particleCount) || environment.particleCount < 0
-      || !Number.isInteger(environment.plantCount) || environment.plantCount < 0) {
+  const environmentCounts = [
+    'particleCount',
+    'foregroundPlantCount',
+    'midPlantCount',
+    'stemCount',
+    'rockCount',
+    'driftwoodCount',
+  ];
+  if (environmentCounts.some(name => (
+    !Number.isInteger(environment[name]) || environment[name] < 0
+  ))) {
     throw new RangeError('environment counts must be non-negative integers');
   }
   return config;

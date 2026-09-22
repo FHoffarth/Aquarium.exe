@@ -25,6 +25,7 @@ function quietFish(fish) {
   fish.alignmentWeight = 0;
   fish.separationWeight = 0;
   fish.depthWeight = 0;
+  fish.roamAnchorWeight = 0;
 }
 
 test('same seed creates the same school', () => {
@@ -38,6 +39,38 @@ test('different seeds create different personality variation', () => {
   assert.notDeepEqual(first, second);
 });
 
+test('a school deterministically contains distinct visual archetypes and behavior roles', () => {
+  const config = createPlantedTankConfig({ seed: 20260922, fishCount: 10 });
+  const first = createSchool(config);
+  const second = createSchool(config);
+  const summarize = school => school.fish.map(fish => ({
+    archetype: fish.archetype,
+    role: fish.role,
+    visualPhase: fish.visualPhase,
+  }));
+
+  assert.deepEqual(summarize(first), summarize(second));
+  assert.equal(new Set(first.fish.map(fish => fish.archetype)).size, 3);
+  assert.deepEqual(
+    new Set(first.fish.map(fish => fish.role)),
+    new Set(['follower', 'curious', 'cautious', 'schooling']),
+  );
+  assert.ok(first.fish.every(fish => Number.isFinite(fish.visualPhase)));
+});
+
+test('behavior roles create subtle but distinct cursor personalities', () => {
+  const school = createSchool(createPlantedTankConfig({ fishCount: 10 }));
+  const follower = school.fish.find(fish => fish.role === 'follower');
+  const curious = school.fish.find(fish => fish.role === 'curious');
+  const cautious = school.fish.find(fish => fish.role === 'cautious');
+  const schooling = school.fish.find(fish => fish.role === 'schooling');
+
+  assert.ok(follower.personality.curiosity > follower.personality.caution);
+  assert.ok(curious.personality.curiosity > curious.personality.caution);
+  assert.ok(cautious.personality.caution > cautious.personality.curiosity);
+  assert.ok(schooling.personality.schooling > schooling.personality.curiosity);
+});
+
 test('population and behavior ranges are validated', () => {
   assert.throws(() => createPlantedTankConfig({ fishCount: 7 }), RangeError);
   assert.throws(() => createPlantedTankConfig({ fishCount: 13 }), RangeError);
@@ -47,6 +80,54 @@ test('population and behavior ranges are validated', () => {
     fish: { ...config.fish, separationRadius: [1, 0.5] },
   };
   assert.throws(() => validatePlantedTankConfig(invalid), RangeError);
+  assert.throws(() => createPlantedTankConfig({
+    environment: { rockCount: -1 },
+  }), RangeError);
+});
+
+test('default schooling parameters preserve personal space after settling', () => {
+  const config = createPlantedTankConfig({ fishCount: 10 });
+  const school = createSchool(config);
+  for (let index = 0; index < school.fish.length; index += 1) {
+    school.fish[index].position = {
+      x: (index % 5) * 0.04,
+      y: Math.floor(index / 5) * 0.04,
+      z: 0,
+    };
+    school.fish[index].velocity = { x: 0, y: 0, z: 0 };
+  }
+
+  for (let step = 0; step < 180; step += 1) {
+    stepSchool(school, createPointerState(), 1 / 60, config.bounds);
+  }
+
+  let crowdedPairs = 0;
+  for (let left = 0; left < school.fish.length; left += 1) {
+    for (let right = left + 1; right < school.fish.length; right += 1) {
+      const a = school.fish[left].position;
+      const b = school.fish[right].position;
+      if (Math.hypot(a.x - b.x, a.y - b.y, a.z - b.z) < 0.3) crowdedPairs += 1;
+    }
+  }
+  assert.ok(crowdedPairs <= 1);
+});
+
+test('the initial school occupies a broad readable span instead of one center clump', () => {
+  const school = createSchool(createPlantedTankConfig({ fishCount: 10 }));
+  const xPositions = school.fish.map(fish => fish.position.x);
+  const yPositions = school.fish.map(fish => fish.position.y);
+  assert.ok(Math.max(...xPositions) - Math.min(...xPositions) > 3.4);
+  assert.ok(Math.max(...yPositions) - Math.min(...yPositions) > 1.2);
+});
+
+test('the settled school retains broad horizontal habitat coverage', () => {
+  const config = createPlantedTankConfig({ fishCount: 10 });
+  const school = createSchool(config);
+  for (let step = 0; step < 3600; step += 1) {
+    stepSchool(school, createPointerState(), 1 / 60, config.bounds);
+  }
+  const xPositions = school.fish.map(fish => fish.position.x);
+  assert.ok(Math.max(...xPositions) - Math.min(...xPositions) > 1.7);
 });
 
 test('pointer state starts absent and counts updates', () => {

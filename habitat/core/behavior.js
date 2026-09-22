@@ -49,11 +49,41 @@ function approach(current, target, maximumDelta) {
   return Math.max(target, current - maximumDelta);
 }
 
-function personality(seed, index) {
-  const schooling = 0.35 + seededUnit(seed, index, 30) * 0.6;
-  const curiosity = 0.08 + seededUnit(seed, index, 31) * 0.82;
-  const caution = 0.12 + seededUnit(seed, index, 32) * 0.8;
-  return { schooling, curiosity, caution };
+function roleFor(index) {
+  if (index === 0) return 'follower';
+  if (index % 4 === 0) return 'cautious';
+  if (index % 3 === 1) return 'curious';
+  return 'schooling';
+}
+
+function personality(seed, index, role) {
+  const variation = channel => seededUnit(seed, index, channel);
+  if (role === 'follower') {
+    return {
+      schooling: 0.45 + variation(30) * 0.2,
+      curiosity: 0.9 + variation(31) * 0.08,
+      caution: 0.08 + variation(32) * 0.12,
+    };
+  }
+  if (role === 'curious') {
+    return {
+      schooling: 0.4 + variation(30) * 0.35,
+      curiosity: 0.72 + variation(31) * 0.2,
+      caution: 0.16 + variation(32) * 0.25,
+    };
+  }
+  if (role === 'cautious') {
+    return {
+      schooling: 0.35 + variation(30) * 0.35,
+      curiosity: 0.1 + variation(31) * 0.25,
+      caution: 0.72 + variation(32) * 0.23,
+    };
+  }
+  return {
+    schooling: 0.72 + variation(30) * 0.24,
+    curiosity: 0.12 + variation(31) * 0.35,
+    caution: 0.2 + variation(32) * 0.4,
+  };
 }
 
 function createScratch() {
@@ -89,19 +119,27 @@ export function createSchool(config) {
       preferredSpeed * 1.35,
       ranged(config.fish.maximumSpeed, config.seed, index, 4),
     );
-    const fishPersonality = personality(config.seed, index);
+    const role = roleFor(index);
+    const fishPersonality = personality(config.seed, index, role);
     const depthPreference = config.bounds.minZ
       + (config.bounds.maxZ - config.bounds.minZ) * seededUnit(config.seed, index, 5);
+    const startX = -1.9 + column * (3.8 / Math.max(1, columns - 1))
+      + (seededUnit(config.seed, index, 6) - 0.5) * 0.26;
+    const startY = -0.72 + row * (1.44 / Math.max(1, rows - 1))
+      + (seededUnit(config.seed, index, 7) - 0.5) * 0.2;
     fish.push({
       id: index,
       seed: mix32(config.seed ^ index),
+      archetype: ['copper', 'silver', 'shadow'][(index + (config.seed % 3)) % 3],
+      role,
+      visualPhase: seededUnit(config.seed, index, 27) * TAU,
       position: {
-        x: -1.2 + column * (2.4 / Math.max(1, columns - 1))
-          + (seededUnit(config.seed, index, 6) - 0.5) * 0.22,
-        y: -0.55 + row * (1.1 / Math.max(1, rows - 1))
-          + (seededUnit(config.seed, index, 7) - 0.5) * 0.18,
+        x: startX,
+        y: startY,
         z: depthPreference + (seededUnit(config.seed, index, 8) - 0.5) * 0.12,
       },
+      roamAnchor: { x: startX, y: startY, z: depthPreference },
+      roamAnchorWeight: role === 'cautious' ? 0.09 : role === 'follower' ? 0.035 : 0.06,
       velocity: {
         x: preferredSpeed * direction,
         y: (seededUnit(config.seed, index, 9) - 0.5) * preferredSpeed * 0.35,
@@ -309,6 +347,19 @@ function updateFish(fish, scratch, input, dtSeconds, elapsedSeconds, bounds) {
   steering.y += Math.sin(wanderTime * 1.37) * fish.wanderStrength;
   steering.z += Math.sin(wanderTime * 0.73) * fish.wanderStrength * 0.24;
   steering.z += (fish.depthPreference - fish.position.z) * fish.depthWeight;
+  const anchorX = fish.roamAnchor.x - fish.position.x;
+  const anchorY = fish.roamAnchor.y - fish.position.y;
+  const anchorZ = fish.roamAnchor.z - fish.position.z;
+  const anchorDistance = magnitude(anchorX, anchorY, anchorZ);
+  if (anchorDistance > 0.72) {
+    addNormalized(
+      steering,
+      anchorX,
+      anchorY,
+      anchorZ * 0.35,
+      Math.min(0.16, (anchorDistance - 0.72) * fish.roamAnchorWeight),
+    );
+  }
   addBoundarySteering(steering, fish, bounds);
   addCursorSteering(steering, fish, input, dtSeconds);
 

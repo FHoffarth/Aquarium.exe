@@ -4,9 +4,50 @@ import { readFile } from 'node:fs/promises';
 
 import * as THREE from '../../habitat/vendor/three/three.module.js';
 import { createSchool } from '../../habitat/core/behavior.js';
-import { createFishRenderer } from '../../habitat/core/fish.js';
+import {
+  createFishRenderer,
+  deriveFishVisualState,
+} from '../../habitat/core/fish.js';
 import { createEnvironment } from '../../habitat/core/environment.js';
 import { createPlantedTankConfig } from '../../habitat/habitats/planted-tank/config.js';
+
+test('fish renderer exposes a pure visual-state projection helper', async () => {
+  const fishModule = await import('../../habitat/core/fish.js');
+  assert.equal(typeof fishModule.deriveFishVisualState, 'function');
+});
+
+test('visual projection deterministically differentiates silhouette, palette, and motion phase', () => {
+  const school = createSchool(createPlantedTankConfig({ fishCount: 10 }));
+  const before = structuredClone(school.fish);
+  const byArchetype = Object.fromEntries(
+    ['copper', 'silver', 'shadow'].map(archetype => {
+      const fish = school.fish.find(candidate => candidate.archetype === archetype);
+      return [archetype, deriveFishVisualState(fish, 2.75)];
+    }),
+  );
+
+  assert.deepEqual(
+    deriveFishVisualState(school.fish[0], 2.75),
+    deriveFishVisualState(school.fish[0], 2.75),
+  );
+  assert.equal(new Set(Object.values(byArchetype).map(state => state.bodyColor)).size, 3);
+  assert.ok(
+    byArchetype.silver.bodyScale[0] / byArchetype.silver.bodyScale[1]
+      > byArchetype.shadow.bodyScale[0] / byArchetype.shadow.bodyScale[1],
+  );
+  assert.ok(byArchetype.copper.tailScale[1] > byArchetype.silver.tailScale[1]);
+  assert.notEqual(
+    deriveFishVisualState(school.fish[0], 2.75).tailAngle,
+    deriveFishVisualState(school.fish[1], 2.75).tailAngle,
+  );
+  assert.ok(Object.values(byArchetype).every(state => [
+    state.heading,
+    state.pitch,
+    state.bank,
+    state.tailAngle,
+  ].every(Number.isFinite)));
+  assert.deepEqual(school.fish, before);
+});
 
 test('fish projection is a one-way read of authoritative simulation state', () => {
   const config = createPlantedTankConfig();
@@ -19,10 +60,17 @@ test('fish projection is a one-way read of authoritative simulation state', () =
 
   assert.deepEqual(school, before);
   const fishMeshes = scene.children.filter(child => child.userData.aquariumFishPart);
-  assert.equal(fishMeshes.length, 4);
+  assert.equal(fishMeshes.length, 5);
   assert.ok(fishMeshes.every(mesh => mesh.isInstancedMesh));
-  assert.ok(fishMeshes.every(mesh => mesh.count === school.fish.length));
-  assert.equal(fishRenderer.drawCallBudget, 4);
+  assert.equal(
+    fishMeshes.find(mesh => mesh.userData.aquariumFishPart === 'eye').count,
+    school.fish.length * 2,
+  );
+  assert.equal(
+    fishMeshes.find(mesh => mesh.userData.aquariumFishPart === 'fin').count,
+    school.fish.length * 3,
+  );
+  assert.equal(fishRenderer.drawCallBudget, 5);
   fishRenderer.dispose();
 });
 
@@ -55,9 +103,13 @@ test('environment is deterministic, bounded, and visual-only', () => {
 
   assert.deepEqual(first.debugLayout, second.debugLayout);
   assert.equal(first.debugLayout.particles.length, config.environment.particleCount * 3);
-  assert.equal(first.debugLayout.plants.length, config.environment.plantCount * 4);
+  assert.equal(first.debugLayout.foregroundPlants.length, config.environment.foregroundPlantCount * 4);
+  assert.equal(first.debugLayout.midPlants.length, config.environment.midPlantCount * 4);
+  assert.equal(first.debugLayout.stems.length, config.environment.stemCount * 4);
+  assert.equal(first.debugLayout.rocks.length, config.environment.rockCount * 4);
+  assert.equal(first.debugLayout.driftwood.length, config.environment.driftwoodCount * 6);
   assert.doesNotThrow(() => first.updateVisuals(12.5));
-  assert.equal(first.drawCallBudget, 4);
+  assert.equal(first.drawCallBudget, 8);
   first.dispose();
   second.dispose();
 });
