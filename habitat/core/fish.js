@@ -134,7 +134,7 @@ export function createFishRenderer(scene, maximumFish) {
         emissive: 0x080b09,
         emissiveIntensity: 0.3,
       }),
-      maximumFish,
+      maximumFish * 3,
     ),
   };
 

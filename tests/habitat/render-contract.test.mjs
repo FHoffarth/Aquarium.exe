@@ -74,6 +74,24 @@ test('fish projection is a one-way read of authoritative simulation state', () =
   fishRenderer.dispose();
 });
 
+test('every fish part has instance capacity for the full configured population', () => {
+  const config = createPlantedTankConfig({ fishCount: 12 });
+  const school = createSchool(config);
+  const scene = new THREE.Scene();
+  const fishRenderer = createFishRenderer(scene, config.fishCount);
+
+  fishRenderer.project(school, 1);
+
+  for (const mesh of scene.children.filter(child => child.userData.aquariumFishPart)) {
+    const capacity = mesh.instanceMatrix.count;
+    assert.ok(
+      mesh.count <= capacity,
+      `${mesh.userData.aquariumFishPart} writes ${mesh.count} instances into capacity ${capacity}`,
+    );
+  }
+  fishRenderer.dispose();
+});
+
 test('projection updates instance transforms without creating per-fish scene objects', () => {
   const config = createPlantedTankConfig({ fishCount: 8 });
   const school = createSchool(config);
