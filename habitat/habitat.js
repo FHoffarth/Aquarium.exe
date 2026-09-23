@@ -2,6 +2,7 @@ import * as THREE from './vendor/three/three.module.js';
 import { readAuditConfig } from './audit-config.js';
 import { readArtMode } from './core/art-mode.js';
 import { createHabitatEngine } from './core/engine.js';
+import { readHeroFishConfig } from './core/hero-fish.js';
 import { createPerformanceRecorder } from './core/performance.js';
 import { createPlantedTankForArt } from './habitats/planted-tank/scene.js';
 
@@ -10,6 +11,7 @@ const canvas = document.getElementById('aquarium');
 const diagnostics = document.getElementById('diagnostics');
 const auditConfig = readAuditConfig(location);
 const artMode = readArtMode(location);
+const heroFish = readHeroFishConfig(location);
 const performanceRecorder = createPerformanceRecorder({ enabled: auditConfig.enabled });
 // Measured in the real host (1920x1080, Intel UHD): 4x MSAA multiplied by the
 // planted corner's alpha-tested overdraw cost ~31 FPS; without it ~59 FPS at
@@ -47,6 +49,7 @@ renderer.setClearColor(0x02141d, 1);
 
 const { habitat, art } = await createPlantedTankForArt(renderer, {
   artMode,
+  heroFish,
   auditConfig,
   performanceRecorder,
   // Imported lazily so even a loader module failure falls back to procedural.
@@ -78,6 +81,7 @@ function formatMetrics(report, prefix = 'habitat-metrics') {
     + `;targetFps=${report.targetFps}`
     + `;art=${art.mode}`
     + `;msaa=${antialias}`
+    + `;hero=${heroFish.enabled ? `${heroFish.variant}x${heroFish.scale}` : 'off'}`
     + `;assetLoadMs=${art.loadMs.toFixed(0)}`
     + `;assetBytes=${art.bytes}`;
 }

@@ -2,11 +2,13 @@ import * as THREE from '../../vendor/three/three.module.js';
 import { createSchool, stepSchool } from '../../core/behavior.js';
 import { createEnvironment } from '../../core/environment.js';
 import { createFishRenderer } from '../../core/fish.js';
+import { createHeroFishRenderer, createHeroStudio } from '../../core/hero-fish.js';
 import { createSliceAEnvironment } from '../../core/slice-a-environment.js';
 import { deriveAuditScenePlan } from '../../audit-config.js';
 import { createPlantedTankConfig } from './config.js';
 
 const DEFAULT_AUDIT = { enabled: false, mode: 'full', fishCount: 10 };
+const HERO_OFF = Object.freeze({ enabled: false });
 
 // Tries the requested art mode and falls back to the accepted procedural
 // environment if its assets cannot be loaded or verified. The failure is
@@ -18,11 +20,15 @@ export async function createPlantedTankForArt(renderer, {
   overrides = {},
   auditConfig = DEFAULT_AUDIT,
   performanceRecorder = null,
+  heroFish = HERO_OFF,
 }) {
   if (artMode === 'slice-a' && deriveAuditScenePlan(auditConfig).createEnvironment) {
     try {
       const artAssets = await loadArtGroup('slice-a');
-      const habitat = createPlantedTank(renderer, overrides, auditConfig, performanceRecorder, { artAssets });
+      const habitat = createPlantedTank(renderer, overrides, auditConfig, performanceRecorder, {
+        artAssets,
+        heroFish,
+      });
       return {
         habitat,
         art: { mode: 'slice-a', loadMs: artAssets.loadMs, bytes: artAssets.totalBytes },
@@ -32,7 +38,7 @@ export async function createPlantedTankForArt(renderer, {
     }
   }
   return {
-    habitat: createPlantedTank(renderer, overrides, auditConfig, performanceRecorder),
+    habitat: createPlantedTank(renderer, overrides, auditConfig, performanceRecorder, { heroFish }),
     art: { mode: 'procedural', loadMs: 0, bytes: 0 },
   };
 }
@@ -42,7 +48,7 @@ export function createPlantedTank(
   overrides = {},
   auditConfig = DEFAULT_AUDIT,
   performanceRecorder = null,
-  { artAssets = null } = {},
+  { artAssets = null, heroFish = HERO_OFF } = {},
 ) {
   if (!renderer?.isWebGLRenderer) {
     throw new TypeError('renderer must be a Three.js WebGLRenderer');
@@ -58,7 +64,11 @@ export function createPlantedTank(
   camera.lookAt(0, 0, 0);
 
   const school = createSchool(config);
-  const fishRenderer = scenePlan.createFish
+  // Hero Fish review: the whole school still simulates (authoritative); one
+  // fish is rendered, either with the hero renderer or, for A/B, with the
+  // production renderer at the same scale.
+  const hero = heroFish.enabled && scenePlan.createFish ? heroFish : null;
+  const fishRenderer = scenePlan.createFish && hero?.variant !== 'hero'
     ? createFishRenderer(scene, Math.max(1, scenePlan.fishCount))
     : null;
   let environment = null;
@@ -67,6 +77,19 @@ export function createPlantedTank(
       ? createSliceAEnvironment(scene, config, artAssets)
       : createEnvironment(scene, config);
   }
+  const heroScreen = new THREE.Vector3();
+  const heroRenderer = hero?.variant === 'hero'
+    ? createHeroFishRenderer(scene, {
+      renderer,
+      scale: hero.scale,
+      effectUniforms: environment?.effectUniforms ?? null,
+    })
+    : null;
+  // Review-only stand-in for posed evidence; the school keeps simulating.
+  const studio = hero?.studio ? createHeroStudio(school.fish[hero.fishIndex % school.fish.length], hero) : null;
+  const heroSubject = simulationTime => (studio
+    ? studio.update(simulationTime)
+    : school.fish[hero.fishIndex % school.fish.length]);
   const auditLights = [];
   if (scenePlan.createFish && !scenePlan.createEnvironment) {
     const hemisphere = new THREE.HemisphereLight(0xd8fff7, 0x102426, 2.15);
@@ -99,9 +122,22 @@ export function createPlantedTank(
       if (performanceRecorder?.enabled) performanceRecorder.record('simulationMs', start);
     },
     project(simulationTime) {
-      if (fishRenderer) {
+      if (fishRenderer || heroRenderer) {
         const start = performanceRecorder?.enabled ? performanceRecorder.mark() : 0;
-        fishRenderer.project(school, simulationTime);
+        const fish = hero ? heroSubject(simulationTime) : null;
+        fishRenderer?.project(hero ? { fish: [{ ...fish, scale: fish.scale * hero.scale }] } : school,
+          simulationTime);
+        heroRenderer?.project([fish], simulationTime);
+        if (hero) {
+          // Review aid: where the reviewed fish is on screen (0..1, y down).
+          heroScreen.set(fish.position.x, fish.position.y, fish.position.z).project(camera);
+          globalThis.__aquariumHeroFish = {
+            x: heroScreen.x * 0.5 + 0.5,
+            y: 0.5 - heroScreen.y * 0.5,
+            depth: fish.position.z,
+            state: heroRenderer?.lastState ?? null,
+          };
+        }
         if (performanceRecorder?.enabled) {
           performanceRecorder.record('fishProjectionMs', start);
         }
@@ -141,6 +177,7 @@ export function createPlantedTank(
     },
     dispose() {
       fishRenderer?.dispose();
+      heroRenderer?.dispose();
       environment?.dispose();
       for (const light of auditLights) scene.remove(light);
     },

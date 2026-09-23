@@ -212,6 +212,7 @@ export function createSliceAEnvironment(scene, config, assets) {
   return {
     drawCallBudget: 8,
     artMode: 'slice-a',
+    effectUniforms: shared,
     updateVisuals(simulationTime) {
       shared.uEffectTime.value = simulationTime;
       backgroundMaterial.uniforms.uTime.value = simulationTime;
