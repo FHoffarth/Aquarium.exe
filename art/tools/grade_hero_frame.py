@@ -16,7 +16,10 @@ def grade(src, dst):
     u, v = (x / w - 0.42) / 0.75, (y / h - 0.42) / 0.62
     vignette = 1.0 - 0.45 * np.clip(u * u + v * v - 0.25, 0, 1) ** 1.1
     bottom = 1.0 - 0.18 * np.clip((y / h - 0.72) / 0.28, 0, 1) ** 1.5
-    image *= (vignette * bottom)[..., None]
+    # Deeper, calmer open water toward the right and the top.
+    right = 1.0 - 0.2 * np.clip((x / w - 0.55) / 0.45, 0, 1) ** 1.3
+    top = 1.0 - 0.12 * np.clip((0.3 - y / h) / 0.3, 0, 1)
+    image *= (vignette * bottom * right * top)[..., None]
     luminance = image.mean(axis=2, keepdims=True)
     cool = np.array([0.97, 1.0, 1.03])
     warm = np.array([1.03, 1.0, 0.95])

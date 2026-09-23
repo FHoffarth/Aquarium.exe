@@ -50,6 +50,7 @@ def parse_args():
     parser.add_argument('--density', type=float, default=1.0)
     parser.add_argument('--samples', type=int, default=48)
     parser.add_argument('--fish', action='store_true')
+    parser.add_argument('--hero-fish', default='', help='directory with the exported Hero Fish (scale reference only)')
     parser.add_argument('--out', default=str(ROOT / 'art' / 'work' / 'hero-frame' / 'frame.png'))
     parser.add_argument('--blend', default='')
     return parser.parse_args(argv)
@@ -107,24 +108,27 @@ VARIANTS = {
     'B': {  # left root mass with sweeping diagonal branches
         'mound': (0.36, -2.3, -0.5, 1.5, 1.0),
         'rocks': [
-            ('rock13', -2.95, -1.1, 0.7, 150, 0.3, -5),     # primary, rear left
-            ('rock11', -1.7, -1.0, 0.6, 35, 0.32, 6),       # primary, rear centre-left
+            ('rock13', -2.95, -1.1, 0.7, 150, 0.36, -5),    # primary, rear left
+            ('rock11', -1.7, -1.0, 0.6, 35, 0.38, 6),       # primary, rear centre-left
             ('rock10', -2.05, 0.1, 0.36, -40, 0.42, 3),     # secondary, front
             ('rock09', -3.05, 0.05, 0.34, 70, 0.42, -8),    # secondary, front left
             ('rock12', -1.05, 0.35, 0.2, 10, 0.42, 6),      # transition
             ('rock08', -2.6, 0.62, 0.16, 120, 0.42, 0),     # transition
+            # secondary stones gathered around the primaries' bases
+            ('rock12', -3.5, -0.7, 0.26, 40, 0.45, 8), ('rock08', -2.45, -0.72, 0.2, 200, 0.45, -6),
+            ('rock09', -1.15, -0.7, 0.24, -70, 0.45, 5), ('rock08', -2.15, -0.55, 0.16, 15, 0.45, 10),
+            ('rock12', -2.5, 0.38, 0.17, 95, 0.45, -4), ('rock08', -1.55, 0.38, 0.18, 250, 0.45, 6),
+            ('rock09', -3.55, 0.2, 0.18, 10, 0.45, -5),
         ],
         'wood': [
             # hero sweep toward the centre
             ([(-2.45, None, -0.45), (-2.1, -0.55, -0.5), (-1.5, -0.05, -0.6), (-0.8, 0.4, -0.75),
-              (-0.1, 0.72, -0.85), (0.5, 0.88, -0.95)], 0.105, 0.006),
+              (-0.1, 0.72, -0.85), (0.5, 0.88, -0.95)], 0.12, 0.012),
             # steep rise
             ([(-2.5, None, -0.55), (-2.3, -0.5, -0.7), (-1.95, 0.15, -0.85), (-1.5, 0.7, -1.0),
-              (-1.0, 1.1, -1.1), (-0.65, 1.3, -1.15)], 0.08, 0.005),
+              (-1.0, 1.1, -1.1), (-0.72, 1.24, -1.15)], 0.085, 0.012),
             # back left arm, kept below the icon column
-            ([(-2.6, None, -0.7), (-2.85, -0.5, -1.0), (-3.05, 0.1, -1.3), (-3.1, 0.55, -1.5)], 0.055, 0.005),
-            # secondary rise off the hero sweep
-            ([(-1.55, -0.08, -0.6), (-1.25, 0.5, -0.72), (-0.98, 1.05, -0.85), (-0.88, 1.35, -0.95)], 0.042, 0.004),
+            ([(-2.6, None, -0.7), (-2.85, -0.5, -1.0), (-3.05, 0.05, -1.3), (-3.1, 0.35, -1.5)], 0.06, 0.014),
         ],
         'roots': [
             [(-2.45, -1.2, -0.45), (-2.9, None, -0.1), (-3.45, None, 0.2)],
@@ -167,9 +171,12 @@ def path_distance(x, z):
 
 def path_mask(x, z):
     # Wider toward the viewer, narrowing with depth.
-    width = 0.38 + 0.22 * smoothstep(-2.0, 2.0, z)
-    wobble = 0.22 * noise.noise(Vector((x * 0.9, z * 0.9, 3.1))) + 0.06 * noise.noise(Vector((x * 4, z * 4, 1.1)))
-    return 1.0 - smoothstep(width * 0.55, width, path_distance(x, z) + wobble)
+    width = 0.3 + 0.18 * smoothstep(-2.0, 2.0, z)
+    wobble = 0.22 * noise.noise(Vector((x * 0.9, z * 0.9, 3.1))) + 0.07 * noise.noise(Vector((x * 4, z * 4, 1.1)))
+    core = 1.0 - smoothstep(width * 0.45, width, path_distance(x, z) + wobble)
+    # Carpet tongues and stones interrupt it; it fades before the back.
+    broken = smoothstep(-0.45, 0.05, noise.noise(Vector((x * 1.4, z * 1.4, 8.0))))
+    return core * (0.35 + 0.65 * broken) * smoothstep(-1.9, -0.6, z)
 
 
 def substrate_height(x, z):
@@ -510,8 +517,8 @@ def clay_material():
 HARDSCAPE_POINTS = []   # (x, z, radius) contact shadows for the substrate
 
 
-def build_substrate(columns=200, rows=110):
-    x0, x1, z0, z1 = -6.2, 6.2, -3.45, 2.7
+def build_substrate(columns=320, rows=150):
+    x0, x1, z0, z1 = -13.0, 13.0, -9.5, 2.7
     bm = bmesh.new()
     path_layer = bm.verts.layers.float.new('path')
     shade_layer = bm.verts.layers.float.new('shade')
@@ -646,8 +653,8 @@ def tube(bm, uv_layer, spine, radii, sides=9, seed=0.0):
         for side in range(sides + 1):
             theta = math.tau * side / sides
             direction = normal * math.cos(theta) + binormal * math.sin(theta)
-            gnarl = 1.0 + 0.22 * noise.noise(point * 6.0 + direction * 0.6 + Vector((seed, 0, 0)))
-            ridge = 1.0 + 0.06 * math.sin(theta * 5 + length * 9 + seed)
+            gnarl = 1.0 + 0.3 * noise.noise(point * 5.0 + direction * 0.6 + Vector((seed, 0, 0)))
+            ridge = 1.0 + 0.1 * math.sin(theta * 5 + length * 6 + seed)
             ring.append((point + direction * radii[index] * gnarl * ridge, side / sides, length))
         rings.append(ring)
     verts = [[bm.verts.new(co) for co, _, _ in ring] for ring in rings]
@@ -671,7 +678,9 @@ def spine_from(points, samples, wiggle, seed):
     out = []
     for index, p in enumerate(raw):
         t = index / samples
-        offset = noise.noise_vector(p * 1.7 + Vector((seed, seed * 0.5, 0))) * wiggle * math.sin(math.pi * min(1.0, t * 1.2))
+        envelope = math.sin(math.pi * min(1.0, t * 1.2))
+        offset = (noise.noise_vector(p * 1.7 + Vector((seed, seed * 0.5, 0))) * wiggle
+                  + noise.noise_vector(p * 4.5 + Vector((0, seed, seed))) * wiggle * 0.35) * envelope
         out.append(p + offset)
     return out
 
@@ -691,7 +700,7 @@ def build_wood():
     uv_layer = bm.loops.layers.uv.new('UVMap')
     branches = []
     for index, (points, base, tip) in enumerate(V['wood']):
-        spine = spine_from(resolve(points, 0.22), 44, 0.09, index * 3.7)
+        spine = spine_from(resolve(points, 0.22), 44, 0.15, index * 3.7)
         radii = taper(44, base * WOOD_GIRTH, tip * 1.5, index * 1.3)
         tube(bm, uv_layer, spine, radii, sides=10, seed=index * 2.1)
         branches.append((spine, radii))
@@ -703,7 +712,7 @@ def build_wood():
     # Twigs: forks off the main branches, thinning to fine tips.
     twig_rng = random.Random(7)
     for spine, radii in branches:
-        count = max(2, int(len(spine) / 15))
+        count = 3
         for _ in range(count):
             k = twig_rng.randint(int(len(spine) * 0.3), int(len(spine) * 0.85))
             origin = spine[k]
@@ -711,25 +720,25 @@ def build_wood():
             side = tangent.cross(Vector((0, 1, 0))).normalized() * twig_rng.choice((-1, 1))
             up = Vector((0, 0, 1))
             direction = (tangent * 0.7 + side * twig_rng.uniform(0.2, 0.7) + up * twig_rng.uniform(0.1, 0.6)).normalized()
-            length = twig_rng.uniform(0.25, 0.55)
-            base_r = radii[k] * 0.45
+            length = twig_rng.uniform(0.35, 0.7) if twig_rng.random() < 0.5 else twig_rng.uniform(0.1, 0.18)
+            base_r = radii[k] * 0.55
             points = [origin, origin + direction * length * 0.5 + up * 0.05,
                       origin + direction * length + noise.noise_vector(origin * 3) * 0.08]
             raw = catmull(points, 16)
-            tube(bm, uv_layer, raw, taper(16, base_r, 0.004, k), sides=6, seed=k * 0.7)
+            tube(bm, uv_layer, raw, taper(16, base_r, max(0.012, base_r * (0.2 if length > 0.3 else 0.45)), k), sides=7, seed=k * 0.7)
             JOINTS.append(origin)
     # Tips fork into finer twigs instead of ending in a single point.
-    for spine, radii in branches:
+    for spine, radii in branches[:2]:
         for fork in range(2):
             k = int(len(spine) * twig_rng.uniform(0.78, 0.9))
             origin = spine[k]
             tangent = (spine[k + 1] - spine[k - 1]).normalized()
             side = tangent.cross(Vector((0, 1, 0))).normalized() * (1 if fork else -1)
             direction = (tangent + side * twig_rng.uniform(0.35, 0.8) + Vector((0, 0, twig_rng.uniform(0.0, 0.4)))).normalized()
-            length = twig_rng.uniform(0.25, 0.5)
+            length = twig_rng.uniform(0.14, 0.26)
             raw = catmull([origin, origin + direction * length * 0.5, origin + direction * length
                            + noise.noise_vector(origin * 5) * 0.05], 12)
-            tube(bm, uv_layer, raw, taper(12, radii[k] * 0.55, 0.003, k + fork), sides=6, seed=k + fork)
+            tube(bm, uv_layer, raw, taper(12, radii[k] * 0.6, 0.009, k + fork), sides=6, seed=k + fork)
     bm.normal_update()
     obj = mesh_object('driftwood', bm)
     knot_x, knot_z = V['knot']
@@ -1062,7 +1071,9 @@ def carpet_coverage(x, z):
     left = 1.0 - smoothstep(-1.0, 3.2, x)
     front = 0.35 + 0.65 * smoothstep(-2.3, 0.2, z)
     base = 0.25 + 0.75 * left
-    organic = smoothstep(-0.25, 0.3, noise.noise(Vector((x * 0.9, z * 1.3, 5.0))) + 0.25 * left)
+    n = (noise.noise(Vector((x * 0.9, z * 1.3, 5.0))) + 0.5 * noise.noise(Vector((x * 2.6, z * 3.1, 9.0)))
+         + 0.25 * noise.noise(Vector((x * 7.0, z * 7.0, 2.0))))
+    organic = smoothstep(-0.3, 0.25, n + 0.3 * left)
     clearing = 1.0 - smoothstep(0.1, 0.5, path_mask(x, z))
     return base * front * organic * clearing
 
@@ -1075,7 +1086,8 @@ def carpet_field(bm, tint_layer, density):
         coverage = carpet_coverage(x, z)
         if RNG.random() > coverage:
             continue
-        height = 0.05 * coverage ** 0.7 * RNG.uniform(0.4, 1.0)
+        mound = 0.5 + 0.5 * noise.noise(Vector((x * 1.6, z * 1.6, 4.0)))
+        height = 0.06 * coverage ** 0.7 * (0.5 + mound) * RNG.uniform(0.4, 1.0)
         centre = B(x, surface_y(x, z) + height, z)
         normal = (Vector((0, 0, 1)) + Vector((RNG.gauss(0, 0.45), RNG.gauss(0, 0.45), 0))).normalized()
         size = RNG.uniform(0.015, 0.024)
@@ -1113,7 +1125,7 @@ def build_vegetation(rocks, wood):
     stem_mat = plant_material('stem-leaf', (0.12, 0.26, 0.07), roughness=0.45, translucency=0.4)
     vallis_mat = plant_material('ribbon-leaf', (0.1, 0.22, 0.07), roughness=0.4, translucency=0.45)
     grass_mat = plant_material('grass-blade', (0.12, 0.28, 0.08), roughness=0.5, translucency=0.35)
-    crypt_mat = plant_material('crypt-leaf', (0.06, 0.08, 0.035), roughness=0.4, translucency=0.25)
+    crypt_mat = plant_material('crypt-leaf', (0.08, 0.13, 0.05), roughness=0.4, translucency=0.25)
     density = ARGS.density
     objects = []
 
@@ -1126,41 +1138,41 @@ def build_vegetation(rocks, wood):
     objects.append(plant_object('carpet', carpet, greens))
 
     def hairgrass(bm, layer):
-        # Transition between carpet and the clearing, centre-right.
-        for _ in range(int(60 * density)):
-            x, z = RNG.uniform(0.6, 3.2), RNG.uniform(-0.2, 1.3)
-            if path_mask(x, z) > 0.2:
-                continue
-            hairgrass_clump(bm, layer, x, z, RNG.uniform(0.18, 0.34))
-        for _ in range(int(45 * density)):
-            x, z = RNG.uniform(-1.0, 2.6), RNG.uniform(-1.9, -0.4)
-            if path_mask(x, z) > 0.2:
-                continue
-            hairgrass_clump(bm, layer, x, z, RNG.uniform(0.2, 0.38))
-        for _ in range(int(25 * density)):
-            x, z = RNG.uniform(-0.6, 0.4), RNG.uniform(0.6, 1.6)
-            if path_mask(x, z) > 0.2:
-                continue
-            hairgrass_clump(bm, layer, x, z, RNG.uniform(0.12, 0.22))
+        # Composed tufts: clusters of clumps along the clearing edges and a
+        # midground layer, never an even scatter.
+        clusters = [(0.9, 0.9, 7), (1.9, 0.35, 9), (2.8, 0.9, 6), (3.4, 0.2, 5), (0.35, -0.35, 6),
+                    (1.2, -0.9, 8), (2.2, -1.3, 7), (-0.5, -1.1, 6), (3.1, -1.0, 6), (-0.2, 1.35, 4),
+                    (1.55, 1.75, 4), (-1.0, -1.6, 5)]
+        for cx, cz, n in clusters:
+            peak = RNG.uniform(0.2, 0.4)
+            for _ in range(int(n * density + 0.5)):
+                x, z = cx + RNG.gauss(0, 0.16), cz + RNG.gauss(0, 0.12)
+                if path_mask(x, z) > 0.45:
+                    continue
+                falloff = math.exp(-((x - cx) ** 2 + (z - cz) ** 2) / 0.05)
+                hairgrass_clump(bm, layer, x, z, peak * (0.5 + 0.5 * falloff))
     objects.append(plant_object('hairgrass', hairgrass, grass_mat))
 
     def anubias(bm, layer):
-        # Masses at the rock bases and in the hardscape crevices.
+        # Masses at the rock bases and where wood meets stone: they hide the
+        # contact lines so wood, stone and plants read as one formation.
         spots = [(-2.35, 0.55, 1.0), (-1.6, 0.5, 0.9), (-2.8, 0.5, 0.85), (-1.3, 0.65, 0.75),
-                 (-3.35, 0.4, 0.85), (-0.8, 0.75, 0.6), (-2.05, 0.7, 0.7), (-2.15, -0.2, 1.0),
-                 (-2.75, -0.35, 0.9), (-1.35, -0.4, 0.8), (-3.45, -0.5, 0.8)]
-        if ARGS.variant == 'C':
-            spots = [(x + 0.2, z + 0.1, s) for x, z, s in spots]
+                 (-3.35, 0.4, 0.85), (-2.05, 0.7, 0.7), (-2.15, -0.2, 1.0),
+                 (-2.75, -0.35, 0.9), (-1.35, -0.4, 0.8), (-3.45, -0.5, 0.8),
+                 (-2.25, -0.62, 0.9), (-2.7, -0.62, 0.8), (-1.95, -0.4, 0.8), (-1.3, -0.7, 0.75),
+                 (-3.3, -0.85, 0.8), (-1.15, -1.0, 0.7)]
         for x, z, s in spots:
             for _ in range(3):
                 anubias_rosette(bm, layer, x + RNG.gauss(0, 0.08), z + RNG.gauss(0, 0.06), s * RNG.uniform(0.8, 1.1))
     objects.append(plant_object('broadleaf', anubias, anubias_mat))
 
     def crypts(bm, layer):
-        for x, z in ((-0.85, 1.25), (-0.35, 1.05), (-1.25, 1.45), (0.35, 0.95), (1.2, 0.35), (-2.25, 1.35),
-                     (0.05, 0.55), (-0.5, 0.35)):
-            crypt_rosette(bm, layer, x, z, RNG.uniform(0.8, 1.2))
-
+        # Small rosette groups: they break the clearing edges and carry the
+        # left mass into the centre.
+        groups = [(0.35, 0.8, 1), (1.25, 0.25, 2), (0.75, -0.6, 2), (1.7, -0.1, 1)]
+        for cx, cz, n in groups:
+            for _ in range(n):
+                crypt_rosette(bm, layer, cx + RNG.gauss(0, 0.1), cz + RNG.gauss(0, 0.08), RNG.uniform(0.8, 1.3))
     objects.append(plant_object('crypts', crypts, crypt_mat))
 
     def epiphytes(bm, layer):
@@ -1178,48 +1190,57 @@ def build_vegetation(rocks, wood):
     objects.append(plant_object('rock-leaves', buce, anubias_mat))
 
     def stems(bm, layer):
-        # Background stem masses: behind the hardscape (left) and a softer
-        # group far back centre-right; top tips warm very slightly.
-        groups = [(-3.2, -2.6, 0.7, 0.4, 30, (1.6, 2.6)), (-2.3, -1.75, 0.8, 0.3, 26, (1.1, 1.9)), (-2.2, -2.8, 0.8, 0.35, 30, (1.8, 2.9)),
-                  (-1.1, -3.0, 0.7, 0.3, 22, (1.3, 2.2)), (0.1, -3.1, 0.8, 0.25, 14, (0.8, 1.4)),
-                  (1.3, -3.15, 0.7, 0.25, 10, (0.6, 1.0)), (-3.7, -1.9, 0.4, 0.4, 10, (0.9, 1.6)),
-                  # continuous low band along the back: hides the substrate/back line
-                  (-1.6, -3.2, 1.2, 0.2, 40, (0.7, 1.3)), (-0.2, -3.2, 1.2, 0.2, 55, (0.6, 1.1)),
-                  (1.2, -3.2, 1.2, 0.2, 55, (0.5, 1.0)), (2.6, -3.2, 1.0, 0.2, 45, (0.55, 1.0)),
-                  (3.8, -3.1, 0.8, 0.2, 30, (0.6, 1.1)), (0.6, -2.7, 1.0, 0.2, 20, (0.4, 0.75)),
-                  # irregular mid-back band in front of the back line
-                  (-0.9, -2.2, 0.7, 0.3, 40, (0.6, 1.1)), (0.3, -2.4, 0.6, 0.3, 30, (0.45, 0.8)),
-                  (1.4, -2.3, 0.7, 0.3, 30, (0.35, 0.65)), (2.4, -2.0, 0.5, 0.3, 22, (0.35, 0.6)),
-                  (3.4, -2.2, 0.7, 0.3, 30, (0.45, 0.8)), (-0.2, -1.9, 0.4, 0.2, 14, (0.3, 0.55))]
-        # A few stem-plant characters, assigned per bush, so the background
-        # reads as several plant masses rather than one uniform field.
+        # Background masses, composed like an aquascaper would: each mass is
+        # a set of sub-clumps (one plant character per clump, similar heights
+        # inside a clump), with a strong height hierarchy that follows the
+        # composition (tallest behind the hardscape, falling to the right)
+        # and deliberate gaps.
         kinds = [
-            dict(leaf_len=0.07, per_whorl=4, width_ratio=0.2, top=(1.25, 1.15, 0.7), base=(0.7, 0.85, 0.65)),
-            dict(leaf_len=0.11, per_whorl=2, width_ratio=0.3, top=(1.05, 1.2, 0.8), base=(0.65, 0.8, 0.6)),
-            dict(leaf_len=0.06, per_whorl=3, width_ratio=0.25, top=(1.45, 0.85, 0.65), base=(0.75, 0.8, 0.6)),
-            dict(leaf_len=0.09, per_whorl=3, width_ratio=0.16, top=(0.9, 1.1, 0.75), base=(0.5, 0.65, 0.5)),
+            dict(leaf_len=0.095, per_whorl=4, width_ratio=0.2, top=(1.25, 1.15, 0.7), base=(0.7, 0.85, 0.65)),
+            dict(leaf_len=0.14, per_whorl=2, width_ratio=0.3, top=(1.05, 1.2, 0.8), base=(0.65, 0.8, 0.6)),
+            dict(leaf_len=0.085, per_whorl=3, width_ratio=0.25, top=(1.45, 0.85, 0.65), base=(0.75, 0.8, 0.6)),
+            dict(leaf_len=0.12, per_whorl=3, width_ratio=0.16, top=(0.9, 1.1, 0.75), base=(0.5, 0.65, 0.5)),
         ]
-        for index, (gx, gz, rx, rz, count, heights) in enumerate(groups):
-            kind = kinds[(index * 7 + 3) % len(kinds)]
-            for _ in range(int(count * 2 * density)):
-                x, z = gx + RNG.gauss(0, rx * 0.5), gz + RNG.gauss(0, rz * 0.5)
-                dome = max(0.35, 1 - 0.55 * (abs(x - gx) / max(rx, 1e-3)) ** 1.5)
-                h = RNG.uniform(*heights) * dome
-                lean = (RNG.gauss(0.05, 0.08), RNG.gauss(0, 0.05))
-                shade = RNG.uniform(0.75, 1.1)
-                stem_plant(bm, layer, x, z, max(0.3, h), lean, tuple(c * shade for c in kind['top']),
-                           tuple(c * shade for c in kind['base']), leaf_len=kind['leaf_len'] * RNG.uniform(0.85, 1.15),
-                           per_whorl=kind['per_whorl'], width_ratio=kind['width_ratio'])
+        masses = [
+            # centre x, z, half width, peak height, sub-clumps, preferred kinds
+            (-2.55, -2.35, 1.1, 2.9, 11, (0, 3, 0)),
+            (-1.25, -2.65, 0.8, 2.1, 7, (2, 0)),
+            (-0.15, -2.95, 0.6, 1.35, 5, (1, 3)),
+            (1.75, -2.9, 0.55, 0.95, 4, (3, 1)),
+            (3.3, -2.55, 0.8, 1.6, 6, (0, 2)),
+            (-3.7, -1.75, 0.35, 1.3, 3, (3,)),
+            (-1.9, -1.7, 0.5, 1.15, 4, (1, 2)),
+            # low, broken back layer: darkness and haze do the rest
+            (0.75, -3.3, 1.4, 0.55, 6, (3, 1)), (2.6, -3.35, 1.2, 0.5, 5, (1,)), (-4.4, -3.2, 0.9, 1.4, 4, (0,)),
+            (4.6, -3.1, 0.9, 1.1, 4, (3,)),
+        ]
+        for mx, mz, half, peak, clumps, kind_ids in masses:
+            for c in range(int(clumps * 2.2 * density + 0.5)):
+                cx = mx + RNG.uniform(-half, half)
+                cz = mz + RNG.gauss(0, 0.18)
+                dome = max(0.3, 1 - (abs(cx - mx) / half) ** 1.6 * 0.6)
+                clump_h = peak * dome * RNG.uniform(0.7, 1.08)
+                kind = kinds[kind_ids[c % len(kind_ids)]]
+                shade = RNG.uniform(0.7, 1.1)
+                for _ in range(RNG.randint(10, 18)):
+                    x, z = cx + RNG.gauss(0, 0.1), cz + RNG.gauss(0, 0.08)
+                    lean = (RNG.gauss(0.04, 0.06), RNG.gauss(0, 0.04))
+                    stem_plant(bm, layer, x, z, max(0.25, clump_h * RNG.uniform(0.82, 1.04)), lean,
+                               tuple(c * shade for c in kind['top']), tuple(c * shade for c in kind['base']),
+                               leaf_len=kind['leaf_len'] * RNG.uniform(0.9, 1.1), per_whorl=kind['per_whorl'],
+                               width_ratio=kind['width_ratio'])
     objects.append(plant_object('stems', stems, stem_mat))
 
     def vallis(bm, layer):
-        # Tall soft ribbons at the back right and back left corner.
-        for gx, gz, spread, count, heights in ((3.35, -2.9, 0.5, 30, (2.2, 3.5)), (2.45, -3.15, 0.35, 16, (1.5, 2.6)),
-                                               (3.9, -2.5, 0.3, 12, (1.8, 2.8)), (-2.6, -3.05, 0.4, 16, (1.6, 2.5))):
-            for _ in range(int(count * density)):
-                x, z = gx + RNG.gauss(0, spread * 0.5), gz + RNG.gauss(0, 0.18)
-                vallis_ribbon(bm, layer, x, z, RNG.uniform(*heights), RNG.uniform(0.045, 0.07),
-                              (RNG.gauss(0.38, 0.14), 0.0), jitter_tint((0.9, 1.0, 0.85), 0.1))
+        # Ribbons in several clumps at different depths and heights, woven
+        # into the stem masses instead of one isolated clump.
+        clumps = [(3.05, -2.35, 14, (1.8, 2.8)), (3.85, -2.05, 8, (1.1, 1.9)), (2.35, -2.95, 9, (2.1, 3.0)),
+                  (4.4, -2.9, 8, (2.2, 3.2)), (-3.35, -2.95, 9, (1.9, 2.7)), (-1.7, -3.1, 5, (2.0, 2.6))]
+        for cx, cz, count, heights in clumps:
+            for _ in range(int(count * 1.6 * density + 0.5)):
+                x, z = cx + RNG.gauss(0, 0.13), cz + RNG.gauss(0, 0.1)
+                vallis_ribbon(bm, layer, x, z, RNG.uniform(*heights), RNG.uniform(0.04, 0.065),
+                              (RNG.gauss(0.34, 0.12), 0.0), jitter_tint((0.85, 1.0, 0.85), 0.12))
     objects.append(plant_object('ribbons', vallis, vallis_mat))
     return objects
 
@@ -1278,7 +1299,7 @@ def build_water_volume():
     tree = material.node_tree
     tree.nodes.remove(tree.nodes['Principled BSDF'])
     volume = tree.nodes.new('ShaderNodeVolumePrincipled')
-    volume.inputs['Color'].default_value = (0.16, 0.4, 0.4, 1)
+    volume.inputs['Color'].default_value = (0.12, 0.33, 0.34, 1)
     volume.inputs['Density'].default_value = 0.075
     volume.inputs['Anisotropy'].default_value = 0.55
     volume.inputs['Absorption Color'].default_value = (0.55, 0.82, 0.8, 1)
@@ -1289,8 +1310,8 @@ def build_water_volume():
 
 def build_lights():
     sun = bpy.data.lights.new('aquarium-lamp', 'SUN')
-    sun.color = (1.0, 0.9, 0.76)
-    sun.energy = 6.0
+    sun.color = (0.86, 0.94, 1.0)
+    sun.energy = 2.4
     sun.angle = math.radians(4)
     obj = link(bpy.data.objects.new('aquarium-lamp', sun))
     # From above, a little from the upper left and the front.
@@ -1332,9 +1353,22 @@ def build_lights():
     sheet.visible_camera = False
     try_set(sheet, 'visible_diffuse', False)
     try_set(sheet, 'visible_glossy', False)
+    # Hero key: a warm, soft light from the upper left that falls on the
+    # hardscape and fades through the centre into the deep open water.
+    key = bpy.data.lights.new('hero-key', 'SPOT')
+    key.color = (1.0, 0.8, 0.58)
+    key.energy = 11000
+    key.spot_size = math.radians(42)
+    key.spot_blend = 1.0
+    try_set(key, 'shadow_soft_size', 0.45)
+    try_set(key, 'volume_factor', 0.55)
+    key_obj = link(bpy.data.objects.new('hero-key', key))
+    key_obj.location = B(-3.9, 3.9, 2.2)
+    aim = (B(-1.9, -0.55, -0.7) - key_obj.location).normalized()
+    key_obj.rotation_euler = aim.to_track_quat('-Z', 'Y').to_euler()
     # Soft cool fill from the front so the hardscape never goes pitch black.
     fill = bpy.data.lights.new('fill', 'AREA')
-    fill.energy = 45
+    fill.energy = 28
     fill.color = (0.55, 0.8, 0.85)
     fill.size = 8
     fill_obj = link(bpy.data.objects.new('fill', fill))
@@ -1348,15 +1382,15 @@ def build_back_fog():
     bm = bmesh.new()
     bmesh.ops.create_cube(bm, size=1.0)
     obj = mesh_object('back-fog', bm)
-    obj.scale = (16, 2.4, 6)
-    obj.location = B(0, 0.8, -2.55)
+    obj.scale = (30, 7.4, 8)
+    obj.location = B(0, 1.0, -6.2)
     material = bpy.data.materials.new('back-fog')
     material.use_nodes = True
     tree = material.node_tree
     tree.nodes.remove(tree.nodes['Principled BSDF'])
     volume = tree.nodes.new('ShaderNodeVolumePrincipled')
-    volume.inputs['Color'].default_value = (0.12, 0.33, 0.34, 1)
-    volume.inputs['Density'].default_value = 0.16
+    volume.inputs['Color'].default_value = (0.055, 0.17, 0.18, 1)
+    volume.inputs['Density'].default_value = 0.2
     volume.inputs['Anisotropy'].default_value = 0.4
     volume.inputs['Absorption Color'].default_value = (0.5, 0.8, 0.78, 1)
     tree.links.new(volume.outputs['Volume'], tree.nodes['Material Output'].inputs['Volume'])
@@ -1369,10 +1403,10 @@ def build_back_wall():
     bm = bmesh.new()
     bmesh.ops.create_grid(bm, x_segments=1, y_segments=1, size=1)
     wall = mesh_object('back-wall', bm)
-    wall.scale = (9, 5, 1)
-    wall.location = B(0, 1.2, -3.5)
+    wall.scale = (30, 12, 1)
+    wall.location = B(0, 1.2, -10.2)
     wall.rotation_euler = (math.radians(90), 0, 0)
-    material, bsdf = principled('back-film', (0.004, 0.012, 0.014), 0.9)
+    material, bsdf = principled('back-film', (0.006, 0.02, 0.022), 0.95)
     wall.data.materials.append(material)
     return wall
 
@@ -1410,7 +1444,7 @@ def build_shafts():
     tree.links.new(soft.outputs[0], fade.inputs[1])
     strength = tree.nodes.new('ShaderNodeMath')
     strength.operation = 'MULTIPLY'
-    strength.inputs[1].default_value = 0.13
+    strength.inputs[1].default_value = 0.1
     tree.links.new(fade.outputs[0], strength.inputs[0])
     emission = tree.nodes.new('ShaderNodeEmission')
     emission.inputs['Color'].default_value = (0.75, 0.9, 0.8, 1)
@@ -1420,7 +1454,7 @@ def build_shafts():
     tree.links.new(emission.outputs['Emission'], add.inputs[0])
     tree.links.new(transparent.outputs['BSDF'], add.inputs[1])
     tree.links.new(add.outputs['Shader'], tree.nodes['Material Output'].inputs['Surface'])
-    shafts = [(-2.2, -1.6, 0.9, 1.0), (-0.9, -1.9, 0.55, 0.7), (0.5, -2.1, 1.1, 0.8), (1.9, -2.3, 0.5, 0.5)]
+    shafts = [(-2.6, -1.5, 0.9, 1.0), (-1.4, -1.8, 0.6, 0.8), (-0.3, -2.1, 0.8, 0.6)]
     for index, (x, z, width, strength_scale) in enumerate(shafts):
         bm = bmesh.new()
         uv = bm.loops.layers.uv.new('UVMap')
@@ -1454,6 +1488,48 @@ def build_particles(count=70):
     bsdf.inputs['Alpha'].default_value = 0.35
     obj.data.materials.append(material)
     return obj
+
+
+def build_hero_fish(directory):
+    """The approved Hero Fish (Pass 1B), exported as a static pose from the
+    runtime module, placed at realistic desktop scale. Scale reference only."""
+    folder = pathlib.Path(directory)
+    before = set(bpy.data.objects)
+    for name in ('fish_body.obj', 'fish_fins.obj'):
+        bpy.ops.wm.obj_import(filepath=str(folder / name))
+    parts = {obj.name.split('.')[0]: obj for obj in set(bpy.data.objects) - before}
+    body_mat, body = principled('hero-fish-body', (0.6, 0.6, 0.6), 0.32)
+    tex = body_mat.node_tree.nodes.new('ShaderNodeTexImage')
+    tex.image = image(folder / 'fish_body.png')
+    body_mat.node_tree.links.new(tex.outputs['Color'], body.inputs['Base Color'])
+    body.inputs['Metallic'].default_value = 0.35
+    body.inputs['Coat Weight'].default_value = 0.35
+    try_set(body.inputs.get('Thin Film Thickness'), 'default_value', 380.0)
+    eye_mat, eye = principled('hero-fish-eye', (0.012, 0.012, 0.014), 0.15)
+    eye.inputs['Coat Weight'].default_value = 1.0
+    fin_mat, fin = principled('hero-fish-fin', (0.8, 0.4, 0.3), 0.45)
+    try_set(fin_mat, 'surface_render_method', 'DITHERED')
+    fin_tex = fin_mat.node_tree.nodes.new('ShaderNodeTexImage')
+    fin_tex.image = image(folder / 'fish_fin.png')
+    fin_mat.node_tree.links.new(fin_tex.outputs['Color'], fin.inputs['Base Color'])
+    fin_mat.node_tree.links.new(fin_tex.outputs['Alpha'], fin.inputs['Alpha'])
+    for key, material in (('fish_body', body_mat), ('fish_eye', eye_mat), ('fish_fins', fin_mat)):
+        if key in parts:
+            parts[key].data.materials.clear()
+            parts[key].data.materials.append(material)
+    templates = [obj for obj in parts.values() if obj.type == 'MESH']
+    # Three fish in the open water, heading toward the hardscape.
+    placements = [(0.95, 0.3, 0.35, 195), (1.7, 0.55, -0.1, 170), (1.35, 0.05, 0.05, 185)]
+    scale = 0.75
+    for index, (x, y, z, yaw) in enumerate(placements):
+        for template in templates:
+            copy = template if index == 0 else template.copy()
+            if index:
+                link(copy)
+            copy.location = B(x, y, z)
+            # The OBJ importer's Y-up -> Z-up conversion lives in the object rotation.
+            copy.rotation_euler = (math.radians(90), 0, math.radians(yaw))
+            copy.scale = (scale, scale, scale)
 
 
 def build_fish():
@@ -1538,6 +1614,8 @@ def main():
     build_particles()
     if ARGS.fish:
         build_fish()
+    if ARGS.hero_fish:
+        build_hero_fish(ARGS.hero_fish)
     if CLAY:
         apply_clay([o for o in bpy.context.scene.objects])
     configure_render()
