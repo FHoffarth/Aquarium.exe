@@ -15,33 +15,34 @@ export const PIVOT = 0.3;          // s of the swimming pivot (instance origin)
 
 // Stations: s, dorsal half-depth, ventral half-depth, half-width,
 // dorsal fullness exponent, ventral fullness exponent (2 = ellipse,
-// < 2 pinched keel, > 2 fuller). Silver tetra/rasbora proportions:
-// greatest depth ~0.3 SL just behind the head, head ~0.26 SL, thin peduncle.
+// < 2 pinched keel, > 2 fuller). Slender tetra/rasbora proportions:
+// greatest depth ~0.2 SL over the forward trunk, a small head with a fine
+// snout, a shallow belly line and a long, gradual taper into a thin peduncle.
 const STATIONS = [
   [0.000, 0.000, 0.000, 0.000, 2.0, 2.0],
-  [0.006, 0.017, 0.013, 0.012, 2.0, 2.0],
-  [0.025, 0.034, 0.028, 0.022, 2.0, 2.0],
-  [0.045, 0.047, 0.042, 0.03, 2.0, 2.1],
-  [0.070, 0.063, 0.058, 0.034, 2.0, 2.2],
-  [0.110, 0.087, 0.084, 0.042, 1.95, 2.3],
-  [0.160, 0.110, 0.110, 0.048, 1.9, 2.35],
-  [0.215, 0.127, 0.132, 0.053, 1.9, 2.35],
-  [0.250, 0.135, 0.142, 0.054, 1.85, 2.2],
-  [0.320, 0.145, 0.153, 0.056, 1.8, 2.15],
-  [0.400, 0.146, 0.154, 0.055, 1.8, 2.1],
-  [0.480, 0.138, 0.143, 0.051, 1.8, 2.05],
-  [0.570, 0.121, 0.122, 0.045, 1.8, 2.0],
-  [0.660, 0.098, 0.095, 0.037, 1.85, 2.0],
-  [0.750, 0.074, 0.068, 0.028, 1.9, 1.95],
-  [0.830, 0.055, 0.050, 0.020, 1.9, 1.9],
-  [0.890, 0.046, 0.042, 0.015, 1.9, 1.9],
-  [0.940, 0.047, 0.043, 0.012, 1.9, 1.9],
-  [0.975, 0.053, 0.049, 0.009, 1.9, 1.9],
-  [1.000, 0.057, 0.053, 0.006, 1.9, 1.9],
+  [0.006, 0.012, 0.009, 0.009, 2.0, 2.0],
+  [0.025, 0.025, 0.020, 0.016, 2.0, 2.0],
+  [0.050, 0.037, 0.030, 0.022, 2.0, 2.0],
+  [0.080, 0.049, 0.041, 0.027, 2.0, 2.0],
+  [0.120, 0.064, 0.052, 0.031, 1.95, 2.0],
+  [0.170, 0.081, 0.063, 0.035, 1.9, 2.0],
+  [0.230, 0.096, 0.073, 0.039, 1.9, 2.0],
+  [0.300, 0.108, 0.082, 0.041, 1.85, 1.95],
+  [0.370, 0.114, 0.086, 0.042, 1.85, 1.95],
+  [0.440, 0.112, 0.084, 0.041, 1.85, 1.95],
+  [0.520, 0.102, 0.077, 0.037, 1.85, 1.95],
+  [0.610, 0.086, 0.065, 0.032, 1.85, 1.95],
+  [0.700, 0.067, 0.052, 0.026, 1.9, 1.9],
+  [0.780, 0.053, 0.041, 0.020, 1.9, 1.9],
+  [0.850, 0.042, 0.034, 0.015, 1.9, 1.9],
+  [0.900, 0.036, 0.030, 0.012, 1.9, 1.9],
+  [0.945, 0.037, 0.032, 0.010, 1.9, 1.9],
+  [0.975, 0.042, 0.037, 0.008, 1.9, 1.9],
+  [1.000, 0.047, 0.041, 0.006, 1.9, 1.9],
 ];
 
-const EYE = { s: 0.104, lift: 0.024, radius: 0.034, bulge: 0.3 };
-const OPERCLE = { s: 0.238, bow: 0.03 };
+const EYE = { s: 0.1, lift: 0.017, radius: 0.027, bulge: 0.3 };
+const OPERCLE = { s: 0.215, bow: 0.024 };
 const BODY_RINGS = 57;
 const BODY_SEGMENTS = 28;
 
@@ -90,7 +91,7 @@ export function station(s) {
   const bottom = Math.max(0, channel(2));
   // Terminal, slightly upturned mouth; a faint dorsal arch over the trunk.
   const center = (top - bottom) * 0.5
-    + 0.011 * (1 - smoothstep(0, 0.07, x))
+    + 0.008 * (1 - smoothstep(0, 0.07, x))
     + 0.004 * gauss(x, 0.42, 0.25);
   return {
     top,
@@ -121,7 +122,7 @@ function lateral(s, y, p, up) {
   let z = p.width;
   // Opercle: a slight lip at the gill-cover edge, bowed back top and bottom.
   const edge = OPERCLE.s + OPERCLE.bow * (up * up);
-  z *= 1 + 0.022 * gauss(s, edge - 0.008, 0.014) - 0.012 * gauss(s, edge + 0.014, 0.014);
+  z *= 1 + 0.012 * gauss(s, edge - 0.008, 0.016) - 0.006 * gauss(s, edge + 0.014, 0.016);
   // Mouth cleft: a shallow groove from the snout tip back along the jaw line.
   const cleftY = p.center - 0.004;
   z *= 1 - 0.28 * gauss(y, cleftY, 0.006) * (1 - smoothstep(0.02, 0.05, s)) * smoothstep(0.0, 0.01, s);
@@ -292,17 +293,17 @@ function addFins(builder) {
     let edge;
     if (u < 0.5) {
       const t = u / 0.5;
-      edge = [mix(1.33, 1.165, t ** 0.7), mix(0.178, 0.012, t) + 0.012 * Math.sin(Math.PI * t), 0];
+      edge = [mix(1.355, 1.14, t ** 0.75), mix(0.158, 0.008, t) + 0.014 * Math.sin(Math.PI * t), 0];
     } else {
       const t = (u - 0.5) / 0.5;
-      edge = [mix(1.165, 1.32, t ** 1.4), mix(-0.01, -0.17, t) - 0.012 * Math.sin(Math.PI * t), 0];
+      edge = [mix(1.14, 1.345, t ** 1.33), mix(-0.004, -0.15, t) - 0.014 * Math.sin(Math.PI * t), 0];
     }
     return { base, edge };
   });
   // Dorsal: origin just behind greatest depth, tall leading rays, swept back.
   addFin(builder, PART.dorsal, 10, 5, u => {
     const s = mix(0.425, 0.53, u);
-    const height = mix(0.148, 0.028, u ** 0.75);
+    const height = mix(0.122, 0.022, u ** 0.75);
     return {
       base: [s, dorsalY(s) - sink, 0],
       edge: [s + mix(0.07, 0.085, u), dorsalY(s) + height, 0],
@@ -319,7 +320,7 @@ function addFins(builder) {
   // Anal: long tetra anal fin, deepest anteriorly.
   addFin(builder, PART.anal, 13, 5, u => {
     const s = mix(0.6, 0.868, u);
-    const depth = mix(0.1, 0.024, u ** 0.85);
+    const depth = mix(0.072, 0.018, u ** 0.85);
     return {
       base: [s, ventralY(s) + sink, 0],
       edge: [s + 0.05, ventralY(s) - depth, 0],
@@ -333,7 +334,7 @@ function addFins(builder) {
       const p = station(s);
       const y = p.center - p.bottom * 0.84;
       const z = side * p.width * 0.42;
-      return { base: [s, y, z], edge: [s + 0.1, y - 0.04, z + side * 0.022] };
+      return { base: [s, y, z], edge: [s + 0.075, y - 0.028, z + side * 0.016] };
     });
     addFin(builder, pectoral, 6, 4, u => {
       const s = mix(OPERCLE.s + 0.004, OPERCLE.s + 0.036, u);
@@ -342,7 +343,7 @@ function addFins(builder) {
       const z = side * p.width * 0.9;
       return {
         base: [s, y, z],
-        edge: [s + mix(0.13, 0.1, u), y - mix(0.012, 0.045, u), z + side * 0.036],
+        edge: [s + mix(0.1, 0.078, u), y - mix(0.01, 0.034, u), z + side * 0.028],
       };
     });
   }
@@ -411,11 +412,11 @@ export function shadeBody(s, v) {
   else if (h > -0.25) color = mixRGB(flank, shoulder, smoothstep(-0.25, 0.22, h));
   else color = mixRGB(flank, belly, smoothstep(-0.3, -0.9, h));
   // Head: darker nape, pearl cheek, faint warm opercle.
-  const head = 1 - smoothstep(0.14, 0.27, s);
-  color = mixRGB(color, srgb(0x3f4845), head * smoothstep(0.35, 0.8, h) * 0.5);
+  const head = 1 - smoothstep(0.12, 0.25, s);
+  color = mixRGB(color, srgb(0x3f4845), head * smoothstep(0.35, 0.8, h) * 0.3);
   color = mixRGB(color, srgb(0xd8d0bd), head * smoothstep(0.25, -0.4, h) * 0.35);
   const opercle = gauss(s, OPERCLE.s + 0.03 * h * h, 0.008) * smoothstep(0.7, -0.2, h);
-  color = mixRGB(color, srgb(0x8c7f68), opercle * 0.2);
+  color = mixRGB(color, srgb(0x8c7f68), opercle * 0.12);
   // Teal band: mid-flank, strongest mid-body, fading at both ends.
   const bandCenter = 0.12 + 0.03 * Math.sin(s * 3);
   const along = smoothstep(0.24, 0.36, s) * smoothstep(0.93, 0.7, s);
@@ -662,6 +663,10 @@ const BODY_SCATTER = /* glsl */ `
       + vec3(0.05, 0.035, 0.025) * belly);
   }`;
 
+// The caudal carries the silhouette: a little denser than the other fins.
+const FIN_ALBEDO = /* glsl */ `
+  if (vFishPart > 9.5 && vFishPart < 10.5) diffuseColor.a = min(1.0, diffuseColor.a * 1.3);`;
+
 const FIN_SCATTER = /* glsl */ `
   float facing = abs(dot(normal, normalize(vViewPosition)));
   outgoingLight += diffuseColor.rgb * (0.14 + 0.24 * (1.0 - facing));`;
@@ -727,7 +732,7 @@ export function createSwimAnimator() {
     const hover = 1 - smoothstep(0.1, 0.35, speedRatio);
     const frequency = 0.8 + 2.3 * Math.min(1, speedRatio) + 1.8 * boost;
     state.phase = (state.phase + TAU * frequency * dt) % (TAU * 1000);
-    const amplitude = (0.09 + 0.2 * Math.min(1, speedRatio) + 0.16 * boost) * mix(1, 0.35, hover);
+    const amplitude = (0.08 + 0.17 * Math.min(1, speedRatio) + 0.14 * boost) * mix(1, 0.35, hover);
     const decel = dt > 0 ? (state.speed - speed) / dt : 0;
     state.speed = speed;
     state.brake += (clamp(decel * 2.5, 0, 1) - state.brake) * (1 - Math.exp(-5 * dt));
@@ -811,7 +816,7 @@ export function createHeroFishRenderer(scene, {
     side: THREE.DoubleSide,
     envMap: environment?.texture ?? null,
     envMapIntensity: 0.35,
-  }), { key: 'fins', effectUniforms, scatter: FIN_SCATTER });
+  }), { key: 'fins', effectUniforms, albedo: FIN_ALBEDO, scatter: FIN_SCATTER });
 
   const bodies = new THREE.InstancedMesh(geometry.body, bodyMaterial, capacity);
   const membranes = new THREE.InstancedMesh(geometry.fins, finMaterial, capacity);
@@ -893,7 +898,7 @@ export function readHeroFishConfig(locationLike) {
   return Object.freeze({
     enabled: params.get('heroFish') === '1',
     variant: params.get('heroVariant') === 'production' ? 'production' : 'hero',
-    scale: number('heroScale', 1.8, 0.25, 4),
+    scale: number('heroScale', 1, 0.25, 4),
     fishIndex: 2,
     studio: params.get('heroStudio') === '1',
     gait: GAITS.includes(params.get('heroGait')) ? params.get('heroGait') : 'auto',

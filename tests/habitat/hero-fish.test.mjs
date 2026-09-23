@@ -21,9 +21,13 @@ function allFinite(array) {
   return Array.prototype.every.call(array, Number.isFinite);
 }
 
-test('hero anatomy has a deep trunk, a thin caudal peduncle and a flared tail base', () => {
+test('hero anatomy is slender, peaks over the forward trunk and tapers into a thin peduncle', () => {
   const depth = s => station(s).top + station(s).bottom;
-  assert.ok(depth(0.4) > 0.28, 'deep body');
+  const peak = [0.1, 0.2, 0.3, 0.37, 0.45, 0.55, 0.7].reduce((best, s) => (depth(s) > depth(best) ? s : best));
+  assert.ok(depth(peak) > 0.17 && depth(peak) < 0.23, `slender body depth ${depth(peak)}`);
+  assert.ok(peak >= 0.3 && peak <= 0.45, `greatest depth over the forward trunk (${peak})`);
+  assert.ok(depth(0.1) < depth(peak) * 0.6, 'small head');
+  assert.ok(station(0.37).bottom < station(0.37).top, 'shallow belly line');
   assert.ok(depth(0.9) < depth(0.4) * 0.35, 'thin peduncle');
   assert.ok(depth(1) > depth(0.9), 'caudal base flares from the peduncle');
   assert.ok(station(0.9).width < station(0.4).width * 0.35, 'peduncle is laterally thin');
