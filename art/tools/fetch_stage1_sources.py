@@ -26,9 +26,16 @@ PH_DIR = ROOT / 'art' / 'source' / 'polyhaven'
 SF_DIR = ROOT / 'art' / 'source' / 'sketchfab'
 PROVENANCE = ROOT / 'art' / 'provenance' / 'stage1'
 USER_AGENT = 'Aquarium.exe asset acquisition (dev tooling)'
-RESOLUTION = '4k'     # look-dev; runtime textures will be baked down later
 
-POLYHAVEN_MODELS = ['rock_09', 'rock_07', 'boulder_01']
+POLYHAVEN_MODELS = {
+    # asset: resolution
+    'rock_09': '4k', 'rock_07': '4k', 'boulder_01': '4k',
+    # Added after Sketchfab proved login-gated (Epic Games account): login-free
+    # CC0 wood for the Stage 1 A/B (scanned-root reconstruction vs procedural
+    # root with scanned bark).
+    'single_root': '2k', 'root_cluster_02': '2k',
+}
+POLYHAVEN_TEXTURES = {'bark_willow_02': ('2k', ['Diffuse', 'nor_gl', 'arm'])}
 SKETCHFAB_MODELS = {
     # uid: short label (manual download by the project owner)
     '5fe23ea13be54e56b99325e2fb0bf681': 'decorative_driftwood_yelizegi',
@@ -68,15 +75,21 @@ def download(url, destination, expected_md5):
     return file_record(destination, url, expected_md5)
 
 
-def acquire_polyhaven(asset_id, today):
+def acquire_polyhaven(asset_id, today, resolution, texture_maps=None):
     info = fetch_json(f'https://api.polyhaven.com/info/{asset_id}')
     files = fetch_json(f'https://api.polyhaven.com/files/{asset_id}')
     (PROVENANCE / f'{asset_id}.info.json').write_text(json.dumps(info, indent=2) + '\n')
-    bundle = files['gltf'][RESOLUTION]['gltf']
     target = PH_DIR / asset_id
-    records = [download(bundle['url'], target / bundle['url'].rsplit('/', 1)[1], bundle['md5'])]
-    for relative, entry in bundle['include'].items():
-        records.append(download(entry['url'], target / relative, entry['md5']))
+    records = []
+    if texture_maps is None:
+        bundle = files['gltf'][resolution]['gltf']
+        records.append(download(bundle['url'], target / bundle['url'].rsplit('/', 1)[1], bundle['md5']))
+        for relative, entry in bundle['include'].items():
+            records.append(download(entry['url'], target / relative, entry['md5']))
+    else:
+        for map_name in texture_maps:
+            entry = files[map_name][resolution]['jpg']
+            records.append(download(entry['url'], target / 'textures' / entry['url'].rsplit('/', 1)[1], entry['md5']))
     print(f'{asset_id}: {len(records)} files, {sum(r["bytes"] for r in records) / 1e6:.1f} MB')
     return {
         'source': 'Poly Haven',
@@ -87,7 +100,7 @@ def acquire_polyhaven(asset_id, today):
         'licenseUrl': 'https://polyhaven.com/license',
         'attributionRequired': False,
         'dateAcquired': today,
-        'resolution': RESOLUTION,
+        'resolution': resolution,
         'sourcePolycount': info.get('polycount'),
         'files': records,
     }
@@ -124,9 +137,14 @@ def record_sketchfab(uid, label, today):
 def main():
     PROVENANCE.mkdir(parents=True, exist_ok=True)
     today = datetime.date.today().isoformat()
-    acquisitions = {asset_id: acquire_polyhaven(asset_id, today) for asset_id in POLYHAVEN_MODELS}
+    acquisitions = {asset_id: acquire_polyhaven(asset_id, today, resolution)
+                    for asset_id, resolution in POLYHAVEN_MODELS.items()}
+    for asset_id, (resolution, maps) in POLYHAVEN_TEXTURES.items():
+        acquisitions[asset_id] = acquire_polyhaven(asset_id, today, resolution, maps)
     for uid, label in SKETCHFAB_MODELS.items():
-        acquisitions[label] = record_sketchfab(uid, label, today)
+        record = record_sketchfab(uid, label, today)
+        record['status'] = 'not acquired: Sketchfab downloads require an Epic Games login (declined)'
+        acquisitions[label] = record
     (PROVENANCE / 'acquisitions.json').write_text(json.dumps(acquisitions, indent=2) + '\n')
 
 

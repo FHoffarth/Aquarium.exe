@@ -64,6 +64,10 @@ def parse_args():
     parser.add_argument('--root-sink', type=float, default=0.12, help='fraction of the root height below the surface')
     parser.add_argument('--camera', default='habitat', choices=['habitat', 'close'])
     parser.add_argument('--no-plants', action='store_true', help='hardscape only (no vegetation)')
+    parser.add_argument('--wood', default='procedural', choices=['procedural', 'scan-strips'],
+                        help='Stage 1 A: scan-strips = root ridges cut from Poly Haven root scans')
+    parser.add_argument('--bark', default='default', choices=['default', 'willow'],
+                        help='Stage 1 B: willow = Poly Haven bark_willow_02 + restrained weathering')
     return parser.parse_args(argv)
 
 
@@ -812,6 +816,227 @@ def build_scanned_root(path):
     log(f'root: {source_faces} source faces, {len(verts)} verts, {len(root.data.materials)} materials, '
         f'dims {dims.x:.2f} x {dims.y:.2f} x {dims.z:.2f}')
     return root
+
+
+def bark_willow_material():
+    """Stage 1 B: scanned bark (Poly Haven bark_willow_02, CC0) on the
+    procedural root, with restrained weathering: fibre-aligned cracks and
+    darker waterlogged tone. Same UVs as before (u around, v along grain)."""
+    material, bsdf = principled('driftwood-willow', (0.1, 0.07, 0.05), 0.75)
+    if CLAY:
+        return material
+    tree = material.node_tree
+    nodes, links = tree.nodes, tree.links
+    folder = SRC / 'bark_willow_02' / 'textures'
+    uv = nodes.new('ShaderNodeUVMap')
+    mapping = nodes.new('ShaderNodeMapping')
+    mapping.inputs['Scale'].default_value = (1.0, 0.8, 1.0)
+    links.new(uv.outputs['UV'], mapping.inputs['Vector'])
+
+    def tex(name, colorspace='sRGB'):
+        node = nodes.new('ShaderNodeTexImage')
+        node.image = image(folder / f'bark_willow_02_{name}_2k.jpg', colorspace)
+        links.new(mapping.outputs['Vector'], node.inputs['Vector'])
+        return node
+    diffuse, normal_tex, arm = tex('diff'), tex('nor_gl', 'Non-Color'), tex('arm', 'Non-Color')
+    # Cracks: stretched Voronoi edges following the grain.
+    crack_map = nodes.new('ShaderNodeMapping')
+    crack_map.inputs['Scale'].default_value = (6.0, 0.9, 1.0)
+    links.new(uv.outputs['UV'], crack_map.inputs['Vector'])
+    voronoi = nodes.new('ShaderNodeTexVoronoi')
+    voronoi.feature = 'DISTANCE_TO_EDGE'
+    voronoi.inputs['Scale'].default_value = 4.0
+    links.new(crack_map.outputs['Vector'], voronoi.inputs['Vector'])
+    crack = nodes.new('ShaderNodeMapRange')
+    crack.inputs['From Min'].default_value = 0.0
+    crack.inputs['From Max'].default_value = 0.035
+    crack.inputs['To Min'].default_value = 0.45
+    crack.inputs['To Max'].default_value = 1.0
+    links.new(voronoi.outputs['Distance'], crack.inputs['Value'])
+    grade = nodes.new('ShaderNodeHueSaturation')
+    grade.inputs['Saturation'].default_value = 0.8
+    grade.inputs['Value'].default_value = 0.42
+    links.new(diffuse.outputs['Color'], grade.inputs['Color'])
+    # Pale willow bark -> waterlogged driftwood brown (same target tone as
+    # the approved Pass 2 wood).
+    warm = nodes.new('ShaderNodeMix')
+    warm.data_type = 'RGBA'
+    warm.blend_type = 'MULTIPLY'
+    warm.inputs[0].default_value = 1.0
+    warm.inputs[7].default_value = (0.95, 0.72, 0.52, 1.0)
+    links.new(grade.outputs['Color'], warm.inputs[6])
+    grade = warm
+    darken = nodes.new('ShaderNodeMix')
+    darken.data_type = 'RGBA'
+    darken.blend_type = 'MULTIPLY'
+    darken.inputs[0].default_value = 1.0
+    links.new(grade.outputs[2] if grade.bl_idname == 'ShaderNodeMix' else grade.outputs['Color'], darken.inputs[6])
+    links.new(crack.outputs['Result'], darken.inputs[7])
+    links.new(darken.outputs[2], bsdf.inputs['Base Color'])
+    separate = nodes.new('ShaderNodeSeparateColor')
+    links.new(arm.outputs['Color'], separate.inputs['Color'])
+    links.new(separate.outputs['Green'], bsdf.inputs['Roughness'])
+    normal_map = nodes.new('ShaderNodeNormalMap')
+    normal_map.inputs['Strength'].default_value = 1.3
+    links.new(normal_tex.outputs['Color'], normal_map.inputs['Color'])
+    bump = nodes.new('ShaderNodeBump')
+    bump.inputs['Strength'].default_value = 0.4
+    links.new(crack.outputs['Result'], bump.inputs['Height'])
+    links.new(normal_map.outputs['Normal'], bump.inputs['Normal'])
+    links.new(bump.outputs['Normal'], bsdf.inputs['Normal'])
+    add_caustics(material, 0.4)
+    return material
+
+
+def extract_root_strips(obj, lift=0.012, cell=0.05, min_length=0.18):
+    """Cut the raised root ridges out of a Poly Haven ground-patch scan:
+    faces whose vertices sit more than `lift` above the local soil level."""
+    import bmesh as _bm
+    mesh = obj.data
+    coords = [v.co.copy() for v in mesh.vertices]
+    cells = {}
+    for co in coords:
+        cells.setdefault((int(co.x // cell), int(co.y // cell)), []).append(co.z)
+    ground = {}
+    for (cx, cy) in cells:
+        zs = []
+        for dx in (-2, -1, 0, 1, 2):
+            for dy in (-2, -1, 0, 1, 2):
+                zs.extend(cells.get((cx + dx, cy + dy), []))
+        zs.sort()
+        ground[(cx, cy)] = zs[len(zs) // 5]
+    raised = [co.z - ground[(int(co.x // cell), int(co.y // cell))] > lift for co in coords]
+    bm = _bm.new()
+    bm.from_mesh(mesh)
+    doomed = [f for f in bm.faces if not all(raised[v.index] for v in f.verts)]
+    _bm.ops.delete(bm, geom=doomed, context='FACES')
+    # Connected components (pure bmesh; no edit-mode operators).
+    bm.faces.ensure_lookup_table()
+    seen = set()
+    strips = []
+    for face in bm.faces:
+        if face.index in seen:
+            continue
+        stack, component = [face], []
+        seen.add(face.index)
+        while stack:
+            current = stack.pop()
+            component.append(current)
+            for edge in current.edges:
+                for other in edge.link_faces:
+                    if other.index not in seen:
+                        seen.add(other.index)
+                        stack.append(other)
+        if len(component) < 200:
+            continue
+        part = _bm.new()
+        uv_src = bm.loops.layers.uv.active
+        uv_dst = part.loops.layers.uv.new('UVMap') if uv_src else None
+        remap = {}
+        for f in component:
+            verts = []
+            for v in f.verts:
+                if v.index not in remap:
+                    remap[v.index] = part.verts.new(v.co)
+                verts.append(remap[v.index])
+            try:
+                nf = part.faces.new(verts)
+            except ValueError:
+                continue
+            nf.smooth = True
+            if uv_src:
+                for dst, src in zip(nf.loops, f.loops):
+                    dst[uv_dst].uv = src[uv_src].uv
+        new_mesh = bpy.data.meshes.new(f'{obj.name}-strip')
+        part.to_mesh(new_mesh)
+        part.free()
+        for material in mesh.materials:
+            new_mesh.materials.append(material)
+        strip = link(bpy.data.objects.new(f'{obj.name}-strip', new_mesh))
+        if max(strip.dimensions.x, strip.dimensions.y) >= min_length:
+            strips.append(strip)
+        else:
+            bpy.data.objects.remove(strip)
+    bm.free()
+    bpy.data.objects.remove(obj)
+    return strips
+
+
+def align_strip_to_x(strip):
+    """Principal (long) axis of the strip onto +X, base end at the origin."""
+    verts = strip.data.vertices
+    xs = [v.co.x for v in verts]
+    ys = [v.co.y for v in verts]
+    if max(ys) - min(ys) > max(xs) - min(xs):
+        strip.data.transform(Matrix.Rotation(math.radians(90), 4, 'Z'))
+    xs = [v.co.x for v in verts]
+    cy = sum(v.co.y for v in verts) / len(verts)
+    zmin = min(v.co.z for v in verts)
+    strip.data.transform(Matrix.Translation(Vector((-min(xs), -cy, -zmin))))
+    return max(xs) - min(xs)
+
+
+def bend_strip_along(strip, spine, girth_scale):
+    """Minimal intervention: scale to the gesture length and bend along its
+    spine with a Curve modifier (no sculpting, no invented undersides)."""
+    length = align_strip_to_x(strip)
+    curve_length = sum((b - a).length for a, b in zip(spine, spine[1:]))
+    strip.data.transform(Matrix.Diagonal((curve_length / length, girth_scale, girth_scale, 1.0)))
+    curve_data = bpy.data.curves.new(f'{strip.name}-path', 'CURVE')
+    curve_data.dimensions = '3D'
+    spline = curve_data.splines.new('POLY')
+    spline.points.add(len(spine) - 1)
+    for point, co in zip(spline.points, spine):
+        point.co = (co.x, co.y, co.z, 1.0)
+    curve = link(bpy.data.objects.new(f'{strip.name}-path', curve_data))
+    modifier = strip.modifiers.new('bend', 'CURVE')
+    modifier.object = curve
+    modifier.deform_axis = 'POS_X'
+    depsgraph = bpy.context.evaluated_depsgraph_get()
+    mesh = bpy.data.meshes.new_from_object(strip.evaluated_get(depsgraph), depsgraph=depsgraph)
+    strip.modifiers.clear()
+    old = strip.data
+    strip.data = mesh
+    bpy.data.meshes.remove(old)
+    bpy.data.objects.remove(curve)
+    return strip
+
+
+def build_scan_strip_root():
+    """Stage 1 A: scanned root geometry recombined into the approved
+    three-gesture envelope with minimal intervention."""
+    sources = []
+    for asset in ('root_cluster_02', 'single_root'):
+        sources.extend(import_asset(asset).values())
+    source_faces = sum(len(o.data.polygons) for o in sources)
+    strips = []
+    for obj in sources:
+        strips.extend(extract_root_strips(obj))
+    strips.sort(key=lambda o: -max(o.dimensions.x, o.dimensions.y))
+    log(f'scan strips: {len(strips)} ridges from {source_faces} source faces; '
+        f'longest {max(strips[0].dimensions.x, strips[0].dimensions.y):.2f} m')
+    targets = []
+    for index, (points, base, tip) in enumerate(V['wood']):
+        spine = catmull([B(*p) for p in resolve(points, 0.22)], 24)
+        targets.append((spine, base * WOOD_GIRTH))
+        JOINTS.append(spine[0])
+    for points in V['roots']:
+        spine = catmull([B(*p) for p in resolve(points, 0.035)], 12)
+        targets.append((spine, 0.09))
+    parts = []
+    for (spine, radius), strip in zip(targets, strips):
+        width = min(strip.dimensions.x, strip.dimensions.y)
+        parts.append(bend_strip_along(strip, spine, (2 * radius) / max(width, 1e-3)))
+    for leftover in strips[len(targets):]:
+        bpy.data.objects.remove(leftover)
+    wood = join_meshes(parts)
+    wood.name = 'scan-strip-root'
+    for material in wood.data.materials:
+        grade_scan_material(material, 0.75, 0.6, 0.35)
+    knot_x, knot_z = V['knot']
+    HARDSCAPE_POINTS.append((knot_x, knot_z, 0.7))
+    log(f'scan-strip root: {len(wood.data.polygons)} faces in {len(parts)} bent ridges')
+    return wood
 
 
 def build_wood():
@@ -1725,12 +1950,16 @@ def main():
     rocks = build_rocks()
     if ARGS.root:
         wood = build_scanned_root(ARGS.root)
+    elif ARGS.wood == 'scan-strips':
+        wood = build_scan_strip_root()
     else:
         wood = build_wood()
-        wood.data.materials.append(bark_material())
+        wood.data.materials.append(bark_willow_material() if ARGS.bark == 'willow' else bark_material())
     substrate = build_substrate()
     substrate.data.materials.append(textured_ground_material())
+    RNG.seed(20260925)
     moss = build_moss(wood, rocks, int(1500 * ARGS.density))
+    RNG.seed(20260926)
     vegetation = [] if ARGS.no_plants else build_vegetation(rocks, wood)
     build_water_volume()
     build_back_wall()

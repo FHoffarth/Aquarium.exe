@@ -1,0 +1,57 @@
+{
+  "name": "Root Cluster 02",
+  "categories": [
+    "collection: verdant_trail",
+    "nature",
+    "ground cover"
+  ],
+  "type": 2,
+  "version_required": {
+    "blend": "4.0.1"
+  },
+  "tags": [
+    "roots",
+    "dead tree",
+    "forest",
+    "nature",
+    "natural",
+    "plant",
+    "ground",
+    "forest floor"
+  ],
+  "info": null,
+  "date_published": 1707177600,
+  "staging": null,
+  "max_resolution": [
+    8192,
+    8192
+  ],
+  "polycount": 339641,
+  "texel_density": 3670.209769735346,
+  "dimensions": [
+    2382.428765296936,
+    2705.4203748703003,
+    198.60657304525375
+  ],
+  "authors": {
+    "Jenelle van Heerden": "All"
+  },
+  "files_hash": "1e84dbee66939fe16d72046d655761b2b6d63288",
+  "description": "Free 8K model of a weathered dead-tree root cluster. High-detail modular forest-floor pieces for natural ground cover and scene dressing.",
+  "category_id": "177d78d5-2c9b-5c88-a3f9-751d49114c15",
+  "category": "Nature/Logs, Branches & Roots/Root Clusters",
+  "collections": [
+    "verdant_trail"
+  ],
+  "attributes": {
+    "condition": [
+      "weathered"
+    ],
+    "material": [
+      "wood"
+    ]
+  },
+  "img_version": "c6438b92",
+  "download_count": 3834,
+  "thumbnail_url": "https://cdn.polyhaven.com/asset_img/thumbs/root_cluster_02.png?width=256&height=256&v=c6438b92"
+}
