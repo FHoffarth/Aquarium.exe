@@ -66,6 +66,10 @@ def parse_args():
     parser.add_argument('--no-plants', action='store_true', help='hardscape only (no vegetation)')
     parser.add_argument('--wood', default='procedural', choices=['procedural', 'scan-strips'],
                         help='Stage 1 A: scan-strips = root ridges cut from Poly Haven root scans')
+    parser.add_argument('--plants', default='pass2', choices=['pass2', 'natural'],
+                        help='Stage 2: natural = photographed-leaf clusters, moss cushions, ribbons')
+    parser.add_argument('--stems', default='on', choices=['on', 'off'],
+                        help='Stage 2: background stem masses from LeafSet002 twigs')
     parser.add_argument('--bark', default='default', choices=['default', 'willow'],
                         help='Stage 1 B: willow = Poly Haven bark_willow_02 + restrained weathering')
     return parser.parse_args(argv)
@@ -1593,6 +1597,425 @@ def build_vegetation(rocks, wood):
 # Water, light, atmosphere
 # ==========================================================================
 
+# ==========================================================================
+# Stage 2: natural plant material study (photographed leaves as input)
+# ==========================================================================
+
+ACG = ROOT / 'art' / 'source' / 'ambientcg'
+LEAF_PROFILES = ROOT / 'art' / 'work' / 'stage2' / 'leaf_profiles.json'
+
+
+def acg_map(asset, kind):
+    path = ACG / asset / f'{asset}_2K-JPG_{kind}.jpg'
+    return path if path.exists() else None
+
+
+def leaf_material(asset, value, saturation, hue_shift=0.0, translucency=0.28, tint_attr='tint'):
+    """Photographed leaf: colour graded toward submerged dark green, opacity
+    clip at the leaf edge only, normal + roughness, thin-tissue translucency."""
+    material = bpy.data.materials.new(f'leaf-{asset}')
+    material.use_nodes = True
+    try_set(material, 'surface_render_method', 'DITHERED')
+    tree = material.node_tree
+    nodes, links = tree.nodes, tree.links
+    bsdf = nodes['Principled BSDF']
+    uv = nodes.new('ShaderNodeUVMap')
+
+    def tex(kind, colorspace='Non-Color'):
+        path = acg_map(asset, kind)
+        if path is None:
+            return None
+        node = nodes.new('ShaderNodeTexImage')
+        node.image = image(path, colorspace)
+        links.new(uv.outputs['UV'], node.inputs['Vector'])
+        return node
+    color = tex('Color', 'sRGB')
+    grade = nodes.new('ShaderNodeHueSaturation')
+    grade.inputs['Hue'].default_value = 0.5 + hue_shift
+    grade.inputs['Saturation'].default_value = saturation
+    grade.inputs['Value'].default_value = value
+    links.new(color.outputs['Color'], grade.inputs['Color'])
+    tint = nodes.new('ShaderNodeVertexColor')
+    tint.layer_name = tint_attr
+    shade = nodes.new('ShaderNodeMix')
+    shade.data_type = 'RGBA'
+    shade.blend_type = 'MULTIPLY'
+    shade.inputs[0].default_value = 1.0
+    links.new(grade.outputs['Color'], shade.inputs[6])
+    links.new(tint.outputs['Color'], shade.inputs[7])
+    links.new(shade.outputs[2], bsdf.inputs['Base Color'])
+    opacity = tex('Opacity')
+    if opacity is not None:
+        links.new(opacity.outputs['Color'], bsdf.inputs['Alpha'])
+    rough = tex('Roughness')
+    if rough is not None:
+        links.new(rough.outputs['Color'], bsdf.inputs['Roughness'])
+    normal = tex('NormalGL')
+    if normal is not None:
+        normal_map = nodes.new('ShaderNodeNormalMap')
+        normal_map.inputs['Strength'].default_value = 0.8
+        links.new(normal.outputs['Color'], normal_map.inputs['Color'])
+        links.new(normal_map.outputs['Normal'], bsdf.inputs['Normal'])
+    bsdf.inputs['Specular IOR Level'].default_value = 0.5
+    bsdf.inputs['Coat Weight'].default_value = 0.25
+    bsdf.inputs['Coat Roughness'].default_value = 0.3
+    translucent = nodes.new('ShaderNodeBsdfTranslucent')
+    links.new(shade.outputs[2], translucent.inputs['Color'])
+    mix = nodes.new('ShaderNodeMixShader')
+    mix.inputs['Fac'].default_value = translucency
+    links.new(bsdf.outputs['BSDF'], mix.inputs[1])
+    links.new(translucent.outputs['BSDF'], mix.inputs[2])
+    # keep alpha: transparent where the photo has no leaf
+    alpha_mix = nodes.new('ShaderNodeMixShader')
+    transparent = nodes.new('ShaderNodeBsdfTransparent')
+    if opacity is not None:
+        links.new(opacity.outputs['Color'], alpha_mix.inputs['Fac'])
+    else:
+        alpha_mix.inputs['Fac'].default_value = 1.0
+    links.new(transparent.outputs['BSDF'], alpha_mix.inputs[1])
+    links.new(mix.outputs['Shader'], alpha_mix.inputs[2])
+    links.new(alpha_mix.outputs['Shader'], nodes['Material Output'].inputs['Surface'])
+    add_caustics(material, 0.05)
+    return material
+
+
+def photo_leaf(bm, uv_layer, tint_layer, profile, base, direction, up_hint, length, width_scale=1.0,
+               arch=0.2, fold=0.12, twist=0.0, curl=0.0, tint=(1, 1, 1)):
+    """One photographed leaf as a tight strip: per-row left/centre/right
+    follow the photo's own outline, so only a thin alpha edge remains."""
+    direction = direction.normalized()
+    side = direction.cross(up_hint)
+    if side.length < 1e-5:
+        side = direction.orthogonal()
+    side.normalize()
+    up = side.cross(direction).normalized()
+    grid = []
+    for row in profile['rows']:
+        t = row['t']
+        half = row['half_width'] * length * width_scale
+        rot = twist * t
+        side_t = side * math.cos(rot) + up * math.sin(rot)
+        up_t = up * math.cos(rot) - side * math.sin(rot)
+        centre = base + direction * (length * t) + up * (-arch * length * t * t) + side * (curl * length * t * t)
+        verts = [bm.verts.new(centre - side_t * half + up_t * (half * fold)),
+                 bm.verts.new(centre + up_t * 0.0),
+                 bm.verts.new(centre + side_t * half + up_t * (half * fold))]
+        grid.append((verts, (row['left'], row['centre'], row['right'])))
+    color = (*tint, 1.0)
+    for (a, ua), (b, ub) in zip(grid, grid[1:]):
+        for c in range(2):
+            face = bm.faces.new((a[c], a[c + 1], b[c + 1], b[c]))
+            for loop, uvc in zip(face.loops, (ua[c], ua[c + 1], ub[c + 1], ub[c])):
+                loop[uv_layer].uv = uvc
+                loop[tint_layer] = color
+
+
+def natural_object(name, material):
+    bm = bmesh.new()
+    uv_layer = bm.loops.layers.uv.new('UVMap')
+    tint_layer = bm.loops.layers.float_color.new('tint')
+    return bm, uv_layer, tint_layer, (name, material)
+
+
+def finish_object(bm, meta):
+    name, material = meta
+    bm.normal_update()
+    obj = mesh_object(name, bm)
+    obj.data.materials.append(material)
+    log(f'{name}: {len(obj.data.polygons)} faces')
+    return obj
+
+
+def build_natural_plants(rocks, wood):
+    import json as _json
+    profiles = _json.loads(LEAF_PROFILES.read_text())
+    rng = random.Random(4242)
+    up = Vector((0, 0, 1))
+    objects = []
+
+    # ---- 1. broad / medium leaf mass (LeafSet022 main, LeafSet003 secondary)
+    broad = {'LeafSet022': natural_object('broad-leaves-022', leaf_material('LeafSet022', 0.32, 1.1, 0.035)),
+             'LeafSet003': natural_object('broad-leaves-003', leaf_material('LeafSet003', 0.28, 1.05, 0.04))}
+    camera = B(*CAMERA)
+    petioles = bmesh.new()
+    petiole_tint = petioles.loops.layers.float_color.new('tint')
+
+    def rosette(base, scale, leaves=None, spread=1.0):
+        count = leaves or rng.randint(8, 13)
+        for i in range(count):
+            asset = 'LeafSet022' if rng.random() < 0.7 else 'LeafSet003'
+            bm, uv_layer, tint_layer, _ = broad[asset]
+            profile = rng.choice(profiles[asset])
+            outer = rng.random() ** 0.7                       # size hierarchy: inner small, outer large
+            azimuth = rng.uniform(0, math.tau)
+            out = Vector((math.cos(azimuth), math.sin(azimuth), 0))
+            elevation = 0.95 - 0.6 * outer + rng.uniform(-0.12, 0.12)
+            petiole_dir = (out * spread * (0.3 + 0.7 * outer) + up * (0.6 + elevation)).normalized()
+            petiole_len = (0.04 + 0.1 * outer) * scale
+            start = base + petiole_dir * petiole_len
+            stem_strip(petioles, petiole_tint, [base, start], 0.01 * scale, (0.055, 0.1, 0.04))
+            leaf_dir = (out * (0.35 + 0.55 * outer) + up * (1.0 - 0.45 * outer) + Vector(
+                (rng.gauss(0, 0.15), rng.gauss(0, 0.15), 0))).normalized()
+            length = (0.2 + 0.26 * outer) * scale * rng.uniform(0.85, 1.15)
+            shade = rng.uniform(0.55, 1.0)
+            view = (camera - start).normalized()
+            face = (up + view * rng.uniform(0.6, 1.4)).normalized()
+            photo_leaf(bm, uv_layer, tint_layer, profile, start, leaf_dir, face, length,
+                       arch=rng.uniform(0.1, 0.35), fold=rng.uniform(0.05, 0.22), twist=rng.uniform(-0.5, 0.5),
+                       curl=rng.uniform(-0.08, 0.08), tint=(shade * 0.95, shade, shade * 0.95))
+
+    # Masses at the hardscape base and seams (the approved spots), with
+    # irregular sizes and occasional gaps.
+    spots = [(-2.35, 0.55, 1.1), (-1.6, 0.5, 1.0), (-2.8, 0.5, 0.9), (-1.3, 0.65, 0.8),
+             (-3.35, 0.4, 0.95), (-2.05, 0.7, 0.7), (-2.15, -0.2, 1.05), (-2.75, -0.35, 1.0),
+             (-1.35, -0.4, 0.85), (-3.45, -0.5, 0.9), (-2.25, -0.62, 0.95), (-2.7, -0.62, 0.85),
+             (-1.95, -0.4, 0.9), (-1.3, -0.7, 0.8), (-3.3, -0.85, 0.85), (-1.15, -1.0, 0.75),
+             (-0.75, 0.85, 0.55), (-0.45, 0.35, 0.5)]
+    for x, z, s_ in spots:
+        if rng.random() < 0.12:
+            continue                                            # a believable gap
+        for _ in range(rng.randint(2, 4)):
+            bx, bz = x + rng.gauss(0, 0.12), z + rng.gauss(0, 0.08)
+            rosette(B(bx, surface_y(bx, bz) - 0.01, bz), s_ * rng.uniform(0.75, 1.25))
+    # Epiphyte clusters on the stones and the wood seams (smaller).
+    for point, normal in sample_surfaces(rocks[:len(V['rocks'])], 18, lambda p: 1.0, min_up=0.4):
+        rosette(point, rng.uniform(0.45, 0.7), leaves=rng.randint(4, 7), spread=1.3)
+    for point, normal in sample_surfaces([wood], 10, lambda p: 0.2 + max(
+            (math.exp(-((p - j).length ** 2) / 0.1) for j in JOINTS), default=0.0), min_up=0.3):
+        rosette(point, rng.uniform(0.4, 0.6), leaves=rng.randint(3, 6), spread=1.4)
+    # small low groups breaking the clearing edge (where Pass 2 had crypts)
+    for cx, cz, n in [(0.35, 0.8, 1), (1.25, 0.25, 2), (0.75, -0.6, 2), (1.7, -0.1, 1)]:
+        for _ in range(n):
+            x, z = cx + rng.gauss(0, 0.1), cz + rng.gauss(0, 0.08)
+            rosette(B(x, surface_y(x, z) - 0.01, z), rng.uniform(0.5, 0.7), leaves=rng.randint(5, 8), spread=1.2)
+    for bm, _, _, meta in broad.values():
+        objects.append(finish_object(bm, meta))
+    petioles.normal_update()
+    petiole_obj = mesh_object('petioles', petioles)
+    petiole_obj.data.materials.append(plant_material('petiole', (0.05, 0.09, 0.035), 0.5, 0.2))
+    objects.append(petiole_obj)
+
+    # ---- 2. tall / background: ribbon blades (Foliage001 main, Foliage008)
+    ribbons = {'Foliage001': natural_object('ribbons-001', leaf_material('Foliage001', 0.8, 1.0, -0.01, 0.45)),
+               'Foliage008': natural_object('ribbons-008', leaf_material('Foliage008', 0.85, 1.0, -0.01, 0.45))}
+    clumps = [(3.05, -2.35, 14, (1.8, 2.8)), (3.85, -2.05, 8, (1.1, 1.9)), (2.35, -2.95, 9, (2.1, 3.0)),
+              (4.4, -2.9, 8, (2.2, 3.2)), (-3.35, -2.95, 9, (1.9, 2.7)), (-1.7, -3.1, 5, (2.0, 2.6)),
+              (-2.6, -2.5, 7, (1.4, 2.2)), (0.4, -3.2, 5, (1.2, 1.8))]
+    for cx, cz, count, heights in clumps:
+        for _ in range(count):
+            asset = 'Foliage001' if rng.random() < 0.7 else 'Foliage008'
+            bm, uv_layer, tint_layer, _ = ribbons[asset]
+            x, z = cx + rng.gauss(0, 0.13), cz + rng.gauss(0, 0.1)
+            base = B(x, surface_y(x, z) - 0.02, z)
+            height = rng.uniform(*heights)
+            lean = Vector((rng.gauss(0.35, 0.12), rng.gauss(0, 0.05), 1.0)).normalized()
+            shade = rng.uniform(0.7, 1.05)
+            photo_leaf(bm, uv_layer, tint_layer, rng.choice(profiles[asset]), base, lean, Vector((0, 1, 0)),
+                       height, width_scale=0.8, arch=-0.12, fold=0.0, twist=rng.uniform(-0.5, 0.5),
+                       curl=rng.uniform(0.1, 0.35), tint=(shade, shade, shade))
+    for bm, _, _, meta in ribbons.values():
+        objects.append(finish_object(bm, meta))
+
+    # ---- 2b. background stem masses from LeafSet002 twigs (evaluated, may be rejected)
+    if ARGS.stems == 'on':
+        stems_bm = natural_object('stems-002', leaf_material('LeafSet002', 0.5, 0.95, 0.0, 0.35))
+        bm, uv_layer, tint_layer, meta = stems_bm
+        masses = [(-2.55, -2.35, 1.1, 2.4, 9), (-1.25, -2.65, 0.8, 1.8, 6), (-0.15, -2.95, 0.6, 1.2, 4),
+                  (1.75, -2.9, 0.55, 0.9, 3), (3.3, -2.55, 0.8, 1.4, 5), (-1.9, -1.7, 0.5, 1.0, 3)]
+        facing = B(*CAMERA)
+        for mx, mz, half, peak, clumps_n in masses:
+            for _ in range(clumps_n):
+                cx, cz = mx + rng.uniform(-half, half), mz + rng.gauss(0, 0.18)
+                dome = max(0.3, 1 - (abs(cx - mx) / half) ** 1.6 * 0.6)
+                for _ in range(rng.randint(5, 9)):
+                    x, z = cx + rng.gauss(0, 0.09), cz + rng.gauss(0, 0.07)
+                    height = peak * dome * rng.uniform(0.7, 1.05)
+                    position = B(x, surface_y(x, z) - 0.02, z)
+                    segments = max(2, int(height / 0.28))
+                    direction = Vector((rng.gauss(0.03, 0.05), rng.gauss(0, 0.04), 1.0)).normalized()
+                    view = (facing - position).normalized()
+                    face_side = Vector((0, 0, 1)).cross(view).normalized()
+                    shade = rng.uniform(0.65, 1.0)
+                    for k in range(segments):
+                        seg = height / segments
+                        photo_leaf(bm, uv_layer, tint_layer, rng.choice(profiles['LeafSet002']), position,
+                                   direction, face_side.cross(direction), seg * 1.15, arch=0.02, fold=0.0,
+                                   twist=rng.uniform(-0.6, 0.6), tint=(shade, shade, shade))
+                        position = position + direction * seg
+                        direction = (direction + Vector((rng.gauss(0, 0.06), rng.gauss(0, 0.04), 0))).normalized()
+        objects.append(finish_object(bm, meta))
+    return objects
+
+
+def moss_material(asset, value, saturation):
+    material = bpy.data.materials.new(f'moss-{asset}')
+    material.use_nodes = True
+    tree = material.node_tree
+    nodes, links = tree.nodes, tree.links
+    bsdf = nodes['Principled BSDF']
+    coord = nodes.new('ShaderNodeTexCoord')
+    mapping = nodes.new('ShaderNodeMapping')
+    mapping.inputs['Scale'].default_value = (7.0, 7.0, 7.0)
+    links.new(coord.outputs['Object'], mapping.inputs['Vector'])
+
+    def tex(kind, colorspace='Non-Color'):
+        node = nodes.new('ShaderNodeTexImage')
+        node.image = image(acg_map(asset, kind), colorspace)
+        node.projection = 'BOX'
+        node.projection_blend = 0.3
+        links.new(mapping.outputs['Vector'], node.inputs['Vector'])
+        return node
+    color, rough, normal, disp, ao = (tex('Color', 'sRGB'), tex('Roughness'), tex('NormalGL'),
+                                      tex('Displacement'), tex('AmbientOcclusion'))
+    grade = nodes.new('ShaderNodeHueSaturation')
+    grade.inputs['Hue'].default_value = 0.52
+    grade.inputs['Saturation'].default_value = saturation
+    grade.inputs['Value'].default_value = value
+    links.new(color.outputs['Color'], grade.inputs['Color'])
+    occl = nodes.new('ShaderNodeMix')
+    occl.data_type = 'RGBA'
+    occl.blend_type = 'MULTIPLY'
+    occl.inputs[0].default_value = 1.0
+    links.new(grade.outputs['Color'], occl.inputs[6])
+    links.new(ao.outputs['Color'], occl.inputs[7])
+    tint = nodes.new('ShaderNodeVertexColor')
+    tint.layer_name = 'tint'
+    shade = nodes.new('ShaderNodeMix')
+    shade.data_type = 'RGBA'
+    shade.blend_type = 'MULTIPLY'
+    shade.inputs[0].default_value = 1.0
+    links.new(occl.outputs[2], shade.inputs[6])
+    links.new(tint.outputs['Color'], shade.inputs[7])
+    links.new(shade.outputs[2], bsdf.inputs['Base Color'])
+    links.new(rough.outputs['Color'], bsdf.inputs['Roughness'])
+    normal_map = nodes.new('ShaderNodeNormalMap')
+    normal_map.inputs['Strength'].default_value = 1.2
+    links.new(normal.outputs['Color'], normal_map.inputs['Color'])
+    bump = nodes.new('ShaderNodeBump')
+    bump.inputs['Strength'].default_value = 0.6
+    links.new(disp.outputs['Color'], bump.inputs['Height'])
+    links.new(normal_map.outputs['Normal'], bump.inputs['Normal'])
+    links.new(bump.outputs['Normal'], bsdf.inputs['Normal'])
+    # Frayed rim: the cushion's edge factor (tint alpha, 1 centre -> 0 rim)
+    # plus the moss height map decides coverage, so the outline breaks up
+    # into tufts instead of a cut edge. Bakes to a small alpha mask.
+    try_set(material, 'surface_render_method', 'DITHERED')
+    rim = nodes.new('ShaderNodeMath')
+    rim.operation = 'MULTIPLY_ADD'
+    links.new(tint.outputs['Alpha'], rim.inputs[0])
+    rim.inputs[1].default_value = 1.4
+    links.new(disp.outputs['Color'], rim.inputs[2])
+    cut = nodes.new('ShaderNodeMapRange')
+    cut.inputs['From Min'].default_value = 0.95
+    cut.inputs['From Max'].default_value = 1.1
+    links.new(rim.outputs[0], cut.inputs['Value'])
+    links.new(cut.outputs['Result'], bsdf.inputs['Alpha'])
+    add_caustics(material, 0.1)
+    return material
+
+
+def build_natural_moss(rocks, wood):
+    """Opaque moss cushions (no cards): domes with irregular edges on wood
+    joints, rock/wood contact and rock bases; low irregular mats on the
+    ground transitions around the hardscape."""
+    rng = random.Random(777)
+    objects = []
+    dark = bmesh.new()
+    dark_tint = dark.loops.layers.float_color.new('tint')
+    light = bmesh.new()
+    light_tint = light.loops.layers.float_color.new('tint')
+
+    from mathutils.bvhtree import BVHTree
+    hosts = [wood] + list(rocks[:len(V['rocks'])])
+    world_verts, world_polys = [], []
+    for obj in hosts:
+        offset = len(world_verts)
+        world_verts += [obj.matrix_world @ v.co for v in obj.data.vertices]
+        world_polys += [[offset + i for i in poly.vertices] for poly in obj.data.polygons]
+    tree = BVHTree.FromPolygons(world_verts, world_polys)
+
+    def hug(point, normal, lift):
+        hit = tree.ray_cast(point + normal * 0.12, -normal, 0.3)
+        if hit[0] is None:
+            return point + normal * lift
+        return hit[0] + normal * lift
+
+    def cushion(bm, tint_layer, centre, normal, radius, height_ratio, surface=True):
+        normal = normal.normalized()
+        tangent = normal.orthogonal().normalized()
+        bitangent = normal.cross(tangent)
+        rings, segments = 6, 18
+        seed = rng.uniform(0, 100)
+        top = bm.verts.new(hug(centre, normal, radius * height_ratio) if surface
+                           else centre + normal * radius * height_ratio)
+        previous = None
+        shade = rng.uniform(0.7, 1.05)
+        color = (shade, shade, shade, 1.0)
+        ring_verts = []
+        for r in range(1, rings + 1):
+            t = r / rings
+            ring = []
+            for k in range(segments):
+                a = math.tau * k / segments
+                wobble = 1.0 + 0.35 * noise.noise(Vector((math.cos(a) * 1.5 + seed, math.sin(a) * 1.5, t)))
+                rr = radius * t * wobble
+                lift = radius * height_ratio * math.cos(t * math.pi / 2) ** 0.8
+                lump = 1.0 + 0.5 * noise.noise(Vector((math.cos(a) * 4 + seed, math.sin(a) * 4, t * 4)))
+                point = centre + (tangent * math.cos(a) + bitangent * math.sin(a)) * rr
+                if surface:
+                    ring.append(bm.verts.new(hug(point, normal, lift * lump - radius * 0.02)))
+                else:
+                    ring.append(bm.verts.new(point + normal * (lift * lump - radius * 0.06)))
+            ring_verts.append(ring)
+        edge = {top: 1.0}
+        for r, ring in enumerate(ring_verts):
+            for v in ring:
+                edge[v] = 1.0 - (r + 1) / rings
+        for k in range(segments):
+            face = bm.faces.new((top, ring_verts[0][k], ring_verts[0][(k + 1) % segments]))
+            for loop in face.loops:
+                loop[tint_layer] = (*color[:3], edge[loop.vert])
+        for r in range(rings - 1):
+            for k in range(segments):
+                a, b = ring_verts[r][k], ring_verts[r][(k + 1) % segments]
+                c, d = ring_verts[r + 1][(k + 1) % segments], ring_verts[r + 1][k]
+                face = bm.faces.new((a, d, c, b))
+                for loop in face.loops:
+                    loop[tint_layer] = (*color[:3], edge[loop.vert])
+
+    wood_points = sample_surfaces([wood], 38, lambda p: 0.15 + 1.5 * max(
+        (math.exp(-((p - j).length ** 2) / 0.08) for j in JOINTS), default=0.0), min_up=0.35)
+    for point, normal in wood_points:
+        cushion(dark, dark_tint, point, normal, rng.uniform(0.07, 0.16), 0.22)
+    rock_points = sample_surfaces(rocks[:len(V['rocks'])], 34, lambda p: 0.3 + 1.0 * max(
+        (math.exp(-((p - j).length ** 2) / 0.3) for j in JOINTS), default=0.0), min_up=0.45)
+    for point, normal in rock_points:
+        cushion(dark, dark_tint, point, normal, rng.uniform(0.08, 0.2), 0.2)
+    # rock bases / contact with the substrate
+    for hx, hz, radius in HARDSCAPE_POINTS[:len(V['rocks'])]:
+        for _ in range(rng.randint(2, 4)):
+            a = rng.uniform(0, math.tau)
+            x, z = hx + math.cos(a) * radius * 0.55, hz + math.sin(a) * radius * 0.4
+            cushion(dark, dark_tint, B(x, surface_y(x, z), z), Vector((0, 0, 1)), rng.uniform(0.12, 0.26), 0.25,
+                    surface=False)
+    # low mats on the ground transition, irregular, leaving open substrate
+    for _ in range(90):
+        # low transition around the hardscape: dense near it, thinning outward
+        x, z = rng.gauss(-2.2, 1.0), rng.gauss(0.1, 0.55)
+        if path_mask(x, z) > 0.2 or noise.noise(Vector((x * 0.9, z * 0.9, 3.3))) < -0.15:
+            continue
+        cushion(light, light_tint, B(x, surface_y(x, z), z), Vector((0, 0, 1)), rng.uniform(0.12, 0.3), 0.1,
+                surface=False)
+    for bm, name, material in ((dark, 'moss-cushions', moss_material('Moss004', 0.34, 1.2)),
+                               (light, 'moss-mats', moss_material('Moss002', 0.34, 1.1))):
+        bm.normal_update()
+        obj = mesh_object(name, bm)
+        obj.data.materials.append(material)
+        objects.append(obj)
+        log(f'{name}: {len(obj.data.polygons)} faces')
+    return objects
+
+
 def build_camera():
     data = bpy.data.cameras.new('habitat-camera')
     data.sensor_fit = 'VERTICAL'
@@ -1958,9 +2381,14 @@ def main():
     substrate = build_substrate()
     substrate.data.materials.append(textured_ground_material())
     RNG.seed(20260925)
-    moss = build_moss(wood, rocks, int(1500 * ARGS.density))
-    RNG.seed(20260926)
-    vegetation = [] if ARGS.no_plants else build_vegetation(rocks, wood)
+    if ARGS.plants == 'natural':
+        moss = build_natural_moss(rocks, wood)
+        RNG.seed(20260926)
+        vegetation = [] if ARGS.no_plants else build_natural_plants(rocks, wood)
+    else:
+        moss = build_moss(wood, rocks, int(1500 * ARGS.density))
+        RNG.seed(20260926)
+        vegetation = [] if ARGS.no_plants else build_vegetation(rocks, wood)
     build_water_volume()
     build_back_wall()
     build_back_fog()

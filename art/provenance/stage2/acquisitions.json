@@ -1,0 +1,614 @@
+{
+  "Moss002": {
+    "source": "ambientCG",
+    "sourcePage": "https://ambientcg.com/view?id=Moss002",
+    "name": "Moss 002",
+    "creator": "ambientCG (Lennart Demes)",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://docs.ambientcg.com/license/",
+    "attributionRequired": false,
+    "dateAcquired": "2026-09-24",
+    "variant": "2K-JPG",
+    "downloadUrl": "https://ambientcg.com/get?file=Moss002_2K-JPG.zip",
+    "archive": {
+      "file": "art/source/ambientcg/Moss002/Moss002_2K-JPG.zip",
+      "bytes": 39615085,
+      "sha256": "03fe8868a5b5618b30037fcece05fff9ea736a61227d9566291a9d4b3a2bb047"
+    },
+    "files": [
+      {
+        "file": "Moss002_2K-JPG.usdc",
+        "bytes": 2967,
+        "sha256": "3f05c35941504f74a035901d5a2377b2deac022798d234924badb48488980fb4"
+      },
+      {
+        "file": "Moss002_2K-JPG_AmbientOcclusion.jpg",
+        "bytes": 3910370,
+        "sha256": "b1037da26c51f27cfe1f1639e0d01a2782f91217ff640c783dc1f066d6011f48"
+      },
+      {
+        "file": "Moss002_2K-JPG_Color.jpg",
+        "bytes": 7417639,
+        "sha256": "62897c8074d8bd8a2231b7a63d903ced1e6fec5718a716a069ae05d5ae0b9022"
+      },
+      {
+        "file": "Moss002_2K-JPG_Displacement.jpg",
+        "bytes": 2440532,
+        "sha256": "f189664e5da86a0657f3b90a117af1b8202124e50ef56364162ac3d8535e9ec3"
+      },
+      {
+        "file": "Moss002_2K-JPG_NormalDX.jpg",
+        "bytes": 10644339,
+        "sha256": "e2141887c0c5400cd384a9889b0a90af571a96bc080626fdb115280868803085"
+      },
+      {
+        "file": "Moss002_2K-JPG_NormalGL.jpg",
+        "bytes": 10653102,
+        "sha256": "c74daa9810de11b97702267125f061f8540bb04f915fc778e80b7d703f7e8b7a"
+      },
+      {
+        "file": "Moss002_2K-JPG_Roughness.jpg",
+        "bytes": 3042558,
+        "sha256": "39c1d20fab86b1798e626eddbb24273ef898e17b35c498ee919dd951d6c270f9"
+      },
+      {
+        "file": "Moss002_2K-JPG.blend",
+        "bytes": 1109012,
+        "sha256": "2a2ca2a9bffc8ed4d791f8023493456a98aa3fb011b90cff2a32cd466398b560"
+      },
+      {
+        "file": "Moss002_2K-JPG.mtlx",
+        "bytes": 2242,
+        "sha256": "397014d19ca47c832ac7a7209ad3eca8fe19d0a7a850a0598f78e69c2a665a7c"
+      },
+      {
+        "file": "Moss002_2K-JPG.tres",
+        "bytes": 1010,
+        "sha256": "baac86e641da4ab56a5e610493f45ef45e774413f7769bc7a33fc49c0d26624c"
+      },
+      {
+        "file": "Moss002.png",
+        "bytes": 389250,
+        "sha256": "dc2ed0cd84f37e1b620b580f916dc27a29f2ba1e499d8507fb7b7ea5002a518a"
+      }
+    ]
+  },
+  "Foliage001": {
+    "source": "ambientCG",
+    "sourcePage": "https://ambientcg.com/view?id=Foliage001",
+    "name": "Foliage 001",
+    "creator": "ambientCG (Lennart Demes)",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://docs.ambientcg.com/license/",
+    "attributionRequired": false,
+    "dateAcquired": "2026-09-24",
+    "variant": "2K-JPG",
+    "downloadUrl": "https://ambientcg.com/get?file=Foliage001_2K-JPG.zip",
+    "archive": {
+      "file": "art/source/ambientcg/Foliage001/Foliage001_2K-JPG.zip",
+      "bytes": 12221503,
+      "sha256": "3a617bfe6abd5bcb4add69fad928e48371d02b9717802ddffbd95a9c44001c7d"
+    },
+    "files": [
+      {
+        "file": "Foliage001_2K-JPG.usdc",
+        "bytes": 2972,
+        "sha256": "be588fe45f4d23c6e6385edbd08db5a646ddc7d2f69f779aa584b596eb82017a"
+      },
+      {
+        "file": "Foliage001_2K-JPG_Color.jpg",
+        "bytes": 1182906,
+        "sha256": "1e95514317c34fe70189879e553fd3baa5ca8092a9d33249837ab79f7aa5bd7c"
+      },
+      {
+        "file": "Foliage001_2K-JPG_Displacement.jpg",
+        "bytes": 485313,
+        "sha256": "5d01df2d51c1648eedcb885e8278e1073b1ee8fc86ffa31f710e85d5bfb36f12"
+      },
+      {
+        "file": "Foliage001_2K-JPG_NormalDX.jpg",
+        "bytes": 3899693,
+        "sha256": "9e05b6a8cb801151f7f9df5db34a4fef695f4863eb821424c432afc43fd1c49c"
+      },
+      {
+        "file": "Foliage001_2K-JPG_NormalGL.jpg",
+        "bytes": 3894069,
+        "sha256": "c8b69a53385a05dcfe7e3aa9308152e43b9a7643b4d2b68115e6dab116134fa2"
+      },
+      {
+        "file": "Foliage001_2K-JPG_Opacity.jpg",
+        "bytes": 283072,
+        "sha256": "7bb223b929b4f3af27306be1e88b5b3ed5a19590521d7bdd62b6b121f3cecce7"
+      },
+      {
+        "file": "Foliage001_2K-JPG_Roughness.jpg",
+        "bytes": 1202888,
+        "sha256": "8ed1f36c4f62052ed3124c870a4fd6db9d4b9d2974c220eba182e37e0dcc24e8"
+      },
+      {
+        "file": "Foliage001_2K-JPG.blend",
+        "bytes": 1109380,
+        "sha256": "a9460e210a4d0e8c1a1b86937d237e8d076375f93a789818278d565a3c6d2058"
+      },
+      {
+        "file": "Foliage001_2K-JPG.mtlx",
+        "bytes": 2626,
+        "sha256": "1b4e33dbd297bd585bcf5a9b43705f9d41822ce7140198004b9093ffacd3d87b"
+      },
+      {
+        "file": "Foliage001_2K-JPG.tres",
+        "bytes": 812,
+        "sha256": "e5d557798b4d34d2d6ece3a097adf5646469feab37894b2e2e31508ddabbbeda"
+      },
+      {
+        "file": "Foliage001.png",
+        "bytes": 155628,
+        "sha256": "f02bb8e465c2ca52e65ca24cc40ad422efca619397066ed390d6afa66958c692"
+      }
+    ]
+  },
+  "Moss004": {
+    "source": "ambientCG",
+    "sourcePage": "https://ambientcg.com/view?id=Moss004",
+    "name": "Moss 004",
+    "creator": "ambientCG (Lennart Demes)",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://docs.ambientcg.com/license/",
+    "attributionRequired": false,
+    "dateAcquired": "2026-09-24",
+    "variant": "2K-JPG",
+    "downloadUrl": "https://ambientcg.com/get?file=Moss004_2K-JPG.zip",
+    "archive": {
+      "file": "art/source/ambientcg/Moss004/Moss004_2K-JPG.zip",
+      "bytes": 38336427,
+      "sha256": "2e1bcbb86f701eead8c393b74027ef9495dd5a7c5fa9c731a24b5370381bc051"
+    },
+    "files": [
+      {
+        "file": "Moss004_2K-JPG.usdc",
+        "bytes": 2967,
+        "sha256": "2480d17998ae266273743b8844fb17c8e8b260c19820394807562d6271f6897d"
+      },
+      {
+        "file": "Moss004_2K-JPG_AmbientOcclusion.jpg",
+        "bytes": 3867266,
+        "sha256": "980b214df40dde799bf98afca52737467359e4d8d042d48d8a188ad20cb41585"
+      },
+      {
+        "file": "Moss004_2K-JPG_Color.jpg",
+        "bytes": 7185277,
+        "sha256": "725fa27933f03cc96b7054137841805dc313ff9ed64a1a0e29e168c1e93156e5"
+      },
+      {
+        "file": "Moss004_2K-JPG_Displacement.jpg",
+        "bytes": 2507706,
+        "sha256": "cdf915076d19c44550971e5d6b566b4d2a5d4d22c712134367e4dbf811b22993"
+      },
+      {
+        "file": "Moss004_2K-JPG_NormalDX.jpg",
+        "bytes": 10154304,
+        "sha256": "f942d7c728091a5a42236d8f2943c2e3a94095816c180c0f8eb59ae840f066de"
+      },
+      {
+        "file": "Moss004_2K-JPG_NormalGL.jpg",
+        "bytes": 10160519,
+        "sha256": "909a29bdbe9a9acd440fcdfadb735255e4e7795181864a0cc3128dd27d55ebf1"
+      },
+      {
+        "file": "Moss004_2K-JPG_Roughness.jpg",
+        "bytes": 2995860,
+        "sha256": "43c8db53a1cc6a70fd8790b5a55c838d831073ff5fc63013ba5e8fa9bde09668"
+      },
+      {
+        "file": "Moss004_2K-JPG.blend",
+        "bytes": 1109012,
+        "sha256": "5e2efbe6968839c9ee87f1c5c59bddd127bb5fcba2e2a16c3daf703bce0ee244"
+      },
+      {
+        "file": "Moss004_2K-JPG.mtlx",
+        "bytes": 2242,
+        "sha256": "9bf6f84323b0fff3e3910051f31b675d75ff23d93073a34741cca2fbac3699ac"
+      },
+      {
+        "file": "Moss004_2K-JPG.tres",
+        "bytes": 1010,
+        "sha256": "563091428a2f821f172458635cbca249e5ba266a20b027c5dd9c13c3bf7d0f74"
+      },
+      {
+        "file": "Moss004.png",
+        "bytes": 348248,
+        "sha256": "fab11ab860cd1e2099cc29e3e11d70bd2462eaa5c87ceb67ac0da77419481dde"
+      }
+    ]
+  },
+  "LeafSet022": {
+    "source": "ambientCG",
+    "sourcePage": "https://ambientcg.com/view?id=LeafSet022",
+    "name": "Leaf Set 022",
+    "creator": "ambientCG (Lennart Demes)",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://docs.ambientcg.com/license/",
+    "attributionRequired": false,
+    "dateAcquired": "2026-09-24",
+    "variant": "2K-JPG",
+    "downloadUrl": "https://ambientcg.com/get?file=LeafSet022_2K-JPG.zip",
+    "archive": {
+      "file": "art/source/ambientcg/LeafSet022/LeafSet022_2K-JPG.zip",
+      "bytes": 11273410,
+      "sha256": "2af6b5d525c16b32dd8574ae07f37a78a42b198327500777a6512e041644f9c7"
+    },
+    "files": [
+      {
+        "file": "LeafSet022_2K-JPG.usdc",
+        "bytes": 2976,
+        "sha256": "f913e9fae10a7fd90d89c58b89e61a100ee11202cc39ae39e4ca4a1b762111b5"
+      },
+      {
+        "file": "LeafSet022_2K-JPG_Color.jpg",
+        "bytes": 2337837,
+        "sha256": "3a8d7c4699f945cda98c70752d6ce6ff212404b846338246a8da4ac811af7f3d"
+      },
+      {
+        "file": "LeafSet022_2K-JPG_Displacement.jpg",
+        "bytes": 562764,
+        "sha256": "a1cae346834fc15c927bd6a25b4ca9558a73048416270ffe2d5749740de2bc8c"
+      },
+      {
+        "file": "LeafSet022_2K-JPG_NormalDX.jpg",
+        "bytes": 1955049,
+        "sha256": "bf8c2ec24867d46f368a7244d14559f9ed9d05707ed84a7fe5a27cae374a12eb"
+      },
+      {
+        "file": "LeafSet022_2K-JPG_NormalGL.jpg",
+        "bytes": 1960704,
+        "sha256": "ac6fb81069c2b30258185f5f0249caaf5e550961b5fd44db88e9b077bbf0c140"
+      },
+      {
+        "file": "LeafSet022_2K-JPG_Opacity.jpg",
+        "bytes": 140106,
+        "sha256": "994863c930425badee23ad4f7559df31e04b4315564b1b78d4464f7f954e8732"
+      },
+      {
+        "file": "LeafSet022_2K-JPG_Roughness.jpg",
+        "bytes": 824088,
+        "sha256": "567ca46866b44bb9b75faefa1bd9ad588c80e450b139b2ceb669754f23058920"
+      },
+      {
+        "file": "LeafSet022_2K-JPG_Scattering.jpg",
+        "bytes": 2224618,
+        "sha256": "bc082ab6f222061fdba9a163fe1ac2a78c15aa66cdf7d1dd0e487352d0de2b38"
+      },
+      {
+        "file": "LeafSet022_2K-JPG.blend",
+        "bytes": 1120132,
+        "sha256": "78191d362295bd1bc7c095b7115910d6ef72eb814313fffcad2fe05d212c5432"
+      },
+      {
+        "file": "LeafSet022_2K-JPG.mtlx",
+        "bytes": 2626,
+        "sha256": "b82620d448650ccf0f4b3c3435220010bc55ae3bda090b7829add4296e06da8a"
+      },
+      {
+        "file": "LeafSet022_2K-JPG.tres",
+        "bytes": 1042,
+        "sha256": "fe490b568967026725f6f042cebcd12c044a48cab4d4848d27368083ca2d6969"
+      },
+      {
+        "file": "LeafSet022.png",
+        "bytes": 139154,
+        "sha256": "c8dc058bfd032a5e341a306d6a17d69f3792b02cb422f915931e6a3ba7412495"
+      }
+    ]
+  },
+  "Foliage008": {
+    "source": "ambientCG",
+    "sourcePage": "https://ambientcg.com/view?id=Foliage008",
+    "name": "Foliage 008",
+    "creator": "ambientCG (Lennart Demes)",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://docs.ambientcg.com/license/",
+    "attributionRequired": false,
+    "dateAcquired": "2026-09-24",
+    "variant": "2K-JPG",
+    "downloadUrl": "https://ambientcg.com/get?file=Foliage008_2K-JPG.zip",
+    "archive": {
+      "file": "art/source/ambientcg/Foliage008/Foliage008_2K-JPG.zip",
+      "bytes": 6080028,
+      "sha256": "63db9df717e86b507c7a1416b21342d0ee3f48aa41fd1c19a5454f1fab6b581d"
+    },
+    "files": [
+      {
+        "file": "Foliage008_2K-JPG.usdc",
+        "bytes": 3004,
+        "sha256": "d8a1614f9d88aa6718476c2bf4bb74d4ce4d0a5aef834470711d82bd6ef140e5"
+      },
+      {
+        "file": "Foliage008_2K-JPG_Color.jpg",
+        "bytes": 1117673,
+        "sha256": "547919351777a20f63bfec0a8d73080e8b0bc7b0aa0f60131efc3125bef65107"
+      },
+      {
+        "file": "Foliage008_2K-JPG_Displacement.jpg",
+        "bytes": 430069,
+        "sha256": "2c6d8c8bd6bf392fc38d6dc919f29118d885581e808439ed8709d437912ec75f"
+      },
+      {
+        "file": "Foliage008_2K-JPG_NormalDX.jpg",
+        "bytes": 817812,
+        "sha256": "e81027f2b2daebee5870c771f1c2fdb1556d2e50bc1fc45ae3d37156c0fca3d8"
+      },
+      {
+        "file": "Foliage008_2K-JPG_NormalGL.jpg",
+        "bytes": 796557,
+        "sha256": "fff6db8ab16c70db6fe5ea37c60e3cc612e4ca8b8923fb85d83dda92b60cd14b"
+      },
+      {
+        "file": "Foliage008_2K-JPG_Opacity.jpg",
+        "bytes": 229916,
+        "sha256": "601dec40d21e97139ba24d9c6598d267e529aeb8f5b3ebd0ea3c82464517df3a"
+      },
+      {
+        "file": "Foliage008_2K-JPG_Roughness.jpg",
+        "bytes": 309808,
+        "sha256": "cbb84f2ba0a995afc5499e59712b56df5e685abdc33e81a769079e603eab633a"
+      },
+      {
+        "file": "Foliage008_2K-JPG_Scattering.jpg",
+        "bytes": 1145380,
+        "sha256": "915f278ac12e2e38c8cffeb6c26c9ef2b48d0d97bcb7af3aa5a5c2e17b4469b7"
+      },
+      {
+        "file": "Foliage008_2K-JPG.blend",
+        "bytes": 1120340,
+        "sha256": "7ee306f3b814d24d77e6fda218bdfdc9d0e524a2e4cdb478d7420bf8d4d6b3a4"
+      },
+      {
+        "file": "Foliage008_2K-JPG.mtlx",
+        "bytes": 2626,
+        "sha256": "a801c0e863064f5a5435619ec5c83ea9436633c27c518535097dc686d41c68ae"
+      },
+      {
+        "file": "Foliage008_2K-JPG.tres",
+        "bytes": 1042,
+        "sha256": "ebb3a9bc3cd7e2b3adb9ed0460c9d4332bc3a6e42ca15f21b88b01c913b2ba06"
+      },
+      {
+        "file": "Foliage008.png",
+        "bytes": 103449,
+        "sha256": "22b5c225f7afb66a6d9beb5d61be2d38811ddfe79e390b1030d1e71ad7c3ce8c"
+      }
+    ]
+  },
+  "LeafSet002": {
+    "source": "ambientCG",
+    "sourcePage": "https://ambientcg.com/view?id=LeafSet002",
+    "name": "Leaf Set 002",
+    "creator": "ambientCG (Lennart Demes)",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://docs.ambientcg.com/license/",
+    "attributionRequired": false,
+    "dateAcquired": "2026-09-24",
+    "variant": "2K-JPG",
+    "downloadUrl": "https://ambientcg.com/get?file=LeafSet002_2K-JPG.zip",
+    "archive": {
+      "file": "art/source/ambientcg/LeafSet002/LeafSet002_2K-JPG.zip",
+      "bytes": 18623333,
+      "sha256": "70e4803679df2f74803feb23be1f8777f0cc590cce64f5aeddbf4c9376a3a223"
+    },
+    "files": [
+      {
+        "file": "LeafSet002_2K-JPG.usdc",
+        "bytes": 3102,
+        "sha256": "3f1311e89abd87c4dda8a1952e943c196286a631c2742811255944874bfd358e"
+      },
+      {
+        "file": "LeafSet002_2K-JPG_AmbientOcclusion.jpg",
+        "bytes": 1031435,
+        "sha256": "56ad85b3fe4804624268e9dddf3ad2c9b4c47d999ffce90cfcce36cf9570a498"
+      },
+      {
+        "file": "LeafSet002_2K-JPG_Color.jpg",
+        "bytes": 1171273,
+        "sha256": "daf86853114f1895c42458723417c14b45b1ab64c834b85fb138d7da85b6f847"
+      },
+      {
+        "file": "LeafSet002_2K-JPG_Displacement.jpg",
+        "bytes": 577366,
+        "sha256": "a5a926cb2628bb6bb83f19d2124441109afd0c027161b547d9de31dd62c05ba8"
+      },
+      {
+        "file": "LeafSet002_2K-JPG_NormalDX.jpg",
+        "bytes": 6279413,
+        "sha256": "26a639c6cc5f766002120a33081160558c536509991e0f4cd76b9a62b18e9427"
+      },
+      {
+        "file": "LeafSet002_2K-JPG_NormalGL.jpg",
+        "bytes": 6269303,
+        "sha256": "e42e8b9cac9a1da9b626f8394a97d12bd47931bfafae3e7eb9352c738a4c23ec"
+      },
+      {
+        "file": "LeafSet002_2K-JPG_Opacity.jpg",
+        "bytes": 259427,
+        "sha256": "bd58854a01961c06c118a2bf767e0adf37fa5ab824d8260c9e9bab7167035723"
+      },
+      {
+        "file": "LeafSet002_2K-JPG_Roughness.jpg",
+        "bytes": 1810468,
+        "sha256": "3c4fe258c9014fe04ab810eea9975986290c06c67e150aa7f405c0899dec5589"
+      },
+      {
+        "file": "LeafSet002_2K-JPG.blend",
+        "bytes": 1120228,
+        "sha256": "5249ebbee2eb53b682e2ff14eaab9bb2f4c7ae5f814622963a031354296b5e59"
+      },
+      {
+        "file": "LeafSet002_2K-JPG.mtlx",
+        "bytes": 2626,
+        "sha256": "99a14400cf29bd34fc285fcde6f8bdccac793f843d3c2df0c99d7a064987a725"
+      },
+      {
+        "file": "LeafSet002_2K-JPG.tres",
+        "bytes": 1025,
+        "sha256": "2254d5930b61cdb058d02605391d85803b185a9d5ab130277f10a711a35f6c83"
+      },
+      {
+        "file": "LeafSet002.png",
+        "bytes": 95345,
+        "sha256": "b7c02c0808a31b4432d6559a4f642cb7cddd00c16a23f855ce92a1dd04971629"
+      }
+    ]
+  },
+  "LeafSet001": {
+    "source": "ambientCG",
+    "sourcePage": "https://ambientcg.com/view?id=LeafSet001",
+    "name": "Leaf Set 001",
+    "creator": "ambientCG (Lennart Demes)",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://docs.ambientcg.com/license/",
+    "attributionRequired": false,
+    "dateAcquired": "2026-09-24",
+    "variant": "2K-JPG",
+    "downloadUrl": "https://ambientcg.com/get?file=LeafSet001_2K-JPG.zip",
+    "archive": {
+      "file": "art/source/ambientcg/LeafSet001/LeafSet001_2K-JPG.zip",
+      "bytes": 10346917,
+      "sha256": "26b43318e64ae442241f396309e78ee772dac53577bd92edc450d294b46ae9ba"
+    },
+    "files": [
+      {
+        "file": "LeafSet001_2K-JPG.usdc",
+        "bytes": 3002,
+        "sha256": "2930117f5b48a9a09abb5e89b94c8d4cca4b29a734b3662cad63e3ec95601a8a"
+      },
+      {
+        "file": "LeafSet001_2K-JPG_Color.jpg",
+        "bytes": 1218095,
+        "sha256": "4b3a05cc9c2de7c8b67086f588b64a9fe907bc37018628f7c3662f7a96eb1132"
+      },
+      {
+        "file": "LeafSet001_2K-JPG_Displacement.jpg",
+        "bytes": 457241,
+        "sha256": "98044868f99c91d21a4ce230dee4662a0a748d3faf12f9c3a36e9f30852789fd"
+      },
+      {
+        "file": "LeafSet001_2K-JPG_NormalDX.jpg",
+        "bytes": 3218590,
+        "sha256": "6d0a1667a72a8e1ec90b52e02549be933289bba9f685b1d54e32b91e82a0104c"
+      },
+      {
+        "file": "LeafSet001_2K-JPG_NormalGL.jpg",
+        "bytes": 3207452,
+        "sha256": "ef211f991503720988bcc0c9e083ce1cac308d34672f529d076d964895171470"
+      },
+      {
+        "file": "LeafSet001_2K-JPG_Opacity.jpg",
+        "bytes": 150343,
+        "sha256": "dbc7b7a57bf4a2a1f07291371f0fcf8d09ed4d4feb82c574c017eb3e037d5988"
+      },
+      {
+        "file": "LeafSet001_2K-JPG_Roughness.jpg",
+        "bytes": 902332,
+        "sha256": "e78132b463dd34fdd1351f9e23432f9115fb620414b11ab29ef343982a7acb44"
+      },
+      {
+        "file": "LeafSet001_2K-JPG.blend",
+        "bytes": 1110004,
+        "sha256": "006ddd3aabd9ea5a9a9807ec5056a737ee089a24d51c053f1849cd6df13b0906"
+      },
+      {
+        "file": "LeafSet001_2K-JPG.mtlx",
+        "bytes": 2626,
+        "sha256": "e52f8072c0b42a22d44d2612f3de13df914836809fc329e12d88bf9df0d5c64e"
+      },
+      {
+        "file": "LeafSet001_2K-JPG.tres",
+        "bytes": 812,
+        "sha256": "80787100c80020aa70a0d9a4be18c28f9ccd4c4d0c47b203af84eb6c8bea9054"
+      },
+      {
+        "file": "LeafSet001.png",
+        "bytes": 74368,
+        "sha256": "1f10944ea8d485566bc659a1f8f63b5fc8d29639592dfc7ebf205db341d375dc"
+      }
+    ]
+  },
+  "LeafSet003": {
+    "source": "ambientCG",
+    "sourcePage": "https://ambientcg.com/view?id=LeafSet003",
+    "name": "Leaf Set 003",
+    "creator": "ambientCG (Lennart Demes)",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://docs.ambientcg.com/license/",
+    "attributionRequired": false,
+    "dateAcquired": "2026-09-24",
+    "variant": "2K-JPG",
+    "downloadUrl": "https://ambientcg.com/get?file=LeafSet003_2K-JPG.zip",
+    "archive": {
+      "file": "art/source/ambientcg/LeafSet003/LeafSet003_2K-JPG.zip",
+      "bytes": 15850428,
+      "sha256": "3b6b8a128c4809f9a924fb13f769a014c8258c25a19c77b2f658369363afc000"
+    },
+    "files": [
+      {
+        "file": "LeafSet003_2K-JPG.usdc",
+        "bytes": 3102,
+        "sha256": "590d45554f3b6546ea1d02bec555c74c301a0c75c1fd14afb8c8d88da023f7a3"
+      },
+      {
+        "file": "LeafSet003_2K-JPG_AmbientOcclusion.jpg",
+        "bytes": 873925,
+        "sha256": "c78d4956c4e8ca74573956fbcf7341e0cc450fdf37e4f1cf4a1605c096f0a2de"
+      },
+      {
+        "file": "LeafSet003_2K-JPG_Color.jpg",
+        "bytes": 1060963,
+        "sha256": "ae7028e2306dcc0876d19a5ecc3e8cb158dc097e7af4f792e2b92a3370960993"
+      },
+      {
+        "file": "LeafSet003_2K-JPG_Displacement.jpg",
+        "bytes": 469981,
+        "sha256": "17f7f68b21e2c530bb0fa87bb71546a8a725a335b96f8b3ef9ae7a1ba24f14a0"
+      },
+      {
+        "file": "LeafSet003_2K-JPG_NormalDX.jpg",
+        "bytes": 5133663,
+        "sha256": "0ff68bc815880224b64c4423991038dfa6bbf6c71934207d92ba62b7234e1000"
+      },
+      {
+        "file": "LeafSet003_2K-JPG_NormalGL.jpg",
+        "bytes": 5135756,
+        "sha256": "8185928e5fee37b53dc2383fe7ca8b051b7bb0f2f67fa3c2d42ff5af1683b5b9"
+      },
+      {
+        "file": "LeafSet003_2K-JPG_Opacity.jpg",
+        "bytes": 123448,
+        "sha256": "6b3fdd35634643e02ac9524cff985f5fee47bd52a01724eaf6ee056c9f3ef8a3"
+      },
+      {
+        "file": "LeafSet003_2K-JPG_Roughness.jpg",
+        "bytes": 1850935,
+        "sha256": "60ab9f9bc7fdd33d3d00ae5700c98cef87c3de951c40eb712cae12f58e452c42"
+      },
+      {
+        "file": "LeafSet003_2K-JPG.blend",
+        "bytes": 1120228,
+        "sha256": "8c2ebfa9298d651305dd9efe98dd384ad121df6f4400c76bc0c46ea1e5531459"
+      },
+      {
+        "file": "LeafSet003_2K-JPG.mtlx",
+        "bytes": 2626,
+        "sha256": "e6f2b58593e64c3d7ae0a8ee086dc44f907f7da6156c7f2dba76f522b78e7bb1"
+      },
+      {
+        "file": "LeafSet003_2K-JPG.tres",
+        "bytes": 1025,
+        "sha256": "9b7855a5ce49b7c5e030241844d348f9c6e1e65dfff3061a24cc6e4d53828082"
+      },
+      {
+        "file": "LeafSet003.png",
+        "bytes": 72458,
+        "sha256": "21e0b43743d39be2b9cd7104b6afdc31090687637de5b5dec8aecdb10f50bb22"
+      }
+    ]
+  }
+}

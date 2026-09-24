@@ -1,0 +1,1433 @@
+{
+  "searchQuery": {
+    "forceSpecificAssetId": false,
+    "category": [],
+    "assetId": [
+      "leafset022",
+      "leafset003",
+      "leafset001",
+      "foliage001",
+      "foliage008",
+      "leafset002",
+      "moss004",
+      "moss002"
+    ],
+    "dataType": [],
+    "creationMethod": null,
+    "queryString": "",
+    "sort": "Popular",
+    "createdUsingAssetId": null,
+    "basedOnAssetId": null,
+    "variationsOfAssetId": null,
+    "limit": 100,
+    "offset": 0
+  },
+  "numberOfResults": 8,
+  "currentPageHttp": "https://ambientcg.com/api/v2/full_json?id=leafset022%2Cleafset003%2Cleafset001%2Cfoliage001%2Cfoliage008%2Cleafset002%2Cmoss004%2Cmoss002&sort=popular&limit=100&include=statisticsData%2ClabelData%2CpreviewData%2CtechnicalData%2CfileData",
+  "foundAssets": [
+    {
+      "assetId": "Moss002",
+      "releaseDate": "2020-09-13 00:00:00",
+      "earlyReleaseDate": "2020-09-13 00:00:00",
+      "dataType": "Material",
+      "creationMethod": "PBRProcedural",
+      "category": null,
+      "downloadCount": 151692,
+      "downloadCountMonth": 3451,
+      "downloadCountWeek": 983,
+      "popularityScore": 11.984489934963964,
+      "tags": [
+        "2",
+        "green",
+        "moss",
+        "mossy"
+      ],
+      "dataTypeName": "Material",
+      "dataTypeDescription": "A photo texture with PBR maps.",
+      "creationMethodName": "Height field photogrammetry",
+      "creationMethodDescription": "Displacement generated using photogrammetry.",
+      "displayName": "Moss 002",
+      "customDisplayName": "",
+      "description": "",
+      "displayCategory": "Moss",
+      "shortLink": "https://ambientcg.com/a/Moss002",
+      "dimensionX": 0,
+      "dimensionY": 0,
+      "dimensionZ": 0,
+      "createdUsing": [],
+      "basedOnThis": [],
+      "variations": [],
+      "nextVariationAssetId": null,
+      "previousVariationAssetId": null,
+      "nextAssetId": null,
+      "previousAssetId": null,
+      "downloadFolders": {
+        "default": {
+          "title": "default",
+          "downloadFiletypeCategories": {
+            "zip": {
+              "title": "zip",
+              "downloads": [
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Moss002_1K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Moss002_1K-JPG.zip",
+                  "fileName": "Moss002_1K-JPG.zip",
+                  "size": 10391949,
+                  "filetype": "zip",
+                  "attribute": "1K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Moss002_2K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Moss002_2K-JPG.zip",
+                  "fileName": "Moss002_2K-JPG.zip",
+                  "size": 39615085,
+                  "filetype": "zip",
+                  "attribute": "2K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Moss002_4K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Moss002_4K-JPG.zip",
+                  "fileName": "Moss002_4K-JPG.zip",
+                  "size": 157229365,
+                  "filetype": "zip",
+                  "attribute": "4K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Moss002_8K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Moss002_8K-JPG.zip",
+                  "fileName": "Moss002_8K-JPG.zip",
+                  "size": 614620443,
+                  "filetype": "zip",
+                  "attribute": "8K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Moss002_1K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Moss002_1K-PNG.zip",
+                  "fileName": "Moss002_1K-PNG.zip",
+                  "size": 19300675,
+                  "filetype": "zip",
+                  "attribute": "1K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Moss002_2K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Moss002_2K-PNG.zip",
+                  "fileName": "Moss002_2K-PNG.zip",
+                  "size": 73874597,
+                  "filetype": "zip",
+                  "attribute": "2K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Moss002_4K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Moss002_4K-PNG.zip",
+                  "fileName": "Moss002_4K-PNG.zip",
+                  "size": 290237057,
+                  "filetype": "zip",
+                  "attribute": "4K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Moss002_8K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Moss002_8K-PNG.zip",
+                  "fileName": "Moss002_8K-PNG.zip",
+                  "size": 1132320281,
+                  "filetype": "zip",
+                  "attribute": "8K-PNG",
+                  "zipContent": []
+                }
+              ]
+            }
+          }
+        }
+      },
+      "previewLinks": [
+        {
+          "url": "https://releases.pbr.one/main/material-shading.html#normal_type=directx&color_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss002/Moss002_SQ_Color.jpg?99623&displacement_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss002/Moss002_SQ_Displacement.jpg?56233&normal_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss002/Moss002_SQ_NormalDX.jpg?29048&roughness_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss002/Moss002_SQ_Roughness.jpg?2210&ambientocclusion_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss002/Moss002_SQ_AmbientOcclusion.jpg?77409",
+          "name": {
+            "id": 4,
+            "slug": "pbr-one-material-shading",
+            "title": "3D Preview",
+            "description": "description"
+          },
+          "displayName": "",
+          "iconName": ""
+        },
+        {
+          "url": "https://releases.pbr.one/main/texture-tiling.html#texture_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss002/Moss002_SQ_Color.jpg?95672,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss002/Moss002_SQ_Displacement.jpg?10397,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss002/Moss002_SQ_NormalDX.jpg?64917,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss002/Moss002_SQ_Roughness.jpg?20642,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss002/Moss002_SQ_AmbientOcclusion.jpg?58042&texture_name=Color,Displacement,Normal,Roughness,Ambient Occlusion",
+          "name": {
+            "id": 3,
+            "slug": "pbr-one-material-maps",
+            "title": "Tiling Preview",
+            "description": "description"
+          },
+          "displayName": "",
+          "iconName": ""
+        }
+      ],
+      "previewType": "Default",
+      "maps": [
+        "color",
+        "displacement",
+        "normal",
+        "roughness",
+        "ambient-occlusion"
+      ],
+      "hasUsd": false,
+      "previewImage": {
+        "64-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-PNG/Moss002.png",
+        "128-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-PNG/Moss002.png",
+        "256-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-PNG/Moss002.png",
+        "512-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-PNG/Moss002.png",
+        "1024-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-PNG/Moss002.png",
+        "2048-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-PNG/Moss002.png",
+        "64-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-JPG-FFFFFF/Moss002.jpg",
+        "128-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-JPG-FFFFFF/Moss002.jpg",
+        "256-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-JPG-FFFFFF/Moss002.jpg",
+        "512-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-JPG-FFFFFF/Moss002.jpg",
+        "1024-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-JPG-FFFFFF/Moss002.jpg",
+        "2048-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-JPG-FFFFFF/Moss002.jpg",
+        "64-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-JPG-242424/Moss002.jpg",
+        "128-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-JPG-242424/Moss002.jpg",
+        "256-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-JPG-242424/Moss002.jpg",
+        "512-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-JPG-242424/Moss002.jpg",
+        "1024-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-JPG-242424/Moss002.jpg",
+        "2048-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-JPG-242424/Moss002.jpg",
+        "64-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-WEBP/Moss002.webp",
+        "128-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-WEBP/Moss002.webp",
+        "256-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-WEBP/Moss002.webp",
+        "512-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-WEBP/Moss002.webp",
+        "1024-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-WEBP/Moss002.webp",
+        "2048-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-WEBP/Moss002.webp"
+      }
+    },
+    {
+      "assetId": "Foliage001",
+      "releaseDate": "2019-01-03 00:00:00",
+      "earlyReleaseDate": "2019-01-03 00:00:00",
+      "dataType": "Atlas",
+      "creationMethod": "PBRApproximated",
+      "category": null,
+      "downloadCount": 110397,
+      "downloadCountMonth": 1287,
+      "downloadCountWeek": 350,
+      "popularityScore": 6.793845117797004,
+      "tags": [
+        "1",
+        "foliage",
+        "grass",
+        "green",
+        "nature"
+      ],
+      "dataTypeName": "Atlas",
+      "dataTypeDescription": "A photo texture with PBR maps.",
+      "creationMethodName": "Height field photogrammetry",
+      "creationMethodDescription": "Displacement generated using photogrammetry.",
+      "displayName": "Foliage 001",
+      "customDisplayName": "",
+      "description": "",
+      "displayCategory": "Foliage",
+      "shortLink": "https://ambientcg.com/a/Foliage001",
+      "dimensionX": 0,
+      "dimensionY": 0,
+      "dimensionZ": 0,
+      "createdUsing": [],
+      "basedOnThis": [],
+      "variations": [],
+      "nextVariationAssetId": null,
+      "previousVariationAssetId": null,
+      "nextAssetId": null,
+      "previousAssetId": null,
+      "downloadFolders": {
+        "default": {
+          "title": "default",
+          "downloadFiletypeCategories": {
+            "zip": {
+              "title": "zip",
+              "downloads": [
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Foliage001_1K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Foliage001_1K-JPG.zip",
+                  "fileName": "Foliage001_1K-JPG.zip",
+                  "size": 3899839,
+                  "filetype": "zip",
+                  "attribute": "1K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Foliage001_2K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Foliage001_2K-JPG.zip",
+                  "fileName": "Foliage001_2K-JPG.zip",
+                  "size": 12221503,
+                  "filetype": "zip",
+                  "attribute": "2K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Foliage001_4K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Foliage001_4K-JPG.zip",
+                  "fileName": "Foliage001_4K-JPG.zip",
+                  "size": 50702557,
+                  "filetype": "zip",
+                  "attribute": "4K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Foliage001_1K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Foliage001_1K-PNG.zip",
+                  "fileName": "Foliage001_1K-PNG.zip",
+                  "size": 12475558,
+                  "filetype": "zip",
+                  "attribute": "1K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Foliage001_2K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Foliage001_2K-PNG.zip",
+                  "fileName": "Foliage001_2K-PNG.zip",
+                  "size": 46253500,
+                  "filetype": "zip",
+                  "attribute": "2K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Foliage001_4K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Foliage001_4K-PNG.zip",
+                  "fileName": "Foliage001_4K-PNG.zip",
+                  "size": 173422271,
+                  "filetype": "zip",
+                  "attribute": "4K-PNG",
+                  "zipContent": []
+                }
+              ]
+            }
+          }
+        }
+      },
+      "previewLinks": [
+        {
+          "url": "https://releases.pbr.one/main/material-shading.html#normal_type=directx&color_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage001/Foliage001_SQ_Color.jpg?80022&displacement_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage001/Foliage001_SQ_Displacement.jpg?34839&normal_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage001/Foliage001_SQ_NormalDX.jpg?36894&roughness_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage001/Foliage001_SQ_Roughness.jpg?78729&opacity_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage001/Foliage001_SQ_Opacity.jpg?56380",
+          "name": {
+            "id": 4,
+            "slug": "pbr-one-material-shading",
+            "title": "3D Preview",
+            "description": "description"
+          },
+          "displayName": "",
+          "iconName": ""
+        },
+        {
+          "url": "https://releases.pbr.one/main/texture-tiling.html#texture_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage001/Foliage001_SQ_Color.jpg?14953,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage001/Foliage001_SQ_Displacement.jpg?82428,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage001/Foliage001_SQ_NormalDX.jpg?83152,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage001/Foliage001_SQ_Roughness.jpg?18644,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage001/Foliage001_SQ_Opacity.jpg?83356&texture_name=Color,Displacement,Normal,Roughness,Opacity",
+          "name": {
+            "id": 3,
+            "slug": "pbr-one-material-maps",
+            "title": "Tiling Preview",
+            "description": "description"
+          },
+          "displayName": "",
+          "iconName": ""
+        }
+      ],
+      "previewType": "Default",
+      "maps": [
+        "color",
+        "displacement",
+        "normal",
+        "roughness",
+        "opacity"
+      ],
+      "hasUsd": false,
+      "previewImage": {
+        "64-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-PNG/Foliage001.png",
+        "128-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-PNG/Foliage001.png",
+        "256-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-PNG/Foliage001.png",
+        "512-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-PNG/Foliage001.png",
+        "1024-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-PNG/Foliage001.png",
+        "2048-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-PNG/Foliage001.png",
+        "64-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-JPG-FFFFFF/Foliage001.jpg",
+        "128-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-JPG-FFFFFF/Foliage001.jpg",
+        "256-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-JPG-FFFFFF/Foliage001.jpg",
+        "512-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-JPG-FFFFFF/Foliage001.jpg",
+        "1024-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-JPG-FFFFFF/Foliage001.jpg",
+        "2048-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-JPG-FFFFFF/Foliage001.jpg",
+        "64-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-JPG-242424/Foliage001.jpg",
+        "128-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-JPG-242424/Foliage001.jpg",
+        "256-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-JPG-242424/Foliage001.jpg",
+        "512-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-JPG-242424/Foliage001.jpg",
+        "1024-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-JPG-242424/Foliage001.jpg",
+        "2048-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-JPG-242424/Foliage001.jpg",
+        "64-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-WEBP/Foliage001.webp",
+        "128-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-WEBP/Foliage001.webp",
+        "256-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-WEBP/Foliage001.webp",
+        "512-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-WEBP/Foliage001.webp",
+        "1024-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-WEBP/Foliage001.webp",
+        "2048-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-WEBP/Foliage001.webp"
+      }
+    },
+    {
+      "assetId": "Moss004",
+      "releaseDate": "2020-09-13 00:00:00",
+      "earlyReleaseDate": "2020-09-13 00:00:00",
+      "dataType": "Material",
+      "creationMethod": "PBRProcedural",
+      "category": null,
+      "downloadCount": 41150,
+      "downloadCountMonth": 1255,
+      "downloadCountWeek": 303,
+      "popularityScore": 3.979799599344508,
+      "tags": [
+        "4",
+        "green",
+        "moss",
+        "mossy"
+      ],
+      "dataTypeName": "Material",
+      "dataTypeDescription": "A photo texture with PBR maps.",
+      "creationMethodName": "Height field photogrammetry",
+      "creationMethodDescription": "Displacement generated using photogrammetry.",
+      "displayName": "Moss 004",
+      "customDisplayName": "",
+      "description": "",
+      "displayCategory": "Moss",
+      "shortLink": "https://ambientcg.com/a/Moss004",
+      "dimensionX": 0,
+      "dimensionY": 0,
+      "dimensionZ": 0,
+      "createdUsing": [],
+      "basedOnThis": [],
+      "variations": [],
+      "nextVariationAssetId": null,
+      "previousVariationAssetId": null,
+      "nextAssetId": null,
+      "previousAssetId": null,
+      "downloadFolders": {
+        "default": {
+          "title": "default",
+          "downloadFiletypeCategories": {
+            "zip": {
+              "title": "zip",
+              "downloads": [
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Moss004_1K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Moss004_1K-JPG.zip",
+                  "fileName": "Moss004_1K-JPG.zip",
+                  "size": 9791460,
+                  "filetype": "zip",
+                  "attribute": "1K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Moss004_2K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Moss004_2K-JPG.zip",
+                  "fileName": "Moss004_2K-JPG.zip",
+                  "size": 38336427,
+                  "filetype": "zip",
+                  "attribute": "2K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Moss004_4K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Moss004_4K-JPG.zip",
+                  "fileName": "Moss004_4K-JPG.zip",
+                  "size": 157978918,
+                  "filetype": "zip",
+                  "attribute": "4K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Moss004_8K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Moss004_8K-JPG.zip",
+                  "fileName": "Moss004_8K-JPG.zip",
+                  "size": 650435087,
+                  "filetype": "zip",
+                  "attribute": "8K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Moss004_1K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Moss004_1K-PNG.zip",
+                  "fileName": "Moss004_1K-PNG.zip",
+                  "size": 18796143,
+                  "filetype": "zip",
+                  "attribute": "1K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Moss004_2K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Moss004_2K-PNG.zip",
+                  "fileName": "Moss004_2K-PNG.zip",
+                  "size": 73105435,
+                  "filetype": "zip",
+                  "attribute": "2K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Moss004_4K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Moss004_4K-PNG.zip",
+                  "fileName": "Moss004_4K-PNG.zip",
+                  "size": 291183910,
+                  "filetype": "zip",
+                  "attribute": "4K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Moss004_8K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Moss004_8K-PNG.zip",
+                  "fileName": "Moss004_8K-PNG.zip",
+                  "size": 1157674004,
+                  "filetype": "zip",
+                  "attribute": "8K-PNG",
+                  "zipContent": []
+                }
+              ]
+            }
+          }
+        }
+      },
+      "previewLinks": [
+        {
+          "url": "https://releases.pbr.one/main/material-shading.html#normal_type=directx&color_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss004/Moss004_SQ_Color.jpg?1880&displacement_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss004/Moss004_SQ_Displacement.jpg?42273&normal_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss004/Moss004_SQ_NormalDX.jpg?75532&roughness_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss004/Moss004_SQ_Roughness.jpg?65446&ambientocclusion_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss004/Moss004_SQ_AmbientOcclusion.jpg?2324",
+          "name": {
+            "id": 4,
+            "slug": "pbr-one-material-shading",
+            "title": "3D Preview",
+            "description": "description"
+          },
+          "displayName": "",
+          "iconName": ""
+        },
+        {
+          "url": "https://releases.pbr.one/main/texture-tiling.html#texture_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss004/Moss004_SQ_Color.jpg?11303,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss004/Moss004_SQ_Displacement.jpg?87425,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss004/Moss004_SQ_NormalDX.jpg?8536,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss004/Moss004_SQ_Roughness.jpg?23440,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Moss004/Moss004_SQ_AmbientOcclusion.jpg?37279&texture_name=Color,Displacement,Normal,Roughness,Ambient Occlusion",
+          "name": {
+            "id": 3,
+            "slug": "pbr-one-material-maps",
+            "title": "Tiling Preview",
+            "description": "description"
+          },
+          "displayName": "",
+          "iconName": ""
+        }
+      ],
+      "previewType": "Default",
+      "maps": [
+        "color",
+        "displacement",
+        "normal",
+        "roughness",
+        "ambient-occlusion"
+      ],
+      "hasUsd": false,
+      "previewImage": {
+        "64-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-PNG/Moss004.png",
+        "128-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-PNG/Moss004.png",
+        "256-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-PNG/Moss004.png",
+        "512-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-PNG/Moss004.png",
+        "1024-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-PNG/Moss004.png",
+        "2048-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-PNG/Moss004.png",
+        "64-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-JPG-FFFFFF/Moss004.jpg",
+        "128-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-JPG-FFFFFF/Moss004.jpg",
+        "256-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-JPG-FFFFFF/Moss004.jpg",
+        "512-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-JPG-FFFFFF/Moss004.jpg",
+        "1024-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-JPG-FFFFFF/Moss004.jpg",
+        "2048-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-JPG-FFFFFF/Moss004.jpg",
+        "64-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-JPG-242424/Moss004.jpg",
+        "128-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-JPG-242424/Moss004.jpg",
+        "256-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-JPG-242424/Moss004.jpg",
+        "512-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-JPG-242424/Moss004.jpg",
+        "1024-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-JPG-242424/Moss004.jpg",
+        "2048-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-JPG-242424/Moss004.jpg",
+        "64-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-WEBP/Moss004.webp",
+        "128-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-WEBP/Moss004.webp",
+        "256-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-WEBP/Moss004.webp",
+        "512-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-WEBP/Moss004.webp",
+        "1024-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-WEBP/Moss004.webp",
+        "2048-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-WEBP/Moss004.webp"
+      }
+    },
+    {
+      "assetId": "LeafSet022",
+      "releaseDate": "2021-06-06 00:00:00",
+      "earlyReleaseDate": "2021-06-06 00:00:00",
+      "dataType": "Atlas",
+      "creationMethod": "PBRMultiAngle",
+      "category": null,
+      "downloadCount": 18880,
+      "downloadCountMonth": 842,
+      "downloadCountWeek": 283,
+      "popularityScore": 2.616110357521588,
+      "tags": [
+        "22",
+        "green",
+        "leaf",
+        "leaves",
+        "set"
+      ],
+      "dataTypeName": "Atlas",
+      "dataTypeDescription": "A photo texture with PBR maps.",
+      "creationMethodName": "Height field photogrammetry",
+      "creationMethodDescription": "Displacement generated using photogrammetry.",
+      "displayName": "Leaf Set 022",
+      "customDisplayName": "",
+      "description": "",
+      "displayCategory": "Leaf Set",
+      "shortLink": "https://ambientcg.com/a/LeafSet022",
+      "dimensionX": 25,
+      "dimensionY": 25,
+      "dimensionZ": 0,
+      "createdUsing": [],
+      "basedOnThis": [],
+      "variations": [],
+      "nextVariationAssetId": null,
+      "previousVariationAssetId": null,
+      "nextAssetId": null,
+      "previousAssetId": null,
+      "downloadFolders": {
+        "default": {
+          "title": "default",
+          "downloadFiletypeCategories": {
+            "zip": {
+              "title": "zip",
+              "downloads": [
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet022_1K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet022_1K-JPG.zip",
+                  "fileName": "LeafSet022_1K-JPG.zip",
+                  "size": 4312892,
+                  "filetype": "zip",
+                  "attribute": "1K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet022_2K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet022_2K-JPG.zip",
+                  "fileName": "LeafSet022_2K-JPG.zip",
+                  "size": 11273410,
+                  "filetype": "zip",
+                  "attribute": "2K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet022_4K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet022_4K-JPG.zip",
+                  "fileName": "LeafSet022_4K-JPG.zip",
+                  "size": 34233246,
+                  "filetype": "zip",
+                  "attribute": "4K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet022_8K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet022_8K-JPG.zip",
+                  "fileName": "LeafSet022_8K-JPG.zip",
+                  "size": 115834185,
+                  "filetype": "zip",
+                  "attribute": "8K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet022_1K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet022_1K-PNG.zip",
+                  "fileName": "LeafSet022_1K-PNG.zip",
+                  "size": 11120618,
+                  "filetype": "zip",
+                  "attribute": "1K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet022_2K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet022_2K-PNG.zip",
+                  "fileName": "LeafSet022_2K-PNG.zip",
+                  "size": 34465502,
+                  "filetype": "zip",
+                  "attribute": "2K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet022_4K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet022_4K-PNG.zip",
+                  "fileName": "LeafSet022_4K-PNG.zip",
+                  "size": 117476132,
+                  "filetype": "zip",
+                  "attribute": "4K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet022_8K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet022_8K-PNG.zip",
+                  "fileName": "LeafSet022_8K-PNG.zip",
+                  "size": 436601020,
+                  "filetype": "zip",
+                  "attribute": "8K-PNG",
+                  "zipContent": []
+                }
+              ]
+            }
+          }
+        }
+      },
+      "previewLinks": [
+        {
+          "url": "https://releases.pbr.one/main/material-shading.html#normal_type=directx&color_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet022/LeafSet022_SQ_Color.jpg?31071&displacement_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet022/LeafSet022_SQ_Displacement.jpg?60213&normal_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet022/LeafSet022_SQ_NormalDX.jpg?83099&roughness_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet022/LeafSet022_SQ_Roughness.jpg?20917&opacity_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet022/LeafSet022_SQ_Opacity.jpg?12485&=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet022/LeafSet022_SQ_Scattering.jpg?28935",
+          "name": {
+            "id": 4,
+            "slug": "pbr-one-material-shading",
+            "title": "3D Preview",
+            "description": "description"
+          },
+          "displayName": "",
+          "iconName": ""
+        },
+        {
+          "url": "https://releases.pbr.one/main/texture-tiling.html#texture_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet022/LeafSet022_SQ_Color.jpg?71555,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet022/LeafSet022_SQ_Displacement.jpg?83030,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet022/LeafSet022_SQ_NormalDX.jpg?97746,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet022/LeafSet022_SQ_Roughness.jpg?260,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet022/LeafSet022_SQ_Opacity.jpg?12376,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet022/LeafSet022_SQ_Scattering.jpg?38719&texture_name=Color,Displacement,Normal,Roughness,Opacity,Scattering",
+          "name": {
+            "id": 3,
+            "slug": "pbr-one-material-maps",
+            "title": "Tiling Preview",
+            "description": "description"
+          },
+          "displayName": "",
+          "iconName": ""
+        }
+      ],
+      "previewType": "Default",
+      "maps": [
+        "color",
+        "displacement",
+        "normal",
+        "roughness",
+        "opacity",
+        "scattering"
+      ],
+      "hasUsd": false,
+      "previewImage": {
+        "64-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-PNG/LeafSet022.png",
+        "128-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-PNG/LeafSet022.png",
+        "256-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-PNG/LeafSet022.png",
+        "512-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-PNG/LeafSet022.png",
+        "1024-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-PNG/LeafSet022.png",
+        "2048-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-PNG/LeafSet022.png",
+        "64-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-JPG-FFFFFF/LeafSet022.jpg",
+        "128-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-JPG-FFFFFF/LeafSet022.jpg",
+        "256-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-JPG-FFFFFF/LeafSet022.jpg",
+        "512-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-JPG-FFFFFF/LeafSet022.jpg",
+        "1024-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-JPG-FFFFFF/LeafSet022.jpg",
+        "2048-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-JPG-FFFFFF/LeafSet022.jpg",
+        "64-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-JPG-242424/LeafSet022.jpg",
+        "128-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-JPG-242424/LeafSet022.jpg",
+        "256-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-JPG-242424/LeafSet022.jpg",
+        "512-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-JPG-242424/LeafSet022.jpg",
+        "1024-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-JPG-242424/LeafSet022.jpg",
+        "2048-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-JPG-242424/LeafSet022.jpg",
+        "64-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-WEBP/LeafSet022.webp",
+        "128-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-WEBP/LeafSet022.webp",
+        "256-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-WEBP/LeafSet022.webp",
+        "512-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-WEBP/LeafSet022.webp",
+        "1024-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-WEBP/LeafSet022.webp",
+        "2048-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-WEBP/LeafSet022.webp"
+      }
+    },
+    {
+      "assetId": "Foliage008",
+      "releaseDate": "2023-10-19 08:00:00",
+      "earlyReleaseDate": "2023-10-15 20:00:00",
+      "dataType": "Atlas",
+      "creationMethod": "PBRMultiAngle",
+      "category": null,
+      "downloadCount": 6161,
+      "downloadCountMonth": 604,
+      "downloadCountWeek": 162,
+      "popularityScore": 2.138468206613329,
+      "tags": [
+        "8",
+        "blades",
+        "foliage",
+        "garden",
+        "grass",
+        "green",
+        "lawn"
+      ],
+      "dataTypeName": "Atlas",
+      "dataTypeDescription": "A photo texture with PBR maps.",
+      "creationMethodName": "Height field photogrammetry",
+      "creationMethodDescription": "Displacement generated using photogrammetry.",
+      "displayName": "Foliage 008",
+      "customDisplayName": "",
+      "description": "",
+      "displayCategory": "Foliage",
+      "shortLink": "https://ambientcg.com/a/Foliage008",
+      "dimensionX": 6,
+      "dimensionY": 6,
+      "dimensionZ": 0,
+      "createdUsing": [],
+      "basedOnThis": [],
+      "variations": [],
+      "nextVariationAssetId": null,
+      "previousVariationAssetId": null,
+      "nextAssetId": null,
+      "previousAssetId": null,
+      "downloadFolders": {
+        "default": {
+          "title": "default",
+          "downloadFiletypeCategories": {
+            "zip": {
+              "title": "zip",
+              "downloads": [
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Foliage008_1K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Foliage008_1K-JPG.zip",
+                  "fileName": "Foliage008_1K-JPG.zip",
+                  "size": 2860409,
+                  "filetype": "zip",
+                  "attribute": "1K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Foliage008_2K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Foliage008_2K-JPG.zip",
+                  "fileName": "Foliage008_2K-JPG.zip",
+                  "size": 6080028,
+                  "filetype": "zip",
+                  "attribute": "2K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Foliage008_4K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Foliage008_4K-JPG.zip",
+                  "fileName": "Foliage008_4K-JPG.zip",
+                  "size": 16504669,
+                  "filetype": "zip",
+                  "attribute": "4K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Foliage008_1K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Foliage008_1K-PNG.zip",
+                  "fileName": "Foliage008_1K-PNG.zip",
+                  "size": 6814258,
+                  "filetype": "zip",
+                  "attribute": "1K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Foliage008_2K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Foliage008_2K-PNG.zip",
+                  "fileName": "Foliage008_2K-PNG.zip",
+                  "size": 22660774,
+                  "filetype": "zip",
+                  "attribute": "2K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=Foliage008_4K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=Foliage008_4K-PNG.zip",
+                  "fileName": "Foliage008_4K-PNG.zip",
+                  "size": 64942904,
+                  "filetype": "zip",
+                  "attribute": "4K-PNG",
+                  "zipContent": []
+                }
+              ]
+            }
+          }
+        }
+      },
+      "previewLinks": [
+        {
+          "url": "https://releases.pbr.one/main/material-shading.html#normal_type=directx&color_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage008/Foliage008_SQ_Color.jpg?4728&displacement_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage008/Foliage008_SQ_Displacement.jpg?10723&normal_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage008/Foliage008_SQ_NormalDX.jpg?51907&roughness_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage008/Foliage008_SQ_Roughness.jpg?90619&opacity_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage008/Foliage008_SQ_Opacity.jpg?48875&=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage008/Foliage008_SQ_Scattering.jpg?53263",
+          "name": {
+            "id": 4,
+            "slug": "pbr-one-material-shading",
+            "title": "3D Preview",
+            "description": "description"
+          },
+          "displayName": "",
+          "iconName": ""
+        },
+        {
+          "url": "https://releases.pbr.one/main/texture-tiling.html#texture_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage008/Foliage008_SQ_Color.jpg?18122,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage008/Foliage008_SQ_Displacement.jpg?48963,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage008/Foliage008_SQ_NormalDX.jpg?92233,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage008/Foliage008_SQ_Roughness.jpg?58807,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage008/Foliage008_SQ_Opacity.jpg?59369,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/Foliage008/Foliage008_SQ_Scattering.jpg?3076&texture_name=Color,Displacement,Normal,Roughness,Opacity,Scattering",
+          "name": {
+            "id": 3,
+            "slug": "pbr-one-material-maps",
+            "title": "Tiling Preview",
+            "description": "description"
+          },
+          "displayName": "",
+          "iconName": ""
+        }
+      ],
+      "previewType": "Default",
+      "maps": [
+        "color",
+        "displacement",
+        "normal",
+        "roughness",
+        "opacity",
+        "scattering"
+      ],
+      "hasUsd": false,
+      "previewImage": {
+        "64-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-PNG/Foliage008.png",
+        "128-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-PNG/Foliage008.png",
+        "256-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-PNG/Foliage008.png",
+        "512-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-PNG/Foliage008.png",
+        "1024-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-PNG/Foliage008.png",
+        "2048-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-PNG/Foliage008.png",
+        "64-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-JPG-FFFFFF/Foliage008.jpg",
+        "128-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-JPG-FFFFFF/Foliage008.jpg",
+        "256-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-JPG-FFFFFF/Foliage008.jpg",
+        "512-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-JPG-FFFFFF/Foliage008.jpg",
+        "1024-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-JPG-FFFFFF/Foliage008.jpg",
+        "2048-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-JPG-FFFFFF/Foliage008.jpg",
+        "64-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-JPG-242424/Foliage008.jpg",
+        "128-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-JPG-242424/Foliage008.jpg",
+        "256-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-JPG-242424/Foliage008.jpg",
+        "512-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-JPG-242424/Foliage008.jpg",
+        "1024-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-JPG-242424/Foliage008.jpg",
+        "2048-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-JPG-242424/Foliage008.jpg",
+        "64-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-WEBP/Foliage008.webp",
+        "128-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-WEBP/Foliage008.webp",
+        "256-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-WEBP/Foliage008.webp",
+        "512-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-WEBP/Foliage008.webp",
+        "1024-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-WEBP/Foliage008.webp",
+        "2048-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-WEBP/Foliage008.webp"
+      }
+    },
+    {
+      "assetId": "LeafSet002",
+      "releaseDate": "2018-06-26 00:00:00",
+      "earlyReleaseDate": "2018-06-26 00:00:00",
+      "dataType": "Atlas",
+      "creationMethod": "PBRApproximated",
+      "category": null,
+      "downloadCount": 17678,
+      "downloadCountMonth": 503,
+      "downloadCountWeek": 151,
+      "popularityScore": 1.852054651773454,
+      "tags": [
+        "2",
+        "green",
+        "leaf",
+        "leaves",
+        "set",
+        "single",
+        "tree"
+      ],
+      "dataTypeName": "Atlas",
+      "dataTypeDescription": "A photo texture with PBR maps.",
+      "creationMethodName": "Height field photogrammetry",
+      "creationMethodDescription": "Displacement generated using photogrammetry.",
+      "displayName": "Leaf Set 002",
+      "customDisplayName": "",
+      "description": "",
+      "displayCategory": "Leaf Set",
+      "shortLink": "https://ambientcg.com/a/LeafSet002",
+      "dimensionX": 0,
+      "dimensionY": 0,
+      "dimensionZ": 0,
+      "createdUsing": [],
+      "basedOnThis": [],
+      "variations": [],
+      "nextVariationAssetId": null,
+      "previousVariationAssetId": null,
+      "nextAssetId": null,
+      "previousAssetId": null,
+      "downloadFolders": {
+        "default": {
+          "title": "default",
+          "downloadFiletypeCategories": {
+            "zip": {
+              "title": "zip",
+              "downloads": [
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet002_1K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet002_1K-JPG.zip",
+                  "fileName": "LeafSet002_1K-JPG.zip",
+                  "size": 5487818,
+                  "filetype": "zip",
+                  "attribute": "1K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet002_2K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet002_2K-JPG.zip",
+                  "fileName": "LeafSet002_2K-JPG.zip",
+                  "size": 18623333,
+                  "filetype": "zip",
+                  "attribute": "2K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet002_4K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet002_4K-JPG.zip",
+                  "fileName": "LeafSet002_4K-JPG.zip",
+                  "size": 79075531,
+                  "filetype": "zip",
+                  "attribute": "4K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet002_8K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet002_8K-JPG.zip",
+                  "fileName": "LeafSet002_8K-JPG.zip",
+                  "size": 391163143,
+                  "filetype": "zip",
+                  "attribute": "8K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet002_1K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet002_1K-PNG.zip",
+                  "fileName": "LeafSet002_1K-PNG.zip",
+                  "size": 14483065,
+                  "filetype": "zip",
+                  "attribute": "1K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet002_2K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet002_2K-PNG.zip",
+                  "fileName": "LeafSet002_2K-PNG.zip",
+                  "size": 54822888,
+                  "filetype": "zip",
+                  "attribute": "2K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet002_4K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet002_4K-PNG.zip",
+                  "fileName": "LeafSet002_4K-PNG.zip",
+                  "size": 222483932,
+                  "filetype": "zip",
+                  "attribute": "4K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet002_8K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet002_8K-PNG.zip",
+                  "fileName": "LeafSet002_8K-PNG.zip",
+                  "size": 265635981,
+                  "filetype": "zip",
+                  "attribute": "8K-PNG",
+                  "zipContent": []
+                }
+              ]
+            }
+          }
+        }
+      },
+      "previewLinks": [
+        {
+          "url": "https://releases.pbr.one/main/material-shading.html#normal_type=directx&color_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet002/LeafSet002_SQ_Color.jpg?29176&displacement_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet002/LeafSet002_SQ_Displacement.jpg?96993&normal_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet002/LeafSet002_SQ_NormalDX.jpg?12803&roughness_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet002/LeafSet002_SQ_Roughness.jpg?44601&opacity_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet002/LeafSet002_SQ_Opacity.jpg?17833&ambientocclusion_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet002/LeafSet002_SQ_AmbientOcclusion.jpg?77223",
+          "name": {
+            "id": 4,
+            "slug": "pbr-one-material-shading",
+            "title": "3D Preview",
+            "description": "description"
+          },
+          "displayName": "",
+          "iconName": ""
+        },
+        {
+          "url": "https://releases.pbr.one/main/texture-tiling.html#texture_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet002/LeafSet002_SQ_Color.jpg?92262,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet002/LeafSet002_SQ_Displacement.jpg?79917,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet002/LeafSet002_SQ_NormalDX.jpg?48211,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet002/LeafSet002_SQ_Roughness.jpg?39033,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet002/LeafSet002_SQ_Opacity.jpg?84273,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet002/LeafSet002_SQ_AmbientOcclusion.jpg?87696&texture_name=Color,Displacement,Normal,Roughness,Opacity,Ambient Occlusion",
+          "name": {
+            "id": 3,
+            "slug": "pbr-one-material-maps",
+            "title": "Tiling Preview",
+            "description": "description"
+          },
+          "displayName": "",
+          "iconName": ""
+        }
+      ],
+      "previewType": "Default",
+      "maps": [
+        "color",
+        "displacement",
+        "normal",
+        "roughness",
+        "opacity",
+        "ambient-occlusion"
+      ],
+      "hasUsd": false,
+      "previewImage": {
+        "64-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-PNG/LeafSet002.png",
+        "128-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-PNG/LeafSet002.png",
+        "256-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-PNG/LeafSet002.png",
+        "512-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-PNG/LeafSet002.png",
+        "1024-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-PNG/LeafSet002.png",
+        "2048-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-PNG/LeafSet002.png",
+        "64-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-JPG-FFFFFF/LeafSet002.jpg",
+        "128-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-JPG-FFFFFF/LeafSet002.jpg",
+        "256-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-JPG-FFFFFF/LeafSet002.jpg",
+        "512-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-JPG-FFFFFF/LeafSet002.jpg",
+        "1024-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-JPG-FFFFFF/LeafSet002.jpg",
+        "2048-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-JPG-FFFFFF/LeafSet002.jpg",
+        "64-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-JPG-242424/LeafSet002.jpg",
+        "128-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-JPG-242424/LeafSet002.jpg",
+        "256-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-JPG-242424/LeafSet002.jpg",
+        "512-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-JPG-242424/LeafSet002.jpg",
+        "1024-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-JPG-242424/LeafSet002.jpg",
+        "2048-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-JPG-242424/LeafSet002.jpg",
+        "64-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-WEBP/LeafSet002.webp",
+        "128-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-WEBP/LeafSet002.webp",
+        "256-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-WEBP/LeafSet002.webp",
+        "512-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-WEBP/LeafSet002.webp",
+        "1024-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-WEBP/LeafSet002.webp",
+        "2048-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-WEBP/LeafSet002.webp"
+      }
+    },
+    {
+      "assetId": "LeafSet001",
+      "releaseDate": "2018-05-28 00:00:00",
+      "earlyReleaseDate": "2018-05-28 00:00:00",
+      "dataType": "Atlas",
+      "creationMethod": "PBRApproximated",
+      "category": null,
+      "downloadCount": 14422,
+      "downloadCountMonth": 629,
+      "downloadCountWeek": 168,
+      "popularityScore": 1.686517539963591,
+      "tags": [
+        "1",
+        "green",
+        "leaf",
+        "leaves",
+        "set",
+        "single",
+        "tree"
+      ],
+      "dataTypeName": "Atlas",
+      "dataTypeDescription": "A photo texture with PBR maps.",
+      "creationMethodName": "Height field photogrammetry",
+      "creationMethodDescription": "Displacement generated using photogrammetry.",
+      "displayName": "Leaf Set 001",
+      "customDisplayName": "",
+      "description": "",
+      "displayCategory": "Leaf Set",
+      "shortLink": "https://ambientcg.com/a/LeafSet001",
+      "dimensionX": 0,
+      "dimensionY": 0,
+      "dimensionZ": 0,
+      "createdUsing": [],
+      "basedOnThis": [],
+      "variations": [],
+      "nextVariationAssetId": null,
+      "previousVariationAssetId": null,
+      "nextAssetId": null,
+      "previousAssetId": null,
+      "downloadFolders": {
+        "default": {
+          "title": "default",
+          "downloadFiletypeCategories": {
+            "zip": {
+              "title": "zip",
+              "downloads": [
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet001_1K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet001_1K-JPG.zip",
+                  "fileName": "LeafSet001_1K-JPG.zip",
+                  "size": 3319979,
+                  "filetype": "zip",
+                  "attribute": "1K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet001_2K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet001_2K-JPG.zip",
+                  "fileName": "LeafSet001_2K-JPG.zip",
+                  "size": 10346917,
+                  "filetype": "zip",
+                  "attribute": "2K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet001_4K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet001_4K-JPG.zip",
+                  "fileName": "LeafSet001_4K-JPG.zip",
+                  "size": 44658676,
+                  "filetype": "zip",
+                  "attribute": "4K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet001_8K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet001_8K-JPG.zip",
+                  "fileName": "LeafSet001_8K-JPG.zip",
+                  "size": 232903378,
+                  "filetype": "zip",
+                  "attribute": "8K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet001_1K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet001_1K-PNG.zip",
+                  "fileName": "LeafSet001_1K-PNG.zip",
+                  "size": 12031905,
+                  "filetype": "zip",
+                  "attribute": "1K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet001_2K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet001_2K-PNG.zip",
+                  "fileName": "LeafSet001_2K-PNG.zip",
+                  "size": 45351288,
+                  "filetype": "zip",
+                  "attribute": "2K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet001_4K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet001_4K-PNG.zip",
+                  "fileName": "LeafSet001_4K-PNG.zip",
+                  "size": 182636993,
+                  "filetype": "zip",
+                  "attribute": "4K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet001_8K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet001_8K-PNG.zip",
+                  "fileName": "LeafSet001_8K-PNG.zip",
+                  "size": 169288506,
+                  "filetype": "zip",
+                  "attribute": "8K-PNG",
+                  "zipContent": []
+                }
+              ]
+            }
+          }
+        }
+      },
+      "previewLinks": [
+        {
+          "url": "https://releases.pbr.one/main/material-shading.html#normal_type=directx&color_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet001/LeafSet001_SQ_Color.jpg?74134&displacement_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet001/LeafSet001_SQ_Displacement.jpg?70685&normal_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet001/LeafSet001_SQ_NormalDX.jpg?68827&roughness_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet001/LeafSet001_SQ_Roughness.jpg?14055&opacity_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet001/LeafSet001_SQ_Opacity.jpg?36235",
+          "name": {
+            "id": 4,
+            "slug": "pbr-one-material-shading",
+            "title": "3D Preview",
+            "description": "description"
+          },
+          "displayName": "",
+          "iconName": ""
+        },
+        {
+          "url": "https://releases.pbr.one/main/texture-tiling.html#texture_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet001/LeafSet001_SQ_Color.jpg?2397,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet001/LeafSet001_SQ_Displacement.jpg?37442,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet001/LeafSet001_SQ_NormalDX.jpg?77311,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet001/LeafSet001_SQ_Roughness.jpg?96387,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet001/LeafSet001_SQ_Opacity.jpg?72358&texture_name=Color,Displacement,Normal,Roughness,Opacity",
+          "name": {
+            "id": 3,
+            "slug": "pbr-one-material-maps",
+            "title": "Tiling Preview",
+            "description": "description"
+          },
+          "displayName": "",
+          "iconName": ""
+        }
+      ],
+      "previewType": "Default",
+      "maps": [
+        "color",
+        "displacement",
+        "normal",
+        "roughness",
+        "opacity"
+      ],
+      "hasUsd": false,
+      "previewImage": {
+        "64-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-PNG/LeafSet001.png",
+        "128-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-PNG/LeafSet001.png",
+        "256-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-PNG/LeafSet001.png",
+        "512-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-PNG/LeafSet001.png",
+        "1024-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-PNG/LeafSet001.png",
+        "2048-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-PNG/LeafSet001.png",
+        "64-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-JPG-FFFFFF/LeafSet001.jpg",
+        "128-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-JPG-FFFFFF/LeafSet001.jpg",
+        "256-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-JPG-FFFFFF/LeafSet001.jpg",
+        "512-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-JPG-FFFFFF/LeafSet001.jpg",
+        "1024-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-JPG-FFFFFF/LeafSet001.jpg",
+        "2048-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-JPG-FFFFFF/LeafSet001.jpg",
+        "64-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-JPG-242424/LeafSet001.jpg",
+        "128-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-JPG-242424/LeafSet001.jpg",
+        "256-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-JPG-242424/LeafSet001.jpg",
+        "512-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-JPG-242424/LeafSet001.jpg",
+        "1024-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-JPG-242424/LeafSet001.jpg",
+        "2048-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-JPG-242424/LeafSet001.jpg",
+        "64-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-WEBP/LeafSet001.webp",
+        "128-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-WEBP/LeafSet001.webp",
+        "256-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-WEBP/LeafSet001.webp",
+        "512-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-WEBP/LeafSet001.webp",
+        "1024-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-WEBP/LeafSet001.webp",
+        "2048-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-WEBP/LeafSet001.webp"
+      }
+    },
+    {
+      "assetId": "LeafSet003",
+      "releaseDate": "2018-08-31 00:00:00",
+      "earlyReleaseDate": "2018-08-31 00:00:00",
+      "dataType": "Atlas",
+      "creationMethod": "PBRApproximated",
+      "category": null,
+      "downloadCount": 13187,
+      "downloadCountMonth": 425,
+      "downloadCountWeek": 119,
+      "popularityScore": 1.6541618272784966,
+      "tags": [
+        "3",
+        "green",
+        "leaf",
+        "leaves",
+        "set",
+        "single",
+        "tree"
+      ],
+      "dataTypeName": "Atlas",
+      "dataTypeDescription": "A photo texture with PBR maps.",
+      "creationMethodName": "Height field photogrammetry",
+      "creationMethodDescription": "Displacement generated using photogrammetry.",
+      "displayName": "Leaf Set 003",
+      "customDisplayName": "",
+      "description": "",
+      "displayCategory": "Leaf Set",
+      "shortLink": "https://ambientcg.com/a/LeafSet003",
+      "dimensionX": 0,
+      "dimensionY": 0,
+      "dimensionZ": 0,
+      "createdUsing": [],
+      "basedOnThis": [],
+      "variations": [],
+      "nextVariationAssetId": null,
+      "previousVariationAssetId": null,
+      "nextAssetId": null,
+      "previousAssetId": null,
+      "downloadFolders": {
+        "default": {
+          "title": "default",
+          "downloadFiletypeCategories": {
+            "zip": {
+              "title": "zip",
+              "downloads": [
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet003_1K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet003_1K-JPG.zip",
+                  "fileName": "LeafSet003_1K-JPG.zip",
+                  "size": 4672961,
+                  "filetype": "zip",
+                  "attribute": "1K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet003_2K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet003_2K-JPG.zip",
+                  "fileName": "LeafSet003_2K-JPG.zip",
+                  "size": 15850428,
+                  "filetype": "zip",
+                  "attribute": "2K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet003_4K-JPG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet003_4K-JPG.zip",
+                  "fileName": "LeafSet003_4K-JPG.zip",
+                  "size": 74208245,
+                  "filetype": "zip",
+                  "attribute": "4K-JPG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet003_1K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet003_1K-PNG.zip",
+                  "fileName": "LeafSet003_1K-PNG.zip",
+                  "size": 13632809,
+                  "filetype": "zip",
+                  "attribute": "1K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet003_2K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet003_2K-PNG.zip",
+                  "fileName": "LeafSet003_2K-PNG.zip",
+                  "size": 51831245,
+                  "filetype": "zip",
+                  "attribute": "2K-PNG",
+                  "zipContent": []
+                },
+                {
+                  "fullDownloadPath": "https://ambientcg.com/get?file=LeafSet003_4K-PNG.zip",
+                  "downloadLink": "https://ambientcg.com/get?file=LeafSet003_4K-PNG.zip",
+                  "fileName": "LeafSet003_4K-PNG.zip",
+                  "size": 87477110,
+                  "filetype": "zip",
+                  "attribute": "4K-PNG",
+                  "zipContent": []
+                }
+              ]
+            }
+          }
+        }
+      },
+      "previewLinks": [
+        {
+          "url": "https://releases.pbr.one/main/material-shading.html#normal_type=directx&color_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet003/LeafSet003_SQ_Color.jpg?17263&displacement_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet003/LeafSet003_SQ_Displacement.jpg?97234&normal_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet003/LeafSet003_SQ_NormalDX.jpg?1660&roughness_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet003/LeafSet003_SQ_Roughness.jpg?96725&opacity_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet003/LeafSet003_SQ_Opacity.jpg?71682&ambientocclusion_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet003/LeafSet003_SQ_AmbientOcclusion.jpg?20893",
+          "name": {
+            "id": 4,
+            "slug": "pbr-one-material-shading",
+            "title": "3D Preview",
+            "description": "description"
+          },
+          "displayName": "",
+          "iconName": ""
+        },
+        {
+          "url": "https://releases.pbr.one/main/texture-tiling.html#texture_url=https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet003/LeafSet003_SQ_Color.jpg?38304,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet003/LeafSet003_SQ_Displacement.jpg?614,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet003/LeafSet003_SQ_NormalDX.jpg?17570,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet003/LeafSet003_SQ_Roughness.jpg?83070,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet003/LeafSet003_SQ_Opacity.jpg?85713,https://f003.backblazeb2.com/file/ambientCG-Web/media/surface-preview/LeafSet003/LeafSet003_SQ_AmbientOcclusion.jpg?51490&texture_name=Color,Displacement,Normal,Roughness,Opacity,Ambient Occlusion",
+          "name": {
+            "id": 3,
+            "slug": "pbr-one-material-maps",
+            "title": "Tiling Preview",
+            "description": "description"
+          },
+          "displayName": "",
+          "iconName": ""
+        }
+      ],
+      "previewType": "Default",
+      "maps": [
+        "color",
+        "displacement",
+        "normal",
+        "roughness",
+        "opacity",
+        "ambient-occlusion"
+      ],
+      "hasUsd": false,
+      "previewImage": {
+        "64-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-PNG/LeafSet003.png",
+        "128-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-PNG/LeafSet003.png",
+        "256-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-PNG/LeafSet003.png",
+        "512-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-PNG/LeafSet003.png",
+        "1024-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-PNG/LeafSet003.png",
+        "2048-PNG": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-PNG/LeafSet003.png",
+        "64-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-JPG-FFFFFF/LeafSet003.jpg",
+        "128-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-JPG-FFFFFF/LeafSet003.jpg",
+        "256-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-JPG-FFFFFF/LeafSet003.jpg",
+        "512-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-JPG-FFFFFF/LeafSet003.jpg",
+        "1024-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-JPG-FFFFFF/LeafSet003.jpg",
+        "2048-JPG-FFFFFF": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-JPG-FFFFFF/LeafSet003.jpg",
+        "64-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-JPG-242424/LeafSet003.jpg",
+        "128-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-JPG-242424/LeafSet003.jpg",
+        "256-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-JPG-242424/LeafSet003.jpg",
+        "512-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-JPG-242424/LeafSet003.jpg",
+        "1024-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-JPG-242424/LeafSet003.jpg",
+        "2048-JPG-242424": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-JPG-242424/LeafSet003.jpg",
+        "64-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/64-WEBP/LeafSet003.webp",
+        "128-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/128-WEBP/LeafSet003.webp",
+        "256-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/256-WEBP/LeafSet003.webp",
+        "512-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/512-WEBP/LeafSet003.webp",
+        "1024-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/1024-WEBP/LeafSet003.webp",
+        "2048-WEBP": "https://acg-media.struffelproductions.com/file/ambientCG-Web/media/thumbnail/2048-WEBP/LeafSet003.webp"
+      }
+    }
+  ]
+}
