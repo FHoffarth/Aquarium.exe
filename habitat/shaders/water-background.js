@@ -34,3 +34,35 @@ export const waterBackgroundFragmentShader = `
     gl_FragColor = vec4(water, 1.0);
   }
 `;
+
+// Slice B backdrop: the deep water behind the Hero Frame translation. Calm
+// vertical gradient, a faint warm glow and restrained shafts from the upper
+// left (the hardscape key), darker and cooler toward the upper right. Below
+// the floor horizon it is a plain gradient so the hazed rear floor meets it.
+export const waterBackgroundSliceBFragmentShader = `
+  uniform float uTime;
+  uniform vec3 uTop;
+  uniform vec3 uBottom;
+  uniform vec3 uGlow;
+  uniform float uHorizon;
+  varying vec2 vUv;
+  void main() {
+    float gradient = smoothstep(0.0, 1.0, vUv.y);
+    vec3 water = mix(uBottom, uTop, gradient);
+    float above = smoothstep(uHorizon, uHorizon + 0.2, vUv.y);
+    // Warm key glow, upper left, very soft.
+    float glow = exp(-pow(distance(vUv, vec2(0.18, 0.95)) / 0.42, 2.0));
+    water += uGlow * glow * above;
+    // Restrained shafts slanting down-right from the upper left.
+    vec2 origin = vUv - vec2(0.08, 1.12);
+    float angle = atan(origin.x, -origin.y);
+    float shafts = smoothstep(0.55, 1.0, sin(angle * 23.0 + uTime * 0.035) * 0.5 + 0.5);
+    shafts += smoothstep(0.7, 1.0, sin(angle * 41.0 - uTime * 0.025 + 1.3) * 0.5 + 0.5) * 0.5;
+    float shaftFade = smoothstep(uHorizon, 0.95, vUv.y) * smoothstep(0.75, 0.1, vUv.x);
+    water += uGlow * 0.55 * shafts * shaftFade * 0.35;
+    // Deeper, calmer open water to the upper right.
+    float calm = smoothstep(0.35, 1.0, vUv.x) * smoothstep(uHorizon, 1.0, vUv.y);
+    water *= 1.0 - 0.35 * calm;
+    gl_FragColor = vec4(water, 1.0);
+  }
+`;

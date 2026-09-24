@@ -12,13 +12,29 @@ const stubRenderer = () => ({
   info: { render: { calls: 0, triangles: 0 } },
 });
 
-test('art mode defaults to the reviewed slice and accepts the procedural A/B baseline', () => {
-  assert.equal(DEFAULT_ART_MODE, 'slice-a');
-  assert.equal(readArtMode({ search: '' }), 'slice-a');
+test('art mode defaults to the reviewed slice and keeps Slice A and procedural for comparison', () => {
+  assert.equal(DEFAULT_ART_MODE, 'slice-b');
+  assert.equal(readArtMode({ search: '' }), 'slice-b');
+  assert.equal(readArtMode({ search: '?art=slice-b' }), 'slice-b');
   assert.equal(readArtMode({ search: '?art=slice-a' }), 'slice-a');
   assert.equal(readArtMode({ search: '?art=procedural' }), 'procedural');
-  assert.equal(readArtMode({ search: '?art=../../etc' }), 'slice-a');
-  assert.equal(readArtMode(undefined), 'slice-a');
+  assert.equal(readArtMode({ search: '?art=../../etc' }), 'slice-b');
+  assert.equal(readArtMode(undefined), 'slice-b');
+});
+
+test('a Slice B asset failure also falls back to the procedural habitat with classic fish', async () => {
+  const failures = [];
+  const { habitat, art } = await createPlantedTankForArt(stubRenderer(), {
+    artMode: 'slice-b',
+    loadArtGroup: async group => { throw new AssetIntegrityError(`${group}/environment.glb: SHA-256 mismatch`); },
+    reportAssetFailure: error => failures.push(error),
+  });
+  assert.equal(failures.length, 1);
+  assert.match(failures[0].message, /^slice-b\//);
+  assert.equal(art.mode, 'procedural');
+  assert.equal(habitat.getFishStyle(), 'classic');
+  assert.doesNotThrow(() => habitat.project(1 / 60));
+  habitat.dispose();
 });
 
 test('asset failure is reported once and falls back to a working procedural habitat', async () => {

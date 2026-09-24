@@ -47,7 +47,15 @@ test('every shipped file is GREEN CC0 with recorded provenance for each source',
     assert.equal(entry.status, 'GREEN', entry.file);
     assert.equal(entry.license, 'CC0-1.0', entry.file);
     assert.ok(entry.modifications.length > 20, `${entry.file} documents its modifications`);
-    assert.ok(entry.derivedFrom.length > 0, `${entry.file} names its sources`);
+    if (entry.origin === 'original') {
+      // Own procedural art: no third-party source, but a named in-repo generator.
+      assert.deepEqual(entry.derivedFrom, [], `${entry.file} original art has no sources`);
+      assert.match(entry.generator, /^art\/tools\/[\w-]+\.py$/, `${entry.file} names its generator`);
+      assert.ok(existsSync(new URL(`../../${entry.generator}`, import.meta.url)), `${entry.generator} exists`);
+    } else {
+      assert.equal(entry.origin, 'derived', `${entry.file} declares its origin`);
+      assert.ok(entry.derivedFrom.length > 0, `${entry.file} names its sources`);
+    }
     for (const sourceId of entry.derivedFrom) {
       const source = manifest.sources[sourceId];
       assert.ok(source, `${entry.file} source ${sourceId} is recorded`);

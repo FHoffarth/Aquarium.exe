@@ -6,21 +6,39 @@ const assetsDir = new URL('../../habitat/assets/', import.meta.url);
 const manifest = JSON.parse(await readFile(new URL('manifest.json', assetsDir), 'utf8'));
 const MIB = 1024 * 1024;
 
-// Slice A envelope (approved plan): scene <= ~100k triangles, <= 30 draw
-// calls, <= ~96 MiB texture memory, 1K textures by default, 2K atlases max.
-const BUDGET = {
-  environmentTriangles: 90_000,
-  meshTriangles: {
-    'slice-a-rocks': 20_000,
-    'slice-a-wood': 8_000,
-    'slice-a-plants': 26_000,
-    'slice-a-moss': 10_000,
-    'slice-a-cards': 1_000,
-    'slice-a-substrate': 8_000,
+// Per art group: only one group is loaded at a time. Slice A envelope
+// (approved plan): scene <= ~100k triangles, <= 30 draw calls, <= ~96 MiB
+// texture memory, 1K textures by default, 2K atlases max. Slice B (the
+// Hero Frame translation) is held to the same totals.
+const BUDGETS = {
+  'slice-a': {
+    environmentTriangles: 90_000,
+    meshTriangles: {
+      'slice-a-rocks': 20_000,
+      'slice-a-wood': 8_000,
+      'slice-a-plants': 26_000,
+      'slice-a-moss': 10_000,
+      'slice-a-cards': 1_000,
+      'slice-a-substrate': 8_000,
+    },
+    environmentPrimitives: 8,
+    textureMemoryMiB: 96,
+    maxTextureSide: 2048,
   },
-  environmentPrimitives: 8,
-  textureMemoryMiB: 96,
-  maxTextureSide: 2048,
+  'slice-b': {
+    environmentTriangles: 90_000,
+    meshTriangles: {
+      'slice-b-rocks': 20_000,
+      'slice-b-wood': 8_000,
+      'slice-b-plants': 26_000,
+      'slice-b-moss': 10_000,
+      'slice-b-cards': 1_000,
+      'slice-b-substrate': 8_000,
+    },
+    environmentPrimitives: 8,
+    textureMemoryMiB: 96,
+    maxTextureSide: 2048,
+  },
 };
 
 function parseGlb(buffer) {
@@ -51,10 +69,9 @@ function webpSize(bytes) {
   throw new Error(`unknown WebP chunk ${tag}`);
 }
 
-const geometryEntries = manifest.files.filter(entry => entry.role === 'geometry');
-const textureEntries = manifest.files.filter(entry => entry.role === 'texture');
+const inGroup = group => entry => entry.file.startsWith(`${group}/`);
 
-async function meshTriangles() {
+async function meshTriangles(geometryEntries) {
   const perMesh = {};
   let primitives = 0;
   for (const entry of geometryEntries) {
@@ -74,25 +91,35 @@ async function meshTriangles() {
   return { perMesh, primitives };
 }
 
-test('environment geometry stays inside the Slice A triangle and draw-call budget', async () => {
-  const { perMesh, primitives } = await meshTriangles();
-  const total = Object.values(perMesh).reduce((sum, value) => sum + value, 0);
-  assert.ok(total <= BUDGET.environmentTriangles, `environment triangles ${total}`);
-  assert.ok(primitives <= BUDGET.environmentPrimitives, `environment primitives ${primitives}`);
-  for (const [name, limit] of Object.entries(BUDGET.meshTriangles)) {
-    assert.ok(perMesh[name] !== undefined, `mesh ${name} is present`);
-    assert.ok(perMesh[name] <= limit, `${name} has ${perMesh[name]} triangles (limit ${limit})`);
-  }
+test('every shipped art group has a budget', () => {
+  const groups = new Set(manifest.files.map(entry => entry.file.split('/')[0]));
+  for (const group of groups) assert.ok(BUDGETS[group], `${group} has a budget`);
 });
 
-test('textures stay at or below 2K and inside the GPU texture-memory budget', async () => {
-  let bytes = 0;
-  for (const entry of textureEntries) {
-    const data = new Uint8Array(await readFile(new URL(entry.file, assetsDir)));
-    assert.equal(String.fromCharCode(...data.subarray(8, 12)), 'WEBP', entry.file);
-    const { width, height } = webpSize(data);
-    assert.ok(Math.max(width, height) <= BUDGET.maxTextureSide, `${entry.file} is ${width}x${height}`);
-    bytes += width * height * 4 * (4 / 3);  // RGBA8 with a full mip chain
-  }
-  assert.ok(bytes / MIB <= BUDGET.textureMemoryMiB, `texture memory ${(bytes / MIB).toFixed(1)} MiB`);
-});
+for (const [group, BUDGET] of Object.entries(BUDGETS)) {
+  const geometryEntries = manifest.files.filter(entry => entry.role === 'geometry' && inGroup(group)(entry));
+  const textureEntries = manifest.files.filter(entry => entry.role === 'texture' && inGroup(group)(entry));
+
+  test(`${group} environment geometry stays inside its triangle and draw-call budget`, async () => {
+    const { perMesh, primitives } = await meshTriangles(geometryEntries);
+    const total = Object.values(perMesh).reduce((sum, value) => sum + value, 0);
+    assert.ok(total <= BUDGET.environmentTriangles, `environment triangles ${total}`);
+    assert.ok(primitives <= BUDGET.environmentPrimitives, `environment primitives ${primitives}`);
+    for (const [name, limit] of Object.entries(BUDGET.meshTriangles)) {
+      assert.ok(perMesh[name] !== undefined, `mesh ${name} is present`);
+      assert.ok(perMesh[name] <= limit, `${name} has ${perMesh[name]} triangles (limit ${limit})`);
+    }
+  });
+
+  test(`${group} textures stay at or below 2K and inside the GPU texture-memory budget`, async () => {
+    let bytes = 0;
+    for (const entry of textureEntries) {
+      const data = new Uint8Array(await readFile(new URL(entry.file, assetsDir)));
+      assert.equal(String.fromCharCode(...data.subarray(8, 12)), 'WEBP', entry.file);
+      const { width, height } = webpSize(data);
+      assert.ok(Math.max(width, height) <= BUDGET.maxTextureSide, `${entry.file} is ${width}x${height}`);
+      bytes += width * height * 4 * (4 / 3);  // RGBA8 with a full mip chain
+    }
+    assert.ok(bytes / MIB <= BUDGET.textureMemoryMiB, `texture memory ${(bytes / MIB).toFixed(1)} MiB`);
+  });
+}

@@ -1,4 +1,4 @@
-"""Rebuild every Slice A runtime asset from the approved sources, in order.
+"""Rebuild every runtime art asset (Slice A and Slice B) from the approved sources, in order.
 
   python art/tools/build_all.py            (sources must already be fetched)
   python art/tools/fetch_sources.py        (first time / fresh clone)
@@ -21,7 +21,7 @@ def run(command, label):
     print(f'== {label}', flush=True)
     result = subprocess.run(command, cwd=ROOT, capture_output=True, text=True)
     for line in result.stdout.splitlines():
-        if line.startswith(('[slice-a]', '[cards]', 'manifest:')):
+        if line.startswith(('[slice-a]', '[slice-b]', '[cards]', 'manifest:')):
             print('  ' + line)
     if result.returncode != 0 or 'Traceback' in result.stdout + result.stderr:
         print(result.stdout[-4000:], result.stderr[-4000:], sep='\n')
@@ -33,6 +33,8 @@ def main():
     run(blender + [str(TOOLS / 'render_cards.py')], 'render vegetation cards (Blender)')
     run(blender + [str(TOOLS / 'build_slice_a.py')], 'build geometry + bake occlusion (Blender)')
     run([sys.executable, str(TOOLS / 'prepare_textures.py')], 'prepare textures')
+    run(blender + [str(TOOLS / 'build_slice_b.py')], 'build Slice B geometry + cards (Blender)')
+    run([sys.executable, str(TOOLS / 'prepare_textures_slice_b.py')], 'prepare Slice B textures')
     run([sys.executable, str(TOOLS / 'build_manifest.py')], 'write manifest')
 
 
