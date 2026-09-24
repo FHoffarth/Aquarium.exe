@@ -1,0 +1,141 @@
+{
+  "animationCount": 0,
+  "categories": [
+    {
+      "uid": "1a99e2b67fc84de0b3ea0d3925208a04",
+      "name": "Nature & Plants",
+      "slug": "nature-plants",
+      "uri": "https://api.sketchfab.com/v3/categories/1a99e2b67fc84de0b3ea0d3925208a04",
+      "icon": "https://static.sketchfab.com/static/builds/web/dist/static/assets/images/icons/categories/98a605cec9718b6f02f1a5759039a5ad-v2.svg",
+      "thumbnails": [
+        {
+          "width": "512",
+          "height": "288",
+          "url": "https://static.sketchfab.com/categories/1a99e2b67fc84de0b3ea0d3925208a04/512x288.png"
+        },
+        {
+          "width": "800",
+          "height": "450",
+          "url": "https://static.sketchfab.com/categories/1a99e2b67fc84de0b3ea0d3925208a04/800x450.png"
+        }
+      ]
+    }
+  ],
+  "commentCount": 0,
+  "createdAt": "2020-05-20T19:38:02.858340",
+  "embedUrl": "https://sketchfab.com/models/31ac4c155b074b5ab9b73396aa165eb5/embed",
+  "faceCount": 76316,
+  "isAgeRestricted": false,
+  "license": {
+    "uri": "https://api.sketchfab.com/v3/licenses/322a749bcfa841b29dff1e8a1bb74b0b",
+    "label": "CC Attribution",
+    "fullName": "Creative Commons Attribution",
+    "requirements": "Author must be credited. Commercial use is allowed.",
+    "url": "http://creativecommons.org/licenses/by/4.0/",
+    "slug": "by"
+  },
+  "likeCount": 17,
+  "name": "Rathtrevor Beached Tree Root",
+  "publishedAt": "2020-05-20T19:40:51.237398",
+  "soundCount": 0,
+  "staffpickedAt": null,
+  "tags": [],
+  "thumbnails": {
+    "images": [
+      {
+        "uid": "2430428dd583400393230620a0cb42d2",
+        "width": 1920,
+        "height": 1080,
+        "size": 264196,
+        "url": "https://media.sketchfab.com/models/31ac4c155b074b5ab9b73396aa165eb5/thumbnails/ac9f753b7cfc4b948fb66da582150952/5907143a74d44be8be95d6ae74604850.jpeg"
+      },
+      {
+        "uid": "6fc66db328bb44b194a5e8650ef89006",
+        "width": 1024,
+        "height": 576,
+        "size": 73251,
+        "url": "https://media.sketchfab.com/models/31ac4c155b074b5ab9b73396aa165eb5/thumbnails/ac9f753b7cfc4b948fb66da582150952/ca110524025a446fa551c7cc4f937c4c.jpeg"
+      },
+      {
+        "uid": "fa13a00c82724037b4da48f29430d60c",
+        "width": 720,
+        "height": 405,
+        "size": 35092,
+        "url": "https://media.sketchfab.com/models/31ac4c155b074b5ab9b73396aa165eb5/thumbnails/ac9f753b7cfc4b948fb66da582150952/8e0215cb0d2a44d3a891ecfb3f1928cb.jpeg"
+      },
+      {
+        "uid": "6ba339d793bb4024936011eb773af332",
+        "width": 256,
+        "height": 144,
+        "size": 4948,
+        "url": "https://media.sketchfab.com/models/31ac4c155b074b5ab9b73396aa165eb5/thumbnails/ac9f753b7cfc4b948fb66da582150952/c99e4918ff8d4b598551ca0849848eba.jpeg"
+      },
+      {
+        "uid": "e7e5f67a9ccd499d94fe94023be0aad3",
+        "width": 64,
+        "height": 36,
+        "size": 712,
+        "url": "https://media.sketchfab.com/models/31ac4c155b074b5ab9b73396aa165eb5/thumbnails/ac9f753b7cfc4b948fb66da582150952/15ea6541c5ca47f3ab5657ae5614e6f5.jpeg"
+      }
+    ]
+  },
+  "uid": "31ac4c155b074b5ab9b73396aa165eb5",
+  "uri": "https://api.sketchfab.com/v3/models/31ac4c155b074b5ab9b73396aa165eb5",
+  "user": {
+    "uid": "3badecbbea574396b62ade345f2122ad",
+    "username": "Lesterm",
+    "displayName": "Lesterm",
+    "account": "basic",
+    "profileUrl": "https://sketchfab.com/Lesterm",
+    "avatar": {
+      "uid": "51af6a870cce449eb75b0345feebaebb",
+      "uri": "https://api.sketchfab.com/v3/avatars/51af6a870cce449eb75b0345feebaebb",
+      "images": [
+        {
+          "width": 90,
+          "height": 90,
+          "size": 5719,
+          "url": "https://media.sketchfab.com/avatars/51af6a870cce449eb75b0345feebaebb/2ef0f894055b4bb69123b2a27fa2d379.jpeg"
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "size": 6496,
+          "url": "https://media.sketchfab.com/avatars/51af6a870cce449eb75b0345feebaebb/ab11eedf96374486acb544f71a23b165.jpeg"
+        },
+        {
+          "width": 32,
+          "height": 32,
+          "size": 1359,
+          "url": "https://media.sketchfab.com/avatars/51af6a870cce449eb75b0345feebaebb/35f6f9b6c9a14a548ce472582d8a9bb5.jpeg"
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "size": 2584,
+          "url": "https://media.sketchfab.com/avatars/51af6a870cce449eb75b0345feebaebb/a8072a51447c4d41ab177b357111b420.jpeg"
+        }
+      ]
+    },
+    "uri": "https://api.sketchfab.com/v3/users/3badecbbea574396b62ade345f2122ad"
+  },
+  "vertexCount": 38687,
+  "viewCount": 688,
+  "viewerUrl": "https://sketchfab.com/3d-models/rathtrevor-beached-tree-root-31ac4c155b074b5ab9b73396aa165eb5",
+  "isDownloadable": true,
+  "isProtected": false,
+  "description": "",
+  "price": null,
+  "downloadCount": 145,
+  "editorUrl": "https://sketchfab.com/models/31ac4c155b074b5ab9b73396aa165eb5/edit",
+  "status": {
+    "warning": {},
+    "processing": "SUCCEEDED"
+  },
+  "source": "website",
+  "hasCommentsDisabled": false,
+  "updatedAt": "2022-07-11T14:06:14.429599",
+  "pbrType": null,
+  "textureCount": 0,
+  "materialCount": 1
+}

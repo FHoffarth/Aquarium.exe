@@ -53,6 +53,17 @@ def parse_args():
     parser.add_argument('--hero-fish', default='', help='directory with the exported Hero Fish (scale reference only)')
     parser.add_argument('--out', default=str(ROOT / 'art' / 'work' / 'hero-frame' / 'frame.png'))
     parser.add_argument('--blend', default='')
+    # Natural Environment Stage 1 (offline hardscape material-presence test)
+    parser.add_argument('--rocks', default='default', choices=['default', 'scanned'])
+    parser.add_argument('--root', default='', help='scanned root model (glTF/GLB/FBX/OBJ) replacing the procedural wood')
+    parser.add_argument('--root-yaw', type=float, default=0.0)
+    parser.add_argument('--root-tilt', type=float, default=0.0)
+    parser.add_argument('--root-roll', type=float, default=0.0)
+    parser.add_argument('--root-height', type=float, default=2.1, help='target height of the root above its base')
+    parser.add_argument('--root-at', default='-2.2,-0.75', help='habitat x,z of the root base')
+    parser.add_argument('--root-sink', type=float, default=0.12, help='fraction of the root height below the surface')
+    parser.add_argument('--camera', default='habitat', choices=['habitat', 'close'])
+    parser.add_argument('--no-plants', action='store_true', help='hardscape only (no vegetation)')
     return parser.parse_args(argv)
 
 
@@ -553,12 +564,69 @@ def build_substrate(columns=320, rows=150):
 # Hardscape: rocks
 # ==========================================================================
 
+# Stage 1 scanned rock family (Poly Haven CC0): primaries and front
+# secondaries swap to dark weathered scans; transition and secondary stones
+# stay rock_moss_set_02. Values: source, target height (habitat units).
+SCANNED_ROCKS = {
+    0: ('rock_07', 1.35),      # primary, rear left
+    1: ('boulder_01', 1.2),    # primary, rear centre-left
+    2: ('rock_09', 0.5),       # secondary, front
+    3: ('rock_09', 0.42),      # secondary, front left
+}
+
+
+def grade_scan_material(material, saturation, value, caustics):
+    if material is None or CLAY or not material.use_nodes:
+        return
+    tree = material.node_tree
+    bsdf = tree.nodes.get('Principled BSDF')
+    if bsdf is None:
+        return
+    base_link = next((l for l in tree.links if l.to_socket == bsdf.inputs['Base Color']), None)
+    if base_link is not None:
+        grade = tree.nodes.new('ShaderNodeHueSaturation')
+        grade.inputs['Saturation'].default_value = saturation
+        grade.inputs['Value'].default_value = value
+        tree.links.new(base_link.from_socket, grade.inputs['Color'])
+        tree.links.new(grade.outputs['Color'], bsdf.inputs['Base Color'])
+    add_caustics(material, caustics)
+
+
+def join_meshes(parts):
+    target = parts[0]
+    if len(parts) > 1:
+        with bpy.context.temp_override(active_object=target, object=target, selected_editable_objects=parts,
+                                       selected_objects=parts):
+            bpy.ops.object.join()
+    return target
+
+
+def build_scanned_rock(asset_id, x, z, target_height, yaw, sink, tilt, name):
+    rock = join_meshes(list(import_asset(asset_id).values()))
+    height = recenter_on_base(rock)
+    scale = target_height / height
+    rock.data.transform(Matrix.Translation(B(x, surface_y(x, z) - sink * target_height, z))
+                        @ Matrix.Rotation(math.radians(yaw), 4, 'Z')
+                        @ Matrix.Rotation(math.radians(tilt), 4, 'X')
+                        @ Matrix.Scale(scale, 4))
+    rock.name = name
+    for material in rock.data.materials:
+        grade_scan_material(material, 0.75, 0.95, 0.45)
+    log(f'scanned rock {asset_id}: {len(rock.data.polygons)} faces')
+    return rock
+
+
 def build_rocks():
     sources = import_asset('rock_moss_set_02')
     heights = {name: recenter_on_base(obj) for name, obj in sources.items()}
     material = None
     parts = []
-    for key, x, z, scale, yaw, sink, tilt in V['rocks']:
+    for index, (key, x, z, scale, yaw, sink, tilt) in enumerate(V['rocks']):
+        if ARGS.rocks == 'scanned' and index in SCANNED_ROCKS:
+            asset_id, target = SCANNED_ROCKS[index]
+            parts.append(build_scanned_rock(asset_id, x, z, target, yaw, sink, tilt, f'scan-{asset_id}-{index}'))
+            HARDSCAPE_POINTS.append((x, z, 0.9 * target * 1.3))
+            continue
         name = f'rock_moss_set_02_{key}'
         rock = sources[name].copy()
         rock.data = sources[name].data.copy()
@@ -693,6 +761,57 @@ def taper(samples, base, tip, bulge_seed):
         r *= 1.0 + 0.18 * max(0.0, noise.noise(Vector((t * 5.0, bulge_seed, 0.0))))
         radii.append(r)
     return radii
+
+
+def build_scanned_root(path):
+    """Stage 1: a scanned root replaces the procedural wood, placed at the
+    same base in the same envelope. Its own material is kept and graded
+    toward waterlogged driftwood; both candidates get the same treatment."""
+    path = pathlib.Path(path)
+    before = set(bpy.data.objects)
+    suffix = path.suffix.lower()
+    if suffix in ('.gltf', '.glb'):
+        bpy.ops.import_scene.gltf(filepath=str(path))
+    elif suffix == '.fbx':
+        bpy.ops.import_scene.fbx(filepath=str(path))
+    elif suffix == '.obj':
+        bpy.ops.wm.obj_import(filepath=str(path))
+    else:
+        raise SystemExit(f'unsupported root format: {path}')
+    created = [obj for obj in set(bpy.data.objects) - before]
+    meshes = [obj for obj in created if obj.type == 'MESH']
+    for obj in meshes:
+        matrix = obj.matrix_world.copy()
+        obj.parent = None
+        obj.data.transform(matrix)
+        obj.matrix_world = Matrix.Identity(4)
+    for obj in created:
+        if obj.type != 'MESH':
+            bpy.data.objects.remove(obj)
+    root = join_meshes(meshes)
+    source_faces = len(root.data.polygons)
+    root.data.transform(Matrix.Rotation(math.radians(ARGS.root_yaw), 4, 'Z')
+                        @ Matrix.Rotation(math.radians(ARGS.root_tilt), 4, 'X')
+                        @ Matrix.Rotation(math.radians(ARGS.root_roll), 4, 'Y'))
+    height = recenter_on_base(root)
+    x, z = (float(v) for v in ARGS.root_at.split(','))
+    scale = ARGS.root_height / height
+    root.data.transform(Matrix.Translation(B(x, surface_y(x, z) - ARGS.root_sink * ARGS.root_height, z))
+                        @ Matrix.Scale(scale, 4))
+    root.name = 'scanned-root'
+    for material in root.data.materials:
+        grade_scan_material(material, 0.75, 0.55, 0.35)
+    # Moss and epiphytes keep the same joint-weighted sampling: upper
+    # surface points of the scan stand in for branch junctions.
+    verts = root.data.vertices
+    step = max(1, len(verts) // 400)
+    tops = sorted((v.co.copy() for v in verts[::step]), key=lambda co: -co.z)
+    JOINTS.extend(tops[len(tops) // 6: len(tops) // 2: max(1, len(tops) // 40)])
+    HARDSCAPE_POINTS.append((x, z, 0.9))
+    dims = root.dimensions
+    log(f'root: {source_faces} source faces, {len(verts)} verts, {len(root.data.materials)} materials, '
+        f'dims {dims.x:.2f} x {dims.y:.2f} x {dims.z:.2f}')
+    return root
 
 
 def build_wood():
@@ -1258,6 +1377,11 @@ def build_camera():
     camera = link(bpy.data.objects.new('habitat-camera', data))
     camera.location = B(*CAMERA)
     direction = (B(0, 0, 0) - camera.location).normalized()
+    if ARGS.camera == 'close':
+        # Material close view of the hardscape (Stage 1 comparison).
+        data.angle_y = math.radians(30)
+        camera.location = B(-1.0, 0.05, 3.3)
+        direction = (B(-2.05, -0.45, -0.85) - camera.location).normalized()
     camera.rotation_euler = direction.to_track_quat('-Z', 'Y').to_euler()
     bpy.context.scene.camera = camera
 
@@ -1599,12 +1723,15 @@ def main():
     build_camera()
     build_world()
     rocks = build_rocks()
-    wood = build_wood()
-    wood.data.materials.append(bark_material())
+    if ARGS.root:
+        wood = build_scanned_root(ARGS.root)
+    else:
+        wood = build_wood()
+        wood.data.materials.append(bark_material())
     substrate = build_substrate()
     substrate.data.materials.append(textured_ground_material())
     moss = build_moss(wood, rocks, int(1500 * ARGS.density))
-    vegetation = build_vegetation(rocks, wood)
+    vegetation = [] if ARGS.no_plants else build_vegetation(rocks, wood)
     build_water_volume()
     build_back_wall()
     build_back_fog()

@@ -1,0 +1,211 @@
+{
+  "animationCount": 0,
+  "categories": [
+    {
+      "uid": "e56c5de1e9344241909de76c5886f551",
+      "name": "Art & Abstract",
+      "slug": "art-abstract",
+      "uri": "https://api.sketchfab.com/v3/categories/e56c5de1e9344241909de76c5886f551",
+      "icon": "https://static.sketchfab.com/static/builds/web/dist/static/assets/images/icons/categories/876106eddb2a54aa1391eb2f4db0acb2-v2.svg",
+      "thumbnails": [
+        {
+          "width": "512",
+          "height": "288",
+          "url": "https://static.sketchfab.com/categories/e56c5de1e9344241909de76c5886f551/512x288.png"
+        },
+        {
+          "width": "800",
+          "height": "450",
+          "url": "https://static.sketchfab.com/categories/e56c5de1e9344241909de76c5886f551/800x450.png"
+        }
+      ]
+    },
+    {
+      "uid": "1a99e2b67fc84de0b3ea0d3925208a04",
+      "name": "Nature & Plants",
+      "slug": "nature-plants",
+      "uri": "https://api.sketchfab.com/v3/categories/1a99e2b67fc84de0b3ea0d3925208a04",
+      "icon": "https://static.sketchfab.com/static/builds/web/dist/static/assets/images/icons/categories/98a605cec9718b6f02f1a5759039a5ad-v2.svg",
+      "thumbnails": [
+        {
+          "width": "512",
+          "height": "288",
+          "url": "https://static.sketchfab.com/categories/1a99e2b67fc84de0b3ea0d3925208a04/512x288.png"
+        },
+        {
+          "width": "800",
+          "height": "450",
+          "url": "https://static.sketchfab.com/categories/1a99e2b67fc84de0b3ea0d3925208a04/800x450.png"
+        }
+      ]
+    }
+  ],
+  "commentCount": 0,
+  "createdAt": "2021-07-18T21:40:29.454096",
+  "embedUrl": "https://sketchfab.com/models/5fe23ea13be54e56b99325e2fb0bf681/embed",
+  "faceCount": 1000000,
+  "isAgeRestricted": false,
+  "license": {
+    "uri": "https://api.sketchfab.com/v3/licenses/322a749bcfa841b29dff1e8a1bb74b0b",
+    "label": "CC Attribution",
+    "fullName": "Creative Commons Attribution",
+    "requirements": "Author must be credited. Commercial use is allowed.",
+    "url": "http://creativecommons.org/licenses/by/4.0/",
+    "slug": "by"
+  },
+  "likeCount": 51,
+  "name": "Decorative driftwood",
+  "publishedAt": "2021-07-18T22:01:43.454851",
+  "soundCount": 0,
+  "staffpickedAt": null,
+  "tags": [
+    {
+      "name": "tree",
+      "slug": "tree",
+      "uri": "https://api.sketchfab.com/v3/tags/tree"
+    },
+    {
+      "name": "garden",
+      "slug": "garden",
+      "uri": "https://api.sketchfab.com/v3/tags/garden"
+    },
+    {
+      "name": "driftwood",
+      "slug": "driftwood",
+      "uri": "https://api.sketchfab.com/v3/tags/driftwood"
+    },
+    {
+      "name": "old",
+      "slug": "old",
+      "uri": "https://api.sketchfab.com/v3/tags/old"
+    },
+    {
+      "name": "roots",
+      "slug": "roots",
+      "uri": "https://api.sketchfab.com/v3/tags/roots"
+    },
+    {
+      "name": "phogrammetry",
+      "slug": "phogrammetry",
+      "uri": "https://api.sketchfab.com/v3/tags/phogrammetry"
+    },
+    {
+      "name": "metashape",
+      "slug": "metashape",
+      "uri": "https://api.sketchfab.com/v3/tags/metashape"
+    },
+    {
+      "name": "agisoft",
+      "slug": "agisoft",
+      "uri": "https://api.sketchfab.com/v3/tags/agisoft"
+    },
+    {
+      "name": "scan",
+      "slug": "scan",
+      "uri": "https://api.sketchfab.com/v3/tags/scan"
+    },
+    {
+      "name": "wood",
+      "slug": "wood",
+      "uri": "https://api.sketchfab.com/v3/tags/wood"
+    }
+  ],
+  "thumbnails": {
+    "images": [
+      {
+        "uid": "95ed246b51f54b0cb8c957523e303b70",
+        "width": 1920,
+        "height": 1080,
+        "size": 483379,
+        "url": "https://media.sketchfab.com/models/5fe23ea13be54e56b99325e2fb0bf681/thumbnails/cc7885a0a8ec43869c425c52a51c5872/98e7074bee1b42ff9048327ceddf76e2.jpeg"
+      },
+      {
+        "uid": "91973e709fbf43838c686db7e9225fbb",
+        "width": 1024,
+        "height": 576,
+        "size": 140761,
+        "url": "https://media.sketchfab.com/models/5fe23ea13be54e56b99325e2fb0bf681/thumbnails/cc7885a0a8ec43869c425c52a51c5872/ab69ecb9a6ef423caac1a768e490d124.jpeg"
+      },
+      {
+        "uid": "815296a0ffe44ea0bc93ad4a50f9ef97",
+        "width": 720,
+        "height": 405,
+        "size": 72097,
+        "url": "https://media.sketchfab.com/models/5fe23ea13be54e56b99325e2fb0bf681/thumbnails/cc7885a0a8ec43869c425c52a51c5872/83a49683e8a14b7680e1f691d8624f8d.jpeg"
+      },
+      {
+        "uid": "8e416f0b79a744e0990b279e38dd61d3",
+        "width": 256,
+        "height": 144,
+        "size": 9709,
+        "url": "https://media.sketchfab.com/models/5fe23ea13be54e56b99325e2fb0bf681/thumbnails/cc7885a0a8ec43869c425c52a51c5872/a7298d3c274f4a1ab6331c694bb68a35.jpeg"
+      },
+      {
+        "uid": "0a79f425134c4e0d843480c292150398",
+        "width": 64,
+        "height": 36,
+        "size": 1348,
+        "url": "https://media.sketchfab.com/models/5fe23ea13be54e56b99325e2fb0bf681/thumbnails/cc7885a0a8ec43869c425c52a51c5872/cbc3e471c0a341d8b1470c2bd378799a.jpeg"
+      }
+    ]
+  },
+  "uid": "5fe23ea13be54e56b99325e2fb0bf681",
+  "uri": "https://api.sketchfab.com/v3/models/5fe23ea13be54e56b99325e2fb0bf681",
+  "user": {
+    "uid": "33c7d70ace164aa8a9c64ea950b16593",
+    "username": "yelizegi",
+    "displayName": "yelizegi - PUNTTULANBRO",
+    "account": "basic",
+    "profileUrl": "https://sketchfab.com/yelizegi",
+    "avatar": {
+      "uid": "ceb9f0949fdd4580abe729affd7730ad",
+      "uri": "https://api.sketchfab.com/v3/avatars/ceb9f0949fdd4580abe729affd7730ad",
+      "images": [
+        {
+          "width": 32,
+          "height": 32,
+          "size": 2670,
+          "url": "https://media.sketchfab.com/avatars/ceb9f0949fdd4580abe729affd7730ad/a54e9ff677154617b88e54e1d866fca9.png"
+        },
+        {
+          "width": 48,
+          "height": 48,
+          "size": 4899,
+          "url": "https://media.sketchfab.com/avatars/ceb9f0949fdd4580abe729affd7730ad/d81bb308571f40599d4aea10841690d3.png"
+        },
+        {
+          "width": 90,
+          "height": 90,
+          "size": 12196,
+          "url": "https://media.sketchfab.com/avatars/ceb9f0949fdd4580abe729affd7730ad/f9839ef365124345adf79d47f61fa0c9.png"
+        },
+        {
+          "width": 100,
+          "height": 100,
+          "size": 14251,
+          "url": "https://media.sketchfab.com/avatars/ceb9f0949fdd4580abe729affd7730ad/32422ba26c4142359d89a6f8c16f1363.png"
+        }
+      ]
+    },
+    "uri": "https://api.sketchfab.com/v3/users/33c7d70ace164aa8a9c64ea950b16593"
+  },
+  "vertexCount": 501306,
+  "viewCount": 1884,
+  "viewerUrl": "https://sketchfab.com/3d-models/decorative-driftwood-5fe23ea13be54e56b99325e2fb0bf681",
+  "isDownloadable": true,
+  "isProtected": false,
+  "description": "> **Enable HD textures** to experience the full detail and realism of this photogrammetry scan.\n\n\ud83c\udfec [**Visit my full FAB store**](https://www.fab.com/sellers/Punttulanbro)  \n\n\ud83d\udcfd\ufe0f See animations and close-ups on [**TikTok**](https://www.tiktok.com/@punttulanbro) and [**Instagram**](https://www.instagram.com/punttulanbro/)\n\nThese base models are perfect for creating realistic assets, architectural visualization, rendering, 3D printing, and more.\n\n> **Thanks for your support \u2014 it helps me keep creating!**",
+  "price": null,
+  "downloadCount": 655,
+  "editorUrl": "https://sketchfab.com/models/5fe23ea13be54e56b99325e2fb0bf681/edit",
+  "status": {
+    "warning": {},
+    "processing": "SUCCEEDED"
+  },
+  "source": "agisoft-photoscan",
+  "hasCommentsDisabled": false,
+  "updatedAt": "2026-07-01T16:54:39.234012",
+  "pbrType": null,
+  "textureCount": 1,
+  "materialCount": 1
+}
