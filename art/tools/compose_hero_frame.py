@@ -66,8 +66,10 @@ def parse_args():
     parser.add_argument('--no-plants', action='store_true', help='hardscape only (no vegetation)')
     parser.add_argument('--wood', default='procedural', choices=['procedural', 'scan-strips'],
                         help='Stage 1 A: scan-strips = root ridges cut from Poly Haven root scans')
-    parser.add_argument('--plants', default='pass2', choices=['pass2', 'natural'],
+    parser.add_argument('--plants', default='pass2', choices=['pass2', 'natural', 'candidate'],
                         help='Stage 2: natural = photographed-leaf clusters, moss cushions, ribbons')
+    parser.add_argument('--moss', default='off', choices=['on', 'off'],
+                        help='candidate: moss_01 real-scale seam cushions (tested, removed by default)')
     parser.add_argument('--stems', default='on', choices=['on', 'off'],
                         help='Stage 2: background stem masses from LeafSet002 twigs')
     parser.add_argument('--bark', default='default', choices=['default', 'willow'],
@@ -400,11 +402,11 @@ def textured_ground_material():
     # Darken and cool the gravel toward the planted hardscape.
     gravel_grade = nodes.new('ShaderNodeHueSaturation')
     gravel_grade.inputs['Saturation'].default_value = 0.6
-    gravel_grade.inputs['Value'].default_value = 0.4
+    gravel_grade.inputs['Value'].default_value = 0.3 if ARGS.plants == 'candidate' else 0.4
     links.new(gravel.outputs['Color'], gravel_grade.inputs['Color'])
     sand_grade = nodes.new('ShaderNodeHueSaturation')
     sand_grade.inputs['Saturation'].default_value = 0.55
-    sand_grade.inputs['Value'].default_value = 0.52
+    sand_grade.inputs['Value'].default_value = 0.6 if ARGS.plants == 'candidate' else 0.52
     links.new(sand.outputs['Color'], sand_grade.inputs['Color'])
     mix = nodes.new('ShaderNodeMix')
     mix.data_type = 'RGBA'
@@ -549,10 +551,21 @@ def build_substrate(columns=320, rows=150):
             x = x0 + (x1 - x0) * column / columns
             vert = bm.verts.new(B(x, surface_y(x, z), z))
             vert[path_layer] = 0.7 * path_mask(x, z)
+            if ARGS.plants == 'candidate':
+                # gravel/soil gathers at the hardscape with an irregular edge;
+                # finer, lighter sand opens toward the swimming water
+                near = max((math.exp(-((x - hx) ** 2 + (z - hz) ** 2) / (0.9 * r * r))
+                            for hx, hz, r in HARDSCAPE_POINTS), default=0.0)
+                near += 0.35 * noise.noise(Vector((x * 1.4, z * 1.4, 7.1))) + 0.15 * noise.noise(
+                    Vector((x * 4.0, z * 4.0, 2.3)))
+                vert[path_layer] = max(vert[path_layer], 0.6 * (1.0 - smoothstep(0.25, 0.55, near)))
+                soil = 0.6 * smoothstep(0.3, 0.6, near)
             shade = 0.0
             for hx, hz, radius in HARDSCAPE_POINTS:
                 shade = max(shade, math.exp(-((x - hx) ** 2 + (z - hz) ** 2) / (radius * radius)))
             vert[shade_layer] = min(1.0, max(shade * 0.85, smoothstep(0.2, -2.7, z)))
+            if ARGS.plants == 'candidate':
+                vert[shade_layer] = max(vert[shade_layer], soil)
             line.append(vert)
         grid.append(line)
     for row in range(rows):
@@ -1734,8 +1747,10 @@ def build_natural_plants(rocks, wood):
     objects = []
 
     # ---- 1. broad / medium leaf mass (LeafSet022 main, LeafSet003 secondary)
-    broad = {'LeafSet022': natural_object('broad-leaves-022', leaf_material('LeafSet022', 0.32, 1.1, 0.035)),
-             'LeafSet003': natural_object('broad-leaves-003', leaf_material('LeafSet003', 0.28, 1.05, 0.04))}
+    candidate = ARGS.plants == 'candidate'
+    broad = {'LeafSet022': natural_object('broad-leaves-022', leaf_material('LeafSet022', 0.32, 1.1, 0.035))}
+    if not candidate:
+        broad['LeafSet003'] = natural_object('broad-leaves-003', leaf_material('LeafSet003', 0.28, 1.05, 0.04))
     camera = B(*CAMERA)
     petioles = bmesh.new()
     petiole_tint = petioles.loops.layers.float_color.new('tint')
@@ -1743,7 +1758,7 @@ def build_natural_plants(rocks, wood):
     def rosette(base, scale, leaves=None, spread=1.0):
         count = leaves or rng.randint(8, 13)
         for i in range(count):
-            asset = 'LeafSet022' if rng.random() < 0.7 else 'LeafSet003'
+            asset = 'LeafSet022' if candidate or rng.random() < 0.7 else 'LeafSet003'
             bm, uv_layer, tint_layer, _ = broad[asset]
             profile = rng.choice(profiles[asset])
             outer = rng.random() ** 0.7                       # size hierarchy: inner small, outer large
@@ -1771,6 +1786,10 @@ def build_natural_plants(rocks, wood):
              (-1.35, -0.4, 0.85), (-3.45, -0.5, 0.9), (-2.25, -0.62, 0.95), (-2.7, -0.62, 0.85),
              (-1.95, -0.4, 0.9), (-1.3, -0.7, 0.8), (-3.3, -0.85, 0.85), (-1.15, -1.0, 0.75),
              (-0.75, 0.85, 0.55), (-0.45, 0.35, 0.5)]
+    if candidate:
+        # Strongest mass around the left hardscape, falling off toward the
+        # centre; nothing in the right half.
+        spots = [sp for sp in spots if sp[0] < -1.0] + [(-0.75, 0.55, 0.6), (-0.4, 0.3, 0.45)]
     for x, z, s_ in spots:
         if rng.random() < 0.12:
             continue                                            # a believable gap
@@ -1778,13 +1797,14 @@ def build_natural_plants(rocks, wood):
             bx, bz = x + rng.gauss(0, 0.12), z + rng.gauss(0, 0.08)
             rosette(B(bx, surface_y(bx, bz) - 0.01, bz), s_ * rng.uniform(0.75, 1.25))
     # Epiphyte clusters on the stones and the wood seams (smaller).
-    for point, normal in sample_surfaces(rocks[:len(V['rocks'])], 18, lambda p: 1.0, min_up=0.4):
+    for point, normal in sample_surfaces(rocks[:len(V['rocks'])], 10 if candidate else 18,
+                                         lambda p: 1.0 if not candidate or p.x < -1.2 else 0.0, min_up=0.4):
         rosette(point, rng.uniform(0.45, 0.7), leaves=rng.randint(4, 7), spread=1.3)
-    for point, normal in sample_surfaces([wood], 10, lambda p: 0.2 + max(
+    for point, normal in sample_surfaces([wood], 6 if candidate else 10, lambda p: 0.2 + max(
             (math.exp(-((p - j).length ** 2) / 0.1) for j in JOINTS), default=0.0), min_up=0.3):
         rosette(point, rng.uniform(0.4, 0.6), leaves=rng.randint(3, 6), spread=1.4)
     # small low groups breaking the clearing edge (where Pass 2 had crypts)
-    for cx, cz, n in [(0.35, 0.8, 1), (1.25, 0.25, 2), (0.75, -0.6, 2), (1.7, -0.1, 1)]:
+    for cx, cz, n in ([] if candidate else [(0.35, 0.8, 1), (1.25, 0.25, 2), (0.75, -0.6, 2), (1.7, -0.1, 1)]):
         for _ in range(n):
             x, z = cx + rng.gauss(0, 0.1), cz + rng.gauss(0, 0.08)
             rosette(B(x, surface_y(x, z) - 0.01, z), rng.uniform(0.5, 0.7), leaves=rng.randint(5, 8), spread=1.2)
@@ -1794,6 +1814,9 @@ def build_natural_plants(rocks, wood):
     petiole_obj = mesh_object('petioles', petioles)
     petiole_obj.data.materials.append(plant_material('petiole', (0.05, 0.09, 0.035), 0.5, 0.2))
     objects.append(petiole_obj)
+
+    if candidate:
+        return objects       # background: open water (gap accepted)
 
     # ---- 2. tall / background: ribbon blades (Foliage001 main, Foliage008)
     ribbons = {'Foliage001': natural_object('ribbons-001', leaf_material('Foliage001', 0.8, 1.0, -0.01, 0.45)),
@@ -2014,6 +2037,187 @@ def build_natural_moss(rocks, wood):
         objects.append(obj)
         log(f'{name}: {len(obj.data.polygons)} faces')
     return objects
+
+
+def build_moss_cushions(rocks, wood):
+    """moss_01 sprigs at real scale (1 habitat unit ~ 12 cm from the Hero Fish,
+    so the 1.5-3.7 cm source sprigs scale by ~8.3), packed into small cushions
+    only at seams: branch joints and where the wood meets stone. Offline this
+    is a dense scatter; for runtime it would be baked (core + fringe)."""
+    from mathutils.bvhtree import BVHTree
+    rng = random.Random(9090)
+    sources = list(import_asset('moss_01').values())
+    for obj in sources:
+        recenter_on_base(obj)
+    sources.sort(key=lambda obj: obj.name)
+    short = [obj for obj in sources if 'tall' not in obj.name]   # tall fronds read fern-like
+
+    def bvh(objects):
+        verts, polys = [], []
+        for obj in objects:
+            offset = len(verts)
+            verts += [obj.matrix_world @ v.co for v in obj.data.vertices]
+            polys += [[offset + i for i in poly.vertices] for poly in obj.data.polygons]
+        return BVHTree.FromPolygons(verts, polys)
+    tree = bvh([wood] + list(rocks[:len(V['rocks'])]))
+    rock_tree = bvh(rocks[:len(V['rocks'])])
+    # seams: branch joints + wood points touching stone
+    # low seams only: joints near the base of the root (not up on the branches)
+    centres = [(j, Vector((0, 0, 1)), rng.uniform(0.2, 0.3)) for j in JOINTS if j.z < FLOOR + 0.8]
+    contacts = []
+    for point, normal in sample_surfaces([wood], 600, lambda p: 1.0, min_up=0.2):
+        hit = rock_tree.find_nearest(point)
+        if hit[0] is not None and hit[3] < 0.06 and all(
+                (point - c).length > 0.35 for c, _, _ in centres + contacts):
+            contacts.append((point, normal, rng.uniform(0.14, 0.24)))
+    centres += contacts[:5]
+    log(f'moss cushions: {len(centres)} ({len(JOINTS)} joints, {min(5, len(contacts))} wood/stone contacts)')
+    real = 8.3
+    parts = []
+    for centre, normal, radius in centres:
+        normal = normal.normalized()
+        tangent = normal.orthogonal().normalized()
+        bitangent = normal.cross(tangent)
+        for _ in range(int(radius * radius * 6000)):
+            r = radius * math.sqrt(rng.random())
+            a = rng.uniform(0, math.tau)
+            wobble = 1 + 0.35 * noise.noise(Vector((math.cos(a) * 2, math.sin(a) * 2, radius * 10)))
+            if r > radius * 0.75 * wobble:
+                continue                                       # irregular outline
+            probe = centre + (tangent * math.cos(a) + bitangent * math.sin(a)) * r
+            hit = tree.ray_cast(probe + normal * 0.25, -normal, 0.6)
+            if hit[0] is None:
+                continue
+            surface_normal = hit[1].normalized()
+            rim = r / radius
+            up = surface_normal.lerp(Vector((0, 0, 1)), 0.3).normalized()
+            outward = hit[0] - centre
+            outward = outward.normalized() if outward.length > 1e-6 else Vector((0, 0, 0))
+            lean = (up + Vector((rng.gauss(0, 0.25), rng.gauss(0, 0.25), 0)) + outward * (0.3 + rim)).normalized()
+            sprig = rng.choice(short).copy()
+            align = Vector((0, 0, 1)).rotation_difference(lean)
+            size = real * rng.uniform(0.8, 1.15) * (1.0 - 0.5 * rim)
+            sprig.matrix_world = (Matrix.Translation(hit[0] - surface_normal * 0.004)
+                                  @ align.to_matrix().to_4x4()
+                                  @ Matrix.Rotation(rng.uniform(0, math.tau), 4, 'Z') @ Matrix.Scale(size, 4))
+            link(sprig)
+            parts.append(sprig)
+    for obj in sources:
+        obj.hide_render = True
+        obj.hide_viewport = True
+    if not CLAY:
+        material = bpy.data.materials.new('moss-real-scale')
+        material.use_nodes = True
+        try_set(material, 'surface_render_method', 'DITHERED')
+        nodes, links = material.node_tree.nodes, material.node_tree.links
+        bsdf = nodes['Principled BSDF']
+        textures = SRC / 'moss_01' / 'textures'
+        diffuse = nodes.new('ShaderNodeTexImage')
+        diffuse.image = image(textures / 'moss_01_diff_2k.jpg')
+        alpha = nodes.new('ShaderNodeTexImage')
+        alpha.image = image(textures / 'moss_01_alpha_2k.png', 'Non-Color')
+        normal_tex = nodes.new('ShaderNodeTexImage')
+        normal_tex.image = image(textures / 'moss_01_nor_gl_2k.jpg', 'Non-Color')
+        grade = nodes.new('ShaderNodeHueSaturation')
+        grade.inputs['Hue'].default_value = 0.52
+        grade.inputs['Saturation'].default_value = 1.0
+        grade.inputs['Value'].default_value = 0.55
+        links.new(diffuse.outputs['Color'], grade.inputs['Color'])
+        # self-shadowing toward each sprig's base (dense cushion interior)
+        coords = nodes.new('ShaderNodeTexCoord')
+        split = nodes.new('ShaderNodeSeparateXYZ')
+        links.new(coords.outputs['Generated'], split.inputs['Vector'])
+        ramp = nodes.new('ShaderNodeMapRange')
+        ramp.inputs['From Min'].default_value = 0.0
+        ramp.inputs['From Max'].default_value = 0.8
+        ramp.inputs['To Min'].default_value = 0.25
+        links.new(split.outputs['Z'], ramp.inputs['Value'])
+        occl = nodes.new('ShaderNodeMix')
+        occl.data_type = 'RGBA'
+        occl.blend_type = 'MULTIPLY'
+        occl.inputs[0].default_value = 1.0
+        links.new(grade.outputs['Color'], occl.inputs[6])
+        links.new(ramp.outputs['Result'], occl.inputs[7])
+        links.new(occl.outputs[2], bsdf.inputs['Base Color'])
+        normal_map = nodes.new('ShaderNodeNormalMap')
+        links.new(normal_tex.outputs['Color'], normal_map.inputs['Color'])
+        links.new(normal_map.outputs['Normal'], bsdf.inputs['Normal'])
+        bsdf.inputs['Roughness'].default_value = 0.65
+        translucent = nodes.new('ShaderNodeBsdfTranslucent')
+        links.new(occl.outputs[2], translucent.inputs['Color'])
+        mix = nodes.new('ShaderNodeMixShader')
+        mix.inputs['Fac'].default_value = 0.2
+        links.new(bsdf.outputs['BSDF'], mix.inputs[1])
+        links.new(translucent.outputs['BSDF'], mix.inputs[2])
+        cut = nodes.new('ShaderNodeMixShader')
+        links.new(alpha.outputs['Color'], cut.inputs['Fac'])
+        links.new(nodes.new('ShaderNodeBsdfTransparent').outputs['BSDF'], cut.inputs[1])
+        links.new(mix.outputs['Shader'], cut.inputs[2])
+        links.new(cut.outputs['Shader'], nodes['Material Output'].inputs['Surface'])
+        add_caustics(material, 0.1)
+        for obj in sources:
+            obj.data.materials.clear()
+            obj.data.materials.append(material)
+    log(f'moss_01 real scale: {len(parts)} sprigs in {len(centres)} cushions')
+    return parts
+
+
+def build_ground_detail():
+    """Substrate transition without a carpet: partially buried fragments and
+    secondary gravel around the hardscape base, thinning outward."""
+    rng = random.Random(5150)
+    sources = import_asset('rock_moss_set_02')
+    for obj in sources.values():
+        recenter_on_base(obj)
+    template = sources['rock_moss_set_02_rock08']
+    decimate = template.modifiers.new('decimate', 'DECIMATE')
+    decimate.ratio = 0.04
+    depsgraph = bpy.context.evaluated_depsgraph_get()
+    low = bpy.data.meshes.new_from_object(template.evaluated_get(depsgraph))
+    template.modifiers.clear()
+    height = max(v.co.z for v in template.data.vertices)
+    parts = []
+
+    def place(mesh, x, z, scale, sink):
+        stone = bpy.data.objects.new('ground-stone', mesh)
+        link(stone)
+        stone.matrix_world = (Matrix.Translation(B(x, surface_y(x, z) - sink * height * scale, z))
+                              @ Matrix.Rotation(rng.uniform(0, math.tau), 4, 'Z')
+                              @ Matrix.Rotation(math.radians(rng.uniform(-35, 35)), 4, 'X')
+                              @ Matrix.Scale(scale, 4))
+        parts.append(stone)
+    primaries = HARDSCAPE_POINTS[:len(V['rocks'])]
+    # fragments: partially buried, near the hardscape base
+    for _ in range(45):
+        hx, hz, radius = rng.choice(primaries)
+        a = rng.uniform(0, math.tau)
+        d = radius * rng.uniform(0.75, 1.35)
+        x, z = hx + math.cos(a) * d, hz + math.sin(a) * d * 0.7
+        if path_mask(x, z) > 0.3:
+            continue
+        place(template.data, x, z, rng.uniform(0.08, 0.2), rng.uniform(0.45, 0.7))
+    # secondary gravel: clustered, densest at the hardscape, thinning out
+    for _ in range(1400):
+        hx, hz, radius = rng.choice(primaries)
+        d = abs(rng.gauss(0, radius * 0.7)) + radius * 0.7
+        a = rng.uniform(0, math.tau)
+        x, z = hx + math.cos(a) * d, hz + math.sin(a) * d * 0.7
+        if path_mask(x, z) > 0.2 or noise.noise(Vector((x * 2.2, z * 2.2, 1.7))) < -0.2:
+            continue
+        place(low, x, z, rng.uniform(0.03, 0.07), rng.uniform(0.35, 0.6))
+    for obj in list(sources.values()):
+        if obj is not template:
+            bpy.data.objects.remove(obj)
+    template.hide_render = True
+    template.hide_viewport = True
+    material = template.data.materials[0] if template.data.materials else None
+    if material is not None and not CLAY:
+        grade_scan_material(material, 0.65, 0.72, 0.45)
+    low.materials.clear()
+    if material is not None:
+        low.materials.append(material)
+    log(f'ground detail: {len(parts)} stones/gravel')
+    return parts
 
 
 def build_camera():
@@ -2381,7 +2585,12 @@ def main():
     substrate = build_substrate()
     substrate.data.materials.append(textured_ground_material())
     RNG.seed(20260925)
-    if ARGS.plants == 'natural':
+    if ARGS.plants == 'candidate':
+        moss = build_moss_cushions(rocks, wood) if ARGS.moss == 'on' else []
+        build_ground_detail()
+        RNG.seed(20260926)
+        vegetation = [] if ARGS.no_plants else build_natural_plants(rocks, wood)
+    elif ARGS.plants == 'natural':
         moss = build_natural_moss(rocks, wood)
         RNG.seed(20260926)
         vegetation = [] if ARGS.no_plants else build_natural_plants(rocks, wood)
