@@ -16,7 +16,7 @@ const performanceRecorder = createPerformanceRecorder({ enabled: auditConfig.ena
 // Measured in the real host (1920x1080, Intel UHD): 4x MSAA multiplied by the
 // planted corner's alpha-tested overdraw cost ~31 FPS; without it ~59 FPS at
 // a visually near-identical result. Only the procedural baseline keeps MSAA
-// (Slice B has the same alpha-tested card overdraw as Slice A). The
+// (Slices B and C use alpha-tested vegetation as well). The
 // context exists before assets load, so a fallback to procedural after an
 // asset failure runs without MSAA.
 const antialias = artMode === 'procedural';

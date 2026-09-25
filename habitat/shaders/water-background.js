@@ -39,12 +39,14 @@ export const waterBackgroundFragmentShader = `
 // vertical gradient, a faint warm glow and restrained shafts from the upper
 // left (the hardscape key), darker and cooler toward the upper right. Below
 // the floor horizon it is a plain gradient so the hazed rear floor meets it.
+// uCalm sets how much darker the upper-right open water is (Slice B: 0.35).
 export const waterBackgroundSliceBFragmentShader = `
   uniform float uTime;
   uniform vec3 uTop;
   uniform vec3 uBottom;
   uniform vec3 uGlow;
   uniform float uHorizon;
+  uniform float uCalm;
   varying vec2 vUv;
   void main() {
     float gradient = smoothstep(0.0, 1.0, vUv.y);
@@ -62,7 +64,7 @@ export const waterBackgroundSliceBFragmentShader = `
     water += uGlow * 0.55 * shafts * shaftFade * 0.35;
     // Deeper, calmer open water to the upper right.
     float calm = smoothstep(0.35, 1.0, vUv.x) * smoothstep(uHorizon, 1.0, vUv.y);
-    water *= 1.0 - 0.35 * calm;
+    water *= 1.0 - uCalm * calm;
     gl_FragColor = vec4(water, 1.0);
   }
 `;

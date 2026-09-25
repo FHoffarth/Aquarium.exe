@@ -1,0 +1,210 @@
+{
+  "rock_09": {
+    "source": "Poly Haven",
+    "sourcePage": "https://polyhaven.com/a/rock_09",
+    "name": "Rock 09",
+    "creator": {
+      "Jenelle van Heerden": "All"
+    },
+    "license": "CC0-1.0",
+    "licenseUrl": "https://polyhaven.com/license",
+    "attributionRequired": false,
+    "dateAcquired": "2026-09-24",
+    "resolution": "4k",
+    "sourcePolycount": 23280,
+    "files": [
+      {
+        "localPath": "art/source/polyhaven/rock_09/rock_09_4k.gltf",
+        "bytes": 2745,
+        "md5": "e08dcdd165e1601f935da94805346573",
+        "sha256": "9d4cf987e1ea91f975276ede8948e6a81384e1a66166bf694b089566d5d23dcc",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/4k/rock_09/rock_09_4k.gltf",
+        "originalFilename": "rock_09_4k.gltf"
+      },
+      {
+        "localPath": "art/source/polyhaven/rock_09/textures/rock_09_arm_4k.jpg",
+        "bytes": 2432438,
+        "md5": "a686bccacbfa11a4d899ab16f35a0cf1",
+        "sha256": "4ed8cb3e8233fe851d5217c2e41240ad6a44b74bf50b763f6923986a642ae73d",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/rock_09/rock_09_arm_4k.jpg",
+        "originalFilename": "rock_09_arm_4k.jpg"
+      },
+      {
+        "localPath": "art/source/polyhaven/rock_09/rock_09.bin",
+        "bytes": 286592,
+        "md5": "6f2f71c9ca594566c1a3b29da27293a1",
+        "sha256": "780c37d6fc11ca3a01c3763535ef883908b6007271a46bd446d2289ded820751",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/rock_09/rock_09.bin",
+        "originalFilename": "rock_09.bin"
+      },
+      {
+        "localPath": "art/source/polyhaven/rock_09/textures/rock_09_diff_4k.jpg",
+        "bytes": 6793356,
+        "md5": "641bc2bfaea70e4c93d2c64f465aad90",
+        "sha256": "0d1b8be255f6d044dad08e714c9bfa5817d87b64d0ebb83e5dfbf82ffd9b09ec",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/rock_09/rock_09_diff_4k.jpg",
+        "originalFilename": "rock_09_diff_4k.jpg"
+      },
+      {
+        "localPath": "art/source/polyhaven/rock_09/textures/rock_09_nor_gl_4k.jpg",
+        "bytes": 7967500,
+        "md5": "a45e568ad0433267a8945655cd33ae7e",
+        "sha256": "77a0577b0fdba5e3e76d620321ae3bad19b2c48b013f9a31879727001e85f72d",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/rock_09/rock_09_nor_gl_4k.jpg",
+        "originalFilename": "rock_09_nor_gl_4k.jpg"
+      }
+    ]
+  },
+  "rock_07": {
+    "source": "Poly Haven",
+    "sourcePage": "https://polyhaven.com/a/rock_07",
+    "name": "Rock 07",
+    "creator": {
+      "Jenelle van Heerden": "All"
+    },
+    "license": "CC0-1.0",
+    "licenseUrl": "https://polyhaven.com/license",
+    "attributionRequired": false,
+    "dateAcquired": "2026-09-24",
+    "resolution": "4k",
+    "sourcePolycount": 27830,
+    "files": [
+      {
+        "localPath": "art/source/polyhaven/rock_07/rock_07_4k.gltf",
+        "bytes": 2979,
+        "md5": "00c41fa453f9644021f5ec4ddf19742e",
+        "sha256": "03f0a155776cc01a7fa490e3c7c3193c04da72ddc6ca17e5ed254ab7edfe4d25",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/4k/rock_07/rock_07_4k.gltf",
+        "originalFilename": "rock_07_4k.gltf"
+      },
+      {
+        "localPath": "art/source/polyhaven/rock_07/rock_07.bin",
+        "bytes": 468936,
+        "md5": "817b2cfd1626cb06f18a825f87f58ec3",
+        "sha256": "e4a532a6d6cf4a08c288f501b790f32cba0528136a29959ce774c3cd39369e7e",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/rock_07/rock_07.bin",
+        "originalFilename": "rock_07.bin"
+      },
+      {
+        "localPath": "art/source/polyhaven/rock_07/textures/rock_07_arm_4k.jpg",
+        "bytes": 2308060,
+        "md5": "2674759c048370ae200e9573f2dbd426",
+        "sha256": "e58597f48eda2e5bbc7bf8deaec1a61d050c655caef375d17e7b8d51c8e9be91",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/rock_07/rock_07_arm_4k.jpg",
+        "originalFilename": "rock_07_arm_4k.jpg"
+      },
+      {
+        "localPath": "art/source/polyhaven/rock_07/textures/rock_07_nor_gl_4k.jpg",
+        "bytes": 9934279,
+        "md5": "70835832d757ed97293565f573bf68b3",
+        "sha256": "6a3fd625213ba878f362caab2aa97ceb99b7f7069d3628ccfce328c5e74e9252",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/rock_07/rock_07_nor_gl_4k.jpg",
+        "originalFilename": "rock_07_nor_gl_4k.jpg"
+      },
+      {
+        "localPath": "art/source/polyhaven/rock_07/textures/rock_07_diff_4k.jpg",
+        "bytes": 7671132,
+        "md5": "f6ee75f0540e35919406483601b259aa",
+        "sha256": "cbd36cb09f28730c3e79fcc2fee35e35509be21cd89bf1220c2d4f0c90dabfcb",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/rock_07/rock_07_diff_4k.jpg",
+        "originalFilename": "rock_07_diff_4k.jpg"
+      }
+    ]
+  },
+  "boulder_01": {
+    "source": "Poly Haven",
+    "sourcePage": "https://polyhaven.com/a/boulder_01",
+    "name": "Boulder 01",
+    "creator": {
+      "Rico Cilliers": "All"
+    },
+    "license": "CC0-1.0",
+    "licenseUrl": "https://polyhaven.com/license",
+    "attributionRequired": false,
+    "dateAcquired": "2026-09-24",
+    "resolution": "4k",
+    "sourcePolycount": 123976,
+    "files": [
+      {
+        "localPath": "art/source/polyhaven/boulder_01/boulder_01_4k.gltf",
+        "bytes": 2773,
+        "md5": "64a2ae2d9b1d8bc95f8334fd4cc9f72b",
+        "sha256": "1d0f157fdb8878dad735efea2c7a85870cef12f9844615677e2b6a532fafbc49",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/4k/boulder_01/boulder_01_4k.gltf",
+        "originalFilename": "boulder_01_4k.gltf"
+      },
+      {
+        "localPath": "art/source/polyhaven/boulder_01/textures/boulder_01_arm_4k.jpg",
+        "bytes": 7802675,
+        "md5": "f3bc62981f695346b621b545d4771417",
+        "sha256": "cb99da133f1b5abc475be3bfc7e5651079c5b969a3c3bb225ba93404345f7a1d",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/boulder_01/boulder_01_arm_4k.jpg",
+        "originalFilename": "boulder_01_arm_4k.jpg"
+      },
+      {
+        "localPath": "art/source/polyhaven/boulder_01/boulder_01.bin",
+        "bytes": 2938808,
+        "md5": "27a19fa031d8b4c3a09261f19c444dc5",
+        "sha256": "7f5b06503d62bd95bfe9c6b8a354a5cc8ff04a4d271a8cf87a3e3125db4232d7",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/boulder_01/boulder_01.bin",
+        "originalFilename": "boulder_01.bin"
+      },
+      {
+        "localPath": "art/source/polyhaven/boulder_01/textures/boulder_01_nor_gl_4k.jpg",
+        "bytes": 19220463,
+        "md5": "c4d95f5c52d4552b10636c94cc54835e",
+        "sha256": "554fbffe087d310ebc86af203ae9951843b51a1e770a33e7153ce16b236b7574",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/boulder_01/boulder_01_nor_gl_4k.jpg",
+        "originalFilename": "boulder_01_nor_gl_4k.jpg"
+      },
+      {
+        "localPath": "art/source/polyhaven/boulder_01/textures/boulder_01_diff_4k.jpg",
+        "bytes": 13282817,
+        "md5": "0bceced14031539cff10d992df24be0e",
+        "sha256": "2f724790e7f1be1eae7f79c525ea2ac32df3944721e114fd278da1e786fc1eb2",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/boulder_01/boulder_01_diff_4k.jpg",
+        "originalFilename": "boulder_01_diff_4k.jpg"
+      }
+    ]
+  },
+  "bark_willow_02": {
+    "source": "Poly Haven",
+    "sourcePage": "https://polyhaven.com/a/bark_willow_02",
+    "name": "Bark Willow 02",
+    "creator": {
+      "Charlotte Baglioni": "All"
+    },
+    "license": "CC0-1.0",
+    "licenseUrl": "https://polyhaven.com/license",
+    "attributionRequired": false,
+    "dateAcquired": "2026-09-24",
+    "resolution": "2k",
+    "sourcePolycount": null,
+    "files": [
+      {
+        "localPath": "art/source/polyhaven/bark_willow_02/textures/bark_willow_02_diff_2k.jpg",
+        "bytes": 4010319,
+        "md5": "c6bc363160c1e91d7af4b579dd0345f4",
+        "sha256": "6bec05b58cad3907ba2704010f2d6878152b679e5f5ab5c6c6ff7d449c373a76",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/bark_willow_02/bark_willow_02_diff_2k.jpg",
+        "originalFilename": "bark_willow_02_diff_2k.jpg"
+      },
+      {
+        "localPath": "art/source/polyhaven/bark_willow_02/textures/bark_willow_02_nor_gl_2k.jpg",
+        "bytes": 5216489,
+        "md5": "1a1a98d8cf2654326a3f8f45e7508f53",
+        "sha256": "53a852294a3cd51d55579615d33c73a6d439e380c375af627247b8ef39c38936",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/bark_willow_02/bark_willow_02_nor_gl_2k.jpg",
+        "originalFilename": "bark_willow_02_nor_gl_2k.jpg"
+      },
+      {
+        "localPath": "art/source/polyhaven/bark_willow_02/textures/bark_willow_02_arm_2k.jpg",
+        "bytes": 3670146,
+        "md5": "2c23c6b3b10690690346da6b5b50176d",
+        "sha256": "a5bf65306a87b70faea202a07efdfc635f57b2ef87c2b36d1ad21d635564487c",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/bark_willow_02/bark_willow_02_arm_2k.jpg",
+        "originalFilename": "bark_willow_02_arm_2k.jpg"
+      }
+    ]
+  }
+}

@@ -49,3 +49,23 @@ in `art/licenses/`.
 
 Source asset names above are provenance only. Aquarium.exe vegetation is visually
 transformed source material and makes no claim to depict any particular real species.
+
+## Natural Environment art assets (Slice C)
+
+Slice C (`habitat/assets/slice-c/`) additionally derives from the CC0 sources below,
+modified by `art/tools/build_slice_c.py` and `art/tools/prepare_textures_slice_c.py`.
+It reuses Rock Moss Set 02, Gravelly Sand and Coast Sand 03 from the table above.
+Acquisition records with per-file SHA-256 are in `art/provenance/stage1/` (Poly Haven)
+and `art/provenance/stage2/` (ambientCG); the ambientCG license page is archived in
+`art/licenses/ambientcg-license-page.html`.
+
+| Source asset | Creators | Source page | License | Used for |
+|---|---|---|---|---|
+| Rock 07 | Jenelle van Heerden | <https://polyhaven.com/a/rock_07> | CC0 1.0 (<https://polyhaven.com/license>) | primary rear-left stone (decimated, re-graded) |
+| Boulder 01 | Rico Cilliers | <https://polyhaven.com/a/boulder_01> | CC0 1.0 (<https://polyhaven.com/license>) | primary centre-left stone (decimated, re-graded) |
+| Rock 09 | Jenelle van Heerden | <https://polyhaven.com/a/rock_09> | CC0 1.0 (<https://polyhaven.com/license>) | front secondary stones (decimated) |
+| Bark Willow 02 | Charlotte Baglioni | <https://polyhaven.com/a/bark_willow_02> | CC0 1.0 (<https://polyhaven.com/license>) | bark on the original procedural driftwood root (re-graded, cracks added) |
+| Leaf Set 022 | ambientCG (Lennart Demes) | <https://ambientcg.com/view?id=LeafSet022> | CC0 1.0 (<https://docs.ambientcg.com/license/>) | broad-leaf clusters (leaves cut along their outlines, re-graded) |
+
+Created using Leaf Set 022 from ambientCG.com, licensed under the Creative Commons CC0 1.0
+Universal License. Source asset names are provenance only; no species claim is made.

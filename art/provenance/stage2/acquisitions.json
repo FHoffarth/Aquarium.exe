@@ -1,0 +1,81 @@
+{
+  "LeafSet022": {
+    "source": "ambientCG",
+    "sourcePage": "https://ambientcg.com/view?id=LeafSet022",
+    "name": "Leaf Set 022",
+    "creator": "ambientCG (Lennart Demes)",
+    "license": "CC0-1.0",
+    "licenseUrl": "https://docs.ambientcg.com/license/",
+    "attributionRequired": false,
+    "dateAcquired": "2026-09-24",
+    "variant": "2K-JPG",
+    "downloadUrl": "https://ambientcg.com/get?file=LeafSet022_2K-JPG.zip",
+    "archive": {
+      "file": "art/source/ambientcg/LeafSet022/LeafSet022_2K-JPG.zip",
+      "bytes": 11273410,
+      "sha256": "2af6b5d525c16b32dd8574ae07f37a78a42b198327500777a6512e041644f9c7"
+    },
+    "files": [
+      {
+        "file": "LeafSet022_2K-JPG.usdc",
+        "bytes": 2976,
+        "sha256": "f913e9fae10a7fd90d89c58b89e61a100ee11202cc39ae39e4ca4a1b762111b5"
+      },
+      {
+        "file": "LeafSet022_2K-JPG_Color.jpg",
+        "bytes": 2337837,
+        "sha256": "3a8d7c4699f945cda98c70752d6ce6ff212404b846338246a8da4ac811af7f3d"
+      },
+      {
+        "file": "LeafSet022_2K-JPG_Displacement.jpg",
+        "bytes": 562764,
+        "sha256": "a1cae346834fc15c927bd6a25b4ca9558a73048416270ffe2d5749740de2bc8c"
+      },
+      {
+        "file": "LeafSet022_2K-JPG_NormalDX.jpg",
+        "bytes": 1955049,
+        "sha256": "bf8c2ec24867d46f368a7244d14559f9ed9d05707ed84a7fe5a27cae374a12eb"
+      },
+      {
+        "file": "LeafSet022_2K-JPG_NormalGL.jpg",
+        "bytes": 1960704,
+        "sha256": "ac6fb81069c2b30258185f5f0249caaf5e550961b5fd44db88e9b077bbf0c140"
+      },
+      {
+        "file": "LeafSet022_2K-JPG_Opacity.jpg",
+        "bytes": 140106,
+        "sha256": "994863c930425badee23ad4f7559df31e04b4315564b1b78d4464f7f954e8732"
+      },
+      {
+        "file": "LeafSet022_2K-JPG_Roughness.jpg",
+        "bytes": 824088,
+        "sha256": "567ca46866b44bb9b75faefa1bd9ad588c80e450b139b2ceb669754f23058920"
+      },
+      {
+        "file": "LeafSet022_2K-JPG_Scattering.jpg",
+        "bytes": 2224618,
+        "sha256": "bc082ab6f222061fdba9a163fe1ac2a78c15aa66cdf7d1dd0e487352d0de2b38"
+      },
+      {
+        "file": "LeafSet022_2K-JPG.blend",
+        "bytes": 1120132,
+        "sha256": "78191d362295bd1bc7c095b7115910d6ef72eb814313fffcad2fe05d212c5432"
+      },
+      {
+        "file": "LeafSet022_2K-JPG.mtlx",
+        "bytes": 2626,
+        "sha256": "b82620d448650ccf0f4b3c3435220010bc55ae3bda090b7829add4296e06da8a"
+      },
+      {
+        "file": "LeafSet022_2K-JPG.tres",
+        "bytes": 1042,
+        "sha256": "fe490b568967026725f6f042cebcd12c044a48cab4d4848d27368083ca2d6969"
+      },
+      {
+        "file": "LeafSet022.png",
+        "bytes": 139154,
+        "sha256": "c8dc058bfd032a5e341a306d6a17d69f3792b02cb422f915931e6a3ba7412495"
+      }
+    ]
+  }
+}

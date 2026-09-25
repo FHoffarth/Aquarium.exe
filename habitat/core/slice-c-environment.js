@@ -5,28 +5,37 @@ import {
 } from '../shaders/water-background.js';
 import { applyMaterialEffects, createEffectUniforms } from '../shaders/material-effects.js';
 
-// Slice B: the approved Aquascape Hero Frame (Pass 2, composition B)
-// translated for the runtime. Geometry and placement come from
-// art/tools/build_slice_b.py; this module assigns materials, lighting and
-// water atmosphere. Purely visual: it reads no simulation state.
+// Slice C: the approved Natural Environment vocabulary in the runtime.
+// Scanned rock family, the Composition B root with willow bark, LeafSet022
+// broad-leaf clusters, and open dark water as intentional negative space (no
+// moss, no background plant wall, no carpet). Geometry comes from
+// art/tools/build_slice_c.py; this module assigns materials, light and water
+// atmosphere. Purely visual: it reads no simulation state.
 //
-// Light hierarchy, economically: one warm spot light (no shadows) keys the
-// left hardscape; cooler, weaker top and fill light everywhere else; the
-// backdrop and depth haze carry the deep, calm open water to the right.
+// Floor and horizon: the substrate falls away behind the hardscape (baked
+// into the terrain) and its colour converges to the haze before that crest,
+// the haze colour equals the backdrop at the projected crest, and the camera
+// looks slightly upward so the floor takes less of the frame.
 
 const CAUSTIC_COLOR = [0.62, 0.86, 0.8];
 const BACKDROP = {
-  top: 0x2c7b82,
-  bottom: 0x0e3c44,
-  glow: [0.11, 0.085, 0.05],
-  // Plane at z -7.5 spanning y -5.7..6.3: the hazed rear floor (z -6,
-  // y -0.7) projects onto it at v ~ 0.41.
+  top: 0x2a7880,
+  bottom: 0x0b333b,
+  glow: [0.1, 0.075, 0.045],
+  // Plane at z -7.5 spanning y -5.7..6.3: the floor crest behind the
+  // hardscape (z ~ -2.4, y ~ -1.2) projects onto it at v ~ 0.31.
   z: -7.5,
   centerY: 0.3,
-  width: 24,
+  width: 26,
   height: 12,
-  horizon: 0.41,
+  horizon: 0.31,
+  calm: 0.5,
 };
+// Must match slice_c_layout.CAMERA_TARGET_Y.
+export const SLICE_C_CAMERA_TARGET = Object.freeze([0, 0.24, 0]);
+// One matte roughness for all stone: rock_07's source roughness is a uniform
+// ~0.30, which glinted as white flecks under the key light.
+const STONE_ROUGHNESS = 0.86;
 
 function seededUnit(seed, index, channel) {
   let value = (seed ^ Math.imul(index + 1, 0x9e3779b1) ^ Math.imul(channel + 1, 0x85ebca77)) >>> 0;
@@ -40,13 +49,13 @@ function seededUnit(seed, index, channel) {
 
 function requireMesh(meshes, name) {
   const mesh = meshes[name];
-  if (!mesh) throw new Error(`slice-b geometry is missing mesh "${name}"`);
+  if (!mesh) throw new Error(`slice-c geometry is missing mesh "${name}"`);
   return mesh;
 }
 
 function requireTexture(textures, name) {
   const texture = textures[name];
-  if (!texture) throw new Error(`slice-b is missing texture "${name}"`);
+  if (!texture) throw new Error(`slice-c is missing texture "${name}"`);
   return texture;
 }
 
@@ -57,7 +66,7 @@ function renameAttribute(geometry, from, to) {
   geometry.deleteAttribute(from);
 }
 
-export function createSliceBEnvironment(scene, config, assets) {
+export function createSliceCEnvironment(scene, config, assets) {
   if (!scene?.isScene) throw new TypeError('scene must be a Three.js Scene');
   const { bounds, environment } = config;
   const { meshes, textures } = assets;
@@ -84,7 +93,7 @@ export function createSliceBEnvironment(scene, config, assets) {
       uBottom: { value: bottom },
       uGlow: { value: new THREE.Vector3(...BACKDROP.glow) },
       uHorizon: { value: BACKDROP.horizon },
-      uCalm: { value: 0.35 },
+      uCalm: { value: BACKDROP.calm },
     },
     vertexShader: waterBackgroundVertexShader,
     fragmentShader: waterBackgroundSliceBFragmentShader,
@@ -96,95 +105,73 @@ export function createSliceBEnvironment(scene, config, assets) {
   background.position.set(0, BACKDROP.centerY, BACKDROP.z);
   background.renderOrder = -10;
 
-  // Depth haze meets the backdrop's raw value at the floor horizon, so the
-  // rear floor dissolves into water with no visible edge.
+  // The haze converges on the backdrop's raw value at the projected floor
+  // crest, so the substrate dissolves into water with no edge. The fish
+  // volume (z >= -0.65) stays clear; the rear hardscape takes a little.
   const horizonT = BACKDROP.horizon * BACKDROP.horizon * (3 - 2 * BACKDROP.horizon);
   const haze = bottom.clone().lerp(top, horizonT);
   shared.uHazeColor.value = [haze.r, haze.g, haze.b];
-  // Background plant masses (z -1.7..-3.4) stay readable but softened;
-  // everything beyond z ~ -4.5 is water.
-  shared.uHazeRange.value = [-1.0, -4.8];
+  shared.uHazeRange.value = [-0.35, -2.7];
 
   const hardscapeCaustics = { strength: 0.3, scale: 1.25, color: CAUSTIC_COLOR };
 
-  const substrate = requireMesh(meshes, 'slice-b-substrate');
+  const substrate = requireMesh(meshes, 'slice-c-substrate');
   substrate.material = applyMaterialEffects(material({
     map: requireTexture(textures, 'substrate_albedo'),
     normalMap: requireTexture(textures, 'substrate_normal'),
-    normalScale: new THREE.Vector2(0.8, 0.8),
+    normalScale: new THREE.Vector2(0.75, 0.75),
     roughness: 0.95,
     metalness: 0,
-  }), shared, { haze: true, caustics: { ...hardscapeCaustics, strength: 0.22 } });
+  }), shared, { haze: true, caustics: { ...hardscapeCaustics, strength: 0.2 } });
 
-  const rocks = requireMesh(meshes, 'slice-b-rocks');
-  rocks.material = applyMaterialEffects(material({
-    map: requireTexture(textures, 'rock_albedo'),
-    normalMap: requireTexture(textures, 'rock_normal'),
-    roughnessMap: requireTexture(textures, 'rock_orm'),
-    roughness: 1,
-    metalness: 0,
-    vertexColors: rocks.geometry.hasAttribute('color'),
-  }), shared, { haze: true, caustics: hardscapeCaustics });
+  const stone = (meshName, textureName) => {
+    const mesh = requireMesh(meshes, meshName);
+    mesh.material = applyMaterialEffects(material({
+      map: requireTexture(textures, `${textureName}_albedo`),
+      normalMap: requireTexture(textures, `${textureName}_normal`),
+      roughness: STONE_ROUGHNESS,
+      metalness: 0,
+      vertexColors: mesh.geometry.hasAttribute('color'),
+    }), shared, { haze: true, caustics: hardscapeCaustics });
+    return mesh;
+  };
+  const rocks = [
+    stone('slice-c-rock-07', 'rock07'),
+    stone('slice-c-boulder', 'boulder'),
+    stone('slice-c-rock-09', 'rock09'),
+    stone('slice-c-stones', 'stones'),
+  ];
 
-  const woodOrm = requireTexture(textures, 'wood_orm');
-  const wood = requireMesh(meshes, 'slice-b-wood');
+  const wood = requireMesh(meshes, 'slice-c-wood');
   wood.material = applyMaterialEffects(material({
     map: requireTexture(textures, 'wood_albedo'),
     normalMap: requireTexture(textures, 'wood_normal'),
-    roughnessMap: woodOrm,
-    aoMap: woodOrm,
-    aoMapIntensity: 0.8,
-    roughness: 1,
+    normalScale: new THREE.Vector2(1.6, 1.6),
+    roughness: 0.82,
     metalness: 0,
     vertexColors: wood.geometry.hasAttribute('color'),
   }), shared, { haze: true, caustics: hardscapeCaustics });
 
-  const moss = requireMesh(meshes, 'slice-b-moss');
-  renameAttribute(moss.geometry, '_sway', 'sway');
-  moss.material = applyMaterialEffects(material({
-    map: requireTexture(textures, 'moss_albedo'),
-    normalMap: requireTexture(textures, 'moss_normal'),
-    roughness: 0.82,
+  // Photographed leaves as tight outline strips: alpha only at the rim,
+  // alpha test (no blending). Matte, no clearcoat: no pale sheen.
+  const leaves = requireMesh(meshes, 'slice-c-leaves');
+  renameAttribute(leaves.geometry, '_sway', 'sway');
+  leaves.material = applyMaterialEffects(material({
+    map: requireTexture(textures, 'leaves_albedo'),
+    normalMap: requireTexture(textures, 'leaves_normal'),
+    normalScale: new THREE.Vector2(0.6, 0.6),
+    roughness: 0.74,
     metalness: 0,
     alphaTest: 0.5,
     side: THREE.DoubleSide,
+    vertexColors: leaves.geometry.hasAttribute('color'),
   }), shared, {
     haze: true,
-    caustics: { ...hardscapeCaustics, strength: 0.3 },
-    sway: { amplitude: 0.01, frequency: 0.9 },
+    caustics: { ...hardscapeCaustics, strength: 0.05 },
+    sway: { amplitude: 0.03, frequency: 0.5 },
   });
 
-  // Solid leaf geometry (vertex colour): no alpha, no overdraw.
-  const plants = requireMesh(meshes, 'slice-b-plants');
-  renameAttribute(plants.geometry, '_sway', 'sway');
-  plants.material = applyMaterialEffects(material({
-    vertexColors: true,
-    roughness: 0.55,
-    metalness: 0,
-    side: THREE.DoubleSide,
-  }), shared, {
-    haze: true,
-    caustics: { ...hardscapeCaustics, strength: 0.08 },
-    sway: { amplitude: 0.05, frequency: 0.5 },
-  });
-
-  // Camera-facing cards: background stem masses and carpet relief. Alpha
-  // test only (no blending, no MSAA) to keep overdraw cheap.
-  const cards = requireMesh(meshes, 'slice-b-cards');
-  renameAttribute(cards.geometry, '_sway', 'sway');
-  cards.material = applyMaterialEffects(material({
-    map: requireTexture(textures, 'cards_albedo'),
-    roughness: 0.7,
-    metalness: 0,
-    alphaTest: 0.5,
-    side: THREE.DoubleSide,
-    vertexColors: cards.geometry.hasAttribute('color'),
-  }), shared, {
-    haze: true,
-    sway: { amplitude: 0.03, frequency: 0.45 },
-  });
-
-  const sceneMeshes = [substrate, rocks, wood, moss, plants, cards];
+  const sceneMeshes = [substrate, ...rocks, wood, leaves];
   for (const mesh of sceneMeshes) {
     mesh.removeFromParent();
     mesh.frustumCulled = true;
@@ -215,26 +202,27 @@ export function createSliceBEnvironment(scene, config, assets) {
   const particles = add(new THREE.Points(particleGeometry, particleMaterial));
   particles.name = 'water-particles';
 
-  add(new THREE.AmbientLight(0xb8dcd6, 0.22)).name = 'water-ambient-light';
-  add(new THREE.HemisphereLight(0xa8d6cc, 0x10201a, 0.95)).name = 'water-fill-light';
-  const topLight = add(new THREE.DirectionalLight(0xd8ecf0, 1.35));
+  // Restrained warm focus on the left hardscape; cooler, weaker light
+  // everywhere else; the open water to the right stays deep and dark.
+  add(new THREE.AmbientLight(0xa9d4cf, 0.2)).name = 'water-ambient-light';
+  add(new THREE.HemisphereLight(0x9fd0c7, 0x0c1a16, 0.85)).name = 'water-fill-light';
+  const topLight = add(new THREE.DirectionalLight(0xd4eaf0, 1.15));
   topLight.name = 'aquarium-top-light';
   topLight.position.set(-0.8, 4.0, 2.0);
-  // Hero key: warm and soft, from the upper left onto the hardscape; falls
-  // off through the centre before the open water.
-  const key = add(new THREE.SpotLight(0xffcf98, 95, 0, 0.42, 1.0, 1.6));
+  const key = add(new THREE.SpotLight(0xffcf98, 80, 0, 0.42, 1.0, 1.6));
   key.name = 'hardscape-key-light';
   key.position.set(-3.9, 3.9, 2.2);
-  key.target.position.set(-1.8, -0.6, -1.0);
+  key.target.position.set(-1.9, -0.7, -1.0);
   add(key.target);
-  const rimLight = add(new THREE.DirectionalLight(0x6fc7bb, 0.5));
+  const rimLight = add(new THREE.DirectionalLight(0x6fc7bb, 0.45));
   rimLight.name = 'water-rim-light';
   rimLight.position.set(2.8, 0.8, -1.5);
 
   return {
-    drawCallBudget: 8,
-    artMode: 'slice-b',
+    drawCallBudget: 9,
+    artMode: 'slice-c',
     effectUniforms: shared,
+    cameraTarget: SLICE_C_CAMERA_TARGET,
     updateVisuals(simulationTime) {
       shared.uEffectTime.value = simulationTime;
       backgroundMaterial.uniforms.uTime.value = simulationTime;

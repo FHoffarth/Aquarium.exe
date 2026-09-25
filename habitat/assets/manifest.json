@@ -4,7 +4,8 @@
   "licenseEvidence": [
     "art/licenses/CC0-1.0-legalcode.txt",
     "art/licenses/polyhaven-license.txt",
-    "art/licenses/polyhaven-license-page.html"
+    "art/licenses/polyhaven-license-page.html",
+    "art/licenses/ambientcg-license-page.html"
   ],
   "files": [
     {
@@ -383,9 +384,299 @@
       ],
       "modifications": "Both 2K normal maps sampled in world space, blended by the clearing mask, flattened under the carpet, renormalised, WebP.",
       "origin": "derived"
+    },
+    {
+      "file": "slice-c/environment.glb",
+      "role": "geometry",
+      "label": "Slice C natural environment geometry (approved Natural Environment vocabulary)",
+      "bytes": 1587072,
+      "sha256": "0def65d1bafb73615a7e0f674e83dc26681e802f23420f25db0fdc7509dd1faf",
+      "license": "CC0-1.0",
+      "status": "GREEN",
+      "derivedFrom": [
+        "rock_07",
+        "boulder_01",
+        "rock_09",
+        "rock_moss_set_02",
+        "LeafSet022"
+      ],
+      "modifications": "Assembled by art/tools/build_slice_c.py: scanned rocks rock_07 (3.6k tris), boulder_01 (5.2k) and two rock_09 (1.9k each) welded and decimated from 27.8k/124k/23.3k source faces, placed in the approved hierarchy and partly buried; rock_moss_set_02 secondaries, transition stones and partly buried fragments decimated to 110-700 tris; the original procedural Composition B driftwood root (own geometry, no source mesh); photographed broad leaves cut along each leaf outline of the LeafSet022 atlas into tight curved strips (8 rows, UVs into the atlas) composed into camera-specific clusters at the hardscape seams; original substrate terrain falling away behind the hardscape; per-vertex contact shading and sway weights; materials stripped.",
+      "origin": "derived"
+    },
+    {
+      "file": "slice-c/textures/rock07_albedo.webp",
+      "role": "texture",
+      "label": "Scanned rock A colour",
+      "bytes": 531274,
+      "sha256": "12ba39cf8e9c2b417747e1920107f66523037b16adacbfcf52c13997d403eb30",
+      "license": "CC0-1.0",
+      "status": "GREEN",
+      "derivedFrom": [
+        "rock_07"
+      ],
+      "modifications": "4K diffuse -> 2K (Lanczos), saturation x0.75, value x0.9, isolated bright specks clamped to the 99.5th luminance percentile, WebP.",
+      "origin": "derived"
+    },
+    {
+      "file": "slice-c/textures/rock07_normal.webp",
+      "role": "texture",
+      "label": "Scanned rock A normal (OpenGL)",
+      "bytes": 291716,
+      "sha256": "5991149a9c1c4bda85fe5a8bc154265833dc1587b011b1467d81c39f65dc2332",
+      "license": "CC0-1.0",
+      "status": "GREEN",
+      "derivedFrom": [
+        "rock_07"
+      ],
+      "modifications": "4K OpenGL normal map -> 1K (Lanczos), WebP. Source roughness not shipped (a uniform ~0.30 caused glints).",
+      "origin": "derived"
+    },
+    {
+      "file": "slice-c/textures/boulder_albedo.webp",
+      "role": "texture",
+      "label": "Scanned boulder colour",
+      "bytes": 374130,
+      "sha256": "c615f1408f79540683e6112e5389160976c7fdac2447012b7d11535c36f9f418",
+      "license": "CC0-1.0",
+      "status": "GREEN",
+      "derivedFrom": [
+        "boulder_01"
+      ],
+      "modifications": "4K diffuse -> 1K (Lanczos), saturation x0.75, value x0.95, bright specks clamped, WebP.",
+      "origin": "derived"
+    },
+    {
+      "file": "slice-c/textures/boulder_normal.webp",
+      "role": "texture",
+      "label": "Scanned boulder normal (OpenGL)",
+      "bytes": 524774,
+      "sha256": "9569e5dafaa0a88a5d4033b864a230e2d383348029bfb54dd6b6b9e442c07a3f",
+      "license": "CC0-1.0",
+      "status": "GREEN",
+      "derivedFrom": [
+        "boulder_01"
+      ],
+      "modifications": "4K OpenGL normal map -> 1K (Lanczos), WebP.",
+      "origin": "derived"
+    },
+    {
+      "file": "slice-c/textures/rock09_albedo.webp",
+      "role": "texture",
+      "label": "Scanned front stone colour",
+      "bytes": 47466,
+      "sha256": "d903cc71350c235ef5431782540746def7adbaf00e5bff8e7dd59ebc5d980568",
+      "license": "CC0-1.0",
+      "status": "GREEN",
+      "derivedFrom": [
+        "rock_09"
+      ],
+      "modifications": "4K diffuse -> 512 (Lanczos), saturation x0.75, bright specks clamped, WebP.",
+      "origin": "derived"
+    },
+    {
+      "file": "slice-c/textures/rock09_normal.webp",
+      "role": "texture",
+      "label": "Scanned front stone normal (OpenGL)",
+      "bytes": 85988,
+      "sha256": "cd8b964f7ee6c71e27804f2fa0471df862b63367c82aa3da060757ee12a7e255",
+      "license": "CC0-1.0",
+      "status": "GREEN",
+      "derivedFrom": [
+        "rock_09"
+      ],
+      "modifications": "4K OpenGL normal map -> 512 (Lanczos), WebP.",
+      "origin": "derived"
+    },
+    {
+      "file": "slice-c/textures/stones_albedo.webp",
+      "role": "texture",
+      "label": "Secondary stone colour",
+      "bytes": 42320,
+      "sha256": "18b94cac30dc7505e38b544603195fb4d867812030b7dcbb6ce19becb324d159",
+      "license": "CC0-1.0",
+      "status": "GREEN",
+      "derivedFrom": [
+        "rock_moss_set_02"
+      ],
+      "modifications": "2K diffuse -> 512 (Lanczos), saturation x0.65, value x0.72, WebP.",
+      "origin": "derived"
+    },
+    {
+      "file": "slice-c/textures/stones_normal.webp",
+      "role": "texture",
+      "label": "Secondary stone normal (OpenGL)",
+      "bytes": 88562,
+      "sha256": "5feb4c9f098aca1dbf92ee78039feeef1275cee229ba84647c15fa2d5393b51f",
+      "license": "CC0-1.0",
+      "status": "GREEN",
+      "derivedFrom": [
+        "rock_moss_set_02"
+      ],
+      "modifications": "2K OpenGL normal map -> 512 (Lanczos), WebP.",
+      "origin": "derived"
+    },
+    {
+      "file": "slice-c/textures/wood_albedo.webp",
+      "role": "texture",
+      "label": "Driftwood bark colour (willow bark, waterlogged grade)",
+      "bytes": 197780,
+      "sha256": "cc726885a0b2e127371d35697f1f17865b8670feeda9f483bb85034d85b3f877",
+      "license": "CC0-1.0",
+      "status": "GREEN",
+      "derivedFrom": [
+        "bark_willow_02"
+      ],
+      "modifications": "2K diffuse -> 1K, saturation x0.55, value x0.42, warm multiply (0.92, 0.76, 0.6), original fibre-aligned Voronoi crack pattern baked in, lifted x1.1 for the runtime light, WebP. Used as bark on the original procedural root.",
+      "origin": "derived"
+    },
+    {
+      "file": "slice-c/textures/wood_normal.webp",
+      "role": "texture",
+      "label": "Driftwood bark normal (OpenGL)",
+      "bytes": 152934,
+      "sha256": "2e4e580128a4e5c50e6a7dfc20486edccba9383c22dee4237678b224547335b6",
+      "license": "CC0-1.0",
+      "status": "GREEN",
+      "derivedFrom": [
+        "bark_willow_02"
+      ],
+      "modifications": "2K OpenGL normal map -> 512 (Lanczos), WebP.",
+      "origin": "derived"
+    },
+    {
+      "file": "slice-c/textures/leaves_albedo.webp",
+      "role": "texture",
+      "label": "Broad-leaf atlas colour + alpha",
+      "bytes": 73864,
+      "sha256": "1b9fe602fecb00db2489348452ad78b7596948af0de6fe934f7c0e73095c0d66",
+      "license": "CC0-1.0",
+      "status": "GREEN",
+      "derivedFrom": [
+        "LeafSet022"
+      ],
+      "modifications": "2K colour + opacity -> 1K RGBA, hue +0.05, value x0.4 (darker, cooler), colour dilated under alpha, WebP.",
+      "origin": "derived"
+    },
+    {
+      "file": "slice-c/textures/leaves_normal.webp",
+      "role": "texture",
+      "label": "Broad-leaf atlas normal (OpenGL)",
+      "bytes": 14934,
+      "sha256": "b9b2c021feb0a013ad355ec6ef34ed5a4731ad653fb5377ef664401e6ac8438f",
+      "license": "CC0-1.0",
+      "status": "GREEN",
+      "derivedFrom": [
+        "LeafSet022"
+      ],
+      "modifications": "2K OpenGL normal map -> 512 (Lanczos), WebP.",
+      "origin": "derived"
+    },
+    {
+      "file": "slice-c/textures/substrate_albedo.webp",
+      "role": "texture",
+      "label": "Substrate colour (unique, baked)",
+      "bytes": 163748,
+      "sha256": "362ca50abf23788e4f47fb917233d1eb8b079779e6b7e62202e8b7f33484db2f",
+      "license": "CC0-1.0",
+      "status": "GREEN",
+      "derivedFrom": [
+        "gravelly_sand",
+        "coast_sand_03"
+      ],
+      "modifications": "Both 2K diffuse maps sampled at aquarium grain scale in world space (non-linear depth mapping): an irregular dark soil/gravel zone around the hardscape and finer sand elsewhere (art/tools/slice_c_layout.py masks), hardscape contact darkening, tonal variation, the floor light hierarchy and a fade into water before the floor falls away (art/tools/prepare_textures_slice_c.py), 2048x1024 WebP.",
+      "origin": "derived"
+    },
+    {
+      "file": "slice-c/textures/substrate_normal.webp",
+      "role": "texture",
+      "label": "Substrate normal (OpenGL, unique)",
+      "bytes": 364354,
+      "sha256": "33da63359c15af8c92192b2d6e683235f4aa637542c37027020b49cce38ea3dc",
+      "license": "CC0-1.0",
+      "status": "GREEN",
+      "derivedFrom": [
+        "gravelly_sand",
+        "coast_sand_03"
+      ],
+      "modifications": "Both 2K normal maps sampled in world space, blended by the soil mask, renormalised, 1024x512 WebP.",
+      "origin": "derived"
     }
   ],
   "sources": {
+    "LeafSet022": {
+      "sourceAssetName": "Leaf Set 022",
+      "source": "ambientCG",
+      "sourcePage": "https://ambientcg.com/view?id=LeafSet022",
+      "creator": {
+        "ambientCG (Lennart Demes)": "All"
+      },
+      "license": "CC0-1.0",
+      "licenseUrl": "https://docs.ambientcg.com/license/",
+      "dateAcquired": "2026-09-24",
+      "originalFiles": [
+        {
+          "filename": "LeafSet022_2K-JPG.usdc",
+          "url": "https://ambientcg.com/get?file=LeafSet022_2K-JPG.zip",
+          "sha256": "f913e9fae10a7fd90d89c58b89e61a100ee11202cc39ae39e4ca4a1b762111b5"
+        },
+        {
+          "filename": "LeafSet022_2K-JPG_Color.jpg",
+          "url": "https://ambientcg.com/get?file=LeafSet022_2K-JPG.zip",
+          "sha256": "3a8d7c4699f945cda98c70752d6ce6ff212404b846338246a8da4ac811af7f3d"
+        },
+        {
+          "filename": "LeafSet022_2K-JPG_Displacement.jpg",
+          "url": "https://ambientcg.com/get?file=LeafSet022_2K-JPG.zip",
+          "sha256": "a1cae346834fc15c927bd6a25b4ca9558a73048416270ffe2d5749740de2bc8c"
+        },
+        {
+          "filename": "LeafSet022_2K-JPG_NormalDX.jpg",
+          "url": "https://ambientcg.com/get?file=LeafSet022_2K-JPG.zip",
+          "sha256": "bf8c2ec24867d46f368a7244d14559f9ed9d05707ed84a7fe5a27cae374a12eb"
+        },
+        {
+          "filename": "LeafSet022_2K-JPG_NormalGL.jpg",
+          "url": "https://ambientcg.com/get?file=LeafSet022_2K-JPG.zip",
+          "sha256": "ac6fb81069c2b30258185f5f0249caaf5e550961b5fd44db88e9b077bbf0c140"
+        },
+        {
+          "filename": "LeafSet022_2K-JPG_Opacity.jpg",
+          "url": "https://ambientcg.com/get?file=LeafSet022_2K-JPG.zip",
+          "sha256": "994863c930425badee23ad4f7559df31e04b4315564b1b78d4464f7f954e8732"
+        },
+        {
+          "filename": "LeafSet022_2K-JPG_Roughness.jpg",
+          "url": "https://ambientcg.com/get?file=LeafSet022_2K-JPG.zip",
+          "sha256": "567ca46866b44bb9b75faefa1bd9ad588c80e450b139b2ceb669754f23058920"
+        },
+        {
+          "filename": "LeafSet022_2K-JPG_Scattering.jpg",
+          "url": "https://ambientcg.com/get?file=LeafSet022_2K-JPG.zip",
+          "sha256": "bc082ab6f222061fdba9a163fe1ac2a78c15aa66cdf7d1dd0e487352d0de2b38"
+        },
+        {
+          "filename": "LeafSet022_2K-JPG.blend",
+          "url": "https://ambientcg.com/get?file=LeafSet022_2K-JPG.zip",
+          "sha256": "78191d362295bd1bc7c095b7115910d6ef72eb814313fffcad2fe05d212c5432"
+        },
+        {
+          "filename": "LeafSet022_2K-JPG.mtlx",
+          "url": "https://ambientcg.com/get?file=LeafSet022_2K-JPG.zip",
+          "sha256": "b82620d448650ccf0f4b3c3435220010bc55ae3bda090b7829add4296e06da8a"
+        },
+        {
+          "filename": "LeafSet022_2K-JPG.tres",
+          "url": "https://ambientcg.com/get?file=LeafSet022_2K-JPG.zip",
+          "sha256": "fe490b568967026725f6f042cebcd12c044a48cab4d4848d27368083ca2d6969"
+        },
+        {
+          "filename": "LeafSet022.png",
+          "url": "https://ambientcg.com/get?file=LeafSet022_2K-JPG.zip",
+          "sha256": "c8dc058bfd032a5e341a306d6a17d69f3792b02cb422f915931e6a3ba7412495"
+        }
+      ],
+      "status": "GREEN"
+    },
     "anthurium_botany_01": {
       "sourceAssetName": "Anthurium Botany 01",
       "source": "Poly Haven",
@@ -427,6 +718,74 @@
           "filename": "anthurium_botany_01_alpha_2k.png",
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/anthurium_botany_01/anthurium_botany_01_alpha_2k.png",
           "sha256": "77b48de549a9612b271af990016884eab3efe344b4b0704298b4b5e9ffc64280"
+        }
+      ],
+      "status": "GREEN"
+    },
+    "bark_willow_02": {
+      "sourceAssetName": "Bark Willow 02",
+      "source": "Poly Haven",
+      "sourcePage": "https://polyhaven.com/a/bark_willow_02",
+      "creator": {
+        "Charlotte Baglioni": "All"
+      },
+      "license": "CC0-1.0",
+      "licenseUrl": "https://polyhaven.com/license",
+      "dateAcquired": "2026-09-24",
+      "originalFiles": [
+        {
+          "filename": "bark_willow_02_diff_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/bark_willow_02/bark_willow_02_diff_2k.jpg",
+          "sha256": "6bec05b58cad3907ba2704010f2d6878152b679e5f5ab5c6c6ff7d449c373a76"
+        },
+        {
+          "filename": "bark_willow_02_nor_gl_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/bark_willow_02/bark_willow_02_nor_gl_2k.jpg",
+          "sha256": "53a852294a3cd51d55579615d33c73a6d439e380c375af627247b8ef39c38936"
+        },
+        {
+          "filename": "bark_willow_02_arm_2k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/2k/bark_willow_02/bark_willow_02_arm_2k.jpg",
+          "sha256": "a5bf65306a87b70faea202a07efdfc635f57b2ef87c2b36d1ad21d635564487c"
+        }
+      ],
+      "status": "GREEN"
+    },
+    "boulder_01": {
+      "sourceAssetName": "Boulder 01",
+      "source": "Poly Haven",
+      "sourcePage": "https://polyhaven.com/a/boulder_01",
+      "creator": {
+        "Rico Cilliers": "All"
+      },
+      "license": "CC0-1.0",
+      "licenseUrl": "https://polyhaven.com/license",
+      "dateAcquired": "2026-09-24",
+      "originalFiles": [
+        {
+          "filename": "boulder_01_4k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/4k/boulder_01/boulder_01_4k.gltf",
+          "sha256": "1d0f157fdb8878dad735efea2c7a85870cef12f9844615677e2b6a532fafbc49"
+        },
+        {
+          "filename": "boulder_01_arm_4k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/boulder_01/boulder_01_arm_4k.jpg",
+          "sha256": "cb99da133f1b5abc475be3bfc7e5651079c5b969a3c3bb225ba93404345f7a1d"
+        },
+        {
+          "filename": "boulder_01.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/boulder_01/boulder_01.bin",
+          "sha256": "7f5b06503d62bd95bfe9c6b8a354a5cc8ff04a4d271a8cf87a3e3125db4232d7"
+        },
+        {
+          "filename": "boulder_01_nor_gl_4k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/boulder_01/boulder_01_nor_gl_4k.jpg",
+          "sha256": "554fbffe087d310ebc86af203ae9951843b51a1e770a33e7153ce16b236b7574"
+        },
+        {
+          "filename": "boulder_01_diff_4k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/boulder_01/boulder_01_diff_4k.jpg",
+          "sha256": "2f724790e7f1be1eae7f79c525ea2ac32df3944721e114fd278da1e786fc1eb2"
         }
       ],
       "status": "GREEN"
@@ -668,6 +1027,84 @@
           "filename": "nettle_plant_alpha_2k.png",
           "url": "https://dl.polyhaven.org/file/ph-assets/Models/png/2k/nettle_plant/nettle_plant_alpha_2k.png",
           "sha256": "0efece04fcc2780e7a13cd92ad3acd8eb7ad5f84fc4b66beb4402af06b229434"
+        }
+      ],
+      "status": "GREEN"
+    },
+    "rock_07": {
+      "sourceAssetName": "Rock 07",
+      "source": "Poly Haven",
+      "sourcePage": "https://polyhaven.com/a/rock_07",
+      "creator": {
+        "Jenelle van Heerden": "All"
+      },
+      "license": "CC0-1.0",
+      "licenseUrl": "https://polyhaven.com/license",
+      "dateAcquired": "2026-09-24",
+      "originalFiles": [
+        {
+          "filename": "rock_07_4k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/4k/rock_07/rock_07_4k.gltf",
+          "sha256": "03f0a155776cc01a7fa490e3c7c3193c04da72ddc6ca17e5ed254ab7edfe4d25"
+        },
+        {
+          "filename": "rock_07.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/rock_07/rock_07.bin",
+          "sha256": "e4a532a6d6cf4a08c288f501b790f32cba0528136a29959ce774c3cd39369e7e"
+        },
+        {
+          "filename": "rock_07_arm_4k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/rock_07/rock_07_arm_4k.jpg",
+          "sha256": "e58597f48eda2e5bbc7bf8deaec1a61d050c655caef375d17e7b8d51c8e9be91"
+        },
+        {
+          "filename": "rock_07_nor_gl_4k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/rock_07/rock_07_nor_gl_4k.jpg",
+          "sha256": "6a3fd625213ba878f362caab2aa97ceb99b7f7069d3628ccfce328c5e74e9252"
+        },
+        {
+          "filename": "rock_07_diff_4k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/rock_07/rock_07_diff_4k.jpg",
+          "sha256": "cbd36cb09f28730c3e79fcc2fee35e35509be21cd89bf1220c2d4f0c90dabfcb"
+        }
+      ],
+      "status": "GREEN"
+    },
+    "rock_09": {
+      "sourceAssetName": "Rock 09",
+      "source": "Poly Haven",
+      "sourcePage": "https://polyhaven.com/a/rock_09",
+      "creator": {
+        "Jenelle van Heerden": "All"
+      },
+      "license": "CC0-1.0",
+      "licenseUrl": "https://polyhaven.com/license",
+      "dateAcquired": "2026-09-24",
+      "originalFiles": [
+        {
+          "filename": "rock_09_4k.gltf",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/4k/rock_09/rock_09_4k.gltf",
+          "sha256": "9d4cf987e1ea91f975276ede8948e6a81384e1a66166bf694b089566d5d23dcc"
+        },
+        {
+          "filename": "rock_09_arm_4k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/rock_09/rock_09_arm_4k.jpg",
+          "sha256": "4ed8cb3e8233fe851d5217c2e41240ad6a44b74bf50b763f6923986a642ae73d"
+        },
+        {
+          "filename": "rock_09.bin",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/gltf/8k/rock_09/rock_09.bin",
+          "sha256": "780c37d6fc11ca3a01c3763535ef883908b6007271a46bd446d2289ded820751"
+        },
+        {
+          "filename": "rock_09_diff_4k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/rock_09/rock_09_diff_4k.jpg",
+          "sha256": "0d1b8be255f6d044dad08e714c9bfa5817d87b64d0ebb83e5dfbf82ffd9b09ec"
+        },
+        {
+          "filename": "rock_09_nor_gl_4k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Models/jpg/4k/rock_09/rock_09_nor_gl_4k.jpg",
+          "sha256": "77a0577b0fdba5e3e76d620321ae3bad19b2c48b013f9a31879727001e85f72d"
         }
       ],
       "status": "GREEN"

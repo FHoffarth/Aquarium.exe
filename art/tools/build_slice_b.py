@@ -846,4 +846,5 @@ def main():
     export(objects)
 
 
-main()
+if __name__ == '__main__':
+    main()

@@ -5,13 +5,15 @@ import { createFishRenderer } from '../../core/fish.js';
 import { createHeroFishRenderer, createHeroStudio } from '../../core/hero-fish.js';
 import { createSliceAEnvironment } from '../../core/slice-a-environment.js';
 import { createSliceBEnvironment } from '../../core/slice-b-environment.js';
+import { createSliceCEnvironment } from '../../core/slice-c-environment.js';
 import { deriveAuditScenePlan } from '../../audit-config.js';
 import { createPlantedTankConfig } from './config.js';
 
 const DEFAULT_AUDIT = { enabled: false, mode: 'full', fishCount: 10 };
 const HERO_OFF = Object.freeze({ enabled: false });
-const ART_GROUPS = Object.freeze(['slice-a', 'slice-b']);
-// Slice B school: Hero Fish Pass 1B at its approved desktop scale.
+const ART_GROUPS = Object.freeze(['slice-a', 'slice-b', 'slice-c']);
+const HERO_SCHOOL_GROUPS = Object.freeze(['slice-b', 'slice-c']);
+// Slice B/C school: Hero Fish Pass 1B at its approved desktop scale.
 export const SCHOOL_HERO_SCALE = 0.75;
 
 // Tries the requested art mode and falls back to the accepted procedural
@@ -73,18 +75,22 @@ export function createPlantedTank(
   // fish is rendered, either with the hero renderer or, for A/B, with the
   // production renderer at the same scale.
   const hero = heroFish.enabled && scenePlan.createFish ? heroFish : null;
-  // Slice B renders the real school with the Hero Fish (Pass 1B); Slice A
-  // and the procedural fallback keep the accepted classic fish renderer.
-  const heroSchool = !hero && scenePlan.createFish && artAssets && artGroup === 'slice-b';
+  // Slices B and C render the real school with the Hero Fish (Pass 1B);
+  // Slice A and the procedural fallback keep the accepted classic fish renderer.
+  const heroSchool = !hero && scenePlan.createFish && artAssets && HERO_SCHOOL_GROUPS.includes(artGroup);
   const fishRenderer = scenePlan.createFish && hero?.variant !== 'hero' && !heroSchool
     ? createFishRenderer(scene, Math.max(1, scenePlan.fishCount))
     : null;
   let environment = null;
   if (scenePlan.createEnvironment) {
     if (!artAssets) environment = createEnvironment(scene, config);
+    else if (artGroup === 'slice-c') environment = createSliceCEnvironment(scene, config, artAssets);
     else if (artGroup === 'slice-b') environment = createSliceBEnvironment(scene, config, artAssets);
     else environment = createSliceAEnvironment(scene, config, artAssets);
   }
+  // An environment may frame the tank slightly differently (Slice C looks a
+  // little upward so the floor takes less of the frame).
+  if (environment?.cameraTarget) camera.lookAt(...environment.cameraTarget);
   const heroScreen = new THREE.Vector3();
   const heroRenderer = hero?.variant === 'hero'
     ? createHeroFishRenderer(scene, {

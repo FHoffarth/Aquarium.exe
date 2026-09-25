@@ -13,9 +13,14 @@ import {
 const root = new URL('../../', import.meta.url);
 const assetsDir = new URL('habitat/assets/', root);
 const manifest = JSON.parse(await readFile(new URL('manifest.json', assetsDir), 'utf8'));
-const acquisitions = JSON.parse(
-  await readFile(new URL('art/provenance/polyhaven/acquisitions.json', root), 'utf8'),
-);
+// Poly Haven (Slices A/B) plus the Natural Environment study's Poly Haven
+// and ambientCG records (Slice C).
+const acquisitions = {};
+for (const record of ['polyhaven', 'stage1', 'stage2']) {
+  Object.assign(acquisitions, JSON.parse(
+    await readFile(new URL(`art/provenance/${record}/acquisitions.json`, root), 'utf8'),
+  ));
+}
 
 async function listFiles(dir, prefix = '') {
   const entries = await readdir(dir, { withFileTypes: true });
@@ -61,7 +66,7 @@ test('every shipped file is GREEN CC0 with recorded provenance for each source',
       assert.ok(source, `${entry.file} source ${sourceId} is recorded`);
       assert.equal(source.status, 'GREEN');
       assert.equal(source.license, 'CC0-1.0');
-      assert.match(source.sourcePage, /^https:\/\/polyhaven\.com\/a\//);
+      assert.match(source.sourcePage, /^https:\/\/(polyhaven\.com\/a\/|ambientcg\.com\/view\?id=)/);
       assert.ok(source.creator && Object.keys(source.creator).length > 0, `${sourceId} creator`);
       assert.match(source.dateAcquired, /^\d{4}-\d{2}-\d{2}$/);
       assert.ok(acquisitions[sourceId], `${sourceId} has an acquisition record`);
