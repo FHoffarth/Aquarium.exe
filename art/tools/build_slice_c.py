@@ -38,6 +38,8 @@ OUT = ROOT / 'habitat' / 'assets' / 'slice-c' / 'environment.glb'
 WORK = ROOT / 'art' / 'work' / 'slice-c'
 PROFILES = ROOT / 'art' / 'work' / 'stage2' / 'leaf_profiles.json'
 RNG = random.Random(20260925)
+# Composition study: blender ... -- --variant A|B|C writes art/work/slice-c/variants/
+VARIANT = sys.argv[sys.argv.index('--variant') + 1] if '--variant' in sys.argv else 'base'
 B = SB.B
 
 
@@ -91,6 +93,16 @@ def build_rocks():
                             @ Matrix.Rotation(math.radians(tilt), 4, 'X')
                             @ Matrix.Scale(scale, 4))
         groups.setdefault(asset_id, []).append(rock)
+    # Composition study C (reference: framed valley): a second, smaller
+    # hardscape mass on the right from duplicates of the same scans.
+    for index, (asset_id, x, z, target, yaw, sink, tilt) in enumerate(VARIANT_ROCKS.get(VARIANT, [])):
+        source, height = scanned_sources[asset_id]
+        rock = SB.duplicate(source, f'variant-{index}')
+        rock.data.transform(Matrix.Translation(B(x, C.surface_y(x, z) - sink * target, z))
+                            @ Matrix.Rotation(math.radians(yaw), 4, 'Z')
+                            @ Matrix.Rotation(math.radians(tilt), 4, 'X')
+                            @ Matrix.Scale(target / height, 4))
+        groups[asset_id].append(rock)
     for source, _ in scanned_sources.values():
         bpy.data.objects.remove(source)
 
@@ -188,7 +200,8 @@ def build_wood():
 # LeafSet022 broad-leaf clusters
 # ==========================================================================
 
-def photo_leaf(bm, uv_layer, col, profile, base, direction, face_hint, length, arch, fold, twist, curl, shade):
+def photo_leaf(bm, uv_layer, col, profile, base, direction, face_hint, length, arch, fold, twist, curl, shade,
+               rows_kept=None, tint=(1.0, 1.0, 1.0)):
     """One photographed leaf as a tight strip following the photo's own
     outline (left/centre/right per row), so alpha exists only at the rim."""
     direction = direction.normalized()
@@ -198,8 +211,9 @@ def photo_leaf(bm, uv_layer, col, profile, base, direction, face_hint, length, a
     side.normalize()
     up = side.cross(direction).normalized()
     rows = profile['rows']
-    step = (len(rows) - 1) / (LEAF_ROWS - 1)
-    picked = [rows[round(i * step)] for i in range(LEAF_ROWS)]
+    kept = rows_kept or LEAF_ROWS
+    step = (len(rows) - 1) / (kept - 1)
+    picked = [rows[round(i * step)] for i in range(kept)]
     grid = []
     for row in picked:
         t = row['t']
@@ -219,7 +233,7 @@ def photo_leaf(bm, uv_layer, col, profile, base, direction, face_hint, length, a
             face = bm.faces.new((a[c], a[c + 1], b[c + 1], b[c]))
             for loop, uvc, tone in zip(face.loops, (ua[c], ua[c + 1], ub[c + 1], ub[c]), (ta, ta, tb, tb)):
                 loop[uv_layer].uv = uvc
-                loop[col] = (tone * 0.95, tone, tone * 0.93, 1.0)
+                loop[col] = (tone * 0.95 * tint[0], tone * tint[1], tone * 0.93 * tint[2], 1.0)
 
 
 def build_leaves(rocks, wood):
@@ -267,12 +281,107 @@ def build_leaves(rocks, wood):
                                      min_up=0.1)
     for point, _ in tree_points:
         rosette(point, rng.uniform(0.55, 0.8), leaves=rng.randint(5, 8), spread=1.2)
+    if VARIANT != 'base':
+        count += add_composition_variant(bm, uv_layer, col, profiles, rng, rosette)
     bm.normal_update()
     leaves = SB.mesh_object('slice-c-leaves', bm)
     leaves.data.color_attributes.active_color = leaves.data.color_attributes['Col']
     SB.set_sway_by_height(leaves, scale=0.6, exponent=1.3)
     log(f'leaves: {count} photographed leaves, {SB.triangle_count(leaves)} triangles')
     return leaves
+
+
+# ==========================================================================
+# Composition study variants (A/B/C): planted masses from the same LeafSet022
+# leaves at three scales. Tall background stems (small leaf pairs along
+# stems), medium broad-leaf rosettes, low foreground groups. All in the one
+# leaf mesh / material, so draw calls do not change.
+# ==========================================================================
+
+GREEN, OLIVE, RED, LIGHT, DARK = (1.0, 1.0, 1.0), (1.12, 1.0, 0.7), (1.45, 0.72, 0.58), (0.92, 1.18, 0.88), (0.7, 0.8, 0.76)
+
+# Variant C right hardscape: source, x, z, target height, yaw, sink, tilt
+VARIANT_ROCKS = {
+    'C': [('boulder_01', 3.7, -1.15, 1.25, 205, 0.36, 4), ('rock_07', 4.4, -0.25, 1.0, 60, 0.4, -4),
+          ('rock_09', 2.9, 0.1, 0.5, 15, 0.42, 3), ('rock_09', 2.55, -0.85, 0.55, 130, 0.42, -6)],
+}
+# Tall background clumps: x, z, spread, height, stems, tint
+VARIANT_STEMS = {
+    'A': [(-4.3, -1.9, 0.3, 2.3, 12, GREEN), (-3.6, -1.7, 0.3, 2.6, 14, OLIVE), (-2.9, -2.05, 0.35, 2.4, 14, GREEN),
+          (-2.2, -1.8, 0.3, 2.0, 12, RED), (-1.5, -2.1, 0.3, 1.8, 11, LIGHT), (-0.9, -1.8, 0.25, 1.3, 9, GREEN),
+          (-0.3, -2.2, 0.25, 0.9, 7, DARK)],
+    'B': [(-4.3, -1.9, 0.3, 2.2, 12, GREEN), (-3.5, -1.8, 0.3, 2.4, 13, OLIVE), (-2.7, -2.05, 0.3, 2.0, 12, RED),
+          (-1.9, -1.9, 0.28, 1.5, 9, LIGHT),
+          (4.4, -1.8, 0.3, 2.3, 13, GREEN), (3.7, -2.05, 0.3, 1.9, 12, RED), (3.1, -1.7, 0.3, 1.4, 10, LIGHT),
+          (4.0, -1.2, 0.25, 1.1, 8, OLIVE)],
+    'C': [(-4.4, -1.9, 0.3, 2.6, 14, GREEN), (-3.7, -2.1, 0.3, 2.4, 13, OLIVE), (-3.0, -1.8, 0.3, 2.1, 12, RED),
+          (-2.3, -2.2, 0.3, 1.9, 12, GREEN), (-1.6, -1.9, 0.28, 1.5, 10, LIGHT), (-0.9, -2.15, 0.25, 1.15, 9, OLIVE),
+          (-0.2, -1.9, 0.25, 0.8, 7, GREEN), (0.6, -2.2, 0.22, 0.6, 5, DARK), (1.5, -2.0, 0.25, 0.8, 6, LIGHT),
+          (2.4, -2.2, 0.28, 1.4, 9, GREEN), (3.2, -2.0, 0.3, 2.0, 11, RED), (3.9, -2.2, 0.3, 2.3, 12, OLIVE),
+          (4.6, -1.9, 0.3, 2.5, 13, GREEN)],
+}
+# Extra medium broad-leaf rosettes: x, z, scale
+VARIANT_MID = {
+    'A': [(-3.7, 0.85, 0.9), (-3.95, 0.2, 0.95), (-1.2, 0.9, 0.8), (-3.3, -1.45, 1.0), (-2.4, -1.5, 0.95),
+          (-1.6, -1.45, 0.9)],
+    'B': [(-3.7, 0.85, 0.9), (-3.3, -1.45, 1.0), (-2.4, -1.5, 0.9),
+          (3.4, 0.2, 1.0), (3.0, 0.6, 0.9), (3.8, 0.5, 0.95), (2.6, 0.95, 0.7), (3.5, -0.8, 0.95)],
+    'C': [(-3.7, 0.85, 0.9), (-3.3, -1.45, 1.0), (-2.4, -1.5, 0.95), (-1.6, -1.45, 0.85),
+          (3.2, 0.45, 1.0), (2.5, 0.55, 0.85), (3.9, 0.55, 0.95), (3.1, -0.45, 0.9), (2.3, -0.4, 0.8),
+          (4.2, -0.85, 0.95), (3.3, -1.5, 0.9)],
+}
+# Low foreground groups: x, z, radius x, radius z, rosettes
+VARIANT_LOW = {
+    'A': [(-3.2, 1.3, 0.5, 0.25, 6), (-2.2, 1.45, 0.5, 0.2, 5), (-1.1, 1.25, 0.4, 0.2, 4), (-0.3, 1.0, 0.3, 0.15, 3)],
+    'B': [(-3.2, 1.3, 0.5, 0.25, 5), (-2.1, 1.45, 0.4, 0.2, 4), (2.6, 1.3, 0.4, 0.2, 4), (3.4, 1.15, 0.5, 0.25, 5)],
+    'C': [(-3.3, 1.3, 0.5, 0.25, 6), (-2.3, 1.45, 0.45, 0.2, 5), (-1.4, 1.3, 0.35, 0.18, 4), (2.2, 1.3, 0.35, 0.18, 4),
+          (3.0, 1.1, 0.45, 0.22, 5), (3.7, 1.4, 0.4, 0.2, 4), (1.8, -0.6, 0.3, 0.15, 3)],
+}
+
+
+def add_composition_variant(bm, uv_layer, col, profiles, rng, rosette):
+    camera = B(*C.CAMERA)
+    up = Vector((0, 0, 1))
+    count = 0
+    for cx, cz, spread, height, stems, tint in VARIANT_STEMS[VARIANT]:
+        cz += 0.45                                       # closer: readable masses, less haze
+        phase0 = rng.uniform(0, math.tau)
+        for _ in range(int(stems * 1.3)):
+            x, z = cx + rng.gauss(0, spread), cz + rng.gauss(0, spread * 0.6)
+            dome = 1.0 - 0.35 * min(1.0, math.hypot(x - cx, z - cz) / (spread * 2))
+            h = height * rng.uniform(0.72, 1.05) * dome
+            position = B(x, C.surface_y(x, z) - 0.03, z)
+            direction = Vector((rng.gauss(0.03, 0.07), rng.gauss(0, 0.05), 1.0)).normalized()
+            steps = max(5, int(h / 0.1))
+            phase = phase0 + rng.uniform(-0.6, 0.6)
+            shade_stem = rng.uniform(0.7, 1.05)
+            for k in range(steps):
+                t = k / steps
+                position = position + direction * (h / steps)
+                direction = (direction + Vector((rng.gauss(0, 0.035), rng.gauss(0, 0.035), 0))).normalized()
+                if t < 0.12:
+                    continue                             # bare lower stem
+                length = rng.uniform(0.13, 0.2) * (1.0 - 0.35 * t)
+                view = (camera - position).normalized()
+                face = (up + view).normalized()
+                angle = phase + k * math.pi / 2          # opposite pairs, alternating
+                for side in (0.0, math.pi):
+                    out = Vector((math.cos(angle + side), math.sin(angle + side), 0))
+                    photo_leaf(bm, uv_layer, col, rng.choice(profiles), position,
+                               (out * 0.9 + up * (0.35 + 0.4 * t)).normalized(), face, length,
+                               arch=0.15, fold=0.1, twist=rng.uniform(-0.4, 0.4), curl=0.0,
+                               shade=shade_stem * (0.6 + 0.5 * t), rows_kept=4, tint=tint)
+                    count += 1
+    for x, z, scale in VARIANT_MID[VARIANT]:
+        for _ in range(rng.choice((2, 3))):
+            bx, bz = x + rng.gauss(0, 0.12), z + rng.gauss(0, 0.08)
+            rosette(B(bx, C.surface_y(bx, bz) - 0.015, bz), scale * rng.uniform(0.8, 1.15))
+    for cx, cz, rx, rz, n in VARIANT_LOW[VARIANT]:
+        for _ in range(n):
+            bx, bz = cx + rng.gauss(0, rx * 0.5), cz + rng.gauss(0, rz * 0.5)
+            rosette(B(bx, C.surface_y(bx, bz) - 0.01, bz), rng.uniform(0.32, 0.5), leaves=rng.randint(5, 7), spread=1.4)
+    log(f'variant {VARIANT}: {count} stem leaves added (plus mid/low rosettes)')
+    return count
 
 
 # ==========================================================================
@@ -294,8 +403,11 @@ def main():
     objects = rocks + [wood, leaves, substrate]
     total = sum(SB.triangle_count(obj) for obj in objects)
     log(f'total triangles: {total}')
-    bpy.ops.wm.save_as_mainfile(filepath=str(WORK / 'slice-c.blend'))
-    SB.OUT = OUT
+    if VARIANT == 'base':
+        bpy.ops.wm.save_as_mainfile(filepath=str(WORK / 'slice-c.blend'))
+        SB.OUT = OUT
+    else:
+        SB.OUT = WORK / 'variants' / f'environment-{VARIANT}.glb'
     SB.export(objects)
 
 
