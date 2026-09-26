@@ -22,9 +22,56 @@ the vegetation vocabulary and the floor:
 import math
 
 from slice_b_layout import (  # noqa: F401  (re-exported for build_slice_c.py)
-    CAMERA, FLOOR, HARDSCAPE_FOOTPRINTS, PEBBLES, ROCK_SCALE, ROCKS, ROOTS, WOOD, WOOD_GIRTH, WOOD_Z_SHIFT,
-    gauss2, smoothstep, vnoise,
+    CAMERA, FLOOR, PEBBLES, ROCK_SCALE, WOOD_GIRTH, WOOD_Z_SHIFT, gauss2, smoothstep, vnoise,
 )
+
+# ------------------------------------------------------------ hardscape
+# Composition B, re-spaced for the runtime frame (composition polish): the
+# hero root sweeps lower and farther toward the centre, the boulder stands
+# apart from rock_07 so the root base reads between them, and a surface root
+# plus a trail of buried stones carry the hardscape diagonally into the
+# open water instead of ending at the left third.
+
+ROCKS = [
+    # source, x, z, scale, yaw, sink, tilt, triangle target (indices 0-3 are scanned, see SCANNED_ROCKS)
+    ('rock13', -3.0, -1.15, 0.7, 150, 0.36, -5, 2400),    # rock_07, primary, rear left
+    ('rock11', -1.4, -0.95, 0.6, 35, 0.38, 6, 2400),      # boulder_01, primary, centre-left
+    ('rock10', -1.95, 0.12, 0.36, -40, 0.42, 3, 1300),    # rock_09, front secondary
+    ('rock09', -3.05, 0.05, 0.34, 70, 0.42, -8, 1300),    # rock_09, front left
+    ('rock12', -0.7, 0.1, 0.22, 10, 0.42, 6, 700),        # transition toward the centre
+    ('rock08', -2.6, 0.62, 0.16, 120, 0.42, 0, 600),      # transition, front
+    ('rock12', -3.5, -0.7, 0.26, 40, 0.45, 8, 600), ('rock08', -2.75, -0.45, 0.16, 200, 0.45, -6, 500),
+    ('rock09', -0.85, -0.7, 0.22, -70, 0.45, 5, 600), ('rock08', -1.9, -0.35, 0.14, 15, 0.45, 10, 450),
+    ('rock12', -2.5, 0.38, 0.17, 95, 0.45, -4, 450), ('rock08', -1.3, 0.45, 0.18, 250, 0.45, 6, 450),
+    ('rock09', -3.55, 0.2, 0.18, 10, 0.45, -5, 450),
+]
+# Buried stone trail from the hardscape toward the centre (x, z, scale), shrinking.
+TRAIL_STONES = [(-0.3, -0.25, 0.3), (0.15, -0.55, 0.22), (0.55, -0.85, 0.16), (0.9, -1.1, 0.11)]
+
+WOOD = [
+    # hero sweep: lower, longer diagonal from lower left into the centre
+    ([(-2.45, None, -0.45), (-2.05, -0.6, -0.48), (-1.4, -0.22, -0.58), (-0.6, 0.18, -0.7),
+      (0.25, 0.48, -0.82), (1.1, 0.66, -0.92)], 0.125, 0.012),
+    # steep rise, a little lower so the pair reads less like antlers
+    ([(-2.5, None, -0.55), (-2.3, -0.5, -0.7), (-1.98, 0.1, -0.85), (-1.62, 0.58, -1.0),
+      (-1.25, 0.92, -1.1), (-1.05, 1.05, -1.15)], 0.085, 0.012),
+    # back left arm, below the icon column
+    ([(-2.6, None, -0.7), (-2.85, -0.5, -1.0), (-3.05, 0.05, -1.3), (-3.1, 0.35, -1.5)], 0.06, 0.014),
+]
+ROOTS = [
+    [(-2.45, -1.2, -0.45), (-2.9, None, -0.1), (-3.45, None, 0.2)],
+    [(-2.4, -1.2, -0.4), (-2.0, None, 0.0), (-1.6, None, 0.3)],
+    [(-2.5, -1.2, -0.5), (-2.85, None, -0.9), (-3.35, None, -1.2)],
+    [(-2.35, -1.2, -0.45), (-1.95, None, -0.8), (-1.45, None, -1.15)],
+    # surface root running out along the floor toward the centre
+    [(-2.3, -1.2, -0.4), (-1.55, None, -0.3), (-0.75, None, -0.45)],
+]
+HARDSCAPE_FOOTPRINTS = [
+    # x, z, radius: soil zone, contact darkening and shoulders
+    (-3.0, -1.15, 1.3), (-1.4, -0.95, 1.1), (-1.95, 0.12, 0.8), (-3.05, 0.05, 0.75),
+    (-0.7, 0.1, 0.45), (-2.6, 0.62, 0.4), (-2.45, -0.75, 0.9),
+    (-0.3, -0.25, 0.32), (0.15, -0.55, 0.26), (0.55, -0.85, 0.2),
+]
 
 SUBSTRATE_X = (-9.0, 9.0)
 SUBSTRATE_Z = (-6.0, 2.7)
@@ -72,7 +119,7 @@ def substrate_height(x, z):
     mound = 0.34 * gauss2(x, z, -2.3, -0.6, 1.45, 0.95)
     # Soil shoulders around the rock bases: the hardscape grows out of the floor.
     shoulders = 0.07 * hardscape_near(x, z) ** 1.5
-    shoulder_right = 0.08 * gauss2(x, z, -0.9, -0.6, 1.0, 0.8)
+    shoulder_right = 0.08 * gauss2(x, z, -0.5, -0.55, 1.2, 0.8)
     # Behind the hardscape a low rise, then the floor falls away into depth.
     crest = crest_z(x)
     rise = 0.22 * smoothstep(0.8, -1.6, z)
@@ -100,8 +147,10 @@ def soil_mask(x, z):
         near = max(near, math.exp(-d2 / (1.35 * radius * radius)))
     # the left third behind/under the hardscape stays soil
     near = max(near, 0.8 * (1.0 - smoothstep(-3.2, -1.2, x)) * smoothstep(1.2, -0.2, z))
-    edge = 0.32 * vnoise(x * 1.3, z * 1.3, 31) + 0.14 * vnoise(x * 3.7, z * 3.7, 32)
-    return smoothstep(0.28, 0.58, near + edge)
+    # organic edge: broad tongues plus finer fraying
+    edge = (0.38 * vnoise(x * 0.8, z * 1.1, 33) + 0.24 * vnoise(x * 1.6, z * 1.6, 31)
+            + 0.12 * vnoise(x * 3.7, z * 3.7, 32))
+    return smoothstep(0.3, 0.6, near + edge)
 
 
 def floor_light(x, z):
@@ -127,11 +176,16 @@ def depth_fade(x, z):
 # nothing on rock tops or alone on open sand. Grown from the approved
 # candidate's spots, tucked against rocks/root.
 LEAF_SPOTS = [
-    (-2.35, 0.55, 1.0), (-1.6, 0.5, 0.95), (-2.8, 0.5, 0.9), (-1.3, 0.62, 0.8),
-    (-3.35, 0.42, 0.9), (-2.05, 0.7, 0.75), (-2.15, -0.22, 1.0), (-2.75, -0.38, 0.95),
-    (-1.35, -0.42, 0.85), (-3.45, -0.52, 0.9), (-2.25, -0.64, 0.9), (-2.7, -0.64, 0.85),
-    (-1.95, -0.42, 0.85), (-1.3, -0.72, 0.75), (-3.3, -0.88, 0.85), (-1.15, -1.02, 0.7),
-    # falloff toward the centre, against the transition stone
-    (-0.85, 0.5, 0.6), (-0.95, 0.15, 0.5),
+    # one primary mass in front of the rock/root base
+    # (in front of the flat front stones so it hides their bases, never on them)
+    (-2.35, 0.9, 1.15), (-1.95, 0.72, 1.1), (-2.85, 0.82, 1.05), (-2.15, 0.35, 0.95),
+    (-1.6, 0.62, 0.95), (-3.3, 0.55, 1.0), (-2.6, 1.0, 0.85), (-1.75, 0.3, 0.85),
+    # fewer, smaller seams behind (dark gaps between them)
+    (-2.2, -0.28, 0.85), (-2.8, -0.42, 0.8), (-1.0, -0.45, 0.75), (-3.4, -0.55, 0.75),
+    # transition group 1: against the transition stone, in front of the boulder
+    (-0.85, 0.42, 0.7), (-0.5, 0.35, 0.6),
+    # transition group 2: small, beside the head of the stone trail
+    (0.0, -0.3, 0.55),
 ]
 LEAF_GAP_SEED = 20260925
+LEAF_KEEP_FROM = len(LEAF_SPOTS) - 3   # transition groups are never gapped

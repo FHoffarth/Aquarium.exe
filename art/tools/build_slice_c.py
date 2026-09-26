@@ -115,7 +115,7 @@ def build_rocks():
     # hardscape base: big enough to read at 1920x1080 (>= ~8 px).
     fragment = sources['rock_moss_set_02_rock08']
     fragment_height = heights['rock_moss_set_02_rock08']
-    placements = [(x, z, s, 0.4) for x, z, s in C.PEBBLES if x < 0.3]
+    placements = [(x, z, s, 0.5) for x, z, s in C.TRAIL_STONES]
     rng = random.Random(5150)
     primaries = C.HARDSCAPE_FOOTPRINTS[:4]
     while len(placements) < 30:
@@ -234,7 +234,7 @@ def build_leaves(rocks, wood):
 
     def rosette(base, scale, leaves=None, spread=1.0):
         nonlocal count
-        for _ in range(leaves or rng.randint(7, 10)):
+        for _ in range(leaves or rng.randint(8, 11)):
             profile = rng.choice(profiles)
             outer = rng.random() ** 0.7                 # size hierarchy: inner small, outer large
             azimuth = rng.uniform(0, math.tau)
@@ -252,10 +252,10 @@ def build_leaves(rocks, wood):
                        curl=rng.uniform(-0.08, 0.08), shade=rng.uniform(0.62, 1.0))
             count += 1
 
-    for x, z, scale in C.LEAF_SPOTS:
-        if rng.random() < 0.1:
+    for index, (x, z, scale) in enumerate(C.LEAF_SPOTS):
+        if rng.random() < 0.12 and index < C.LEAF_KEEP_FROM:
             continue                                     # a believable gap
-        for _ in range(rng.choice((2, 2, 3))):
+        for _ in range(rng.choice((2, 3, 3))):
             bx, bz = x + rng.gauss(0, 0.11), z + rng.gauss(0, 0.07)
             rosette(B(bx, C.surface_y(bx, bz) - 0.015, bz), scale * rng.uniform(0.8, 1.2))
     # Seams: where the root meets the floor or stone (low joints only).
@@ -263,7 +263,7 @@ def build_leaves(rocks, wood):
         if joint.z < C.FLOOR + 0.55:
             rosette(joint + Vector((0, 0, 0.02)), rng.uniform(0.5, 0.7), leaves=rng.randint(5, 8), spread=1.3)
     # Rock/substrate seams: low points on the scanned rocks' flanks.
-    tree_points = SB.sample_surfaces(rocks[:3], 10, lambda p: 1.0 if p.z < C.surface_y(p.x, -p.y) + 0.22 else 0.0,
+    tree_points = SB.sample_surfaces(rocks[:3], 5, lambda p: 1.0 if p.z < C.surface_y(p.x, -p.y) + 0.12 else 0.0,
                                      min_up=0.1)
     for point, _ in tree_points:
         rosette(point, rng.uniform(0.55, 0.8), leaves=rng.randint(5, 8), spread=1.2)

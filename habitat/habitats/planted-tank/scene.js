@@ -104,7 +104,7 @@ export function createPlantedTank(
       renderer,
       capacity: Math.max(1, scenePlan.fishCount),
       scale: SCHOOL_HERO_SCALE,
-      effectUniforms: environment?.effectUniforms ?? null,
+      effectUniforms: environment?.fishEffectUniforms ?? environment?.effectUniforms ?? null,
     })
     : null;
   // Review-only stand-in for posed evidence; the school keeps simulating.

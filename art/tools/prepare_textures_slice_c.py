@@ -182,6 +182,15 @@ def substrate():
 
     soil_rgb = P.grade_hsv_fast(gravel, hue=0.07, hue_mix=0.3, sat=0.7, val=0.28)
     sand_rgb = P.grade_hsv_fast(sand, hue=0.1, hue_mix=0.3, sat=0.45, val=0.56)
+    # Sand is not one flat plane: large, soft tonal fields and a slight warm/
+    # cool drift, plus faint darker sediment patches (no geometry).
+    broad = P.value_noise(size[0], size[1], (7, 4), 11)[..., None]
+    drift = P.value_noise(size[0], size[1], (5, 3), 12)[..., None]
+    sediment = P.value_noise(size[0], size[1], (16, 7), 13)[..., None]
+    warm = sand_rgb * np.array([1.06, 1.0, 0.9], dtype=np.float32)
+    cool = sand_rgb * np.array([0.9, 0.98, 1.04], dtype=np.float32)
+    sand_rgb = (warm * drift + cool * (1 - drift)) * (0.62 + 0.66 * broad)
+    sand_rgb *= 1.0 - 0.35 * np.clip((sediment - 0.5) / 0.3, 0.0, 1.0)
     albedo = sand_rgb * (1 - soil) + soil_rgb * soil
     albedo *= 1.0 - 0.5 * near ** 0.9                      # contact darkening at the rock/root bases
     albedo *= 0.88 + 0.24 * P.value_noise(size[0], size[1], (18, 8), 4)[..., None]

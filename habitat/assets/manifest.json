@@ -389,8 +389,8 @@
       "file": "slice-c/environment.glb",
       "role": "geometry",
       "label": "Slice C natural environment geometry (approved Natural Environment vocabulary)",
-      "bytes": 1587072,
-      "sha256": "0def65d1bafb73615a7e0f674e83dc26681e802f23420f25db0fdc7509dd1faf",
+      "bytes": 1429796,
+      "sha256": "6bdef755be18d627d5993fe710fd4bf22b2491043a015c80d738ab9d9d8dfa83",
       "license": "CC0-1.0",
       "status": "GREEN",
       "derivedFrom": [
@@ -575,8 +575,8 @@
       "file": "slice-c/textures/substrate_albedo.webp",
       "role": "texture",
       "label": "Substrate colour (unique, baked)",
-      "bytes": 163748,
-      "sha256": "362ca50abf23788e4f47fb917233d1eb8b079779e6b7e62202e8b7f33484db2f",
+      "bytes": 127378,
+      "sha256": "de464c5d9cbc75fdd4aa6827f51435273e4e9fe124b63005360727e5d31557ca",
       "license": "CC0-1.0",
       "status": "GREEN",
       "derivedFrom": [
@@ -590,8 +590,8 @@
       "file": "slice-c/textures/substrate_normal.webp",
       "role": "texture",
       "label": "Substrate normal (OpenGL, unique)",
-      "bytes": 364354,
-      "sha256": "33da63359c15af8c92192b2d6e683235f4aa637542c37027020b49cce38ea3dc",
+      "bytes": 363904,
+      "sha256": "733aec9c3f569d773eabbabcc4fef44bbfa5db7b386d6375035c733dce2bbd04",
       "license": "CC0-1.0",
       "status": "GREEN",
       "derivedFrom": [

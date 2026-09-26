@@ -146,3 +146,68 @@ The desktop was shown with Win+D (approved) and captured with GDI `CopyFromScree
 ## Recommendation
 
 **READY FOR WINDOWS VISUAL REVIEW.** Slice C is running on the real desktop now.
+
+---
+
+## Composition polish (bounded visual pass, 2026-09-26)
+
+- **Verdict it answers:** Slice C *technical* PASS, *visual* not yet. The left hardscape read as a compact pile, the landscape ended at about a third of the frame, the right-of-centre sand was one smooth plane, and the fish were too dark.
+- **Unchanged:** no new assets, no search, no background plants, no moss, no carpet. Architecture, performance strategy, fish geometry and scale, simulation, host, frame pacing, camera and the floor/horizon solution are unchanged.
+
+### What changed (`slice_c_layout.py`, `build_slice_c.py`, `prepare_textures_slice_c.py`, `slice-c-environment.js`, `scene.js`)
+
+- **Hardscape gesture:**
+  - The hero root now sweeps lower and farther, reaching about x = 1.1 (≈1190 px, was ≈1065 px): a diagonal from lower left into the open water.
+  - The steep rise is slightly lower, so the pair reads less like antlers.
+  - The boulder stands apart from rock_07 (x −1.7 → −1.4), and two small secondaries left the root base, so the root emerges visibly between the primaries.
+  - A fifth surface root runs out along the floor toward the centre.
+  - A shrinking trail of four buried stones leads from the transition stone toward the centre.
+- **Broad leaves (LeafSet022 only):**
+  - One primary mass sits *in front of* the flat front stones, hiding their bases instead of sitting on them.
+  - Fewer seams behind, with dark gaps between them.
+  - Two small transition groups: one against the transition stone, one beside the head of the stone trail. The transition groups are never randomly skipped.
+  - Fewer rosettes are sampled on rock flanks, and only right at the ground line.
+  - 291 leaves, down from 425; the density is not increased.
+- **Floor:**
+  - The sand gets large, soft tonal fields, a slight warm/cool drift and faint darker sediment patches (baked; no geometry).
+  - The soil zone's edge has broader tongues plus finer fraying and follows the stone trail toward the centre.
+  - The crest, fade and haze (the horizon fix) are untouched.
+- **Fish readability:** the diagnosis was that the fog was *not* the cause (front fish ~0%, back ~5% haze). The school was dark because Slice C had lowered the top light. The fix:
+  - top light back to Slice B's 1.35;
+  - a faint cool view-side fill (0.35) for the silver flanks;
+  - the school gets its own haze range [0.75, −3.4], so front fish stay clear and back fish take a little teal, making depth visible.
+
+  Hero Fish code is unchanged; the school simply receives `fishEffectUniforms` when the environment provides them.
+
+### Figures after the polish
+
+| | Before (Slice C) | After |
+|---|---|---|
+| Environment triangles | 46.0k | 42.5k |
+| Rendered triangles (real host) | 93,960 | 90,432 |
+| Draw calls | 12 | 12 |
+| Host FPS, target 60 (Lively closed) | 60.0 | 60.0 (8 × 5 s windows) at 76.4% GPU |
+| Asset bytes | 4.54 MB | 4.35 MB |
+
+- **Tests:** JS 70/70.
+- **Native:** `/W4 /WX` build, fish-logic and host-policy tests, and the WebView2 probe pass.
+- **Not re-run for this pass:** 30 FPS, pause and cursor checks. This visual-only pass changed no timing, pause or input code.
+
+### Evidence (`docs/evidence/natural-env-runtime-slice-c-polish/`, real Windows desktop, 1920×1080)
+
+- `1-real-desktop-clean.png`
+- `2-real-desktop-fish-open-water.png`
+- `3-real-desktop-hardscape-crop.png`
+- `4-real-desktop-diagnostics.png` and its crop
+- **BEFORE/AFTER** against yesterday's real-desktop Slice C frame:
+  - `5-before-after-real-desktop.jpg`
+  - `5-before-after-hardscape-crop.jpg`
+
+### Still open
+
+- The boulder is now the dominant front mass and reads somewhat blocky.
+- The stone trail and the second transition group are small at desktop distance.
+- The right-of-centre floor is quieter but remains a simple dark plane.
+- Desktop icons still cover the left third (accepted).
+
+**READY FOR WINDOWS VISUAL REVIEW.**

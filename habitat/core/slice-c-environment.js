@@ -112,6 +112,13 @@ export function createSliceCEnvironment(scene, config, assets) {
   const haze = bottom.clone().lerp(top, horizonT);
   shared.uHazeColor.value = [haze.r, haze.g, haze.b];
   shared.uHazeRange.value = [-0.35, -2.7];
+  // The school gets its own depth range (same water colour and time): front
+  // fish stay clear, fish at the back of the swim volume take a little teal.
+  const fishEffects = {
+    uEffectTime: shared.uEffectTime,
+    uHazeColor: shared.uHazeColor,
+    uHazeRange: { value: [0.75, -3.4] },
+  };
 
   const hardscapeCaustics = { strength: 0.3, scale: 1.25, color: CAUSTIC_COLOR };
 
@@ -206,7 +213,7 @@ export function createSliceCEnvironment(scene, config, assets) {
   // everywhere else; the open water to the right stays deep and dark.
   add(new THREE.AmbientLight(0xa9d4cf, 0.2)).name = 'water-ambient-light';
   add(new THREE.HemisphereLight(0x9fd0c7, 0x0c1a16, 0.85)).name = 'water-fill-light';
-  const topLight = add(new THREE.DirectionalLight(0xd4eaf0, 1.15));
+  const topLight = add(new THREE.DirectionalLight(0xd4eaf0, 1.35));
   topLight.name = 'aquarium-top-light';
   topLight.position.set(-0.8, 4.0, 2.0);
   const key = add(new THREE.SpotLight(0xffcf98, 80, 0, 0.42, 1.0, 1.6));
@@ -214,6 +221,11 @@ export function createSliceCEnvironment(scene, config, assets) {
   key.position.set(-3.9, 3.9, 2.2);
   key.target.position.set(-1.9, -0.7, -1.0);
   add(key.target);
+  // Faint cool fill from the viewer's side: silver flanks read against the
+  // dark water without flattening the hardscape.
+  const viewFill = add(new THREE.DirectionalLight(0xcfe6ea, 0.35));
+  viewFill.name = 'view-fill-light';
+  viewFill.position.set(0.6, 0.8, 6.0);
   const rimLight = add(new THREE.DirectionalLight(0x6fc7bb, 0.45));
   rimLight.name = 'water-rim-light';
   rimLight.position.set(2.8, 0.8, -1.5);
@@ -222,6 +234,7 @@ export function createSliceCEnvironment(scene, config, assets) {
     drawCallBudget: 9,
     artMode: 'slice-c',
     effectUniforms: shared,
+    fishEffectUniforms: fishEffects,
     cameraTarget: SLICE_C_CAMERA_TARGET,
     updateVisuals(simulationTime) {
       shared.uEffectTime.value = simulationTime;
