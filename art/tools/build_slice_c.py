@@ -1,6 +1,4 @@
-"""Build the Slice C runtime environment: the approved Natural Environment
-vocabulary (docs/natural-env-candidate-report.md) translated for the
-real-time habitat.
+"""Build the Slice C environment and planted wallpaper candidate.
 
 Run headless (Blender 5.2 LTS), after the sources are fetched and
 leaf_atlas_profiles.py has run:
@@ -9,9 +7,8 @@ leaf_atlas_profiles.py has run:
 Output: habitat/assets/slice-c/environment.glb (geometry only; materials are
 assigned at runtime by mesh name).
 
-Vocabulary (locked): scanned Poly Haven rock family, the Composition B root
-(Slice B's procedural port, unchanged gestures) for the willow bark, and
-LeafSet022 broad-leaf clusters. No moss, no background plants, no carpet.
+The scanned rock family, Composition B root and LeafSet022 clusters remain.
+slice_c_growth.py adds original procedural plant silhouettes.
 Geometry helpers are shared with build_slice_b.py; Slice C's terrain and
 composition come from slice_c_layout.py.
 """
@@ -30,6 +27,7 @@ from mathutils.bvhtree import BVHTree
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import build_slice_b as SB  # noqa: E402
 import slice_c_layout as C  # noqa: E402
+from slice_c_growth import build_growth  # noqa: E402
 
 # Shared helpers read the terrain and composition through SB.L.
 SB.L = C
@@ -399,8 +397,10 @@ def main():
     rocks = build_rocks()
     wood = build_wood()
     leaves = build_leaves(rocks, wood)
+    growth = build_growth(C, SB)
+    log(f'original planted growth: {SB.triangle_count(growth)} triangles')
     substrate = build_substrate()
-    objects = rocks + [wood, leaves, substrate]
+    objects = rocks + [wood, leaves, growth, substrate]
     total = sum(SB.triangle_count(obj) for obj in objects)
     log(f'total triangles: {total}')
     if VARIANT == 'base':

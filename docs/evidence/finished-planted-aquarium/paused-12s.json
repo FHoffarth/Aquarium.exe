@@ -1,0 +1,459 @@
+{
+  "schemaVersion": 1,
+  "status": "CONCLUSIVE",
+  "profile": "finished-planted-aquarium",
+  "requestedState": "paused",
+  "startedAtUtc": "2026-09-26T12:05:00.9904358Z",
+  "completedAtUtc": "2026-09-26T12:05:22.0319400Z",
+  "durationSeconds": 12.034,
+  "sampleIntervalSeconds": 1.0,
+  "environment": {
+    "osCaption": "Microsoft Windows 11 Pro",
+    "osVersion": "10.0.26200",
+    "osBuild": "26200",
+    "logicalProcessors": 4,
+    "videoControllers": [
+      {
+        "Name": "Intel(R) UHD Graphics",
+        "DriverVersion": "32.0.101.7085",
+        "CurrentHorizontalResolution": 1920,
+        "CurrentVerticalResolution": 1080
+      }
+    ]
+  },
+  "validity": {
+    "exactlyOneAquariumRoot": true,
+    "sessionRunning": true,
+    "noAttachmentFailure": true,
+    "rootAliveThroughSample": true
+  },
+  "processSummary": [
+    {
+      "pid": 5176,
+      "parentPid": 17160,
+      "name": "msedgewebview2.exe",
+      "role": "storage",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --type=utility --utility-sub-type=storage.mojom.StorageService --lang=de --service-sandbox-type=service --noerrdialogs --user-data-dir=\"C:\\dev\\aquarium-exe\\bin\\webview2-user-data\\EBWebView\" --webview-exe-name=AquariumSpike.exe --embedded-browser-webview=1 --startup-read-main-dll --metrics-shmem-handle=2512,i,13044223100350535631,13240061846416240861,524288 --field-trial-handle=1944,i,17420905769986951412,1404218511238751050,262144 --variations-seed-version --pseudonymization-salt-handle=1948,i,12774196042819425589,12553784896386006758,4 --trace-process-track-uuid=3190708990060038890 --mojo-platform-channel-handle=2528 /prefetch:13 /pfhostedapp:5c861dffed85b96b8eb8ea756139399ca1b6ec08",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 22683648,
+      "workingSetBytesMax": 22683648,
+      "privateBytesMean": 8171520
+    },
+    {
+      "pid": 11332,
+      "parentPid": 17160,
+      "name": "msedgewebview2.exe",
+      "role": "renderer",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --type=renderer --noerrdialogs --user-data-dir=\"C:\\dev\\aquarium-exe\\bin\\webview2-user-data\\EBWebView\" --webview-exe-name=AquariumSpike.exe --embedded-browser-webview=1 --video-capture-use-gpu-memory-buffer --lang=de --js-flags --device-scale-factor=1 --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=5 --js-flags=--ms-user-locale=de_DE --launch-time-ticks=6617593748 --ssd-no-pressure-read-main-dll --metrics-shmem-handle=4160,i,14481586862601903145,12233987915607268052,1048576 --field-trial-handle=1944,i,17420905769986951412,1404218511238751050,262144 --variations-seed-version --pseudonymization-salt-handle=1948,i,12774196042819425589,12553784896386006758,4 --trace-process-track-uuid=3190708990997080739 --mojo-platform-channel-handle=4180 /pfhostedapp:5c861dffed85b96b8eb8ea756139399ca1b6ec08 /prefetch:1",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 175443968,
+      "workingSetBytesMax": 175460352,
+      "privateBytesMean": 114415616
+    },
+    {
+      "pid": 13956,
+      "parentPid": 17160,
+      "name": "msedgewebview2.exe",
+      "role": "network",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --type=utility --utility-sub-type=network.mojom.NetworkService --lang=de --service-sandbox-type=none --noerrdialogs --user-data-dir=\"C:\\dev\\aquarium-exe\\bin\\webview2-user-data\\EBWebView\" --webview-exe-name=AquariumSpike.exe --embedded-browser-webview=1 --startup-read-main-dll --metrics-shmem-handle=2036,i,14424141196334699989,8147800035270661946,524288 --field-trial-handle=1944,i,17420905769986951412,1404218511238751050,262144 --variations-seed-version --pseudonymization-salt-handle=1948,i,12774196042819425589,12553784896386006758,4 --trace-process-track-uuid=3190708989122997041 --mojo-platform-channel-handle=2136 /prefetch:11 /pfhostedapp:5c861dffed85b96b8eb8ea756139399ca1b6ec08",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 39430144,
+      "workingSetBytesMax": 39444480,
+      "privateBytesMean": 10612736
+    },
+    {
+      "pid": 15344,
+      "parentPid": 16380,
+      "name": "AquariumSpike.exe",
+      "role": "native",
+      "commandLine": "\"C:\\dev\\aquarium-exe\\bin\\AquariumSpike.exe\" ",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 47099904,
+      "workingSetBytesMax": 47099904,
+      "privateBytesMean": 41934848
+    },
+    {
+      "pid": 16740,
+      "parentPid": 17160,
+      "name": "msedgewebview2.exe",
+      "role": "crashpad",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --type=crashpad-handler --user-data-dir=C:\\dev\\aquarium-exe\\bin\\webview2-user-data\\EBWebView /prefetch:4 /pfhostedapp:5c861dffed85b96b8eb8ea756139399ca1b6ec08 --monitor-self-annotation=ptype=crashpad-handler --database=C:\\dev\\aquarium-exe\\bin\\webview2-user-data\\EBWebView\\Crashpad --annotation=IsOfficialBuild=1 --annotation=channel= --annotation=chromium-version=153.0.8010.53 \"--annotation=exe=C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --annotation=plat=Win64 \"--annotation=prod=Edge WebView2\" --annotation=ver=153.0.4234.48 --initial-client-data=0x194,0x198,0x19c,0x170,0x1a4,0x7ffaa0c33360,0x7ffaa0c33370,0x7ffaa0c33380",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 15314944,
+      "workingSetBytesMax": 15314944,
+      "privateBytesMean": 2588672
+    },
+    {
+      "pid": 17160,
+      "parentPid": 15344,
+      "name": "msedgewebview2.exe",
+      "role": "browser",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --embedded-browser-webview=1 --webview-exe-name=AquariumSpike.exe --user-data-dir=\"C:\\dev\\aquarium-exe\\bin\\webview2-user-data\\EBWebView\" --noerrdialogs --disable-background-networking --disable-component-update --no-proxy-server --mojo-named-platform-channel-pipe=15344.10400.7486883792431035385 /pfhostedapp:5c861dffed85b96b8eb8ea756139399ca1b6ec08",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 138205184,
+      "workingSetBytesMax": 140447744,
+      "privateBytesMean": 41943040
+    },
+    {
+      "pid": 17748,
+      "parentPid": 15344,
+      "name": "conhost.exe",
+      "role": "console",
+      "commandLine": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 11157504,
+      "workingSetBytesMax": 11157504,
+      "privateBytesMean": 1691648
+    },
+    {
+      "pid": 17820,
+      "parentPid": 17160,
+      "name": "msedgewebview2.exe",
+      "role": "gpu",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --type=gpu-process --noerrdialogs --user-data-dir=\"C:\\dev\\aquarium-exe\\bin\\webview2-user-data\\EBWebView\" --webview-exe-name=AquariumSpike.exe --embedded-browser-webview=1 --gpu-preferences=WAAAAAAAAADgAAAEAAAAAAAAAAAAAGAAQAAAAAAAAAADAAAAAAAAADgAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAoAAAAAAAAAAgAAAAAAAAAEAAAAAIAAAABAAAAAAAAAAgAAAAAAAAACAAAAAAAAAA= --startup-read-main-dll --metrics-shmem-handle=1772,i,3561496899247270388,978048404013269749,262144 --field-trial-handle=1944,i,17420905769986951412,1404218511238751050,262144 --variations-seed-version --pseudonymization-salt-handle=1948,i,12774196042819425589,12553784896386006758,4 --trace-process-track-uuid=3190708988185955192 --mojo-platform-channel-handle=1932 /prefetch:2 /pfhostedapp:5c861dffed85b96b8eb8ea756139399ca1b6ec08",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 343453696,
+      "workingSetBytesMax": 351842304,
+      "privateBytesMean": 306298880
+    }
+  ],
+  "totals": {
+    "cpuSeconds": 0.0,
+    "cpuPercentNormalized": 0.0,
+    "workingSetBytesLast": 786673664,
+    "privateBytesLast": 519667712,
+    "gpuPercentSummedEnginesMean": 0.0,
+    "gpuPercentSummedEnginesMin": 0.0,
+    "gpuPercentSummedEnginesMax": 0.0,
+    "tcpConnectionCount": 4
+  },
+  "gpuMethod": "Windows GPU Engine utilization counters, summed only for exact current descendant PID tokens; simultaneous engines can sum above one engine and counters exclude compositor work in dwm.exe.",
+  "gpuSamples": [
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:05:09.1187379Z",
+      "treePercentSummedEngines": 0.0,
+      "byPidPercentSummedEngines": {
+        "17748": 0.0,
+        "11332": 0.0,
+        "5176": 0.0,
+        "13956": 0.0,
+        "17820": 0.0,
+        "17160": 0.0,
+        "15344": 0.0,
+        "16740": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:05:10.1635643Z",
+      "treePercentSummedEngines": 0.0,
+      "byPidPercentSummedEngines": {
+        "17748": 0.0,
+        "11332": 0.0,
+        "5176": 0.0,
+        "13956": 0.0,
+        "17820": 0.0,
+        "17160": 0.0,
+        "15344": 0.0,
+        "16740": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:05:11.1969083Z",
+      "treePercentSummedEngines": 0.0,
+      "byPidPercentSummedEngines": {
+        "17748": 0.0,
+        "11332": 0.0,
+        "5176": 0.0,
+        "13956": 0.0,
+        "17820": 0.0,
+        "17160": 0.0,
+        "15344": 0.0,
+        "16740": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:05:12.2287470Z",
+      "treePercentSummedEngines": 0.0,
+      "byPidPercentSummedEngines": {
+        "17748": 0.0,
+        "11332": 0.0,
+        "5176": 0.0,
+        "13956": 0.0,
+        "17820": 0.0,
+        "17160": 0.0,
+        "15344": 0.0,
+        "16740": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:05:13.2698178Z",
+      "treePercentSummedEngines": 0.0,
+      "byPidPercentSummedEngines": {
+        "17748": 0.0,
+        "11332": 0.0,
+        "5176": 0.0,
+        "13956": 0.0,
+        "17820": 0.0,
+        "17160": 0.0,
+        "15344": 0.0,
+        "16740": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:05:14.2938841Z",
+      "treePercentSummedEngines": 0.0,
+      "byPidPercentSummedEngines": {
+        "17748": 0.0,
+        "11332": 0.0,
+        "5176": 0.0,
+        "13956": 0.0,
+        "17820": 0.0,
+        "17160": 0.0,
+        "15344": 0.0,
+        "16740": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:05:15.3294747Z",
+      "treePercentSummedEngines": 0.0,
+      "byPidPercentSummedEngines": {
+        "17748": 0.0,
+        "11332": 0.0,
+        "5176": 0.0,
+        "13956": 0.0,
+        "17820": 0.0,
+        "17160": 0.0,
+        "15344": 0.0,
+        "16740": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:05:16.3512595Z",
+      "treePercentSummedEngines": 0.0,
+      "byPidPercentSummedEngines": {
+        "17748": 0.0,
+        "11332": 0.0,
+        "5176": 0.0,
+        "13956": 0.0,
+        "17820": 0.0,
+        "17160": 0.0,
+        "15344": 0.0,
+        "16740": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:05:17.3797761Z",
+      "treePercentSummedEngines": 0.0,
+      "byPidPercentSummedEngines": {
+        "17748": 0.0,
+        "11332": 0.0,
+        "5176": 0.0,
+        "13956": 0.0,
+        "17820": 0.0,
+        "17160": 0.0,
+        "15344": 0.0,
+        "16740": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:05:18.4105236Z",
+      "treePercentSummedEngines": 0.0,
+      "byPidPercentSummedEngines": {
+        "17748": 0.0,
+        "11332": 0.0,
+        "5176": 0.0,
+        "13956": 0.0,
+        "17820": 0.0,
+        "17160": 0.0,
+        "15344": 0.0,
+        "16740": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:05:19.4481926Z",
+      "treePercentSummedEngines": 0.0,
+      "byPidPercentSummedEngines": {
+        "17748": 0.0,
+        "11332": 0.0,
+        "5176": 0.0,
+        "13956": 0.0,
+        "17820": 0.0,
+        "17160": 0.0,
+        "15344": 0.0,
+        "16740": 0.0
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:05:20.0680423Z",
+      "treePercentSummedEngines": 0.0,
+      "byPidPercentSummedEngines": {
+        "17748": 0.0,
+        "11332": 0.0,
+        "5176": 0.0,
+        "13956": 0.0,
+        "17820": 0.0,
+        "17160": 0.0,
+        "15344": 0.0,
+        "16740": 0.0
+      },
+      "error": null
+    }
+  ],
+  "memorySamples": [
+    {
+      "timestampUtc": "2026-09-26T12:05:07.9673088Z",
+      "processes": [
+        {
+          "pid": 15344,
+          "role": "native",
+          "workingSetBytes": 47099904,
+          "privateBytes": 41934848
+        },
+        {
+          "pid": 17748,
+          "role": "console",
+          "workingSetBytes": 11157504,
+          "privateBytes": 1691648
+        },
+        {
+          "pid": 17160,
+          "role": "browser",
+          "workingSetBytes": 135962624,
+          "privateBytes": 41508864
+        },
+        {
+          "pid": 16740,
+          "role": "crashpad",
+          "workingSetBytes": 15314944,
+          "privateBytes": 2588672
+        },
+        {
+          "pid": 13956,
+          "role": "network",
+          "workingSetBytes": 39415808,
+          "privateBytes": 10612736
+        },
+        {
+          "pid": 17820,
+          "role": "gpu",
+          "workingSetBytes": 351842304,
+          "privateBytes": 314732544
+        },
+        {
+          "pid": 5176,
+          "role": "storage",
+          "workingSetBytes": 22683648,
+          "privateBytes": 8171520
+        },
+        {
+          "pid": 11332,
+          "role": "renderer",
+          "workingSetBytes": 175427584,
+          "privateBytes": 114405376
+        }
+      ]
+    },
+    {
+      "timestampUtc": "2026-09-26T12:05:20.2645897Z",
+      "processes": [
+        {
+          "pid": 15344,
+          "role": "native",
+          "workingSetBytes": 47099904,
+          "privateBytes": 41934848
+        },
+        {
+          "pid": 17748,
+          "role": "console",
+          "workingSetBytes": 11157504,
+          "privateBytes": 1691648
+        },
+        {
+          "pid": 17160,
+          "role": "browser",
+          "workingSetBytes": 140447744,
+          "privateBytes": 42377216
+        },
+        {
+          "pid": 16740,
+          "role": "crashpad",
+          "workingSetBytes": 15314944,
+          "privateBytes": 2588672
+        },
+        {
+          "pid": 13956,
+          "role": "network",
+          "workingSetBytes": 39444480,
+          "privateBytes": 10612736
+        },
+        {
+          "pid": 17820,
+          "role": "gpu",
+          "workingSetBytes": 335065088,
+          "privateBytes": 297865216
+        },
+        {
+          "pid": 5176,
+          "role": "storage",
+          "workingSetBytes": 22683648,
+          "privateBytes": 8171520
+        },
+        {
+          "pid": 11332,
+          "role": "renderer",
+          "workingSetBytes": 175460352,
+          "privateBytes": 114425856
+        }
+      ]
+    }
+  ],
+  "tcpEndpoints": [
+    "17160:0.0.0.0:49688->0.0.0.0:0:Bound",
+    "17160:0.0.0.0:49687->0.0.0.0:0:Bound",
+    "17160:192.168.178.39:49688->40.99.157.50:443:Established",
+    "17160:192.168.178.39:49687->40.99.157.50:443:Established"
+  ],
+  "diagnosticLines": [
+    "14:05:06.527 PROBE state=paused bridgeUpdates=0 webviewReady=1 cursorScreen=(1487,819) WindowFromPoint=0x1010C/SysListView32 hostHitTest=-1 rendererHitTest=-1\r",
+    "14:05:06.529 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=0.0;frameTimeMs=0.00;fishCount=10;drawCalls=13;triangles=114076;pointerCount=0;reactions=0;paused=false;targetFps=60;art=slice-c;msaa=false;hero=off;fishStyle=hero;assetLoadMs=566;assetBytes=6192064\r",
+    "14:05:06.642 PROBE state=paused bridgeUpdates=0 webviewReady=1 cursorScreen=(1487,819) WindowFromPoint=0x1010C/SysListView32 hostHitTest=-1 rendererHitTest=-1\r",
+    "14:05:06.683 PERF intervalSeconds=5.60 cursorBridgeHz=0.18 hostProcessCpuPercentNormalized=0.98 totalBridgeUpdates=1\r",
+    "14:05:11.724 PERF intervalSeconds=5.04 cursorBridgeHz=21.62 hostProcessCpuPercentNormalized=0.08 totalBridgeUpdates=110\r",
+    "14:05:16.738 PERF intervalSeconds=5.01 cursorBridgeHz=21.74 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=219\r",
+    "14:05:21.696 PROBE state=paused bridgeUpdates=327 webviewReady=1 cursorScreen=(1487,819) WindowFromPoint=0x1010C/SysListView32 hostHitTest=-1 rendererHitTest=-1\r",
+    "14:05:21.696 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=0.0;frameTimeMs=0.00;fishCount=10;drawCalls=13;triangles=114076;pointerCount=327;reactions=0;paused=true;targetFps=60;art=slice-c;msaa=false;hero=off;fishStyle=hero;assetLoadMs=566;assetBytes=6192064\r",
+    "14:05:21.783 PERF intervalSeconds=5.05 cursorBridgeHz=21.80 hostProcessCpuPercentNormalized=0.15 totalBridgeUpdates=329\r"
+  ],
+  "sampleErrors": []
+}

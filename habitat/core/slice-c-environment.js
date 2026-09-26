@@ -5,11 +5,10 @@ import {
 } from '../shaders/water-background.js';
 import { applyMaterialEffects, createEffectUniforms } from '../shaders/material-effects.js';
 
-// Slice C: the approved Natural Environment vocabulary in the runtime.
-// Scanned rock family, the Composition B root with willow bark, LeafSet022
-// broad-leaf clusters, and open dark water as intentional negative space (no
-// moss, no background plant wall, no carpet). Geometry comes from
-// art/tools/build_slice_c.py; this module assigns materials, light and water
+// Slice C planted candidate: scanned rocks, the Composition B root,
+// photographed broad leaves and original procedural plant masses.
+// Geometry comes from build_slice_c.py and slice_c_growth.py; this module
+// assigns materials, light and water
 // atmosphere. Purely visual: it reads no simulation state.
 //
 // Floor and horizon: the substrate falls away behind the hardscape (baked
@@ -178,7 +177,21 @@ export function createSliceCEnvironment(scene, config, assets) {
     sway: { amplitude: 0.03, frequency: 0.5 },
   });
 
-  const sceneMeshes = [substrate, ...rocks, wood, leaves];
+  const growth = requireMesh(meshes, 'slice-c-growth');
+  renameAttribute(growth.geometry, '_sway', 'sway');
+  growth.material = applyMaterialEffects(material({
+    color: 0xffffff,
+    roughness: 0.9,
+    metalness: 0,
+    side: THREE.DoubleSide,
+    vertexColors: true,
+  }), shared, {
+    haze: true,
+    caustics: { ...hardscapeCaustics, strength: 0.07 },
+    sway: { amplitude: 0.025, frequency: 0.44 },
+  });
+
+  const sceneMeshes = [substrate, ...rocks, wood, leaves, growth];
   for (const mesh of sceneMeshes) {
     mesh.removeFromParent();
     mesh.frustumCulled = true;
@@ -231,7 +244,7 @@ export function createSliceCEnvironment(scene, config, assets) {
   rimLight.position.set(2.8, 0.8, -1.5);
 
   return {
-    drawCallBudget: 9,
+    drawCallBudget: 10,
     artMode: 'slice-c',
     effectUniforms: shared,
     fishEffectUniforms: fishEffects,

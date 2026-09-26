@@ -93,6 +93,7 @@ SHIPPED = {
         'Composition B driftwood root (own geometry, no source mesh); photographed broad leaves cut '
         'along each leaf outline of the LeafSet022 atlas into tight curved strips (8 rows, UVs into '
         'the atlas) composed into camera-specific clusters at the hardscape seams; original '
+        'procedural ribbon, fine stem, fan and low grass silhouettes from art/tools/slice_c_growth.py; '
         'substrate terrain falling away behind the hardscape; per-vertex contact shading and sway '
         'weights; materials stripped.'),
     'slice-c/textures/rock07_albedo.webp': ('texture', 'Scanned rock A colour', ['rock_07'], '4K diffuse -> 2K (Lanczos), saturation x0.75, value x0.9, isolated bright specks clamped to the 99.5th luminance percentile, WebP.'),

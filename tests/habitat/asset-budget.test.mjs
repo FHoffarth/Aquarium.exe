@@ -9,10 +9,9 @@ const MIB = 1024 * 1024;
 // Per art group: only one group is loaded at a time. Slice A envelope
 // (approved plan): scene <= ~100k triangles, <= 30 draw calls, <= ~96 MiB
 // texture memory, 1K textures by default, 2K atlases max. Slice B (the
-// Hero Frame translation) is held to the same totals. Slice C (the Natural
-// Environment vocabulary) is held to its approved runtime target: ~40-50k
-// environment triangles, at most 8 environment meshes, and less texture
-// memory than Slice B.
+// Hero Frame translation) is held to the same totals. Slice C allows one
+// original vegetation mesh while retaining bounded draw calls and texture
+// memory.
 
 const BUDGETS = {
   'slice-a': {
@@ -44,7 +43,7 @@ const BUDGETS = {
     maxTextureSide: 2048,
   },
   'slice-c': {
-    environmentTriangles: 50_000,
+    environmentTriangles: 85_000,
     meshTriangles: {
       'slice-c-rock-07': 4_000,
       'slice-c-boulder': 6_000,
@@ -52,9 +51,10 @@ const BUDGETS = {
       'slice-c-stones': 9_000,
       'slice-c-wood': 6_000,
       'slice-c-leaves': 14_000,
+      'slice-c-growth': 35_000,
       'slice-c-substrate': 9_000,
     },
-    environmentPrimitives: 8,
+    environmentPrimitives: 9,
     textureMemoryMiB: 72,
     maxTextureSide: 2048,
   },

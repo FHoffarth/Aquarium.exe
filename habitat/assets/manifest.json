@@ -389,8 +389,8 @@
       "file": "slice-c/environment.glb",
       "role": "geometry",
       "label": "Slice C natural environment geometry (approved Natural Environment vocabulary)",
-      "bytes": 1429796,
-      "sha256": "6bdef755be18d627d5993fe710fd4bf22b2491043a015c80d738ab9d9d8dfa83",
+      "bytes": 3275040,
+      "sha256": "2eda061aa45e733830a9916c93b5931f0b77d16d155bccb08bdb319e3660f29f",
       "license": "CC0-1.0",
       "status": "GREEN",
       "derivedFrom": [
@@ -400,7 +400,7 @@
         "rock_moss_set_02",
         "LeafSet022"
       ],
-      "modifications": "Assembled by art/tools/build_slice_c.py: scanned rocks rock_07 (3.6k tris), boulder_01 (5.2k) and two rock_09 (1.9k each) welded and decimated from 27.8k/124k/23.3k source faces, placed in the approved hierarchy and partly buried; rock_moss_set_02 secondaries, transition stones and partly buried fragments decimated to 110-700 tris; the original procedural Composition B driftwood root (own geometry, no source mesh); photographed broad leaves cut along each leaf outline of the LeafSet022 atlas into tight curved strips (8 rows, UVs into the atlas) composed into camera-specific clusters at the hardscape seams; original substrate terrain falling away behind the hardscape; per-vertex contact shading and sway weights; materials stripped.",
+      "modifications": "Assembled by art/tools/build_slice_c.py: scanned rocks rock_07 (3.6k tris), boulder_01 (5.2k) and two rock_09 (1.9k each) welded and decimated from 27.8k/124k/23.3k source faces, placed in the approved hierarchy and partly buried; rock_moss_set_02 secondaries, transition stones and partly buried fragments decimated to 110-700 tris; the original procedural Composition B driftwood root (own geometry, no source mesh); photographed broad leaves cut along each leaf outline of the LeafSet022 atlas into tight curved strips (8 rows, UVs into the atlas) composed into camera-specific clusters at the hardscape seams; original procedural ribbon, fine stem, fan and low grass silhouettes from art/tools/slice_c_growth.py; substrate terrain falling away behind the hardscape; per-vertex contact shading and sway weights; materials stripped.",
       "origin": "derived"
     },
     {
