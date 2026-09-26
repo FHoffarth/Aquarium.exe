@@ -41,3 +41,5 @@ Desktop.ini
 *.key
 art/source/
 art/work/
+
+__pycache__/
