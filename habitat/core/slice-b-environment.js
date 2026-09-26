@@ -85,6 +85,7 @@ export function createSliceBEnvironment(scene, config, assets) {
       uGlow: { value: new THREE.Vector3(...BACKDROP.glow) },
       uHorizon: { value: BACKDROP.horizon },
       uCalm: { value: 0.35 },
+      uSurfaceStrength: { value: 0 },
     },
     vertexShader: waterBackgroundVertexShader,
     fragmentShader: waterBackgroundSliceBFragmentShader,

@@ -17,6 +17,7 @@ import { applyMaterialEffects, createEffectUniforms } from '../shaders/material-
 // looks slightly upward so the floor takes less of the frame.
 
 const CAUSTIC_COLOR = [0.62, 0.86, 0.8];
+const WATER_COLUMN_LIGHT = { range: [-1.5, 1.35], amount: 0.17 };
 const BACKDROP = {
   top: 0x2a7880,
   bottom: 0x0b333b,
@@ -93,6 +94,7 @@ export function createSliceCEnvironment(scene, config, assets) {
       uGlow: { value: new THREE.Vector3(...BACKDROP.glow) },
       uHorizon: { value: BACKDROP.horizon },
       uCalm: { value: BACKDROP.calm },
+      uSurfaceStrength: { value: 1 },
     },
     vertexShader: waterBackgroundVertexShader,
     fragmentShader: waterBackgroundSliceBFragmentShader,
@@ -118,8 +120,13 @@ export function createSliceCEnvironment(scene, config, assets) {
     uHazeColor: shared.uHazeColor,
     uHazeRange: { value: [0.75, -3.4] },
   };
+  const growthEffects = {
+    uEffectTime: shared.uEffectTime,
+    uHazeColor: shared.uHazeColor,
+    uHazeRange: { value: [0.15, -2.4] },
+  };
 
-  const hardscapeCaustics = { strength: 0.3, scale: 1.25, color: CAUSTIC_COLOR };
+  const hardscapeCaustics = { strength: 0.2, scale: 1.1, color: CAUSTIC_COLOR };
 
   const substrate = requireMesh(meshes, 'slice-c-substrate');
   substrate.material = applyMaterialEffects(material({
@@ -128,7 +135,10 @@ export function createSliceCEnvironment(scene, config, assets) {
     normalScale: new THREE.Vector2(0.75, 0.75),
     roughness: 0.95,
     metalness: 0,
-  }), shared, { haze: true, caustics: { ...hardscapeCaustics, strength: 0.2 } });
+  }), shared, {
+    haze: true, softCaustics: true, verticalLight: { ...WATER_COLUMN_LIGHT, amount: 0.09 },
+    caustics: { ...hardscapeCaustics, strength: 0.16 },
+  });
 
   const stone = (meshName, textureName) => {
     const mesh = requireMesh(meshes, meshName);
@@ -138,7 +148,10 @@ export function createSliceCEnvironment(scene, config, assets) {
       roughness: STONE_ROUGHNESS,
       metalness: 0,
       vertexColors: mesh.geometry.hasAttribute('color'),
-    }), shared, { haze: true, caustics: hardscapeCaustics });
+    }), shared, {
+      haze: true, softCaustics: true, verticalLight: WATER_COLUMN_LIGHT,
+      caustics: hardscapeCaustics,
+    });
     return mesh;
   };
   const rocks = [
@@ -156,7 +169,10 @@ export function createSliceCEnvironment(scene, config, assets) {
     roughness: 0.82,
     metalness: 0,
     vertexColors: wood.geometry.hasAttribute('color'),
-  }), shared, { haze: true, caustics: hardscapeCaustics });
+  }), shared, {
+    haze: true, softCaustics: true, verticalLight: WATER_COLUMN_LIGHT,
+    caustics: hardscapeCaustics,
+  });
 
   // Photographed leaves as tight outline strips: alpha only at the rim,
   // alpha test (no blending). Matte, no clearcoat: no pale sheen.
@@ -173,7 +189,9 @@ export function createSliceCEnvironment(scene, config, assets) {
     vertexColors: leaves.geometry.hasAttribute('color'),
   }), shared, {
     haze: true,
-    caustics: { ...hardscapeCaustics, strength: 0.05 },
+    softCaustics: true,
+    verticalLight: WATER_COLUMN_LIGHT,
+    caustics: { ...hardscapeCaustics, strength: 0.06 },
     sway: { amplitude: 0.03, frequency: 0.5 },
   });
 
@@ -185,10 +203,13 @@ export function createSliceCEnvironment(scene, config, assets) {
     metalness: 0,
     side: THREE.DoubleSide,
     vertexColors: true,
-  }), shared, {
+  }), growthEffects, {
     haze: true,
-    caustics: { ...hardscapeCaustics, strength: 0.07 },
-    sway: { amplitude: 0.025, frequency: 0.44 },
+    softCaustics: true,
+    verticalLight: WATER_COLUMN_LIGHT,
+    caustics: { ...hardscapeCaustics, strength: 0.1 },
+    coherentSway: true,
+    sway: { amplitude: 0.018, frequency: 0.18 },
   });
 
   const sceneMeshes = [substrate, ...rocks, wood, leaves, growth];
@@ -211,11 +232,28 @@ export function createSliceCEnvironment(scene, config, assets) {
   }
   const particleGeometry = new THREE.BufferGeometry();
   particleGeometry.setAttribute('position', new THREE.Float32BufferAttribute(particlePositions, 3));
-  const particleMaterial = new THREE.PointsMaterial({
-    color: 0x9cc8c0,
-    size: 0.007,
+  const particleMaterial = new THREE.ShaderMaterial({
+    uniforms: { uTime: { value: 0 } },
+    vertexShader: `
+      uniform float uTime;
+      varying float vLight;
+      void main() {
+        vec3 p = position;
+        p.y += sin(uTime * 0.08 + p.x * 1.7) * 0.012;
+        vLight = smoothstep(-0.35, 1.15, p.y)
+          * exp(-pow((p.x + 1.5) / 3.4, 2.0));
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+        gl_PointSize = 1.4 + 1.1 * vLight;
+      }
+    `,
+    fragmentShader: `
+      varying float vLight;
+      void main() {
+        float rim = 1.0 - smoothstep(0.18, 0.5, length(gl_PointCoord - 0.5));
+        gl_FragColor = vec4(0.66, 0.81, 0.78, (0.025 + 0.16 * vLight) * rim);
+      }
+    `,
     transparent: true,
-    opacity: 0.18,
     depthWrite: false,
   });
   materials.push(particleMaterial);
@@ -252,6 +290,7 @@ export function createSliceCEnvironment(scene, config, assets) {
     updateVisuals(simulationTime) {
       shared.uEffectTime.value = simulationTime;
       backgroundMaterial.uniforms.uTime.value = simulationTime;
+      particleMaterial.uniforms.uTime.value = simulationTime;
       particles.rotation.z = Math.sin(simulationTime * 0.04) * 0.004;
     },
     dispose() {

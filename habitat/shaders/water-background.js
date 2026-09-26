@@ -47,9 +47,13 @@ export const waterBackgroundSliceBFragmentShader = `
   uniform vec3 uGlow;
   uniform float uHorizon;
   uniform float uCalm;
+  uniform float uSurfaceStrength;
   varying vec2 vUv;
   void main() {
-    float gradient = smoothstep(0.0, 1.0, vUv.y);
+    float surfaceBand = smoothstep(0.72, 0.94, vUv.y);
+    float surfaceWarp = (sin(vUv.x * 21.0 + uTime * 0.19)
+      + sin(vUv.x * 37.0 - uTime * 0.14)) * 0.002 * surfaceBand * uSurfaceStrength;
+    float gradient = smoothstep(0.0, 1.0, vUv.y + surfaceWarp);
     vec3 water = mix(uBottom, uTop, gradient);
     float above = smoothstep(uHorizon, uHorizon + 0.2, vUv.y);
     // Warm key glow, upper left, very soft.
@@ -65,6 +69,10 @@ export const waterBackgroundSliceBFragmentShader = `
     // Deeper, calmer open water to the upper right.
     float calm = smoothstep(0.35, 1.0, vUv.x) * smoothstep(uHorizon, 1.0, vUv.y);
     water *= 1.0 - uCalm * calm;
+    float surfaceRipple = 0.5 + 0.25 * sin(vUv.x * 22.0 + uTime * 0.21)
+      + 0.25 * sin(vUv.x * 43.0 - uTime * 0.16);
+    water += vec3(0.028, 0.047, 0.047) * surfaceBand
+      * (0.4 + 0.6 * surfaceRipple) * uSurfaceStrength;
     gl_FragColor = vec4(water, 1.0);
   }
 `;
