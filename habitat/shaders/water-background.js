@@ -71,8 +71,10 @@ export const waterBackgroundSliceBFragmentShader = `
     water *= 1.0 - uCalm * calm;
     float surfaceRipple = 0.5 + 0.25 * sin(vUv.x * 22.0 + uTime * 0.21)
       + 0.25 * sin(vUv.x * 43.0 - uTime * 0.16);
-    water += vec3(0.028, 0.047, 0.047) * surfaceBand
-      * (0.4 + 0.6 * surfaceRipple) * uSurfaceStrength;
+    float surfaceLight = 1.0 - 0.35 * smoothstep(0.4, 1.0, vUv.x);
+    water += (vec3(0.015, 0.025, 0.022)
+      + vec3(0.028, 0.047, 0.047) * (0.34 + 0.82 * surfaceRipple))
+      * surfaceBand * surfaceLight * uSurfaceStrength;
     gl_FragColor = vec4(water, 1.0);
   }
 `;

@@ -126,7 +126,7 @@ export function createSliceCEnvironment(scene, config, assets) {
     uHazeRange: { value: [0.15, -2.4] },
   };
 
-  const hardscapeCaustics = { strength: 0.2, scale: 1.1, color: CAUSTIC_COLOR };
+  const hardscapeCaustics = { strength: 0.22, scale: 1.1, color: CAUSTIC_COLOR };
 
   const substrate = requireMesh(meshes, 'slice-c-substrate');
   substrate.material = applyMaterialEffects(material({
@@ -191,7 +191,8 @@ export function createSliceCEnvironment(scene, config, assets) {
     haze: true,
     softCaustics: true,
     verticalLight: WATER_COLUMN_LIGHT,
-    caustics: { ...hardscapeCaustics, strength: 0.06 },
+    nearPlantGreen: true,
+    caustics: { ...hardscapeCaustics, strength: 0.075 },
     sway: { amplitude: 0.03, frequency: 0.5 },
   });
 
@@ -207,7 +208,8 @@ export function createSliceCEnvironment(scene, config, assets) {
     haze: true,
     softCaustics: true,
     verticalLight: WATER_COLUMN_LIGHT,
-    caustics: { ...hardscapeCaustics, strength: 0.1 },
+    nearPlantGreen: true,
+    caustics: { ...hardscapeCaustics, strength: 0.12 },
     coherentSway: true,
     sway: { amplitude: 0.018, frequency: 0.18 },
   });

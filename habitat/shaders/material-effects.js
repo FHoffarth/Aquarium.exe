@@ -15,7 +15,8 @@ export function createEffectUniforms() {
 }
 
 export function effectDefines({ caustics = null, sway = null, haze = false,
-  softCaustics = false, verticalLight = null, coherentSway = false } = {}) {
+  softCaustics = false, verticalLight = null, coherentSway = false,
+  nearPlantGreen = false } = {}) {
   const defines = [];
   if (caustics) defines.push('AQ_CAUSTICS');
   if (sway) defines.push('AQ_SWAY');
@@ -23,6 +24,7 @@ export function effectDefines({ caustics = null, sway = null, haze = false,
   if (softCaustics) defines.push('AQ_SOFT_CAUSTICS');
   if (verticalLight) defines.push('AQ_VERTICAL_LIGHT');
   if (coherentSway) defines.push('AQ_COHERENT_SWAY');
+  if (nearPlantGreen) defines.push('AQ_NEAR_PLANT_GREEN');
   return defines;
 }
 
@@ -43,8 +45,9 @@ export function injectMaterialEffects(shader, shared, {
   softCaustics = false,
   verticalLight = null,
   coherentSway = false,
+  nearPlantGreen = false,
 } = {}) {
-  const defines = effectDefines({ caustics, sway, haze, softCaustics, verticalLight, coherentSway });
+  const defines = effectDefines({ caustics, sway, haze, softCaustics, verticalLight, coherentSway, nearPlantGreen });
   if (defines.length === 0) return;
   shader.uniforms.uEffectTime = shared.uEffectTime;
   shader.uniforms.uHazeColor = shared.uHazeColor;
@@ -108,7 +111,7 @@ ${shader.fragmentShader}`
   float aqA = sin(aqP.x * 1.9 + uEffectTime * 0.22 + sin(aqP.y * 1.4 - uEffectTime * 0.17) * 0.6);
   float aqB = sin(aqP.y * 2.1 - uEffectTime * 0.18 + sin(aqP.x * 1.6 + uEffectTime * 0.13) * 0.55);
   float aqCaustic = pow(max(0.0, 1.0 - abs(aqA + aqB) * 0.5), 4.0);
-  float aqFacing = 0.2 + 0.8 * clamp(vAqUp, 0.0, 1.0);
+  float aqFacing = 0.26 + 0.74 * clamp(vAqUp, 0.0, 1.0);
   float aqDepth = mix(0.45, 1.0, smoothstep(-1.4, 1.2, vAqWorld.y));
   outgoingLight += diffuseColor.rgb * uCausticColor * aqCaustic
     * aqFacing * aqDepth * uCausticStrength;
@@ -123,6 +126,10 @@ ${shader.fragmentShader}`
 #ifdef AQ_VERTICAL_LIGHT
   float aqHeight = smoothstep(uVerticalRange.x, uVerticalRange.y, vAqWorld.y);
   outgoingLight *= mix(1.0 - uVerticalAmount, 1.0 + uVerticalAmount * 0.12, aqHeight);
+#endif
+#ifdef AQ_NEAR_PLANT_GREEN
+  float aqNearPlant = smoothstep(-0.4, 1.0, vAqWorld.z);
+  outgoingLight *= mix(vec3(1.0), vec3(0.98, 1.055, 0.97), aqNearPlant);
 #endif
 #include <opaque_fragment>`);
 }

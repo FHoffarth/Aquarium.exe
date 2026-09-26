@@ -1,0 +1,578 @@
+{
+  "schemaVersion": 1,
+  "status": "CONCLUSIVE",
+  "profile": "final-lighting-polish",
+  "requestedState": "running",
+  "startedAtUtc": "2026-09-26T12:46:46.0218573Z",
+  "completedAtUtc": "2026-09-26T12:47:21.9052712Z",
+  "durationSeconds": 20.048,
+  "sampleIntervalSeconds": 1.0,
+  "environment": {
+    "osCaption": "Microsoft Windows 11 Pro",
+    "osVersion": "10.0.26200",
+    "osBuild": "26200",
+    "logicalProcessors": 4,
+    "videoControllers": [
+      {
+        "Name": "Intel(R) UHD Graphics",
+        "DriverVersion": "32.0.101.7085",
+        "CurrentHorizontalResolution": 1920,
+        "CurrentVerticalResolution": 1080
+      }
+    ]
+  },
+  "validity": {
+    "exactlyOneAquariumRoot": true,
+    "sessionRunning": true,
+    "noAttachmentFailure": true,
+    "rootAliveThroughSample": true
+  },
+  "processSummary": [
+    {
+      "pid": 3220,
+      "parentPid": 3356,
+      "name": "msedgewebview2.exe",
+      "role": "crashpad",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --type=crashpad-handler --user-data-dir=C:\\dev\\aquarium-exe\\bin\\webview2-user-data\\EBWebView /prefetch:4 /pfhostedapp:5c861dffed85b96b8eb8ea756139399ca1b6ec08 --monitor-self-annotation=ptype=crashpad-handler --database=C:\\dev\\aquarium-exe\\bin\\webview2-user-data\\EBWebView\\Crashpad --annotation=IsOfficialBuild=1 --annotation=channel= --annotation=chromium-version=153.0.8010.53 \"--annotation=exe=C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --annotation=plat=Win64 \"--annotation=prod=Edge WebView2\" --annotation=ver=153.0.4234.48 --initial-client-data=0x194,0x198,0x19c,0x130,0x1a4,0x7ffaa0c33360,0x7ffaa0c33370,0x7ffaa0c33380",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 19924992,
+      "workingSetBytesMax": 24535040,
+      "privateBytesMean": 3051520
+    },
+    {
+      "pid": 3356,
+      "parentPid": 7120,
+      "name": "msedgewebview2.exe",
+      "role": "browser",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --embedded-browser-webview=1 --webview-exe-name=AquariumSpike.exe --user-data-dir=\"C:\\dev\\aquarium-exe\\bin\\webview2-user-data\\EBWebView\" --noerrdialogs --disable-background-networking --disable-component-update --no-proxy-server --mojo-named-platform-channel-pipe=7120.11284.11663670954175708663 /pfhostedapp:5c861dffed85b96b8eb8ea756139399ca1b6ec08",
+      "cpuSeconds": 1.0,
+      "cpuPercentNormalized": 1.247,
+      "workingSetBytesMean": 134289408,
+      "workingSetBytesMax": 139460608,
+      "privateBytesMean": 39636992
+    },
+    {
+      "pid": 4144,
+      "parentPid": 7120,
+      "name": "conhost.exe",
+      "role": "console",
+      "commandLine": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 11157504,
+      "workingSetBytesMax": 11157504,
+      "privateBytesMean": 1802240
+    },
+    {
+      "pid": 5736,
+      "parentPid": 3356,
+      "name": "msedgewebview2.exe",
+      "role": "storage",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --type=utility --utility-sub-type=storage.mojom.StorageService --lang=de --service-sandbox-type=service --noerrdialogs --user-data-dir=\"C:\\dev\\aquarium-exe\\bin\\webview2-user-data\\EBWebView\" --webview-exe-name=AquariumSpike.exe --embedded-browser-webview=1 --startup-read-main-dll --metrics-shmem-handle=2504,i,7826811140777692762,4440971372668235636,524288 --field-trial-handle=1900,i,11747423261708374359,18245699713436860566,262144 --variations-seed-version --pseudonymization-salt-handle=1912,i,6372066782556058714,2239946020797175981,4 --trace-process-track-uuid=3190708990060038890 --mojo-platform-channel-handle=2520 /prefetch:13 /pfhostedapp:5c861dffed85b96b8eb8ea756139399ca1b6ec08",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 22695936,
+      "workingSetBytesMax": 22695936,
+      "privateBytesMean": 8192000
+    },
+    {
+      "pid": 6340,
+      "parentPid": 3356,
+      "name": "msedgewebview2.exe",
+      "role": "network",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --type=utility --utility-sub-type=network.mojom.NetworkService --lang=de --service-sandbox-type=none --noerrdialogs --user-data-dir=\"C:\\dev\\aquarium-exe\\bin\\webview2-user-data\\EBWebView\" --webview-exe-name=AquariumSpike.exe --embedded-browser-webview=1 --startup-read-main-dll --metrics-shmem-handle=2016,i,8710612576225053832,17994667274350403608,524288 --field-trial-handle=1900,i,11747423261708374359,18245699713436860566,262144 --variations-seed-version --pseudonymization-salt-handle=1912,i,6372066782556058714,2239946020797175981,4 --trace-process-track-uuid=3190708989122997041 --mojo-platform-channel-handle=2132 /prefetch:11 /pfhostedapp:5c861dffed85b96b8eb8ea756139399ca1b6ec08",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 39393280,
+      "workingSetBytesMax": 39444480,
+      "privateBytesMean": 10618880
+    },
+    {
+      "pid": 7120,
+      "parentPid": 12504,
+      "name": "AquariumSpike.exe",
+      "role": "native",
+      "commandLine": "\"C:\\dev\\aquarium-exe\\bin\\AquariumSpike.exe\" ",
+      "cpuSeconds": 0.0,
+      "cpuPercentNormalized": 0.0,
+      "workingSetBytesMean": 47183872,
+      "workingSetBytesMax": 47206400,
+      "privateBytesMean": 42024960
+    },
+    {
+      "pid": 12608,
+      "parentPid": 3356,
+      "name": "msedgewebview2.exe",
+      "role": "gpu",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --type=gpu-process --noerrdialogs --user-data-dir=\"C:\\dev\\aquarium-exe\\bin\\webview2-user-data\\EBWebView\" --webview-exe-name=AquariumSpike.exe --embedded-browser-webview=1 --gpu-preferences=WAAAAAAAAADgAAAEAAAAAAAAAAAAAGAAQAAAAAAAAAADAAAAAAAAADgAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAoAAAAAAAAAAgAAAAAAAAAEAAAAAIAAAABAAAAAAAAAAgAAAAAAAAACAAAAAAAAAA= --startup-read-main-dll --metrics-shmem-handle=1772,i,505439319711465312,14832073971738978220,262144 --field-trial-handle=1900,i,11747423261708374359,18245699713436860566,262144 --variations-seed-version --pseudonymization-salt-handle=1912,i,6372066782556058714,2239946020797175981,4 --trace-process-track-uuid=3190708988185955192 --mojo-platform-channel-handle=1896 /prefetch:2 /pfhostedapp:5c861dffed85b96b8eb8ea756139399ca1b6ec08",
+      "cpuSeconds": 9.0,
+      "cpuPercentNormalized": 11.223,
+      "workingSetBytesMean": 401094656,
+      "workingSetBytesMax": 467779584,
+      "privateBytesMean": 353505280
+    },
+    {
+      "pid": 13088,
+      "parentPid": 3356,
+      "name": "msedgewebview2.exe",
+      "role": "renderer",
+      "commandLine": "\"C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\153.0.4234.48\\msedgewebview2.exe\" --type=renderer --noerrdialogs --user-data-dir=\"C:\\dev\\aquarium-exe\\bin\\webview2-user-data\\EBWebView\" --webview-exe-name=AquariumSpike.exe --embedded-browser-webview=1 --video-capture-use-gpu-memory-buffer --lang=de --js-flags --device-scale-factor=1 --num-raster-threads=2 --enable-main-frame-before-activation --renderer-client-id=5 --js-flags=--ms-user-locale=de_DE --launch-time-ticks=9123390642 --ssd-no-pressure-read-main-dll --metrics-shmem-handle=4088,i,13789907768992600108,6974185886778096035,1048576 --field-trial-handle=1900,i,11747423261708374359,18245699713436860566,262144 --variations-seed-version --pseudonymization-salt-handle=1912,i,6372066782556058714,2239946020797175981,4 --trace-process-track-uuid=3190708990997080739 --mojo-platform-channel-handle=4108 /pfhostedapp:5c861dffed85b96b8eb8ea756139399ca1b6ec08 /prefetch:1",
+      "cpuSeconds": 7.0,
+      "cpuPercentNormalized": 8.729,
+      "workingSetBytesMean": 175781888,
+      "workingSetBytesMax": 177909760,
+      "privateBytesMean": 114165760
+    }
+  ],
+  "totals": {
+    "cpuSeconds": 17.0,
+    "cpuPercentNormalized": 21.199,
+    "workingSetBytesLast": 796819456,
+    "privateBytesLast": 508284928,
+    "gpuPercentSummedEnginesMean": 71.034,
+    "gpuPercentSummedEnginesMin": 69.271,
+    "gpuPercentSummedEnginesMax": 74.866,
+    "tcpConnectionCount": 4
+  },
+  "gpuMethod": "Windows GPU Engine utilization counters, summed only for exact current descendant PID tokens; simultaneous engines can sum above one engine and counters exclude compositor work in dwm.exe.",
+  "gpuSamples": [
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:46:57.9290458Z",
+      "treePercentSummedEngines": 71.712,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 71.71196746826172
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:46:59.0201426Z",
+      "treePercentSummedEngines": 70.307,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 70.30670928955078
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:00.0936211Z",
+      "treePercentSummedEngines": 71.45,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 71.45008087158203
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:01.1443745Z",
+      "treePercentSummedEngines": 69.658,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 69.65752410888672
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:02.2065588Z",
+      "treePercentSummedEngines": 70.787,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 70.78650665283203
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:03.2754877Z",
+      "treePercentSummedEngines": 70.379,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 70.37898254394531
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:04.3410155Z",
+      "treePercentSummedEngines": 69.7,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 69.70001983642578
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:05.4417022Z",
+      "treePercentSummedEngines": 70.105,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 70.10540771484375
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:06.5287890Z",
+      "treePercentSummedEngines": 73.91,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 73.90960693359375
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:07.5974731Z",
+      "treePercentSummedEngines": 71.437,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 71.43657684326172
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:08.6741836Z",
+      "treePercentSummedEngines": 69.822,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 69.82239532470703
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:09.7540663Z",
+      "treePercentSummedEngines": 72.125,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 72.12459564208984
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:10.7978990Z",
+      "treePercentSummedEngines": 72.468,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 72.46812438964844
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:11.8875869Z",
+      "treePercentSummedEngines": 70.844,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 70.84420013427734
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:12.9573805Z",
+      "treePercentSummedEngines": 70.025,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 70.02490234375
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:14.0383759Z",
+      "treePercentSummedEngines": 74.866,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 74.8657455444336
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:15.1062612Z",
+      "treePercentSummedEngines": 69.271,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 69.27131652832031
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:16.1970498Z",
+      "treePercentSummedEngines": 69.666,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 69.66594696044922
+      },
+      "error": null
+    },
+    {
+      "available": true,
+      "timestamp": "2026-09-26T12:47:16.8554333Z",
+      "treePercentSummedEngines": 71.108,
+      "byPidPercentSummedEngines": {
+        "7120": 0.0,
+        "4144": 0.0,
+        "6340": 0.0,
+        "13088": 0.0,
+        "5736": 0.0,
+        "3356": 0.0,
+        "3220": 0.0,
+        "12608": 71.10760498046875
+      },
+      "error": null
+    }
+  ],
+  "memorySamples": [
+    {
+      "timestampUtc": "2026-09-26T12:46:56.6286882Z",
+      "processes": [
+        {
+          "pid": 7120,
+          "role": "native",
+          "workingSetBytes": 47161344,
+          "privateBytes": 42020864
+        },
+        {
+          "pid": 4144,
+          "role": "console",
+          "workingSetBytes": 11157504,
+          "privateBytes": 1802240
+        },
+        {
+          "pid": 3356,
+          "role": "browser",
+          "workingSetBytes": 129118208,
+          "privateBytes": 37584896
+        },
+        {
+          "pid": 3220,
+          "role": "crashpad",
+          "workingSetBytes": 15314944,
+          "privateBytes": 2584576
+        },
+        {
+          "pid": 12608,
+          "role": "gpu",
+          "workingSetBytes": 467779584,
+          "privateBytes": 421851136
+        },
+        {
+          "pid": 6340,
+          "role": "network",
+          "workingSetBytes": 39342080,
+          "privateBytes": 10608640
+        },
+        {
+          "pid": 5736,
+          "role": "storage",
+          "workingSetBytes": 22695936,
+          "privateBytes": 8192000
+        },
+        {
+          "pid": 13088,
+          "role": "renderer",
+          "workingSetBytes": 173654016,
+          "privateBytes": 113065984
+        }
+      ]
+    },
+    {
+      "timestampUtc": "2026-09-26T12:47:17.2441024Z",
+      "processes": [
+        {
+          "pid": 7120,
+          "role": "native",
+          "workingSetBytes": 47206400,
+          "privateBytes": 42029056
+        },
+        {
+          "pid": 4144,
+          "role": "console",
+          "workingSetBytes": 11157504,
+          "privateBytes": 1802240
+        },
+        {
+          "pid": 3356,
+          "role": "browser",
+          "workingSetBytes": 139460608,
+          "privateBytes": 41689088
+        },
+        {
+          "pid": 3220,
+          "role": "crashpad",
+          "workingSetBytes": 24535040,
+          "privateBytes": 3518464
+        },
+        {
+          "pid": 12608,
+          "role": "gpu",
+          "workingSetBytes": 334409728,
+          "privateBytes": 285159424
+        },
+        {
+          "pid": 6340,
+          "role": "network",
+          "workingSetBytes": 39444480,
+          "privateBytes": 10629120
+        },
+        {
+          "pid": 5736,
+          "role": "storage",
+          "workingSetBytes": 22695936,
+          "privateBytes": 8192000
+        },
+        {
+          "pid": 13088,
+          "role": "renderer",
+          "workingSetBytes": 177909760,
+          "privateBytes": 115265536
+        }
+      ]
+    }
+  ],
+  "tcpEndpoints": [
+    "3356:0.0.0.0:55605->0.0.0.0:0:Bound",
+    "3356:0.0.0.0:55604->0.0.0.0:0:Bound",
+    "3356:192.168.178.39:55605->40.99.222.178:443:Established",
+    "3356:192.168.178.39:55604->40.99.222.178:443:Established"
+  ],
+  "diagnosticLines": [
+    "14:46:49.297 PROBE state=running bridgeUpdates=0 webviewReady=0 cursorScreen=(940,938) WindowFromPoint=0x305B4/Chrome_RenderWidgetHostHWND hostHitTest=-1 rendererHitTest=-1\r",
+    "14:46:55.361 PROBE state=running bridgeUpdates=0 webviewReady=1 cursorScreen=(940,938) WindowFromPoint=0x305B4/Chrome_RenderWidgetHostHWND hostHitTest=-1 rendererHitTest=-1\r",
+    "14:46:55.409 PERF intervalSeconds=9.30 cursorBridgeHz=0.11 hostProcessCpuPercentNormalized=0.67 totalBridgeUpdates=1\r",
+    "14:46:55.805 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=24.2;frameTimeMs=17.49;fishCount=10;drawCalls=13;triangles=114076;pointerCount=9;reactions=0;paused=false;targetFps=60;art=slice-c;msaa=false;hero=off;fishStyle=hero;assetLoadMs=674;assetBytes=6192064\r",
+    "14:47:00.418 PERF intervalSeconds=5.01 cursorBridgeHz=23.16 hostProcessCpuPercentNormalized=0.00 totalBridgeUpdates=117\r",
+    "14:47:00.800 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=60.0;frameTimeMs=16.67;fishCount=10;drawCalls=13;triangles=114076;pointerCount=125;reactions=0;paused=false;targetFps=60;art=slice-c;msaa=false;hero=off;fishStyle=hero;assetLoadMs=674;assetBytes=6192064\r",
+    "14:47:05.425 PERF intervalSeconds=5.01 cursorBridgeHz=22.98 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=232\r",
+    "14:47:05.807 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=60.0;frameTimeMs=16.67;fishCount=10;drawCalls=13;triangles=114076;pointerCount=240;reactions=0;paused=false;targetFps=60;art=slice-c;msaa=false;hero=off;fishStyle=hero;assetLoadMs=674;assetBytes=6192064\r",
+    "14:47:10.436 PERF intervalSeconds=5.01 cursorBridgeHz=23.15 hostProcessCpuPercentNormalized=0.16 totalBridgeUpdates=348\r",
+    "14:47:10.819 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=60.0;frameTimeMs=16.67;fishCount=10;drawCalls=13;triangles=114076;pointerCount=356;reactions=2;paused=false;targetFps=60;art=slice-c;msaa=false;hero=off;fishStyle=hero;assetLoadMs=674;assetBytes=6192064\r",
+    "14:47:15.453 PERF intervalSeconds=5.02 cursorBridgeHz=22.93 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=463\r",
+    "14:47:15.838 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=60.0;frameTimeMs=16.67;fishCount=10;drawCalls=13;triangles=114076;pointerCount=472;reactions=2;paused=false;targetFps=60;art=slice-c;msaa=false;hero=off;fishStyle=hero;assetLoadMs=674;assetBytes=6192064\r",
+    "14:47:20.453 PERF intervalSeconds=5.00 cursorBridgeHz=23.00 hostProcessCpuPercentNormalized=0.23 totalBridgeUpdates=578\r",
+    "14:47:20.852 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=60.0;frameTimeMs=16.67;fishCount=10;drawCalls=13;triangles=114076;pointerCount=587;reactions=2;paused=false;targetFps=60;art=slice-c;msaa=false;hero=off;fishStyle=hero;assetLoadMs=674;assetBytes=6192064\r",
+    "14:47:21.060 PROBE state=running bridgeUpdates=591 webviewReady=1 cursorScreen=(940,938) WindowFromPoint=0x305B4/Chrome_RenderWidgetHostHWND hostHitTest=-1 rendererHitTest=-1\r",
+    "14:47:21.061 WEBVIEW generation=1 event=info detail=Habitat: habitat-metrics:fps=60.0;frameTimeMs=16.67;fishCount=10;drawCalls=13;triangles=114076;pointerCount=591;reactions=2;paused=false;targetFps=60;art=slice-c;msaa=false;hero=off;fishStyle=hero;assetLoadMs=674;assetBytes=6192064\r"
+  ],
+  "sampleErrors": []
+}
