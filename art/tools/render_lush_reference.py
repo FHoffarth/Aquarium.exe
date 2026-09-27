@@ -3,15 +3,17 @@
 node art/tools/export_offline_fish.mjs
 blender -b --factory-startup -P art/tools/render_lush_reference.py
 """
-import bpy, math, random, pathlib, json
+import bpy, math, random, pathlib, json, os
 from mathutils import Vector
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 WORK = ROOT / 'art/work/lush-reference'
 OUT = ROOT / 'docs/evidence/lush-reference'
+TEXTURES = ROOT / 'habitat/assets/slice-c/textures'
 WORK.mkdir(parents=True, exist_ok=True)
 OUT.mkdir(parents=True, exist_ok=True)
 rng = random.Random(260927)
+PREVIEW = os.environ.get('LUSH_PREVIEW') == '1'
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
 
@@ -28,13 +30,13 @@ def leaf_material(name, color):
     n, l = m.node_tree.nodes, m.node_tree.links
     p = n.get('Principled BSDF')
     p.inputs['Subsurface Weight'].default_value = .035
-    noise = n.new('ShaderNodeTexNoise'); noise.inputs['Scale'].default_value = 8
-    noise.inputs['Detail'].default_value = 2
+    noise = n.new('ShaderNodeTexNoise'); noise.inputs['Scale'].default_value = 65
+    noise.inputs['Detail'].default_value = 3
     ramp = n.new('ShaderNodeValToRGB')
     ramp.color_ramp.elements[0].position = .15
-    ramp.color_ramp.elements[0].color = tuple(c*.58 for c in color)+(1,)
+    ramp.color_ramp.elements[0].color = tuple(c*.46 for c in color)+(1,)
     ramp.color_ramp.elements[1].position = .85
-    ramp.color_ramp.elements[1].color = tuple(min(.95,c*1.2) for c in color)+(1,)
+    ramp.color_ramp.elements[1].color = tuple(min(.85,c*1.05) for c in color)+(1,)
     l.new(noise.outputs['Fac'], ramp.inputs[0]); l.new(ramp.outputs[0],p.inputs['Base Color'])
     bump = n.new('ShaderNodeBump'); bump.inputs['Strength'].default_value = .13
     bump.inputs['Distance'].default_value = .035
@@ -43,39 +45,91 @@ def leaf_material(name, color):
 
 greens = []
 for depth in range(3):
-    for c in [(0.09,.34,.018),(.16,.43,.025),(.055,.25,.018),(.21,.39,.035),(.065,.32,.045),(.12,.29,.014)]:
-        if depth == 2: c = (c[0]*.65,c[1]*.64,c[2]+.035)
-        if depth == 1: c = (c[0]*.88,c[1]*.88,c[2]+.008)
+    for c in [(0.055,.26,.014),(.11,.33,.018),(.045,.19,.012),(.16,.30,.025),(.052,.25,.03),(.10,.23,.012)]:
+        c = (c[0]*.62,c[1]*.82,c[2]*.64)
+        if depth == 2: c = (c[0]*.55,c[1]*.55,c[2]+.025)
+        if depth == 1: c = (c[0]*.8,c[1]*.8,c[2]+.006)
         greens.append(leaf_material(f'leaf-{depth}-{len(greens)}',c))
 stemmat = material('living green stems',(.09,.22,.025),.6)
+leaf_atlas=leaf_material('photographed broad leaf surfaces',(.07,.31,.025))
+leaf_image=bpy.data.images.load(str(TEXTURES/'leaves_albedo.webp'))
+leaf_image.pack()
+leaf_node=leaf_atlas.node_tree.nodes.new('ShaderNodeTexImage');leaf_node.image=leaf_image
+leaf_bw=leaf_atlas.node_tree.nodes.new('ShaderNodeRGBToBW')
+leaf_atlas.node_tree.links.new(leaf_node.outputs['Color'],leaf_bw.inputs[0])
+leaf_grade=leaf_atlas.node_tree.nodes.new('ShaderNodeHueSaturation')
+leaf_grade.inputs['Saturation'].default_value=1.25
+leaf_grade.inputs['Value'].default_value=2.0
+leaf_atlas.node_tree.links.new(leaf_node.outputs['Color'],leaf_grade.inputs['Color'])
+leaf_atlas.node_tree.links.new(leaf_grade.outputs['Color'],
+    leaf_atlas.node_tree.nodes.get('Principled BSDF').inputs['Base Color'])
+leaf_bump=next(node for node in leaf_atlas.node_tree.nodes if node.type=='BUMP')
+leaf_bump.inputs['Strength'].default_value=.24
+leaf_bump.inputs['Distance'].default_value=.045
+leaf_atlas.node_tree.links.new(leaf_bw.outputs[0],leaf_bump.inputs['Height'])
+ambermats=[leaf_material('rust accent stems',(.26,.115,.018)),
+           leaf_material('golden olive accent stems',(.19,.22,.024))]
+leaf_profiles=json.loads((ROOT/'art/tools/lush_leaf_profiles.json').read_text())
 
 class Mesh:
     def __init__(self,name): self.name=name; self.v=[]; self.f=[]; self.mi=[]; self.uv=[]
     def face(self, pts, mi=0):
-        start=len(self.v); self.v.extend(pts); self.f.append(tuple(range(start,start+len(pts)))); self.mi.append(mi)
-    def leaf(self,base, direction,length,width,mi, bend=.2,twist=0,segments=7):
+        start=len(self.v); self.v.extend(pts);self.uv.extend([(0,0)]*len(pts))
+        self.f.append(tuple(range(start,start+len(pts)))); self.mi.append(mi)
+    def leaf(self,base, direction,length,width,mi, bend=.2,twist=0,segments=7,shape='lance',atlas=False):
         base=Vector(base); axis=Vector(direction).normalized()
         side=axis.cross(Vector((0,-1,.2))).normalized()
         if side.length < .1: side=Vector((1,0,0))
         normal=axis.cross(side).normalized(); start=len(self.v)
+        tile=rng.randrange(6) if atlas else 0
         for i in range(segments+1):
             t=i/segments
             center=base+axis*length*t+Vector((math.sin(t*3+twist)-math.sin(twist),0,-t*t))*bend
-            span=width*(math.sin(math.pi*t)**.72)*(.92+.08*math.sin(t*17+twist))
+            if shape == 'grass':
+                outline=min(1,t*10)*(max(0,1-t**1.7)**.68)
+            elif shape == 'broad':
+                outline=(math.sin(math.pi*t)**.88)*(.68+.62*t)
+            elif shape == 'needle':
+                outline=math.sin(math.pi*t)**.46
+            else:
+                outline=math.sin(math.pi*t)**.72
+            span=width*outline*(.92+.08*math.sin(t*17+twist))
             for u in [-1,0,1]:
                 p=center+side*(span*u)+normal*(span*.18*(1-abs(u)))
                 p+=normal*(span*u*math.sin(t*5+twist)*.24)
                 self.v.append(tuple(p))
+                if atlas:
+                    self.uv.append(((tile%3+.075+(u+1)*.425)/3,
+                                    (tile//3+.06+t*.88)/2))
+                else:self.uv.append(((u+1)*.5,t))
         for i in range(segments):
             for j in range(2):
                 a=start+i*3+j
                 self.f.append((a,a+1,a+4,a+3));self.mi.append(mi)
+    def photo_leaf(self,base,direction,length,profile,twist,arch,curl):
+        base=Vector(base);axis=Vector(direction).normalized()
+        side=axis.cross(Vector((0,-1,.5))).normalized()
+        normal=side.cross(axis).normalized();start=len(self.v)
+        rows=profile['rows']
+        for row in rows:
+            t=row['t'];span=row['half_width']*length
+            side_t=side*math.cos(twist*t)+normal*math.sin(twist*t)
+            fold=normal*span*.16
+            center=base+axis*length*t-normal*(arch*length*t*t)+side*(curl*length*t*t)
+            for j,u in enumerate([-1,0,1]):
+                self.v.append(tuple(center+side_t*span*u+fold*(1-abs(u))))
+                self.uv.append(tuple(row['uv'][j]))
+        for i in range(len(rows)-1):
+            for j in range(2):
+                a=start+i*3+j
+                self.f.append((a,a+1,a+4,a+3));self.mi.append(18)
     def tube(self,pts,radius,mi=0):
         start=len(self.v); sides=5
         for i,p in enumerate(pts):
             for j in range(sides):
                 a=j*math.tau/sides; r=radius*(1-i/(len(pts)+.5)*.75)
                 self.v.append((p[0]+r*math.cos(a),p[1]+r*math.sin(a),p[2]))
+                self.uv.append((0,0))
         for i in range(len(pts)-1):
             for j in range(sides):
                 a=start+i*sides+j;b=start+i*sides+(j+1)%sides
@@ -85,93 +139,206 @@ class Mesh:
         obj=bpy.data.objects.new(self.name,mesh);bpy.context.collection.objects.link(obj)
         for mat in mats: mesh.materials.append(mat)
         for p,mi in zip(mesh.polygons,self.mi):p.material_index=mi;p.use_smooth=True
+        if len(self.uv)==len(self.v):
+            layer=mesh.uv_layers.new()
+            for loop in mesh.loops:layer.data[loop.index].uv=self.uv[loop.vertex_index]
         return obj
 
-ribbon=Mesh('01 long flowing ribbons'); stems=Mesh('02 fine tall stems')
-bush=Mesh('03 dense small-leaf bushes'); broad=Mesh('04 broad leaves'); low=Mesh('05 low foreground leaves')
-stalk=Mesh('supporting stems')
+ribbon=Mesh('01 flowing ribbon plants'); grass=Mesh('02 tall grass'); feather=Mesh('03 fine feather plants')
+stems=Mesh('04 medium stems'); bush=Mesh('05 irregular small leaf bushes')
+broad=Mesh('06 broad leaves'); low=Mesh('07 low foreground plants'); stalk=Mesh('supporting stems')
 
-def ribbon_clump(x,y,h,count=10):
-    depth=2 if y>2.4 else 1 if y>1.2 else 0
-    for j in range(count):
-        a=rng.uniform(0,math.tau); lean=rng.uniform(.08,.34)
-        ribbon.leaf((x+rng.uniform(-.15,.15),y+rng.uniform(-.1,.1),.12),
-            (math.cos(a)*lean,math.sin(a)*lean,1),h*rng.uniform(.72,1.13),
-            rng.uniform(.065,.13),depth*6+rng.randrange(6),rng.uniform(.2,.62),rng.uniform(-3,3),17)
+def ribbon_clump(x,y,h,n):
+    depth=2 if y>2 else 1
+    for j in range(n):
+        a=rng.uniform(0,math.tau)
+        ribbon.leaf((x+rng.gauss(0,.16),y+rng.gauss(0,.1),.12),
+            (math.cos(a)*rng.uniform(.18,.7),math.sin(a)*.28,1),h*rng.uniform(.58,1.16),
+            rng.uniform(.085,.17),depth*6+rng.randrange(6),rng.uniform(.55,1.25),rng.uniform(-3,3),17)
 
-# A varied rear canopy and sides; the central crown remains open.
-for i in range(32):
-    x=rng.uniform(-6.25,6.25); y=rng.uniform(1.5,3.45)
-    h=rng.uniform(4.4,5.8) if abs(x)>2.5 else rng.uniform(2.4,3.6)
-    ribbon_clump(x,y,h,rng.randint(6,11))
+for x,y,h,n in [(-6.0,2.3,4.8,8),(-5.1,2.6,5.9,11),(-3.8,3.0,5.1,7),
+                 (-1.65,3.4,3.7,5),(2.8,3.2,4.5,7),(4.1,2.9,5.7,12),(5.45,2.6,5.3,9),(6.2,2.2,4.4,6)]:
+    ribbon_clump(x,y,h,n)
 
-def stem_plant(x,y,h,depth=1):
-    phase=rng.uniform(0,6.28); tilt=rng.uniform(-.22,.22)
-    pts=[]
-    for k in range(15):
-        t=k/14; z=.12+h*t
-        center=Vector((x+tilt*t+math.sin(t*3+phase)*.07,y+math.sin(t*4+phase)*.07,z));pts.append(center)
+def tall_grass(x,y,h,n):
+    for j in range(n):
+        a=rng.uniform(0,math.tau)
+        grass.leaf((x+rng.gauss(0,.12),y+rng.gauss(0,.1),.12),
+            (math.cos(a)*rng.uniform(.05,.38),math.sin(a)*.16,1),h*rng.uniform(.54,1.22),
+            rng.uniform(.016,.052),rng.randrange(6,18),rng.uniform(.3,.9),a,13,'grass')
+
+for x,y,h,n in [(-5.9,1.0,3.8,18),(-4.65,2.3,4.9,21),(-2.9,3.05,4.3,16),
+                (1.9,3.25,3.3,13),(3.6,2.6,4.6,17),(5.5,1.5,5.0,19)]:
+    tall_grass(x,y,h,n)
+
+def feather_spray(x,y,h):
+    phase=rng.random()*math.tau
+    spine=[]
+    for k in range(11):
+        t=k/10; p=Vector((x+math.sin(t*4+phase)*.18,y+math.cos(t*3+phase)*.12,.16+h*t));spine.append(p)
         if k<2:continue
-        for j in range(5):
-            a=j*math.tau/5+k*1.04+phase
-            ln=rng.uniform(.18,.36)*(1-.3*t)
-            stems.leaf(center,(math.cos(a),math.sin(a)*.65,.45),ln,rng.uniform(.023,.048),
-                depth*6+rng.randrange(6),.025,phase,4)
-    stalk.tube(pts,.012)
+        for side in [-1,1]:
+            a=phase+t*2.1+side*1.35
+            branch=Vector((math.cos(a),math.sin(a)*.72,.44)).normalized()
+            bl=h*.18*(1-t*.55)*rng.uniform(.72,1.28)
+            for b in range(6):
+                u=(b+.5)/6; base=p+branch*bl*u
+                off=Vector((-branch.y,branch.x,rng.uniform(-.1,.2)))
+                for sign in [-1,1]:
+                    feather.leaf(base,branch*.28+off*sign,bl*.24,rng.uniform(.012,.024),
+                        12+rng.randrange(6),.004,a,3,'needle')
+    stalk.tube(spine,.008)
 
-for cx,cy,h,n in [(-4.5,1.0,4.8,28),(-2.6,2.7,4.2,26),(4.65,1.1,4.6,30),(2.8,2.5,3.4,24),(-.6,3.3,2.8,18)]:
-    for i in range(n):stem_plant(cx+rng.gauss(0,.48),cy+rng.gauss(0,.3),h*rng.uniform(.68,1.15),1 if cy<2 else 2)
+for cx,cy,h,n in [(-4.15,2.5,4.5,18),(-2.05,3.25,3.55,11),(.15,3.5,3.1,8),
+                  (3.45,2.9,4.1,13),(5.0,3.1,4.6,16)]:
+    for i in range(n):feather_spray(cx+rng.gauss(0,.38),cy+rng.gauss(0,.2),h*rng.uniform(.62,1.17))
 
-def bush_mass(cx,cy,h,n=22):
+def stem_plant(x,y,h,depth=1,amber=False):
+    phase=rng.random()*math.tau; tilt=rng.uniform(-.36,.36);pts=[]
+    for k in range(11):
+        t=k/10;p=Vector((x+tilt*t+math.sin(t*3+phase)*.1,y+math.sin(t*4+phase)*.08,.12+h*t));pts.append(p)
+        if k<2:continue
+        for j in range(rng.randint(2,4)):
+            a=j*math.tau/3+k*1.2+phase
+            tint=(19+rng.randrange(2)) if amber and rng.random()<.64 else depth*6+rng.randrange(6)
+            stems.leaf(p,(math.cos(a),math.sin(a)*.7,.48),rng.uniform(.16,.38)*(1-.25*t),
+                rng.uniform(.028,.07),tint,.02,phase,5)
+    stalk.tube(pts,.011)
+
+for cx,cy,h,n in [(-5.25,1.75,3.8,18),(-2.75,2.5,3.1,19),(.6,3.2,2.5,9),
+                  (2.55,2.6,3.2,13),(4.9,1.8,3.9,19)]:
+    for i in range(n):stem_plant(cx+rng.gauss(0,.38),cy+rng.gauss(0,.24),h*rng.uniform(.7,1.13),2 if cy>2.4 else 1)
+for cx,cy,h,n in [(-1.85,2.75,3.15,7),(3.0,2.85,2.9,5)]:
+    for i in range(n):stem_plant(cx+rng.gauss(0,.22),cy+rng.gauss(0,.15),h*rng.uniform(.72,1.05),2,True)
+
+def bush_mass(cx,cy,h,n):
     for i in range(n):
-        x=cx+rng.gauss(0,.35);y=cy+rng.gauss(0,.26); height=h*rng.uniform(.55,1.12)
-        tilt=rng.uniform(-.28,.28);pts=[]
-        for k in range(8):
-            t=k/7; p=Vector((x+tilt*t,y,.12+t*height));pts.append(p)
-            for j in range(3):
-                a=j*2.1+k*1.8+i
-                bush.leaf(p,(math.cos(a),math.sin(a),.38),rng.uniform(.18,.32),rng.uniform(.055,.095),rng.randrange(6),.04,a,5)
+        x=cx+rng.gauss(0,.3);y=cy+rng.gauss(0,.2);height=h*rng.uniform(.55,1.25)
+        tilt=rng.uniform(-.4,.4);pts=[]
+        for k in range(rng.randint(6,9)):
+            t=k/8;p=Vector((x+tilt*t,y+.11*math.sin(t*3+i),.13+t*height));pts.append(p)
+            if k<2:continue
+            for j in range(rng.randint(2,4)):
+                a=j*2.2+k*1.8+i
+                bush.leaf(p,(math.cos(a),math.sin(a),.3),rng.uniform(.11,.28),
+                    rng.uniform(.035,.085),rng.randrange(6),.025,a,5)
         stalk.tube(pts,.009)
 
-for x,y,h in [(-5.5,-.1,2.0),(-4,-.2,1.8),(-2.6,.1,2.3),(-1.3,1.7,2.3),(.25,2.1,2.45),
-               (1.6,1.6,2.1),(3.0,.2,2.55),(4.45,-.1,2.1),(5.7,.15,2.6)]:
-    bush_mass(x,y,h,25)
+for x,y,h,n in [(-5.25,.3,2.4,13),(-3.4,.7,1.8,10),(-2.1,1.5,2.0,9),
+                (.3,2.3,2.3,8),(2.65,1.6,2.05,9),(4.3,.45,2.45,13),(5.8,.45,1.8,9)]:
+    bush_mass(x,y,h,n)
 
-for cx,cy,h in [(-4.8,-.6,1.7),(-3.25,-.4,1.35),(-1.8,.1,1.4),(2.1,.0,1.7),(4.1,-.6,1.65),(5.4,-.5,1.6),(-.5,1.3,1.3)]:
-    for p in range(4):
-        x=cx+rng.uniform(-.4,.4);y=cy+rng.uniform(-.25,.25)
-        for j in range(8):
-            a=j*2.4+p;d=Vector((math.cos(a)*.55,math.sin(a)*.4,rng.uniform(.6,1.0)))
-            broad.leaf((x,y,.15),d,h*rng.uniform(.5,1.05),rng.uniform(.12,.23),rng.randrange(6),.12,a,11)
+for cx,cy,h,n in [(-4.8,-.35,1.55,3),(-2.9,.3,1.5,2),(-1.8,1.15,1.45,2),
+                  (-.35,.4,1.35,2),(2.45,.55,1.75,2),(4.15,-.2,2.0,2),(5.4,.45,1.35,2)]:
+    for p in range(n):
+        x=cx+rng.uniform(-.33,.33);y=cy+rng.uniform(-.2,.2)
+        for j in range(rng.randint(5,8)):
+            a=j*2.4+p;d=Vector((math.cos(a)*.6,math.sin(a)*.45,rng.uniform(.45,1)))
+            broad.photo_leaf((x,y,.16),d,h*rng.uniform(.42,.78),rng.choice(leaf_profiles),
+                             rng.uniform(-.42,.42),rng.uniform(.10,.3),rng.uniform(-.08,.08))
 
-# Foreground mounds leave a narrow, irregular gravel opening near the centre.
-for i in range(75):
-    x=rng.uniform(-6.3,6.3);y=rng.uniform(-1.55,-.45)
-    if -.8<x<1.55 and rng.random()<.85:continue
-    for j in range(rng.randint(7,13)):
-        a=rng.uniform(0,math.tau)
-        low.leaf((x,y,.06),(math.cos(a)*.8,math.sin(a)*.6,1),rng.uniform(.28,.8),rng.uniform(.018,.042),rng.randrange(6),.12,a,7)
+# Patchy foreground clusters frame open gravel rather than forming a hedge.
+for cx,cy,n in [(-5.9,-1.15,8),(-5.15,-.7,4),(-4.05,-1.65,9),(-3.25,-.65,5),
+                (-2.55,-1.35,6),(-1.35,-.55,3),(.1,-.45,4),(1.6,-1.6,6),
+                (2.6,-.75,3),(3.8,-1.55,8),(4.8,-.7,5),(5.8,-1.25,7)]:
+    for i in range(n):
+        x=cx+rng.gauss(0,.2);y=cy+rng.gauss(0,.16)
+        for j in range(rng.randint(3,8)):
+            a=rng.random()*math.tau
+            low.leaf((x,y,.07),(math.cos(a)*.85,math.sin(a)*.65,1),rng.uniform(.2,.62),
+                rng.uniform(.015,.043),rng.randrange(6),.11,a,7,'grass')
 
-for mesh in [ribbon,stems,bush,broad,low]:mesh.finish(greens)
+for mesh in [ribbon,grass,feather,bush,broad,low]:mesh.finish(greens+[leaf_atlas])
+stems.finish(greens+[leaf_atlas]+ambermats)
 stalk.finish([stemmat])
 
-# Small neutral gravel; low warm wood stays behind the leaf masses.
-gravelmats=[material('gravel '+str(i),c,.85) for i,c in enumerate([(.21,.22,.20),(.36,.34,.29),(.12,.14,.14),(.42,.40,.34),(.26,.25,.22)])]
-bpy.ops.mesh.primitive_plane_add(size=200,location=(0,0,-.03));bpy.context.object.name='gravel bed';bpy.context.object.data.materials.append(gravelmats[0])
+# A gently raised bed carries the plants and makes the foreground read as a
+# plane extending into the tank. Openings follow the irregular plant patches.
+gravelmats=[material('gravel '+str(i),c,.87) for i,c in enumerate([
+    (.105,.098,.078),(.18,.17,.14),(.075,.085,.08),(.235,.22,.18),(.14,.13,.11)])]
+def floor_height(x,y):
+    rise=.025+.08*math.sin(x*.72+y*.8)**2+.045*math.sin(x*2.2-y*1.3)**2
+    rise+=.09*math.exp(-((x-1.25)**2/4+(y-.5)**2/1.5))
+    return rise
+floor=Mesh('undulating natural gravel bed')
+nx,ny=70,45
+for j in range(ny):
+    y=-5+j*9.4/(ny-1)
+    for i in range(nx):
+        x=-7+i*14/(nx-1)
+        floor.v.append((x,y,floor_height(x,y)))
+for j in range(ny-1):
+    for i in range(nx-1):
+        a=j*nx+i;floor.f.append((a,a+1,a+1+nx,a+nx));floor.mi.append(0)
+floor.finish([gravelmats[0]])
 pebbles=Mesh('fine gravel openings')
-for i in range(9000):
-    x=rng.uniform(-6.7,6.7);y=rng.uniform(-2.2,3.6);z=rng.uniform(.0,.025);r=rng.uniform(.018,.046)
+for i in range(6500):
+    x=rng.uniform(-6.8,6.8);y=rng.uniform(-4.8,3.8);z=floor_height(x,y);r=rng.uniform(.012,.042)
     pts=[(x+math.cos(j*math.tau/6)*r,y+math.sin(j*math.tau/6)*r*.8,z) for j in range(6)]
     top=(x+r*.15,y,r*.65+z)
     for j in range(6):pebbles.face([pts[j],pts[(j+1)%6],top],rng.randrange(5))
 pebbles.finish(gravelmats)
-wood=material('subordinate warm driftwood',(.12,.049,.019),.83)
+larger_stones=Mesh('scattered embedded foreground gravel')
+for i in range(90):
+    x=rng.uniform(-6.5,6.5);y=rng.uniform(-4.2,.7)
+    if -.5<x<1.6 and y>-.4 and rng.random()<.6:continue
+    z=floor_height(x,y);r=rng.uniform(.045,.135)
+    pts=[(x+math.cos(j*math.tau/7)*r*rng.uniform(.75,1.2),
+          y+math.sin(j*math.tau/7)*r*.8*rng.uniform(.75,1.2),z-.015) for j in range(7)]
+    top=(x+rng.uniform(-.25,.25)*r,y,z+r*rng.uniform(.3,.62))
+    for j in range(7):larger_stones.face([pts[j],pts[(j+1)%7],top],rng.randrange(5))
+larger_stones.finish(gravelmats)
+wood=material('rooted warm driftwood',(.115,.048,.019),.84)
 wn=wood.node_tree.nodes;wl=wood.node_tree.links;tex=wn.new('ShaderNodeTexNoise');tex.inputs['Scale'].default_value=7;tex.inputs['Detail'].default_value=4
 bu=wn.new('ShaderNodeBump');bu.inputs['Strength'].default_value=.6;bu.inputs['Distance'].default_value=.12;wl.new(tex.outputs['Fac'],bu.inputs['Height']);wl.new(bu.outputs[0],wn.get('Principled BSDF').inputs['Normal'])
-for x,y,a in [(-2.1,.3,.3),(2.4,.55,-.5),(-4.3,.7,.1)]:
-    bpy.ops.mesh.primitive_uv_sphere_add(segments=20,ring_count=12,location=(x,y,.33))
-    obj=bpy.context.object;obj.name='partly planted driftwood';obj.scale=(1.0,.23,.23);obj.rotation_euler[1]=a;obj.data.materials.append(wood)
-    for p in obj.data.polygons:p.use_smooth=True
+wood_image=bpy.data.images.load(str(TEXTURES/'wood_albedo.webp'));wood_image.pack()
+wood_tex=wn.new('ShaderNodeTexImage');wood_tex.image=wood_image
+wl.new(wood_tex.outputs['Color'],wn.get('Principled BSDF').inputs['Base Color'])
+def branch(points,radii,name):
+    # Cylindrical segments overlap at the bends; the base sinks into gravel.
+    for i,(a,b) in enumerate(zip(points,points[1:])):
+        a,b=Vector(a),Vector(b);direction=b-a
+        bpy.ops.mesh.primitive_cone_add(vertices=12,radius1=radii[i],radius2=radii[i+1],depth=direction.length,
+            location=(a+b)*.5)
+        obj=bpy.context.object;obj.name=name;obj.rotation_euler=direction.to_track_quat('Z','Y').to_euler()
+        obj.data.materials.append(wood)
+        bevel=obj.modifiers.new('weathered rounded bark','BEVEL');bevel.width=.045;bevel.segments=2
+        for p in obj.data.polygons:p.use_smooth=True
+branch([(-1.7,.5,.05),(-.95,.62,.27),(-.15,.9,.42),(.65,1.0,.57),(1.55,1.25,.83)],
+       [.24,.22,.18,.14,.07],'planted central wood')
+branch([(-.9,.62,.25),(-1.5,.75,.72),(-2.4,1.0,1.18)], [.16,.11,.025],'left branch')
+branch([(.45,1,.5),(.95,1.25,1.18),(1.65,1.55,1.48)], [.12,.08,.018],'right branch')
+
+# Individual scanned rocks from the repo; the old Slice C arrangement is
+# discarded. These stay low, irregular and partly buried beneath plants.
+before=set(bpy.data.objects)
+bpy.ops.import_scene.gltf(filepath=str(ROOT/'habitat/assets/slice-c/environment.glb'))
+imported=[ob for ob in bpy.data.objects if ob not in before]
+rock_sources={}
+for ob in imported:
+    if ob.type!='MESH':continue
+    name=next((key for key in ('rock-07','rock-09','boulder') if key in ob.name.lower()),None)
+    if name is None:continue
+    mesh=ob.data.copy();mesh.transform(ob.matrix_world)
+    xs=[v.co.x for v in mesh.vertices];ys=[v.co.y for v in mesh.vertices];zs=[v.co.z for v in mesh.vertices]
+    center=Vector(((min(xs)+max(xs))*.5,(min(ys)+max(ys))*.5,min(zs)))
+    for v in mesh.vertices:v.co-=center
+    rock_sources[name]=(mesh,max(zs)-min(zs))
+for ob in imported:bpy.data.objects.remove(ob,do_unlink=True)
+rockmats={}
+for name,file in [('rock-07','rock07_albedo.webp'),('rock-09','rock09_albedo.webp'),('boulder','boulder_albedo.webp')]:
+    mat=material('scanned stone '+name,(.15,.15,.13),.91)
+    img=bpy.data.images.load(str(TEXTURES/file));img.pack()
+    texnode=mat.node_tree.nodes.new('ShaderNodeTexImage');texnode.image=img
+    mat.node_tree.links.new(texnode.outputs['Color'],mat.node_tree.nodes.get('Principled BSDF').inputs['Base Color'])
+    rockmats[name]=mat
+for x,y,h,name in [(-2.0,.7,.42,'rock-07'),(-.85,.25,.28,'rock-09'),
+                   (.45,1.4,.46,'boulder'),(1.55,.85,.39,'rock-07')]:
+    source,source_h=rock_sources[name]
+    ob=bpy.data.objects.new('partly buried '+name,source.copy());bpy.context.collection.objects.link(ob)
+    ob.data.materials.clear();ob.data.materials.append(rockmats[name])
+    ob.location=(x,y,floor_height(x,y)-h*.19);ob.scale=(h/source_h,)*3
+    ob.rotation_euler[2]=rng.uniform(-math.pi,math.pi)
 
 # Luminous blue rear water is a backdrop, not a fog layer over the foreground.
 back=bpy.data.materials.new('clear blue depth');back.use_nodes=True
@@ -237,10 +404,11 @@ area('soft light through front glass',(0,-5,4.5),(0,1,2),800,8,(.88,.94,1))
 area('leaf transmission light',(-3,3.8,5),(-2,0,2),1000,5,(.84,1,.83))
 world=bpy.data.worlds.new('aquarium ambient');world.use_nodes=True;world.node_tree.nodes['Background'].inputs[0].default_value=(.22,.31,.38,1);world.node_tree.nodes['Background'].inputs[1].default_value=.35;bpy.context.scene.world=world
 camdata=bpy.data.cameras.new('offline reference camera');cam=bpy.data.objects.new('offline reference camera',camdata);bpy.context.collection.objects.link(cam)
-cam.location=(0,-17,5.1);target=Vector((0,1,3.05));cam.rotation_euler=(target-cam.location).to_track_quat('-Z','Y').to_euler();camdata.type='ORTHO';camdata.ortho_scale=12.7
+cam.location=(0,-15.3,6.6);target=Vector((0,1,2.5));cam.rotation_euler=(target-cam.location).to_track_quat('-Z','Y').to_euler();camdata.type='PERSP';camdata.lens=48
 scene=bpy.context.scene;scene.camera=cam;scene.render.engine='CYCLES';scene.cycles.samples=24;scene.cycles.use_denoising=True
-scene.render.resolution_x=1920;scene.render.resolution_y=1080;scene.render.resolution_percentage=100
-scene.render.image_settings.file_format='PNG';scene.render.filepath=str(OUT/'offline-1920.png')
+scene.render.resolution_x=1920;scene.render.resolution_y=1080;scene.render.resolution_percentage=50 if PREVIEW else 100
+scene.cycles.samples=7 if PREVIEW else 24
+scene.render.image_settings.file_format='PNG';scene.render.filepath=str(WORK/'preview.png' if PREVIEW else OUT/'offline-1920.png')
 scene.view_settings.view_transform='AgX';scene.view_settings.look='AgX - Medium High Contrast';scene.view_settings.exposure=.5
 scene.render.threads_mode='FIXED';scene.render.threads=6
 bpy.ops.wm.save_as_mainfile(filepath=str(WORK/'lush-reference.blend'))
