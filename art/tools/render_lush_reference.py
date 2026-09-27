@@ -15,8 +15,41 @@ OUT.mkdir(parents=True, exist_ok=True)
 rng = random.Random(260927)
 PREVIEW = os.environ.get('LUSH_PREVIEW') == '1'
 DUSK = os.environ.get('LUSH_DUSK') == '1'
+GEOMETRY_PASS = os.environ.get('LUSH_GEOMETRY_PASS') == '1'
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
+
+def terrain_noise(x, y):
+    """Small seeded value noise: irregular gravel, without repeated waves."""
+    ix, iy = math.floor(x), math.floor(y)
+    fx, fy = x-ix, y-iy
+    fx, fy = fx*fx*(3-2*fx), fy*fy*(3-2*fy)
+    def corner(a, b):
+        n = ((a*374761393) ^ (b*668265263) ^ 260927) & 0xffffffff
+        n = ((n ^ (n >> 13))*1274126177) & 0xffffffff
+        return n/0xffffffff
+    a = corner(ix, iy)*(1-fx)+corner(ix+1, iy)*fx
+    b = corner(ix, iy+1)*(1-fx)+corner(ix+1, iy+1)*fx
+    return a*(1-fy)+b*fy
+
+def floor_height(x, y):
+    mounds = (
+        (-5.5, 1.35, .18, 1.25, 1.0),
+        (-3.65, 2.15, .15, 1.3, 1.15),
+        (3.65, 1.9, .14, 1.2, 1.1),
+        (5.45, .45, .17, 1.05, 1.1),
+        (-.4, .85, .22, 2.0, 1.1),
+        (-1.7, -1.0, .075, .7, .8),
+    )
+    z = .052 + .024*max(0, y+3)/7
+    z += .075*(terrain_noise(x*.68, y*.83)-.5)
+    z += .022*(terrain_noise(x*2.1+5, y*2.2-3)-.5)
+    for cx, cy, height, sx, sy in mounds:
+        z += height*math.exp(-((x-cx)/sx)**2-((y-cy)/sy)**2)
+    return max(.015, z)
+
+def root_height(x, y):
+    return floor_height(x, y)-.055
 
 def material(name, color, rough=.5, metal=0):
     m = bpy.data.materials.new(name); m.use_nodes = True
@@ -153,30 +186,33 @@ def ribbon_clump(x,y,h,n):
     depth=2 if y>2 else 1
     for j in range(n):
         a=rng.uniform(0,math.tau)
-        ribbon.leaf((x+rng.gauss(0,.16),y+rng.gauss(0,.1),.12),
+        px=x+rng.gauss(0,.19);py=y+rng.gauss(0,.14)
+        ribbon.leaf((px,py,root_height(px,py)),
             (math.cos(a)*rng.uniform(.18,.7),math.sin(a)*.28,1),h*rng.uniform(.58,1.16),
             rng.uniform(.085,.17),depth*6+rng.randrange(6),rng.uniform(.55,1.25),rng.uniform(-3,3),17)
 
-for x,y,h,n in [(-6.0,2.3,4.8,8),(-5.1,2.6,5.9,11),(-3.8,3.0,5.1,7),
-                 (-1.65,3.4,3.7,5),(2.8,3.2,4.5,7),(4.1,2.9,5.7,12),(5.45,2.6,5.3,9),(6.2,2.2,4.4,6)]:
+for x,y,h,n in [(-6.1,2.2,4.8,9),(-5.25,2.9,5.8,11),(-4.45,2.35,3.9,5),
+                 (-3.25,3.15,4.6,5),(-1.65,3.55,2.8,2),
+                 (3.45,3.15,3.8,4),(4.55,2.9,5.5,9),(5.65,2.55,4.9,8),(6.3,1.9,4.3,5)]:
     ribbon_clump(x,y,h,n)
 
 def tall_grass(x,y,h,n):
     for j in range(n):
         a=rng.uniform(0,math.tau)
-        grass.leaf((x+rng.gauss(0,.12),y+rng.gauss(0,.1),.12),
+        px=x+rng.gauss(0,.16);py=y+rng.gauss(0,.13)
+        grass.leaf((px,py,root_height(px,py)),
             (math.cos(a)*rng.uniform(.05,.38),math.sin(a)*.16,1),h*rng.uniform(.54,1.22),
             rng.uniform(.016,.052),rng.randrange(6,18),rng.uniform(.3,.9),a,13,'grass')
 
-for x,y,h,n in [(-5.9,1.0,3.8,18),(-4.65,2.3,4.9,21),(-2.9,3.05,4.3,16),
-                (1.9,3.25,3.3,13),(3.6,2.6,4.6,17),(5.5,1.5,5.0,19)]:
+for x,y,h,n in [(-6.0,.9,3.7,15),(-4.9,2.45,5.1,22),(-3.35,3.1,4.0,12),
+                (2.45,3.2,3.0,7),(3.9,2.4,4.6,14),(5.7,1.35,4.8,18)]:
     tall_grass(x,y,h,n)
 
 def feather_spray(x,y,h):
     phase=rng.random()*math.tau
     spine=[]
     for k in range(11):
-        t=k/10; p=Vector((x+math.sin(t*4+phase)*.18,y+math.cos(t*3+phase)*.12,.16+h*t));spine.append(p)
+        t=k/10; p=Vector((x+math.sin(t*4+phase)*.18,y+math.cos(t*3+phase)*.12,root_height(x,y)+h*t));spine.append(p)
         if k<2:continue
         for side in [-1,1]:
             a=phase+t*2.1+side*1.35
@@ -190,14 +226,14 @@ def feather_spray(x,y,h):
                         12+rng.randrange(6),.004,a,3,'needle')
     stalk.tube(spine,.008)
 
-for cx,cy,h,n in [(-4.15,2.5,4.5,18),(-2.05,3.25,3.55,11),(.15,3.5,3.1,8),
-                  (3.45,2.9,4.1,13),(5.0,3.1,4.6,16)]:
+for cx,cy,h,n in [(-4.65,2.45,4.7,22),(-2.7,3.2,3.3,9),(-.25,3.7,2.3,3),
+                  (3.55,3.0,3.8,10),(5.2,2.9,4.8,16)]:
     for i in range(n):feather_spray(cx+rng.gauss(0,.38),cy+rng.gauss(0,.2),h*rng.uniform(.62,1.17))
 
 def stem_plant(x,y,h,depth=1,amber=False):
     phase=rng.random()*math.tau; tilt=rng.uniform(-.36,.36);pts=[]
     for k in range(11):
-        t=k/10;p=Vector((x+tilt*t+math.sin(t*3+phase)*.1,y+math.sin(t*4+phase)*.08,.12+h*t));pts.append(p)
+        t=k/10;p=Vector((x+tilt*t+math.sin(t*3+phase)*.1,y+math.sin(t*4+phase)*.08,root_height(x,y)+h*t));pts.append(p)
         if k<2:continue
         for j in range(rng.randint(2,4)):
             a=j*math.tau/3+k*1.2+phase
@@ -206,10 +242,10 @@ def stem_plant(x,y,h,depth=1,amber=False):
                 rng.uniform(.028,.07),tint,.02,phase,5)
     stalk.tube(pts,.011)
 
-for cx,cy,h,n in [(-5.25,1.75,3.8,18),(-2.75,2.5,3.1,19),(.6,3.2,2.5,9),
-                  (2.55,2.6,3.2,13),(4.9,1.8,3.9,19)]:
+for cx,cy,h,n in [(-5.4,1.55,3.8,21),(-3.15,2.55,3.0,15),(.65,3.55,2.15,3),
+                  (2.8,2.85,2.9,8),(4.9,1.65,3.9,22)]:
     for i in range(n):stem_plant(cx+rng.gauss(0,.38),cy+rng.gauss(0,.24),h*rng.uniform(.7,1.13),2 if cy>2.4 else 1)
-for cx,cy,h,n in [(-1.85,2.75,3.15,7),(3.0,2.85,2.9,5)]:
+for cx,cy,h,n in [(-2.55,2.7,2.9,6),(3.3,3.0,2.7,4)]:
     for i in range(n):stem_plant(cx+rng.gauss(0,.22),cy+rng.gauss(0,.15),h*rng.uniform(.72,1.05),2,True)
 
 def bush_mass(cx,cy,h,n):
@@ -217,7 +253,7 @@ def bush_mass(cx,cy,h,n):
         x=cx+rng.gauss(0,.3);y=cy+rng.gauss(0,.2);height=h*rng.uniform(.55,1.25)
         tilt=rng.uniform(-.4,.4);pts=[]
         for k in range(rng.randint(6,9)):
-            t=k/8;p=Vector((x+tilt*t,y+.11*math.sin(t*3+i),.13+t*height));pts.append(p)
+            t=k/8;p=Vector((x+tilt*t,y+.11*math.sin(t*3+i),root_height(x,y)+t*height));pts.append(p)
             if k<2:continue
             for j in range(rng.randint(2,4)):
                 a=j*2.2+k*1.8+i
@@ -225,65 +261,66 @@ def bush_mass(cx,cy,h,n):
                     rng.uniform(.035,.085),rng.randrange(6),.025,a,5)
         stalk.tube(pts,.009)
 
-for x,y,h,n in [(-5.25,.3,2.4,13),(-3.4,.7,1.8,10),(-2.1,1.5,2.0,9),
-                (.3,2.3,2.3,8),(2.65,1.6,2.05,9),(4.3,.45,2.45,13),(5.8,.45,1.8,9)]:
+for x,y,h,n in [(-5.65,.15,2.5,17),(-4.1,.55,1.8,15),(-2.35,1.65,1.75,7),
+                (-1.2,1.2,1.2,5),(-1.55,-.1,1.35,7),(.95,.2,.9,3),(1.8,1.8,1.0,3),
+                (2.85,1.65,1.7,5),(4.35,.4,2.45,16),(5.9,.4,1.7,11)]:
     bush_mass(x,y,h,n)
 
-for cx,cy,h,n in [(-4.8,-.35,1.55,3),(-2.9,.3,1.5,2),(-1.8,1.15,1.45,2),
-                  (-.35,.4,1.35,2),(2.45,.55,1.75,2),(4.15,-.2,2.0,2),(5.4,.45,1.35,2)]:
+for cx,cy,h,n in [(-5.35,-.35,1.55,3),(-3.85,.1,1.25,2),(-2.7,.7,1.15,1),
+                  (2.55,.65,1.45,2),(4.25,-.15,1.8,3),(5.85,.45,1.25,1)]:
     for p in range(n):
         x=cx+rng.uniform(-.33,.33);y=cy+rng.uniform(-.2,.2)
         for j in range(rng.randint(5,8)):
             a=j*2.4+p;d=Vector((math.cos(a)*.6,math.sin(a)*.45,rng.uniform(.45,1)))
-            broad.photo_leaf((x,y,.16),d,h*rng.uniform(.42,.78),rng.choice(leaf_profiles),
+            broad.photo_leaf((x,y,root_height(x,y)),d,h*rng.uniform(.42,.78),rng.choice(leaf_profiles),
                              rng.uniform(-.42,.42),rng.uniform(.10,.3),rng.uniform(-.08,.08))
 
 # Patchy foreground clusters frame open gravel rather than forming a hedge.
-for cx,cy,n in [(-5.9,-1.15,8),(-5.15,-.7,4),(-4.05,-1.65,9),(-3.25,-.65,5),
-                (-2.55,-1.35,6),(-1.35,-.55,3),(.1,-.45,4),(1.6,-1.6,6),
-                (2.6,-.75,3),(3.8,-1.55,8),(4.8,-.7,5),(5.8,-1.25,7)]:
+for cx,cy,n in [(-6.0,-1.2,10),(-5.2,-.55,6),(-3.9,-1.6,11),(-2.85,-.7,7),
+                (-1.8,-1.25,4),(-.65,-2.4,3),(1.45,-1.1,3),(2.05,-1.45,4),(3.25,-.85,6),(4.25,-1.6,11),
+                (5.3,-.65,5),(6.0,-1.3,9)]:
     for i in range(n):
         x=cx+rng.gauss(0,.2);y=cy+rng.gauss(0,.16)
         for j in range(rng.randint(3,8)):
             a=rng.random()*math.tau
-            low.leaf((x,y,.07),(math.cos(a)*.85,math.sin(a)*.65,1),rng.uniform(.2,.62),
+            low.leaf((x,y,root_height(x,y)),(math.cos(a)*.85,math.sin(a)*.65,1),rng.uniform(.2,.62),
                 rng.uniform(.015,.043),rng.randrange(6),.11,a,7,'grass')
 
 for mesh in [ribbon,grass,feather,bush,broad,low]:mesh.finish(greens+[leaf_atlas])
 stems.finish(greens+[leaf_atlas]+ambermats)
 stalk.finish([stemmat])
 
-# A gently raised bed carries the plants and makes the foreground read as a
-# plane extending into the tank. Openings follow the irregular plant patches.
+# Raised, uneven planting beds transition into open foreground gravel.
 gravelmats=[material('gravel '+str(i),c,.87) for i,c in enumerate([
     (.105,.098,.078),(.18,.17,.14),(.075,.085,.08),(.235,.22,.18),(.14,.13,.11)])]
-def floor_height(x,y):
-    rise=.025+.08*math.sin(x*.72+y*.8)**2+.045*math.sin(x*2.2-y*1.3)**2
-    rise+=.09*math.exp(-((x-1.25)**2/4+(y-.5)**2/1.5))
-    return rise
 floor=Mesh('undulating natural gravel bed')
-nx,ny=70,45
+nx,ny=100,64
 for j in range(ny):
-    y=-5+j*9.4/(ny-1)
     for i in range(nx):
         x=-7+i*14/(nx-1)
+        rear=4.25+.27*(terrain_noise(x*.55+1,7)-.5)
+        rear+=.14*math.exp(-((x+2.1)/1.7)**2)-.12*math.exp(-((x-.7)/1.35)**2)
+        y=-5+j*(rear+5)/(ny-1)
         floor.v.append((x,y,floor_height(x,y)))
 for j in range(ny-1):
     for i in range(nx-1):
         a=j*nx+i;floor.f.append((a,a+1,a+1+nx,a+nx));floor.mi.append(0)
 floor.finish([gravelmats[0]])
 pebbles=Mesh('fine gravel openings')
-for i in range(6500):
-    x=rng.uniform(-6.8,6.8);y=rng.uniform(-4.8,3.8);z=floor_height(x,y);r=rng.uniform(.012,.042)
+for i in range(7200):
+    x=rng.uniform(-6.8,6.8);y=rng.uniform(-4.8,3.8);z=floor_height(x,y)
+    front=max(0,min(1,(3-y)/7.5))
+    r=rng.uniform(.008,.025)*(1+.9*front)
     pts=[(x+math.cos(j*math.tau/6)*r,y+math.sin(j*math.tau/6)*r*.8,z) for j in range(6)]
     top=(x+r*.15,y,r*.65+z)
     for j in range(6):pebbles.face([pts[j],pts[(j+1)%6],top],rng.randrange(5))
 pebbles.finish(gravelmats)
 larger_stones=Mesh('scattered embedded foreground gravel')
-for i in range(90):
+for i in range(75):
     x=rng.uniform(-6.5,6.5);y=rng.uniform(-4.2,.7)
     if -.5<x<1.6 and y>-.4 and rng.random()<.6:continue
-    z=floor_height(x,y);r=rng.uniform(.045,.135)
+    z=floor_height(x,y);front=max(0,min(1,(2-y)/6))
+    r=rng.uniform(.04,.105)*(1+.4*front)
     pts=[(x+math.cos(j*math.tau/7)*r*rng.uniform(.75,1.2),
           y+math.sin(j*math.tau/7)*r*.8*rng.uniform(.75,1.2),z-.015) for j in range(7)]
     top=(x+rng.uniform(-.25,.25)*r,y,z+r*rng.uniform(.3,.62))
@@ -410,7 +447,8 @@ scene=bpy.context.scene;scene.camera=cam;scene.render.engine='CYCLES';scene.cycl
 scene.render.resolution_x=1920;scene.render.resolution_y=1080;scene.render.resolution_percentage=50 if PREVIEW else 100
 scene.cycles.samples=7 if PREVIEW else 24
 scene.render.image_settings.file_format='PNG'
-scene.render.filepath=str(WORK/'preview.png' if PREVIEW else OUT/('dusk-1920.png' if DUSK else 'offline-1920.png'))
+scene.render.filepath=str(WORK/('geometry-preview.png' if GEOMETRY_PASS else 'preview.png') if PREVIEW
+                          else OUT/('geometry-dusk-1920.png' if GEOMETRY_PASS else 'dusk-1920.png' if DUSK else 'offline-1920.png'))
 scene.view_settings.view_transform='AgX';scene.view_settings.look='AgX - Medium High Contrast'
 scene.view_settings.exposure=-.2 if DUSK else .5
 scene.render.threads_mode='FIXED';scene.render.threads=6
