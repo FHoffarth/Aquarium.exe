@@ -14,6 +14,7 @@ WORK.mkdir(parents=True, exist_ok=True)
 OUT.mkdir(parents=True, exist_ok=True)
 rng = random.Random(260927)
 PREVIEW = os.environ.get('LUSH_PREVIEW') == '1'
+DUSK = os.environ.get('LUSH_DUSK') == '1'
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
 
@@ -408,8 +409,10 @@ cam.location=(0,-15.3,6.6);target=Vector((0,1,2.5));cam.rotation_euler=(target-c
 scene=bpy.context.scene;scene.camera=cam;scene.render.engine='CYCLES';scene.cycles.samples=24;scene.cycles.use_denoising=True
 scene.render.resolution_x=1920;scene.render.resolution_y=1080;scene.render.resolution_percentage=50 if PREVIEW else 100
 scene.cycles.samples=7 if PREVIEW else 24
-scene.render.image_settings.file_format='PNG';scene.render.filepath=str(WORK/'preview.png' if PREVIEW else OUT/'offline-1920.png')
-scene.view_settings.view_transform='AgX';scene.view_settings.look='AgX - Medium High Contrast';scene.view_settings.exposure=.5
+scene.render.image_settings.file_format='PNG'
+scene.render.filepath=str(WORK/'preview.png' if PREVIEW else OUT/('dusk-1920.png' if DUSK else 'offline-1920.png'))
+scene.view_settings.view_transform='AgX';scene.view_settings.look='AgX - Medium High Contrast'
+scene.view_settings.exposure=-.2 if DUSK else .5
 scene.render.threads_mode='FIXED';scene.render.threads=6
 bpy.ops.wm.save_as_mainfile(filepath=str(WORK/'lush-reference.blend'))
 print('Offline scene saved. Rendering one reference-camera candidate.',flush=True)
