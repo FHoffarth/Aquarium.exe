@@ -3,7 +3,7 @@
 node art/tools/export_offline_fish.mjs
 blender -b --factory-startup -P art/tools/render_lush_reference.py
 """
-import bpy, math, random, pathlib, json, os
+import bpy, math, random, pathlib, json, os, sys
 from mathutils import Vector
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
@@ -16,6 +16,10 @@ rng = random.Random(260927)
 PREVIEW = os.environ.get('LUSH_PREVIEW') == '1'
 DUSK = os.environ.get('LUSH_DUSK') == '1'
 GEOMETRY_PASS = os.environ.get('LUSH_GEOMETRY_PASS') == '1'
+WATER_PASS = os.environ.get('LUSH_WATER_PASS') == '1'
+if WATER_PASS:
+    sys.path.insert(0, str(ROOT/'art/tools'))
+    from lush_water_pass import substrate_height, redistribute_gravel, naturalize_ground_material, add_water_atmosphere
 bpy.ops.object.select_all(action='SELECT')
 bpy.ops.object.delete(use_global=False)
 
@@ -301,11 +305,13 @@ for j in range(ny):
         rear=4.25+.27*(terrain_noise(x*.55+1,7)-.5)
         rear+=.14*math.exp(-((x+2.1)/1.7)**2)-.12*math.exp(-((x-.7)/1.35)**2)
         y=-5+j*(rear+5)/(ny-1)
-        floor.v.append((x,y,floor_height(x,y)))
+        z=substrate_height(x,y,floor_height) if WATER_PASS else floor_height(x,y)
+        floor.v.append((x,y,z))
 for j in range(ny-1):
     for i in range(nx-1):
         a=j*nx+i;floor.f.append((a,a+1,a+1+nx,a+nx));floor.mi.append(0)
 floor.finish([gravelmats[0]])
+if WATER_PASS:naturalize_ground_material(gravelmats[0])
 pebbles=Mesh('fine gravel openings')
 for i in range(7200):
     x=rng.uniform(-6.8,6.8);y=rng.uniform(-4.8,3.8);z=floor_height(x,y)
@@ -314,6 +320,7 @@ for i in range(7200):
     pts=[(x+math.cos(j*math.tau/6)*r,y+math.sin(j*math.tau/6)*r*.8,z) for j in range(6)]
     top=(x+r*.15,y,r*.65+z)
     for j in range(6):pebbles.face([pts[j],pts[(j+1)%6],top],rng.randrange(5))
+if WATER_PASS:redistribute_gravel(pebbles,6,floor_height,terrain_noise,48217)
 pebbles.finish(gravelmats)
 larger_stones=Mesh('scattered embedded foreground gravel')
 for i in range(75):
@@ -325,6 +332,7 @@ for i in range(75):
           y+math.sin(j*math.tau/7)*r*.8*rng.uniform(.75,1.2),z-.015) for j in range(7)]
     top=(x+rng.uniform(-.25,.25)*r,y,z+r*rng.uniform(.3,.62))
     for j in range(7):larger_stones.face([pts[j],pts[(j+1)%7],top],rng.randrange(5))
+if WATER_PASS:redistribute_gravel(larger_stones,7,floor_height,terrain_noise,91731)
 larger_stones.finish(gravelmats)
 wood=material('rooted warm driftwood',(.115,.048,.019),.84)
 wn=wood.node_tree.nodes;wl=wood.node_tree.links;tex=wn.new('ShaderNodeTexNoise');tex.inputs['Scale'].default_value=7;tex.inputs['Detail'].default_value=4
@@ -447,11 +455,14 @@ scene=bpy.context.scene;scene.camera=cam;scene.render.engine='CYCLES';scene.cycl
 scene.render.resolution_x=1920;scene.render.resolution_y=1080;scene.render.resolution_percentage=50 if PREVIEW else 100
 scene.cycles.samples=7 if PREVIEW else 24
 scene.render.image_settings.file_format='PNG'
-scene.render.filepath=str(WORK/('geometry-preview.png' if GEOMETRY_PASS else 'preview.png') if PREVIEW
-                          else OUT/('geometry-dusk-1920.png' if GEOMETRY_PASS else 'dusk-1920.png' if DUSK else 'offline-1920.png'))
+scene.render.filepath=str(WORK/('water-preview.png' if WATER_PASS else 'geometry-preview.png' if GEOMETRY_PASS else 'preview.png') if PREVIEW
+                          else OUT/('geometry-water-atmosphere-1920.png' if WATER_PASS else 'geometry-dusk-1920.png' if GEOMETRY_PASS else 'dusk-1920.png' if DUSK else 'offline-1920.png'))
 scene.view_settings.view_transform='AgX';scene.view_settings.look='AgX - Medium High Contrast'
 scene.view_settings.exposure=-.2 if DUSK else .5
 scene.render.threads_mode='FIXED';scene.render.threads=6
-bpy.ops.wm.save_as_mainfile(filepath=str(WORK/'lush-reference.blend'))
+if WATER_PASS:
+    illuminated=greens+[leaf_atlas]+ambermats+gravelmats+[wood]+list(rockmats.values())
+    add_water_atmosphere(illuminated+[stemmat]+list(fishmats.values())+[eye,iris],illuminated)
+bpy.ops.wm.save_as_mainfile(filepath=str(WORK/('lush-water-reference.blend' if WATER_PASS else 'lush-reference.blend')))
 print('Offline scene saved. Rendering one reference-camera candidate.',flush=True)
 bpy.ops.render.render(write_still=True)
