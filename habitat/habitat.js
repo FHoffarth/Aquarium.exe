@@ -1,6 +1,7 @@
 import * as THREE from './vendor/three/three.module.js';
 import { readAuditConfig } from './audit-config.js';
 import { readArtMode } from './core/art-mode.js';
+import { readWaterMode } from './shaders/water-volume.js';
 import { createHabitatEngine } from './core/engine.js';
 import { readHeroFishConfig } from './core/hero-fish.js';
 import { createPerformanceRecorder } from './core/performance.js';
@@ -11,6 +12,8 @@ const canvas = document.getElementById('aquarium');
 const diagnostics = document.getElementById('diagnostics');
 const auditConfig = readAuditConfig(location);
 const artMode = readArtMode(location);
+// Development comparison only (?water=off|extinction|full); no UI.
+const waterMode = readWaterMode(location);
 const heroFish = readHeroFishConfig(location);
 const performanceRecorder = createPerformanceRecorder({ enabled: auditConfig.enabled });
 // Measured in the real host (1920x1080, Intel UHD): 4x MSAA multiplied by the
@@ -51,6 +54,7 @@ renderer.setClearColor(0x02141d, 1);
 const { habitat, art } = await createPlantedTankForArt(renderer, {
   artMode,
   heroFish,
+  waterMode,
   auditConfig,
   performanceRecorder,
   // Imported lazily so even a loader module failure falls back to procedural.

@@ -1,5 +1,6 @@
 import * as THREE from '../vendor/three/three.module.js';
 import { injectMaterialEffects } from '../shaders/material-effects.js';
+import { applyWater } from '../shaders/water-volume.js';
 
 // Aquarium.exe hero fish: an anatomically shaped small tetra/rasbora-type
 // fish rendered as two InstancedMeshes (body+eyes, fin membranes) driven by
@@ -598,7 +599,7 @@ function applyHeroShader(material, {
   vFishSurface = aSurface;
   vFishS = hfS;`)
       .replace('#include <begin_vertex>', 'vec3 transformed = hfPosition;');
-    shader.fragmentShader = `${palette ? 'varying float vFishPalette;\n' : ''}varying float vFishPart;\nvarying float vFishSurface;\nvarying float vFishS;\n${shader.fragmentShader}`;
+    shader.fragmentShader = `${palette ? 'varying float vFishPalette;\n' : ''}${palette === 'freshwater-approved' ? APPROVED_PALETTE_HELPERS : ''}varying float vFishPart;\nvarying float vFishSurface;\nvarying float vFishS;\n${shader.fragmentShader}`;
     if (albedo) {
       shader.fragmentShader = shader.fragmentShader
         .replace('#include <color_fragment>', `#include <color_fragment>\n${albedo}`);
@@ -623,7 +624,7 @@ ${optics}`);
       });
     }
   };
-  material.customProgramCacheKey = () => `hero-fish:${key}:${effectUniforms ? 'fx' : 'plain'}:${palette ? 'freshwater' : 'silver'}`;
+  material.customProgramCacheKey = () => `hero-fish:${key}:${effectUniforms ? 'fx' : 'plain'}:${palette || 'silver'}`;
   return material;
 }
 
@@ -689,6 +690,44 @@ const FRESHWATER_FIN_ALBEDO = /* glsl */ `
     float luminance = dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722));
     vec3 accent = vFishPalette < 0.5 ? vec3(1.38, 0.19, 0.12) : vec3(1.45, 0.47, 0.2);
     diffuseColor.rgb = mix(diffuseColor.rgb, luminance * accent, 0.72);
+  }`;
+
+// Approved freshwater school (the 6dfd62d offline review fish): silver-grey
+// back, a clear orange-red belly band and red-pink fins; one group adds a
+// blue lateral stripe above the red band. Same body geometry and texture;
+// palette only, at full strength for the live aquarium.
+const APPROVED_PALETTE_HELPERS = /* glsl */ `
+vec3 hfApprovedBand(float group) { return group < 1.5 ? vec3(1.0, 0.33, 0.07) : vec3(0.92, 0.2, 0.09); }
+`;
+
+const APPROVED_BODY_ALBEDO = /* glsl */ `
+  if (vFishPart < 0.5) {
+    float luminance = dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+    float along = smoothstep(0.08, 0.2, vFishS) * (1.0 - smoothstep(0.84, 0.95, vFishS));
+    float belly = smoothstep(-0.12, -0.3, vFishSurface) * (1.0 - smoothstep(-0.72, -0.9, vFishSurface));
+    if (vFishPalette < 0.5) {
+      float stripe = smoothstep(-0.2, -0.05, vFishSurface) * (1.0 - smoothstep(0.1, 0.24, vFishSurface))
+        * smoothstep(0.1, 0.22, vFishS) * (1.0 - smoothstep(0.72, 0.86, vFishS));
+      diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.08, 0.35, 0.95) * (0.5 + 0.6 * luminance), stripe * 0.85);
+      diffuseColor.rgb = mix(diffuseColor.rgb, vec3(0.95, 0.2, 0.08) * (0.55 + 0.6 * luminance), belly * along * 0.9);
+    } else {
+      diffuseColor.rgb = mix(diffuseColor.rgb, hfApprovedBand(vFishPalette) * (0.55 + 0.6 * luminance),
+        belly * along * 0.92);
+    }
+    diffuseColor.rgb = mix(diffuseColor.rgb, vec3(luminance) * vec3(0.93, 0.95, 0.98),
+      smoothstep(0.25, 0.6, vFishSurface) * 0.35);
+  }`;
+
+const APPROVED_FIN_ALBEDO = /* glsl */ `
+  {
+    float luminance = dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+    diffuseColor.rgb = mix(diffuseColor.rgb, vec3(1.0, 0.36, 0.3) * (0.6 + 0.5 * luminance), 0.78);
+  }`;
+
+const APPROVED_OPTICS = /* glsl */ `
+  if (vFishPart < 0.5) {
+    metalnessFactor *= 0.5;
+    roughnessFactor = max(roughnessFactor, 0.4);
   }`;
 
 const FRESHWATER_OPTICS = /* glsl */ `
@@ -797,12 +836,14 @@ export function createHeroFishRenderer(scene, {
   scale = 1,
   effectUniforms = null,
   palette = null,
+  water = null,
 } = {}) {
   if (!scene?.isScene) throw new TypeError('scene must be a Three.js Scene');
   const geometry = buildHeroFishGeometry();
   const swim = new THREE.InstancedBufferAttribute(new Float32Array(capacity * 4), 4);
   const fin = new THREE.InstancedBufferAttribute(new Float32Array(capacity * 2), 2);
-  const paletteAttribute = palette === 'freshwater'
+  const approved = palette === 'freshwater-approved';
+  const paletteAttribute = palette === 'freshwater' || approved
     ? new THREE.InstancedBufferAttribute(new Float32Array(capacity), 1)
     : null;
   if (paletteAttribute) {
@@ -839,9 +880,9 @@ export function createHeroFishRenderer(scene, {
   }), {
     key: 'body',
     effectUniforms,
-    palette: Boolean(paletteAttribute),
-    albedo: EYE_ALBEDO + (paletteAttribute ? FRESHWATER_BODY_ALBEDO : ''),
-    optics: EYE_OPTICS + (paletteAttribute ? FRESHWATER_OPTICS : ''),
+    palette: paletteAttribute ? palette : false,
+    albedo: EYE_ALBEDO + (approved ? APPROVED_BODY_ALBEDO : paletteAttribute ? FRESHWATER_BODY_ALBEDO : ''),
+    optics: EYE_OPTICS + (approved ? APPROVED_OPTICS : paletteAttribute ? FRESHWATER_OPTICS : ''),
     physical: EYE_PHYSICAL,
     scatter: BODY_SCATTER,
   });
@@ -855,8 +896,12 @@ export function createHeroFishRenderer(scene, {
     side: THREE.DoubleSide,
     envMap: environment?.texture ?? null,
     envMapIntensity: 0.35,
-  }), { key: 'fins', effectUniforms, palette: Boolean(paletteAttribute),
-    albedo: FIN_ALBEDO + (paletteAttribute ? FRESHWATER_FIN_ALBEDO : ''), scatter: FIN_SCATTER });
+  }), { key: 'fins', effectUniforms, palette: paletteAttribute ? palette : false,
+    albedo: FIN_ALBEDO + (approved ? APPROVED_FIN_ALBEDO : paletteAttribute ? FRESHWATER_FIN_ALBEDO : ''),
+    scatter: FIN_SCATTER });
+  // Fish live inside the same water volume as the aquarium (when provided).
+  applyWater(bodyMaterial, water);
+  applyWater(finMaterial, water);
 
   const bodies = new THREE.InstancedMesh(geometry.body, bodyMaterial, capacity);
   const membranes = new THREE.InstancedMesh(geometry.fins, finMaterial, capacity);

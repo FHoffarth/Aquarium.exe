@@ -1,0 +1,154 @@
+{
+  "camera": [
+    0,
+    6.6,
+    15.3
+  ],
+  "glassZ": 5,
+  "sigmaRGB": [
+    0.13,
+    0.08,
+    0.058
+  ],
+  "referenceDistance": 3.5,
+  "scatterColorLinear": [
+    0.058,
+    0.112,
+    0.118
+  ],
+  "rows": [
+    {
+      "layer": "near / front",
+      "object": "07 low foreground plants",
+      "zRange": [
+        0.01,
+        2.68
+      ],
+      "medianPoint": [
+        5.72,
+        0.03,
+        1.26
+      ],
+      "waterPath": 4.4,
+      "transmittanceRGB": [
+        0.89,
+        0.931,
+        0.949
+      ]
+    },
+    {
+      "layer": "near / front",
+      "object": "scattered embedded foreground gravel",
+      "zRange": [
+        -0.71,
+        4.62
+      ],
+      "medianPoint": [
+        -2.93,
+        0.1,
+        1.71
+      ],
+      "waterPath": 3.72,
+      "transmittanceRGB": [
+        0.972,
+        0.983,
+        0.987
+      ]
+    },
+    {
+      "layer": "middle",
+      "object": "planted central wood.001",
+      "zRange": [
+        -1.12,
+        -0.4
+      ],
+      "medianPoint": [
+        -0.11,
+        0.42,
+        -0.77
+      ],
+      "waterPath": 6.19,
+      "transmittanceRGB": [
+        0.705,
+        0.807,
+        0.856
+      ]
+    },
+    {
+      "layer": "middle",
+      "object": "05 irregular small leaf bushes",
+      "zRange": [
+        -2.27,
+        0.62
+      ],
+      "medianPoint": [
+        4.54,
+        2.47,
+        -0.45
+      ],
+      "waterPath": 5.84,
+      "transmittanceRGB": [
+        0.737,
+        0.829,
+        0.873
+      ]
+    },
+    {
+      "layer": "middle",
+      "object": "01 flowing ribbon plants",
+      "zRange": [
+        -4.39,
+        -0.81
+      ],
+      "medianPoint": [
+        -2.33,
+        1.43,
+        -2.81
+      ],
+      "waterPath": 8.18,
+      "transmittanceRGB": [
+        0.544,
+        0.687,
+        0.762
+      ]
+    },
+    {
+      "layer": "rear vegetation",
+      "object": "03 fine feather plants",
+      "zRange": [
+        -4.21,
+        -1.45
+      ],
+      "medianPoint": [
+        5.24,
+        0.9,
+        -2.76
+      ],
+      "waterPath": 8.44,
+      "transmittanceRGB": [
+        0.526,
+        0.673,
+        0.751
+      ]
+    },
+    {
+      "layer": "rear boundary",
+      "object": "blue water background",
+      "zRange": [
+        -4.83,
+        -4.78
+      ],
+      "medianPoint": [
+        -8.5,
+        -0.6,
+        -4.78
+      ],
+      "waterPath": 11.18,
+      "transmittanceRGB": [
+        0.369,
+        0.541,
+        0.641
+      ]
+    }
+  ]
+}

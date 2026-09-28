@@ -31,6 +31,7 @@ export async function createPlantedTankForArt(renderer, {
   auditConfig = DEFAULT_AUDIT,
   performanceRecorder = null,
   heroFish = HERO_OFF,
+  waterMode = undefined,
 }) {
   if (ART_GROUPS.includes(artMode) && deriveAuditScenePlan(auditConfig).createEnvironment) {
     try {
@@ -39,6 +40,7 @@ export async function createPlantedTankForArt(renderer, {
         artAssets,
         artGroup: artMode,
         heroFish,
+        waterMode,
       });
       return {
         habitat,
@@ -59,7 +61,7 @@ export function createPlantedTank(
   overrides = {},
   auditConfig = DEFAULT_AUDIT,
   performanceRecorder = null,
-  { artAssets = null, artGroup = 'slice-a', heroFish = HERO_OFF } = {},
+  { artAssets = null, artGroup = 'slice-a', heroFish = HERO_OFF, waterMode = undefined } = {},
 ) {
   if (!renderer?.isWebGLRenderer) {
     throw new TypeError('renderer must be a Three.js WebGLRenderer');
@@ -88,7 +90,7 @@ export function createPlantedTank(
   let environment = null;
   if (scenePlan.createEnvironment) {
     if (!artAssets) environment = createEnvironment(scene, config);
-    else if (artGroup === 'lush-live') environment = createLushLiveEnvironment(scene, artAssets);
+    else if (artGroup === 'lush-live') environment = createLushLiveEnvironment(scene, artAssets, { waterMode });
     else if (artGroup === 'lush-live-slice') environment = createLushLiveSliceEnvironment(scene, artAssets);
     else if (artGroup === 'lush') environment = createLushEnvironment(scene, config, artAssets);
     else if (artGroup === 'slice-c') environment = createSliceCEnvironment(scene, config, artAssets);
@@ -123,7 +125,8 @@ export function createPlantedTank(
       capacity: Math.max(1, scenePlan.fishCount),
       scale: environment?.fishScale ?? SCHOOL_HERO_SCALE,
       effectUniforms: environment?.fishEffectUniforms ?? environment?.effectUniforms ?? null,
-      palette: FRESHWATER_GROUPS.includes(artGroup) ? 'freshwater' : null,
+      palette: environment?.fishPalette ?? (FRESHWATER_GROUPS.includes(artGroup) ? 'freshwater' : null),
+      water: environment?.water ?? null,
     })
     : null;
   // Review-only stand-in for posed evidence; the school keeps simulating.
