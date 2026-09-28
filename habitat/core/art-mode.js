@@ -1,5 +1,5 @@
-export const ART_MODES = Object.freeze(['slice-c', 'slice-b', 'slice-a', 'procedural']);
-export const DEFAULT_ART_MODE = 'slice-c';
+export const ART_MODES = Object.freeze(['lush', 'slice-c', 'slice-b', 'slice-a', 'procedural']);
+export const DEFAULT_ART_MODE = 'lush';
 
 // The Windows host always navigates to index.html without a query, so the
 // default is the mode under review (Slice C, the Natural Environment

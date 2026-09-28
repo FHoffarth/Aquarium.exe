@@ -14,6 +14,13 @@ const MIB = 1024 * 1024;
 // memory.
 
 const BUDGETS = {
+  lush: {
+    environmentTriangles: 0,
+    meshTriangles: {},
+    environmentPrimitives: 0,
+    textureMemoryMiB: 12,
+    maxTextureSide: 2048,
+  },
   'slice-a': {
     environmentTriangles: 90_000,
     meshTriangles: {

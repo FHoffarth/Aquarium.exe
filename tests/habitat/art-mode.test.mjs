@@ -12,15 +12,16 @@ const stubRenderer = () => ({
   info: { render: { calls: 0, triangles: 0 } },
 });
 
-test('art mode defaults to the reviewed slice and keeps Slices B, A and procedural for comparison', () => {
-  assert.equal(DEFAULT_ART_MODE, 'slice-c');
-  assert.equal(readArtMode({ search: '' }), 'slice-c');
+test('art mode defaults to the approved lush aquarium and keeps previous modes for comparison', () => {
+  assert.equal(DEFAULT_ART_MODE, 'lush');
+  assert.equal(readArtMode({ search: '' }), 'lush');
+  assert.equal(readArtMode({ search: '?art=lush' }), 'lush');
   assert.equal(readArtMode({ search: '?art=slice-c' }), 'slice-c');
   assert.equal(readArtMode({ search: '?art=slice-b' }), 'slice-b');
   assert.equal(readArtMode({ search: '?art=slice-a' }), 'slice-a');
   assert.equal(readArtMode({ search: '?art=procedural' }), 'procedural');
-  assert.equal(readArtMode({ search: '?art=../../etc' }), 'slice-c');
-  assert.equal(readArtMode(undefined), 'slice-c');
+  assert.equal(readArtMode({ search: '?art=../../etc' }), 'lush');
+  assert.equal(readArtMode(undefined), 'lush');
 });
 
 test('a Slice C asset failure falls back to the procedural habitat with classic fish', async () => {

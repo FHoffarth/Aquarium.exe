@@ -6,13 +6,14 @@ import { createHeroFishRenderer, createHeroStudio } from '../../core/hero-fish.j
 import { createSliceAEnvironment } from '../../core/slice-a-environment.js';
 import { createSliceBEnvironment } from '../../core/slice-b-environment.js';
 import { createSliceCEnvironment } from '../../core/slice-c-environment.js';
+import { createLushEnvironment } from '../../core/lush-environment.js';
 import { deriveAuditScenePlan } from '../../audit-config.js';
 import { createPlantedTankConfig } from './config.js';
 
 const DEFAULT_AUDIT = { enabled: false, mode: 'full', fishCount: 10 };
 const HERO_OFF = Object.freeze({ enabled: false });
-const ART_GROUPS = Object.freeze(['slice-a', 'slice-b', 'slice-c']);
-const HERO_SCHOOL_GROUPS = Object.freeze(['slice-b', 'slice-c']);
+const ART_GROUPS = Object.freeze(['slice-a', 'slice-b', 'slice-c', 'lush']);
+const HERO_SCHOOL_GROUPS = Object.freeze(['slice-b', 'slice-c', 'lush']);
 // Slice B/C school: Hero Fish Pass 1B at its approved desktop scale.
 export const SCHOOL_HERO_SCALE = 0.75;
 
@@ -84,6 +85,7 @@ export function createPlantedTank(
   let environment = null;
   if (scenePlan.createEnvironment) {
     if (!artAssets) environment = createEnvironment(scene, config);
+    else if (artGroup === 'lush') environment = createLushEnvironment(scene, config, artAssets);
     else if (artGroup === 'slice-c') environment = createSliceCEnvironment(scene, config, artAssets);
     else if (artGroup === 'slice-b') environment = createSliceBEnvironment(scene, config, artAssets);
     else environment = createSliceAEnvironment(scene, config, artAssets);
@@ -105,6 +107,7 @@ export function createPlantedTank(
       capacity: Math.max(1, scenePlan.fishCount),
       scale: SCHOOL_HERO_SCALE,
       effectUniforms: environment?.fishEffectUniforms ?? environment?.effectUniforms ?? null,
+      palette: artGroup === 'lush' ? 'freshwater' : null,
     })
     : null;
   // Review-only stand-in for posed evidence; the school keeps simulating.

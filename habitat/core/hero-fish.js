@@ -582,19 +582,23 @@ vec3 hfBend(vec3 p, inout vec3 n) {
 `;
 
 function applyHeroShader(material, {
-  key, effectUniforms, albedo = '', optics = '', scatter = '', physical = '',
+  key, effectUniforms, albedo = '', optics = '', scatter = '', physical = '', palette = false,
 }) {
   material.onBeforeCompile = shader => {
+    if (palette) {
+      shader.vertexShader = `attribute float aPalette; varying float vFishPalette;\n${shader.vertexShader}`;
+    }
     shader.vertexShader = shader.vertexShader
       .replace('#include <common>', `#include <common>\n${SWIM_VERTEX}`)
       .replace('#include <beginnormal_vertex>', `vec3 objectNormal = vec3(normal);
+  ${palette ? 'vFishPalette = aPalette;' : ''}
   float hfS = HF_PIVOT - position.x / HF_K;
   vec3 hfPosition = hfBend(hfFinMotion(position, hfS), objectNormal);
   vFishPart = aPart;
   vFishSurface = aSurface;
   vFishS = hfS;`)
       .replace('#include <begin_vertex>', 'vec3 transformed = hfPosition;');
-    shader.fragmentShader = `varying float vFishPart;\nvarying float vFishSurface;\nvarying float vFishS;\n${shader.fragmentShader}`;
+    shader.fragmentShader = `${palette ? 'varying float vFishPalette;\n' : ''}varying float vFishPart;\nvarying float vFishSurface;\nvarying float vFishS;\n${shader.fragmentShader}`;
     if (albedo) {
       shader.fragmentShader = shader.fragmentShader
         .replace('#include <color_fragment>', `#include <color_fragment>\n${albedo}`);
@@ -619,7 +623,7 @@ ${optics}`);
       });
     }
   };
-  material.customProgramCacheKey = () => `hero-fish:${key}:${effectUniforms ? 'fx' : 'plain'}`;
+  material.customProgramCacheKey = () => `hero-fish:${key}:${effectUniforms ? 'fx' : 'plain'}:${palette ? 'freshwater' : 'silver'}`;
   return material;
 }
 
@@ -666,6 +670,32 @@ const BODY_SCATTER = /* glsl */ `
 // The caudal carries the silhouette: a little denser than the other fins.
 const FIN_ALBEDO = /* glsl */ `
   if (vFishPart > 9.5 && vFishPart < 10.5) diffuseColor.a = min(1.0, diffuseColor.a * 1.3);`;
+
+const FRESHWATER_BODY_ALBEDO = /* glsl */ `
+  if (vFishPart < 0.5 && vFishPalette < 1.5) {
+    float flank = 1.0 - smoothstep(0.45, 0.94, abs(vFishSurface));
+    float luminance = dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+    if (vFishPalette < 0.5) {
+      diffuseColor.rgb = mix(diffuseColor.rgb, luminance * vec3(0.46, 0.9, 1.22), flank * 0.48);
+      float accent = smoothstep(0.53, 0.86, vFishS) * flank * 0.82;
+      diffuseColor.rgb = mix(diffuseColor.rgb, luminance * vec3(1.55, 0.15, 0.1), accent);
+    } else {
+      diffuseColor.rgb = mix(diffuseColor.rgb, luminance * vec3(1.37, 0.67, 0.31), flank * 0.68);
+    }
+  }`;
+
+const FRESHWATER_FIN_ALBEDO = /* glsl */ `
+  if (vFishPalette < 1.5) {
+    float luminance = dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+    vec3 accent = vFishPalette < 0.5 ? vec3(1.38, 0.19, 0.12) : vec3(1.45, 0.47, 0.2);
+    diffuseColor.rgb = mix(diffuseColor.rgb, luminance * accent, 0.72);
+  }`;
+
+const FRESHWATER_OPTICS = /* glsl */ `
+  if (vFishPart < 0.5 && vFishPalette < 1.5) {
+    metalnessFactor *= 0.42;
+    roughnessFactor = max(roughnessFactor, 0.43);
+  }`;
 
 const FIN_SCATTER = /* glsl */ `
   float facing = abs(dot(normal, normalize(vViewPosition)));
@@ -766,16 +796,24 @@ export function createHeroFishRenderer(scene, {
   capacity = 1,
   scale = 1,
   effectUniforms = null,
+  palette = null,
 } = {}) {
   if (!scene?.isScene) throw new TypeError('scene must be a Three.js Scene');
   const geometry = buildHeroFishGeometry();
   const swim = new THREE.InstancedBufferAttribute(new Float32Array(capacity * 4), 4);
   const fin = new THREE.InstancedBufferAttribute(new Float32Array(capacity * 2), 2);
+  const paletteAttribute = palette === 'freshwater'
+    ? new THREE.InstancedBufferAttribute(new Float32Array(capacity), 1)
+    : null;
+  if (paletteAttribute) {
+    for (let index = 0; index < capacity; index += 1) paletteAttribute.setX(index, index % 3);
+  }
   swim.setUsage(THREE.DynamicDrawUsage);
   fin.setUsage(THREE.DynamicDrawUsage);
   for (const g of Object.values(geometry)) {
     g.setAttribute('aSwim', swim);
     g.setAttribute('aFin', fin);
+    if (paletteAttribute) g.setAttribute('aPalette', paletteAttribute);
   }
   const textures = {
     body: dataTexture(512, 256, shadeBody, THREE.SRGBColorSpace),
@@ -801,8 +839,9 @@ export function createHeroFishRenderer(scene, {
   }), {
     key: 'body',
     effectUniforms,
-    albedo: EYE_ALBEDO,
-    optics: EYE_OPTICS,
+    palette: Boolean(paletteAttribute),
+    albedo: EYE_ALBEDO + (paletteAttribute ? FRESHWATER_BODY_ALBEDO : ''),
+    optics: EYE_OPTICS + (paletteAttribute ? FRESHWATER_OPTICS : ''),
     physical: EYE_PHYSICAL,
     scatter: BODY_SCATTER,
   });
@@ -816,7 +855,8 @@ export function createHeroFishRenderer(scene, {
     side: THREE.DoubleSide,
     envMap: environment?.texture ?? null,
     envMapIntensity: 0.35,
-  }), { key: 'fins', effectUniforms, albedo: FIN_ALBEDO, scatter: FIN_SCATTER });
+  }), { key: 'fins', effectUniforms, palette: Boolean(paletteAttribute),
+    albedo: FIN_ALBEDO + (paletteAttribute ? FRESHWATER_FIN_ALBEDO : ''), scatter: FIN_SCATTER });
 
   const bodies = new THREE.InstancedMesh(geometry.body, bodyMaterial, capacity);
   const membranes = new THREE.InstancedMesh(geometry.fins, finMaterial, capacity);

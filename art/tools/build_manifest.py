@@ -30,6 +30,13 @@ LICENSE_EVIDENCE = [
 
 # Shipped file -> (role, label, derived-from source ids, modifications)
 SHIPPED = {
+    'lush/environment_albedo.webp': (
+        'texture', 'Approved 6dfd62d planted freshwater environment without posed review fish',
+        ['rock_07', 'boulder_01', 'rock_09', 'LeafSet022', 'bark_willow_02'],
+        'Lossless WebP of the approved 1920x1080 Blender scene at frame 1 with only posed fish '
+        'and still-frame suspended particles hidden. Same vegetation, substrate, wood, camera, '
+        'lighting and water materials as 6dfd62d. Rendered by art/tools/export_lush_runtime_plate.py '
+        'from the saved approved Blender scene; no external assets added.'),
     'slice-a/environment.glb': (
         'geometry', 'Slice A planted-corner environment geometry',
         ['rock_moss_set_02', 'dry_branches_medium_01', 'moss_01', 'anthurium_botany_01', 'fern_02',
