@@ -30,6 +30,18 @@ LICENSE_EVIDENCE = [
 
 # Shipped file -> (role, label, derived-from source ids, modifications)
 SHIPPED = {
+    'lush-live/environment.glb': (
+        'geometry', 'Approved planted freshwater aquarium, full live 3D environment (composition proof)',
+        ['rock_09', 'rock_07', 'boulder_01', 'LeafSet022', 'bark_willow_02'],
+        'Exported from the SHA-pinned approved lush-water-reference.blend by '
+        'art/tools/export_lush_live_full.py: the complete approved environment (all seven plant '
+        'groups, supporting stems, full gravel bed and embedded gravel, all wood pieces with '
+        'their bevel modifiers applied, rock-07 x2, boulder, rock-09, rear boundary) and the '
+        'reference camera; no X window, no decimation, no repositioning. Cycles-only node '
+        'graphs mapped to minimal glTF PBR colours plus five reused embedded WebP albedos; '
+        'broad-leaf atlas double-sided alpha mask; rear boundary given a restrained deep '
+        'blue-green stand-in colour. Posed fish, offline particles and the rendered plate are '
+        'excluded.'),
     'lush-slice/environment.glb': (
         'geometry', 'Approved planted freshwater live 3D vertical-slice proof',
         ['rock_09', 'LeafSet022', 'bark_willow_02'],

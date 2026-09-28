@@ -7,13 +7,16 @@ import { createSliceAEnvironment } from '../../core/slice-a-environment.js';
 import { createSliceBEnvironment } from '../../core/slice-b-environment.js';
 import { createSliceCEnvironment } from '../../core/slice-c-environment.js';
 import { createLushEnvironment } from '../../core/lush-environment.js';
+import { createLushLiveSliceEnvironment } from '../../core/lush-live-slice.js';
+import { createLushLiveEnvironment } from '../../core/lush-live.js';
 import { deriveAuditScenePlan } from '../../audit-config.js';
 import { createPlantedTankConfig } from './config.js';
 
 const DEFAULT_AUDIT = { enabled: false, mode: 'full', fishCount: 10 };
 const HERO_OFF = Object.freeze({ enabled: false });
-const ART_GROUPS = Object.freeze(['slice-a', 'slice-b', 'slice-c', 'lush']);
-const HERO_SCHOOL_GROUPS = Object.freeze(['slice-b', 'slice-c', 'lush']);
+const ART_GROUPS = Object.freeze(['slice-a', 'slice-b', 'slice-c', 'lush', 'lush-live', 'lush-live-slice']);
+const HERO_SCHOOL_GROUPS = Object.freeze(['slice-b', 'slice-c', 'lush', 'lush-live', 'lush-live-slice']);
+const FRESHWATER_GROUPS = Object.freeze(['lush', 'lush-live', 'lush-live-slice']);
 // Slice B/C school: Hero Fish Pass 1B at its approved desktop scale.
 export const SCHOOL_HERO_SCALE = 0.75;
 
@@ -31,7 +34,7 @@ export async function createPlantedTankForArt(renderer, {
 }) {
   if (ART_GROUPS.includes(artMode) && deriveAuditScenePlan(auditConfig).createEnvironment) {
     try {
-      const artAssets = await loadArtGroup(artMode);
+      const artAssets = await loadArtGroup(artMode === 'lush-live-slice' ? 'lush-slice' : artMode);
       const habitat = createPlantedTank(renderer, overrides, auditConfig, performanceRecorder, {
         artAssets,
         artGroup: artMode,
@@ -85,6 +88,8 @@ export function createPlantedTank(
   let environment = null;
   if (scenePlan.createEnvironment) {
     if (!artAssets) environment = createEnvironment(scene, config);
+    else if (artGroup === 'lush-live') environment = createLushLiveEnvironment(scene, artAssets);
+    else if (artGroup === 'lush-live-slice') environment = createLushLiveSliceEnvironment(scene, artAssets);
     else if (artGroup === 'lush') environment = createLushEnvironment(scene, config, artAssets);
     else if (artGroup === 'slice-c') environment = createSliceCEnvironment(scene, config, artAssets);
     else if (artGroup === 'slice-b') environment = createSliceBEnvironment(scene, config, artAssets);
@@ -93,6 +98,17 @@ export function createPlantedTank(
   // An environment may frame the tank slightly differently (Slice C looks a
   // little upward so the floor takes less of the frame).
   if (environment?.cameraTarget) camera.lookAt(...environment.cameraTarget);
+  if (environment?.exposure) renderer.toneMappingExposure = environment.exposure;
+  if (environment?.referenceCamera) {
+    const reference = environment.referenceCamera;
+    reference.updateWorldMatrix(true, false);
+    reference.getWorldPosition(camera.position);
+    reference.getWorldQuaternion(camera.quaternion);
+    camera.fov = reference.fov;
+    camera.near = reference.near;
+    camera.far = reference.far;
+    camera.updateProjectionMatrix();
+  }
   const heroScreen = new THREE.Vector3();
   const heroRenderer = hero?.variant === 'hero'
     ? createHeroFishRenderer(scene, {
@@ -105,9 +121,9 @@ export function createPlantedTank(
     ? createHeroFishRenderer(scene, {
       renderer,
       capacity: Math.max(1, scenePlan.fishCount),
-      scale: SCHOOL_HERO_SCALE,
+      scale: environment?.fishScale ?? SCHOOL_HERO_SCALE,
       effectUniforms: environment?.fishEffectUniforms ?? environment?.effectUniforms ?? null,
-      palette: artGroup === 'lush' ? 'freshwater' : null,
+      palette: FRESHWATER_GROUPS.includes(artGroup) ? 'freshwater' : null,
     })
     : null;
   // Review-only stand-in for posed evidence; the school keeps simulating.
@@ -153,7 +169,10 @@ export function createPlantedTank(
         fishRenderer?.project(hero ? { fish: [{ ...fish, scale: fish.scale * hero.scale }] } : school,
           simulationTime);
         heroRenderer?.project([fish], simulationTime);
-        schoolRenderer?.project(school.fish, simulationTime);
+        // Render-side tank calibration (live aquarium modes); the simulation
+        // stays authoritative and is never written.
+        schoolRenderer?.project(environment?.mapFish ? school.fish.map(environment.mapFish) : school.fish,
+          simulationTime);
         if (hero) {
           // Review aid: where the reviewed fish is on screen (0..1, y down).
           heroScreen.set(fish.position.x, fish.position.y, fish.position.z).project(camera);

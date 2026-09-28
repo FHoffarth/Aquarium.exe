@@ -16,6 +16,7 @@ test('art mode defaults to the approved lush aquarium and keeps previous modes f
   assert.equal(DEFAULT_ART_MODE, 'lush');
   assert.equal(readArtMode({ search: '' }), 'lush');
   assert.equal(readArtMode({ search: '?art=lush' }), 'lush');
+  assert.equal(readArtMode({ search: '?art=lush-live-slice' }), 'lush-live-slice');
   assert.equal(readArtMode({ search: '?art=slice-c' }), 'slice-c');
   assert.equal(readArtMode({ search: '?art=slice-b' }), 'slice-b');
   assert.equal(readArtMode({ search: '?art=slice-a' }), 'slice-a');
@@ -36,6 +37,21 @@ test('a Slice C asset failure falls back to the procedural habitat with classic 
   assert.equal(art.mode, 'procedural');
   assert.equal(habitat.getFishStyle(), 'classic');
   assert.doesNotThrow(() => habitat.project(1 / 60));
+  habitat.dispose();
+});
+
+test('opt-in live slice loads its separate asset group without changing the default', async () => {
+  let requestedGroup;
+  const { habitat } = await createPlantedTankForArt(stubRenderer(), {
+    artMode: 'lush-live-slice',
+    loadArtGroup: async group => {
+      requestedGroup = group;
+      throw new AssetIntegrityError('intentional test failure');
+    },
+    reportAssetFailure() {},
+  });
+  assert.equal(requestedGroup, 'lush-slice');
+  assert.equal(DEFAULT_ART_MODE, 'lush');
   habitat.dispose();
 });
 

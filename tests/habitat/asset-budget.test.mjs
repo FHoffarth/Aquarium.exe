@@ -14,6 +14,16 @@ const MIB = 1024 * 1024;
 // memory.
 
 const BUDGETS = {
+  'lush-live': {
+    // Full-frame composition proof: the complete approved environment,
+    // deliberately unoptimised until measured on the host. A ceiling for
+    // the proof, not a runtime target.
+    environmentTriangles: 350_000,
+    meshTriangles: {},
+    environmentPrimitives: 160,
+    textureMemoryMiB: 40,
+    maxTextureSide: 2048,
+  },
   'lush-slice': {
     // Export-only proof. Keep the true spatial layers; this is not a runtime
     // draw-call target.

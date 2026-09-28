@@ -61,11 +61,13 @@ export async function loadArtGroup(group, {
 
   const meshes = {};
   const textures = {};
+  const sceneGraphs = {};
   let totalBytes = 0;
   for (const { entry, bytes } of loaded) {
     totalBytes += bytes.byteLength;
     if (entry.role === 'geometry') {
       const gltf = await parseGlb(bytes);
+      sceneGraphs[entry.file] = gltf.scene;
       gltf.scene.traverse(object => {
         if (object.isMesh) meshes[object.name] = object;
       });
@@ -74,5 +76,5 @@ export async function loadArtGroup(group, {
       textures[key] = await decodeTexture(entry, bytes, maxAnisotropy);
     }
   }
-  return { meshes, textures, totalBytes, loadMs: now() - started };
+  return { meshes, textures, sceneGraphs, totalBytes, loadMs: now() - started };
 }

@@ -1,4 +1,4 @@
-export const ART_MODES = Object.freeze(['lush', 'slice-c', 'slice-b', 'slice-a', 'procedural']);
+export const ART_MODES = Object.freeze(['lush', 'lush-live', 'lush-live-slice', 'slice-c', 'slice-b', 'slice-a', 'procedural']);
 export const DEFAULT_ART_MODE = 'lush';
 
 // The Windows host always navigates to index.html without a query, so the
