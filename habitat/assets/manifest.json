@@ -9,6 +9,22 @@
   ],
   "files": [
     {
+      "file": "lush-slice/environment.glb",
+      "role": "geometry",
+      "label": "Approved planted freshwater live 3D vertical-slice proof",
+      "bytes": 4661760,
+      "sha256": "333d8a93a698a75ae1eb64aa032290f6639bc2ccdb01535cee5e4ce8153e7791",
+      "license": "CC0-1.0",
+      "status": "GREEN",
+      "derivedFrom": [
+        "rock_09",
+        "LeafSet022",
+        "bark_willow_02"
+      ],
+      "modifications": "Exported from the SHA-pinned approved lush-water-reference.blend by art/tools/export_lush_live_slice.py: complete connected plant pieces selected within the central X window, original gravel faces, central wood and rock-09, rear boundary and reference camera. Original spatial geometry, UVs and relative transforms are retained. Cycles-only node graphs are mapped to minimal glTF PBR colors and three reused embedded WebP albedos; broad-leaf atlas uses a double-sided alpha mask. Posed fish, offline particles and the rendered environment plate are excluded.",
+      "origin": "derived"
+    },
+    {
       "file": "lush/environment_albedo.webp",
       "role": "texture",
       "label": "Approved planted freshwater environment with restrained depth integration",

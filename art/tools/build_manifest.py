@@ -30,6 +30,17 @@ LICENSE_EVIDENCE = [
 
 # Shipped file -> (role, label, derived-from source ids, modifications)
 SHIPPED = {
+    'lush-slice/environment.glb': (
+        'geometry', 'Approved planted freshwater live 3D vertical-slice proof',
+        ['rock_09', 'LeafSet022', 'bark_willow_02'],
+        'Exported from the SHA-pinned approved lush-water-reference.blend by '
+        'art/tools/export_lush_live_slice.py: complete connected plant pieces selected '
+        'within the central X window, original gravel faces, central wood and rock-09, '
+        'rear boundary and reference camera. Original spatial geometry, UVs and relative '
+        'transforms are retained. Cycles-only node graphs are mapped to minimal glTF '
+        'PBR colors and three reused embedded WebP albedos; broad-leaf atlas uses a '
+        'double-sided alpha mask. Posed fish, offline particles and the rendered '
+        'environment plate are excluded.'),
     'lush/environment_albedo.webp': (
         'texture', 'Approved planted freshwater environment with restrained depth integration',
         ['rock_07', 'boulder_01', 'rock_09', 'LeafSet022', 'bark_willow_02'],

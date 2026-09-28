@@ -14,6 +14,15 @@ const MIB = 1024 * 1024;
 // memory.
 
 const BUDGETS = {
+  'lush-slice': {
+    // Export-only proof. Keep the true spatial layers; this is not a runtime
+    // draw-call target.
+    environmentTriangles: 110_000,
+    meshTriangles: {},
+    environmentPrimitives: 64,
+    textureMemoryMiB: 16,
+    maxTextureSide: 2048,
+  },
   lush: {
     environmentTriangles: 0,
     meshTriangles: {},
@@ -145,6 +154,22 @@ for (const [group, BUDGET] of Object.entries(BUDGETS)) {
       const { width, height } = webpSize(data);
       assert.ok(Math.max(width, height) <= BUDGET.maxTextureSide, `${entry.file} is ${width}x${height}`);
       bytes += width * height * 4 * (4 / 3);  // RGBA8 with a full mip chain
+    }
+    for (const entry of geometryEntries) {
+      const data = new Uint8Array(await readFile(new URL(entry.file, assetsDir)));
+      const gltf = parseGlb(data);
+      const jsonLength = new DataView(data.buffer, data.byteOffset, data.byteLength).getUint32(12, true);
+      const binOffset = 20 + jsonLength + 8;
+      for (const image of gltf.images ?? []) {
+        assert.equal(image.mimeType, 'image/webp', `${entry.file}/${image.name}`);
+        const segment = gltf.bufferViews[image.bufferView];
+        const embedded = data.subarray(binOffset + (segment.byteOffset ?? 0),
+          binOffset + (segment.byteOffset ?? 0) + segment.byteLength);
+        const { width, height } = webpSize(embedded);
+        assert.ok(Math.max(width, height) <= BUDGET.maxTextureSide,
+          `${entry.file}/${image.name} is ${width}x${height}`);
+        bytes += width * height * 4 * (4 / 3);
+      }
     }
     assert.ok(bytes / MIB <= BUDGET.textureMemoryMiB, `texture memory ${(bytes / MIB).toFixed(1)} MiB`);
   });
