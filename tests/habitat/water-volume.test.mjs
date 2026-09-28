@@ -115,8 +115,15 @@ test('live aquarium waters every environment material once and hands the same wa
     { waterMode: 'full' });
   assert.equal(environment.water.mode, 'full');
   assert.equal(environment.fishPalette, 'freshwater-approved');
-  assert.equal(shared.customProgramCacheKey().split('water:full').length - 1, 1, 'shared material wrapped once');
-  assert.equal(shared.alphaTest, 0.45);
+  // Materials are recovered per family (cloned once per family/material
+  // pair); each resulting material is wrapped with water exactly once.
+  const inUse = new Set();
+  root.traverse(object => { if (object.isMesh) inUse.add(object.material); });
+  assert.equal(inUse.size, 1, 'one family -> one shared recovered material');
+  for (const material of inUse) {
+    assert.equal(material.customProgramCacheKey().split('water:full').length - 1, 1, 'wrapped once');
+    assert.equal(material.alphaTest, 0.45);
+  }
   const off = createLushLiveEnvironment(new THREE.Scene(), {
     sceneGraphs: { 'lush-live/environment.glb': root.clone() },
   }, { waterMode: 'off' });

@@ -101,6 +101,8 @@ export function createPlantedTank(
   // little upward so the floor takes less of the frame).
   if (environment?.cameraTarget) camera.lookAt(...environment.cameraTarget);
   if (environment?.exposure) renderer.toneMappingExposure = environment.exposure;
+  const toneMappings = { agx: THREE.AgXToneMapping, neutral: THREE.NeutralToneMapping, aces: THREE.ACESFilmicToneMapping };
+  if (toneMappings[environment?.toneMapping]) renderer.toneMapping = toneMappings[environment.toneMapping];
   if (environment?.referenceCamera) {
     const reference = environment.referenceCamera;
     reference.updateWorldMatrix(true, false);

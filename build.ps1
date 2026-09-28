@@ -14,7 +14,7 @@ New-Item -ItemType Directory -Force $out | Out-Null
 
 $node = Get-Command node -ErrorAction SilentlyContinue
 if (-not $node) { throw 'Node.js is required to run the habitat tests.' }
-$habitatTests = @('behavior', 'engine', 'performance', 'render-contract', 'art-mode', 'asset-manifest', 'asset-budget', 'hero-fish', 'lush-live-slice', 'lush-live', 'water-volume') |
+$habitatTests = @('behavior', 'engine', 'performance', 'render-contract', 'art-mode', 'asset-manifest', 'asset-budget', 'hero-fish', 'lush-live-slice', 'lush-live', 'water-volume', 'lush-live-look') |
   ForEach-Object { Join-Path $root "tests\habitat\$_.test.mjs" }
 & $node.Source --test @habitatTests
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }

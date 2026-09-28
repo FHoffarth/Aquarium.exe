@@ -1,5 +1,6 @@
 import * as THREE from '../vendor/three/three.module.js';
 import { applyWater, createWaterVolume, DEFAULT_WATER_MODE } from '../shaders/water-volume.js';
+import { LUSH_LIVE_LIGHTS, createLushLiveLights, createRearMaterial, recoverMaterials } from './lush-live-look.js';
 
 // Full-frame live 3D composition proof (?art=lush-live).
 //
@@ -16,10 +17,6 @@ import { applyWater, createWaterVolume, DEFAULT_WATER_MODE } from '../shaders/wa
 
 const ASSET = 'lush-live/environment.glb';
 const REAR_MATERIAL = 'clear blue depth';
-// Rear boundary: restrained, desaturated freshwater blue-green (sRGB), a
-// little lighter near the water surface, darker toward the floor.
-const REAR_TOP = new THREE.Color('#4a7a7e');
-const REAR_BOTTOM = new THREE.Color('#21454a');
 // Hero Fish at a size matching the approved offline tank (~0.65 units long
 // here; the school simulation keeps its own units).
 export const LUSH_LIVE_FISH_SCALE = 1.25;
@@ -43,7 +40,7 @@ export const LUSH_LIVE_WATER = Object.freeze({
   referenceDistance: 3.5,
   // Linear radiance of the lit water column (before tone mapping), at the
   // scene's own brightness level: restrained blue-green, weaker toward the floor.
-  scatterColor: [0.058, 0.112, 0.118],
+  scatterColor: [0.08, 0.215, 0.31],
   scatterStrength: 1,
   surfaceY: 7.2,
   floorY: 0.1,
@@ -83,21 +80,9 @@ export function createLushLiveEnvironment(scene, assets, { waterMode = DEFAULT_W
     meshCount += 1;
     const materials = Array.isArray(object.material) ? object.material : [object.material];
     if (materials.some(material => material.name === REAR_MATERIAL)) {
-      // Real rear geometry with its own restrained, unlit gradient material.
-      const geometry = object.geometry;
-      const position = geometry.getAttribute('position');
-      geometry.computeBoundingBox();
-      const { min, max } = geometry.boundingBox;
-      const colors = new Float32Array(position.count * 3);
-      const color = new THREE.Color();
-      for (let index = 0; index < position.count; index += 1) {
-        const t = (position.getY(index) - min.y) / Math.max(1e-6, max.y - min.y);
-        color.copy(REAR_BOTTOM).lerp(REAR_TOP, t * t);
-        color.toArray(colors, index * 3);
-      }
-      geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+      // Real rear geometry with its own unlit freshwater-depth material.
       replaced.push(object.material);
-      object.material = new THREE.MeshBasicMaterial({ vertexColors: true });
+      object.material = createRearMaterial(object.geometry);
       // Twelve large triangles: exact per-fragment water path.
       applyWater(object.material, water, { perFragment: true });
       watered.add(object.material);
@@ -112,6 +97,10 @@ export function createLushLiveEnvironment(scene, assets, { waterMode = DEFAULT_W
   if (!referenceCamera || meshCount < 10) {
     throw new Error(`${ASSET}: approved camera or spatial geometry missing`);
   }
+  // Material recovery toward the approved source intent (per-family
+  // instances; lush-live-look.js), before the water model wraps them.
+  const leafLight = { direction: { value: new THREE.Vector3() }, color: { value: new THREE.Color() } };
+  const recovered = recoverMaterials(root, { leafLight });
   root.traverse(object => {
     if (!object.isMesh) return;
     for (const material of Array.isArray(object.material) ? object.material : [object.material]) {
@@ -131,30 +120,29 @@ export function createLushLiveEnvironment(scene, assets, { waterMode = DEFAULT_W
   // rear plants (about 1.4x farther away) receive roughly half the light of
   // the foreground. A light ground colour keeps leaf back faces from going
   // black (the offline render had leaf transmission).
-  const hemisphere = new THREE.HemisphereLight(0xdcece6, 0x66755e, 1.15);
-  const ambient = new THREE.AmbientLight(0xbfd3d2, 0.08);
-  const lamp = new THREE.SpotLight(0xfff4e4, 300, 0, 1.0, 0.9, 2.0);
-  lamp.position.set(-0.6, 9.5, 5.5);
-  lamp.target.position.set(0.3, 0, -1.2);
-  const side = new THREE.DirectionalLight(0xffe6c4, 0.3);
-  side.position.set(6, 9, 4);
-  const lights = [hemisphere, ambient, lamp, lamp.target, side];
+  const { key: lamp, lights } = createLushLiveLights();
   scene.add(...lights);
+  // Leaf transmission follows the key lamp: its direction and its irradiance
+  // at the middle of the planting (inverse square), in three's Lambert units.
+  const plantCentre = new THREE.Vector3(0, 2.2, -0.8);
+  leafLight.direction.value.copy(lamp.position).sub(plantCentre).normalize();
+  leafLight.color.value.copy(lamp.color)
+    .multiplyScalar(lamp.intensity / lamp.position.distanceToSquared(plantCentre) / Math.PI);
 
   return {
     referenceCamera,
     mapFish: mapLushLiveFish,
     fishPalette: 'freshwater-approved',
     water,
-    // Neutral exposure for this proof (the global 1.42 was tuned for the
-    // earlier dark slices).
-    exposure: 1.4,
+    // Output transform after the approved source (AgX), see lush-live-look.js.
+    toneMapping: LUSH_LIVE_LIGHTS.toneMapping,
+    exposure: LUSH_LIVE_LIGHTS.exposure,
     fishScale: LUSH_LIVE_FISH_SCALE,
     updateVisuals() {},
     dispose() {
       scene.remove(root, ...lights);
       const geometries = new Set();
-      const materials = new Set(replaced);
+      const materials = new Set([...replaced, ...recovered]);
       const textures = new Set();
       root.traverse(object => {
         if (!object.isMesh) return;
